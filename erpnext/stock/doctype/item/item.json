@@ -33,7 +33,18 @@
   "asset_naming_series",
   "over_delivery_receipt_allowance",
   "over_billing_allowance",
+  "attachments_section",
+  "tech_pack",
+  "column_break_25",
+  "picture",
+  "column_break_27",
+  "pattern",
   "image",
+  "sizing_section",
+  "sizing",
+  "consumption",
+  "pricing_section",
+  "production_price",
   "section_break_11",
   "brand",
   "description",
@@ -1037,6 +1048,61 @@
    "fieldname": "auto_create_assets",
    "fieldtype": "Check",
    "label": "Auto Create Assets on Purchase"
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "tech_pack",
+   "fieldtype": "Attach",
+   "label": "Tech Pack"
+  },
+  {
+   "fieldname": "column_break_25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "picture",
+   "fieldtype": "Attach",
+   "label": "Picture"
+  },
+  {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pattern",
+   "fieldtype": "Attach",
+   "label": "Pattern"
+  },
+  {
+   "fieldname": "sizing_section",
+   "fieldtype": "Section Break",
+   "label": "Sizing "
+  },
+  {
+   "fieldname": "sizing",
+   "fieldtype": "Link",
+   "label": "Sizing",
+   "options": "Sizing Scheme"
+  },
+  {
+   "fieldname": "consumption",
+   "fieldtype": "Int",
+   "label": "Consumption"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "production_price",
+   "fieldtype": "Table",
+   "label": "Production Price",
+   "options": "Prices for Quantity"
   }
  ],
  "has_web_view": 1,
@@ -1045,7 +1111,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-01-02 19:13:59.295963",
+ "modified": "2020-04-02 19:23:06.296806",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
@@ -1097,9 +1163,17 @@
   {
    "read": 1,
    "role": "Manufacturing User"
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer",
+   "share": 1
   }
  ],
- "quick_entry": 1,
  "search_fields": "item_name,description,item_group,customer_code",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
