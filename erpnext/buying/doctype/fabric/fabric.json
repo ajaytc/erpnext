@@ -1,0 +1,91 @@
+{
+ "actions": [],
+ "autoname": "field:fabric_ref",
+ "creation": "2020-04-03 17:08:21.857433",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "fabric_vendor",
+  "fabric_ref",
+  "color",
+  "composition",
+  "width",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "fabric_vendor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Fabri Vendor",
+   "options": "Supplier",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fabric_ref",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Fabric Ref",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Color",
+   "options": "Color",
+   "reqd": 1
+  },
+  {
+   "fieldname": "composition",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Composition",
+   "options": "Composition",
+   "reqd": 1
+  },
+  {
+   "fieldname": "width",
+   "fieldtype": "Link",
+   "label": "Width",
+   "options": "Width",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fabric",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2020-04-03 17:08:26.730870",
+ "modified_by": "Administrator",
+ "module": "Buying",
+ "name": "Fabric",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

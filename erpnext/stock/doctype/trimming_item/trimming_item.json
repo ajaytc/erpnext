@@ -1,0 +1,120 @@
+{
+ "actions": [],
+ "autoname": "field:internal_ref",
+ "creation": "2020-04-03 18:28:31.795501",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "trimming_vendor",
+  "section_break_2",
+  "item_category",
+  "color",
+  "material",
+  "trimming_size",
+  "other_info",
+  "section_break_3",
+  "vendor_ref",
+  "internal_ref",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Vendor"
+  },
+  {
+   "fieldname": "trimming_vendor",
+   "fieldtype": "Link",
+   "label": "Trimming Vendor",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Item Details"
+  },
+  {
+   "fieldname": "item_category",
+   "fieldtype": "Link",
+   "label": "Item Category",
+   "options": "Trimming Category"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Link",
+   "label": "Color",
+   "options": "Color"
+  },
+  {
+   "fieldname": "material",
+   "fieldtype": "Link",
+   "label": "Material",
+   "options": "Trimming Material"
+  },
+  {
+   "fieldname": "trimming_size",
+   "fieldtype": "Link",
+   "label": "Size",
+   "options": "Trimming size"
+  },
+  {
+   "fieldname": "other_info",
+   "fieldtype": "Text",
+   "label": "Other Information"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "vendor_ref",
+   "fieldtype": "Data",
+   "label": "Vendor Ref"
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Internal Ref",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Trimming Item",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2020-04-03 18:43:45.688830",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Trimming Item",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

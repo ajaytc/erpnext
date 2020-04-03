@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "autoname": "field:internal_ref",
+ "creation": "2020-04-03 19:07:03.218394",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "internal_ref",
+  "packaging_vendor",
+  "section_break_2",
+  "packaging_item",
+  "item_info",
+  "quantity",
+  "section_break_3",
+  "product_name",
+  "destionation",
+  "section_break_4",
+  "price_per_unit",
+  "total_price",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Vendor Details"
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "label": "Internal Ref",
+   "unique": 1
+  },
+  {
+   "fieldname": "packaging_vendor",
+   "fieldtype": "Link",
+   "label": "Vendor",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Packaging Item Details"
+  },
+  {
+   "fieldname": "packaging_item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Packaging Item"
+  },
+  {
+   "fieldname": "item_info",
+   "fieldtype": "Text",
+   "label": "Item Info"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Product Details"
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Link",
+   "label": "Product Name",
+   "options": "Item"
+  },
+  {
+   "fieldname": "destionation",
+   "fieldtype": "Data",
+   "label": "Destination"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break",
+   "label": "Pricing Details"
+  },
+  {
+   "fieldname": "price_per_unit",
+   "fieldtype": "Int",
+   "label": "Price/Unit"
+  },
+  {
+   "fieldname": "total_price",
+   "fieldtype": "Int",
+   "label": "Total Price"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Packaging Order",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2020-04-03 19:07:03.218394",
+ "modified_by": "Administrator",
+ "module": "Buying",
+ "name": "Packaging Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
