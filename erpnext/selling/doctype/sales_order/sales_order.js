@@ -86,6 +86,7 @@ frappe.ui.form.on("Sales Order", {
 });
 
 frappe.ui.form.on("Sales Order Item", {
+
 	item_code: function(frm,cdt,cdn) {
 		var row = locals[cdt][cdn];
 		if (frm.doc.delivery_date) {
@@ -94,6 +95,37 @@ frappe.ui.form.on("Sales Order Item", {
 		} else {
 			frm.script_manager.copy_from_first_row("items", row, ["delivery_date"]);
 		}
+
+		//var product = ;
+		//console.log(cur_frm.doc.item_code);
+		//var sizingScheme
+		//console.log(sizingScheme);
+		//frappe.call({
+        //    method: "frappe.client.get_value",
+        //    args: {
+        //        "doctype": "Item",
+		//       "filters": {"name": "00006"},
+        //        "fieldname": "sizing"
+        //    },
+		//	callback:function(r){
+        //  	 	console.log(r.message.sizing)
+        //        sizingScheme = r.message.sizing
+		//	}
+        //});
+
+        //frappe.call({
+        //    method: "frappe.client.get_all",
+         //   args: {
+         //       "doctype": "Sizing",
+         //       "filters": {{'parent': "XS-XL"},
+         //       "fieldname": "size"
+         //   },
+		//	callback:function(r){
+         // 	 	console.log(r.message.sizing)
+		//	}
+        //});
+		//var sizes = frappe.db.get_all('Sizing', filters={'parent': sizingScheme}, fields=['size']);
+		//console.log('0');*/
 	},
 	delivery_date: function(frm, cdt, cdn) {
 		if(!frm.doc.delivery_date) {
