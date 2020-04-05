@@ -1,7 +1,7 @@
 {
  "accept_payment": 0,
  "allow_comments": 1,
- "allow_delete": 0,
+ "allow_delete": 1,
  "allow_edit": 1,
  "allow_incomplete": 0,
  "allow_multiple": 1,
@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-02 22:24:06.987294",
+ "modified": "2020-04-05 23:18:27.714085",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "customer",
