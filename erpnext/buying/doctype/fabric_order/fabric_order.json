@@ -84,12 +84,12 @@
   },
   {
    "fieldname": "price_per_unit",
-   "fieldtype": "Read Only",
-   "label": "Price/Unti"
+   "fieldtype": "Data",
+   "label": "Price/Unit"
   },
   {
    "fieldname": "total_price",
-   "fieldtype": "Read Only",
+   "fieldtype": "Data",
    "label": "Total Price"
   },
   {
@@ -104,7 +104,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-03 18:09:57.909705",
+ "modified": "2020-04-03 21:46:20.187260",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",
