@@ -1,0 +1,19 @@
+{% include "erpnext/www/client-dashboard/nav.html" %}
+
+{% if status=='waiting' %}
+
+{% include 'erpnext/www/client-dashboard/waiting.html' %}
+
+{% elif status=='onprocess' %}
+
+{% include 'erpnext/www/client-dashboard/onprocess.html' %}
+
+{% elif status=='shipped' %}
+
+{% include 'erpnext/www/client-dashboard/shipped.html' %}
+
+{% elif status=='cancelled' %}
+
+{% include 'erpnext/www/client-dashboard/cancelled.html' %}
+
+{% endif %}

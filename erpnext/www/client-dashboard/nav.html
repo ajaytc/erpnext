@@ -1,0 +1,18 @@
+<button type="button" class="btn btn-primary">{{_("Place new order")}}</button>
+
+
+<ul class="nav nav-tabs mt-2">
+    <li class="nav-item">
+        <a class="nav-link {% if status=='waiting' %}active{% endif %}"
+            href="/client-dashboard/waiting">{{_("Waiting for Validation")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='onprocess' %}active{% endif %}" href="/client-dashboard/onprocess">{{_("On Process")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='shipped' %}active{% endif %}" href="/client-dashboard/shipped">{{_("Shipped")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='cancelled' %}active{% endif %}" href="/client-dashboard/cancelled">{{_("Cancelled")}}</a>
+    </li>
+</ul>
