@@ -537,3 +537,5 @@ global_search_doctypes = {
 		{'doctype': 'Hotel Room Type', 'index': 4}
 	]
 }
+
+website_user_home_page = '/'
