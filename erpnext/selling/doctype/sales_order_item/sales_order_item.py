@@ -14,5 +14,3 @@ class SalesOrderItem(Document):
 def on_doctype_update():
 	frappe.db.add_index("Sales Order Item", ["item_code", "warehouse"])
 
-def on_prouct_seletion(product):
-	frappe.get_value('Item', product, item_name)

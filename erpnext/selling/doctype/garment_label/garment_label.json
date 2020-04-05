@@ -1,0 +1,87 @@
+{
+ "actions": [],
+ "autoname": "field:label_name",
+ "creation": "2020-04-06 00:40:40.153183",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "label_name",
+  "column_break_3",
+  "label",
+  "section_break_5",
+  "customer",
+  "column_break_7",
+  "brand_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "label_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Label Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "label",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Label",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "brand_name",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-06 00:40:40.153183",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Garment Label",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
