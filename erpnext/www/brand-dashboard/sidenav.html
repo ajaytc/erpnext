@@ -1,0 +1,31 @@
+<div class="col-sm-3 col-md-3 sidebar" style="margin-left: -5%;margin-top: -3%;">
+    <div class="list-group">
+        {# <a href="#" class="list-group-item active">
+            <i class="fa fa-home"></i> {{_("Home")}}
+        </a> #}
+        <a href="#" class="list-group-item {% if page=='client' %}active{% endif %}">
+            <i class="fa fa-user"></i> {{_("Client")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='supply' %}active{% endif %}">
+            <i class="fa fa-file"></i> {{_("Supply")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='preprod' %}active{% endif %}">
+            <i class="fa fa-file"></i> {{_("Pre-production")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='prod' %}active{% endif %}">
+            <i class="fa fa-cog"></i> {{_("Production")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='shipment' %}active{% endif %}">
+            <i class="fa fa-truck"></i> {{_("Shipment")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='stock' %}active{% endif %}">
+            <i class="fa fa-archive"></i> {{_("Stock")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='invoice' %}active{% endif %}">
+            <i class="fa fa-align-justify"></i> {{_("Invoice Packing List")}}
+        </a>
+        <a href="#" class="list-group-item {% if page=='finance' %}active{% endif %}">
+            <i class="fa fa-dollar"></i> {{_("Finance")}}
+        </a>
+    </div>
+</div>
