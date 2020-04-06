@@ -15,12 +15,10 @@ def get_context(context):
             _("You need to be logged in to access this page"), frappe.PermissionError)
 
     context.show_sidebar = False
-    context.status = 'cancelled'
+    context.status = 'waiting'
 
-    context.parents = [
-        {"name": frappe._("Home"), "route": "/"}
-    ]
+    # context.parents = [
+    #     {"name": frappe._("Home"), "route": "/"}
+    # ]
 
     return context
-
-    # {name: frappe._('Client Dashboard'), route: '/client-dashboard'}
