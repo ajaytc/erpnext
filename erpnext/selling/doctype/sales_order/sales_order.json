@@ -12,6 +12,7 @@
   "column_break0",
   "title",
   "naming_series",
+  "internal_ref",
   "customer",
   "customer_name",
   "order_type",
@@ -21,6 +22,7 @@
   "company",
   "transaction_date",
   "delivery_date",
+  "garment_label",
   "po_no",
   "po_date",
   "tax_id",
@@ -486,6 +488,7 @@
   },
   {
    "allow_bulk_edit": 1,
+   "columns": 6,
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
@@ -1190,13 +1193,25 @@
    "hidden": 1,
    "label": "Skip Delivery Note",
    "print_hide": 1
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "label": "Internal Ref",
+   "reqd": 1
+  },
+  {
+   "fieldname": "garment_label",
+   "fieldtype": "Link",
+   "label": "Garment Label",
+   "options": "Garment Label"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2019-12-30 19:15:28.605085",
+ "modified": "2020-04-06 14:15:45.344665",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",

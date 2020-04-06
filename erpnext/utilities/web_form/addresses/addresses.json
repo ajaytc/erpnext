@@ -16,7 +16,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2019-10-15 06:55:30.405119",
+ "modified": "2020-04-06 16:58:27.599056",
  "modified_by": "Administrator",
  "module": "Utilities",
  "name": "addresses",
@@ -29,7 +29,7 @@
  "show_sidebar": 0,
  "sidebar_items": [],
  "success_url": "/addresses",
- "title": "Address",
+ "title": "Address Old",
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,

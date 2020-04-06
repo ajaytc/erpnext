@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "creation": "2020-04-06 13:43:10.074057",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "destination_name",
+  "column_break_3",
+  "client_name",
+  "section_break_5",
+  "destination_address",
+  "address_line_1",
+  "address_line_2",
+  "city_town",
+  "country",
+  "postal_code",
+  "column_break_12",
+  "email_address",
+  "phone"
+ ],
+ "fields": [
+  {
+   "fieldname": "destination_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Destination Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "client_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Client",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "destination_address",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break",
+   "label": "Address"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Text",
+   "label": "Address Line 1",
+   "read_only": 1
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Text",
+   "label": "Address Line 2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "city_town",
+   "fieldtype": "Text",
+   "label": "City/Town",
+   "read_only": 1
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Text",
+   "label": "Country",
+   "read_only": 1
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Text",
+   "label": "Postal Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Text",
+   "label": "Email Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Text",
+   "label": "Phone",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-06 16:52:23.415958",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Destination",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
