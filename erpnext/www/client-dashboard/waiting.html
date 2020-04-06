@@ -1,7 +1,6 @@
 {% set status='waiting' %}
 {% include "erpnext/www/client-dashboard/nav.html" %}
 
-
 <table class="table table-striped">
     <thead>
         <tr>
@@ -17,10 +16,10 @@
         {% for o in orders %}
         <tr>
             <th></th>
-            <th>{{o.name}}</th>
-            <th></th>
-            <th></th>
-            <th>{{o.creation}}</th>
+            <th>{{o[0]}}</th>
+            <th>{{o[2]}}</th>
+            <th>{{o[3]}}</th>
+            <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
             <th></th>
         </tr>
         {% endfor %}
