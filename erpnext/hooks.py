@@ -542,6 +542,6 @@ website_user_home_page = '/'
 
 role_home_page = {
     "Customer": "/client-dashboard",
-	"Brand User": "/brand-home",
+	"Brand User": "/brand-dashboard",
 	"Administrator": "/desk"
 }

@@ -14,7 +14,7 @@ def get_context(context):
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
 
-    context.show_sidebar = False
+    context.show_sidebar = True
     context.status = 'waiting'
 
     # context.parents = [
