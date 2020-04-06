@@ -2,4 +2,27 @@
 {% include "erpnext/www/client-dashboard/nav.html" %}
 
 
-cancelled
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">{{_("INTERNAL REF")}}</th>
+            <th scope="col">{{_("ORDER NUMBER")}}</th>
+            <th scope="col">{{_("PRODUCT NAME")}}</th>
+            <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
+            <th scope="col">{{_("ORDER DATE")}}</th>
+            <th scope="col">{{_("DESTINATION")}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for o in orders %}
+        <tr>
+            <th></th>
+            <th>{{o.name}}</th>
+            <th></th>
+            <th></th>
+            <th>{{o.creation}}</th>
+            <th></th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
