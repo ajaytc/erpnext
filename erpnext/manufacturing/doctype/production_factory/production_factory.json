@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "creation": "2020-04-07 17:47:45.176755",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "factory_name",
+  "column_break_1",
+  "manufacturer",
+  "address_and_contact",
+  "factory_address",
+  "address_line_1",
+  "address_line_2",
+  "city_town",
+  "country",
+  "postal_code",
+  "column_break_12",
+  "email_address",
+  "phone"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "factory_name",
+   "fieldtype": "Data",
+   "label": "Factory Name"
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "manufacturer",
+   "fieldtype": "Link",
+   "label": "Manufacturer",
+   "options": "Manufacturer"
+  },
+  {
+   "fieldname": "address_and_contact",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "factory_address",
+   "fieldtype": "Link",
+   "label": "Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Text",
+   "label": "Address Line",
+   "read_only": 1
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Text",
+   "label": "Address Line 2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "city_town",
+   "fieldtype": "Text",
+   "label": "City/Town",
+   "read_only": 1
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Text",
+   "label": "Country",
+   "read_only": 1
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Text",
+   "label": "Postal Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Text",
+   "label": "Email Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Text",
+   "label": "Phone",
+   "read_only": 1
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-07 17:47:45.176755",
+ "modified_by": "Administrator",
+ "module": "Manufacturing",
+ "name": "Production Factory",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
