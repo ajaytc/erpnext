@@ -1,12 +1,16 @@
 <h2>Client Purchase</h2>
 
 
-{% macro dropdown(placeholder,items) %}
+{% macro dropdown(placeholder,items,class) %}
 <div class="form-group">
-    <label for="exampleFormControlSelect1">{{placeholder}}</label>
-    <select class="form-control" id="exampleFormControlSelect1">
+    <label for="exampleFormControlSelect1">{{_(placeholder)}}</label>
+    <select class="form-control {{class}}" id="exampleFormControlSelect1">
         {% for i in items %}
+        {% if i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% else %}
         <option value="{{i}}">{{i}}</option>
+        {% endif %}
         {% endfor %}
     </select>
 </div>
@@ -34,8 +38,7 @@
 
         <div class="card mr-3" style="width:15rem">
             <div class="card-body">
-                {{_("Garment Label")}}
-                {{dropdown('Select product',['12323','44224'])}}
+                {{dropdown('Garment Label',garmentlabel)}}
             </div>
         </div>
     </div>
@@ -46,22 +49,20 @@
             67899,00
         </div>
         <div class="row">
-            <button class="btn btn-primary">{{_("Cancel")}}</button>
-            <button class="btn btn-primary">{{_("Validate")}}</button>
+            <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
+            <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
         </div>
     </div>
 
-    <div id="box1" class="row card mt-3" style="width:90%">
+    {# product table #}
+    <div id="box1" class="row card mt-3 product-table" style="width:90%">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    {{_("Product name")}}
-
-                    {{dropdown('Select product',['12323','44224'])}}
+                    {{dropdown('Product name',products,'selected-product')}}
                 </div>
                 <div class="col-md-4">
-                    {{_("Destination")}}
-                    {{dropdown('Select product',['12323','44224'])}}
+                    {{dropdown('Destination',['12323','44224'],'destination')}}
                 </div>
                 <img class="close" src="/assets/erpnext/images/delete.svg" alt="" style="">
             </div>
@@ -77,13 +78,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="qty">
                             <th scope="row">{{_("Quantity")}}</th>
                             {% for s in sizes %}
                             <td><input type="text" class="form-control"></td>
                             {% endfor %}
                         </tr>
-                        <tr>
+                        <tr class="modified-qty">
                             <th scope="row">{{_("Modified quantity")}}</th>
                             {% for s in sizes %}
                             <td><input type="text" class="form-control"></td>
