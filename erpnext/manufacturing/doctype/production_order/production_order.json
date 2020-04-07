@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "creation": "2020-04-07 18:37:27.027667",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_1",
+  "product_category",
+  "internal_ref",
+  "product_name",
+  "section_break_2",
+  "fabric",
+  "fabric_status",
+  "production_factory",
+  "trimming",
+  "packaging",
+  "section_break_3",
+  "comment"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Product"
+  },
+  {
+   "fieldname": "product_category",
+   "fieldtype": "Link",
+   "label": "Product Category",
+   "options": "Item Group"
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "label": "Internal Ref"
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Link",
+   "label": "Product Name",
+   "options": "Item"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Raw Material"
+  },
+  {
+   "fieldname": "fabric",
+   "fieldtype": "Link",
+   "label": "Fabric",
+   "options": "Fabric"
+  },
+  {
+   "fieldname": "fabric_status",
+   "fieldtype": "Data",
+   "label": "Fabric Status"
+  },
+  {
+   "fieldname": "production_factory",
+   "fieldtype": "Link",
+   "label": "Production Factory",
+   "options": "Production Factory"
+  },
+  {
+   "fieldname": "trimming",
+   "fieldtype": "Link",
+   "label": "Trimming",
+   "options": "Trimming Item"
+  },
+  {
+   "fieldname": "packaging",
+   "fieldtype": "Link",
+   "label": "Packaging",
+   "options": "Packaging Item"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Comments"
+  },
+  {
+   "fieldname": "comment",
+   "fieldtype": "Small Text",
+   "label": "Comment"
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-07 18:37:27.027667",
+ "modified_by": "Administrator",
+ "module": "Manufacturing",
+ "name": "Production Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
