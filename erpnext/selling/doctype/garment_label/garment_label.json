@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "field:label_name",
+ "autoname": "format:{customer}-{label_name}",
  "creation": "2020-04-06 00:40:40.153183",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -11,9 +11,7 @@
   "column_break_3",
   "label",
   "section_break_5",
-  "customer",
-  "column_break_7",
-  "brand_name"
+  "customer"
  ],
  "fields": [
   {
@@ -47,21 +45,12 @@
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "column_break_7",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "brand_name",
-   "fieldtype": "Link",
-   "label": "Brand",
-   "options": "Company"
+   "options": "Customer",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-04-06 00:40:40.153183",
+ "modified": "2020-04-07 14:33:24.721262",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Garment Label",
