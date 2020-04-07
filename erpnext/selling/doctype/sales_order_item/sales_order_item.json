@@ -15,33 +15,8 @@
   "delivery_date",
   "item_name",
   "transaction_date",
+  "section_qps",
   "quantity_per_size",
-  "size_1",
-  "quantity_1",
-  "col_brk_1",
-  "size_2",
-  "quantity_2",
-  "col_brk_2",
-  "size_3",
-  "quantity_3",
-  "col_brk_3",
-  "size_4",
-  "quantity_4",
-  "col_brk_4",
-  "size_5",
-  "quantity_5",
-  "col_brk_5",
-  "size_6",
-  "quantity_6",
-  "col_brk_6",
-  "size_7",
-  "quantity_7",
-  "col_brk_7",
-  "size_8",
-  "quantity_8",
-  "col_brk_8",
-  "size_9",
-  "quantity_9",
   "item_group",
   "brand",
   "image_section",
@@ -777,125 +752,26 @@
   },
   {
    "fieldname": "quantity_per_size",
-   "fieldtype": "Section Break",
-   "label": "QUANTITY PER SIZE"
-  },
-  {
-   "fieldname": "size_1",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_1",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_2",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_3",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_4",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_4",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_5",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_5",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_6",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_6",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_7",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_7",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_8",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "col_brk_8",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "size_9",
-   "fieldtype": "Read Only"
-  },
-  {
-   "fieldname": "quantity_1",
-   "fieldtype": "Int",
-   "label": "Quantity"
-  },
-  {
-   "fieldname": "quantity_2",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_3",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_4",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_5",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_6",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_7",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_8",
-   "fieldtype": "Int"
-  },
-  {
-   "fieldname": "quantity_9",
-   "fieldtype": "Int"
+   "fieldtype": "Table",
+   "label": "Quantity Per Size",
+   "options": "Quantity Per Size"
   },
   {
    "fieldname": "item_destination",
    "fieldtype": "Link",
    "label": "Destination",
    "options": "Destination"
+  },
+  {
+   "fieldname": "section_qps",
+   "fieldtype": "Section Break",
+   "label": "QUANTITY PER SIZE"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-04-06 13:52:14.969379",
+ "modified": "2020-04-08 00:06:37.678418",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",
