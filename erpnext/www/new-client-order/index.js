@@ -4,7 +4,7 @@ $('#addtable').click(() => {
     $('#box1').clone().appendTo('#container')
     tablecount++
     $('.selected-product').change(productUpdateCallback)
-
+    setClose()
 })
 
 $('.close').click(e => console.log($(e.target).parent()))
@@ -68,3 +68,14 @@ $('#validate').click(() => {
 
     console.log($('.table-section'))
 })
+
+const setClose = () => {
+    $('.close').click(e => {
+        if (tablecount > 1) {
+            $(e.target).parent().parent().parent().remove()
+            tablecount--
+        }
+    })
+}
+
+setClose()
