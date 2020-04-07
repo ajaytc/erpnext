@@ -1,24 +1,118 @@
 <h2>Client Purchase</h2>
 
-<div class="container mt-3">
+
+{% macro dropdown(placeholder,items) %}
+<div class="form-group">
+    <label for="exampleFormControlSelect1">{{placeholder}}</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+        {% for i in items %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+<div id="container" class="container mt-3">
     <div class="row">
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
-                Date
+                {{_("Date")}}
             </div>
         </div>
 
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
-                Order Number
+                {{_("Order Number")}}
             </div>
         </div>
 
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
-                Internal ref
+                {{_("Internal ref")}}
             </div>
         </div>
 
+        <div class="card mr-3" style="width:15rem">
+            <div class="card-body">
+                {{_("Garment Label")}}
+                {{dropdown('Select product',['12323','44224'])}}
+            </div>
+        </div>
     </div>
+
+    <div class="card mt-3" style="width: 15rem;">
+        <div class="row">
+            {{_("Total order")}}
+            67899,00
+        </div>
+        <div class="row">
+            <button class="btn btn-primary">{{_("Cancel")}}</button>
+            <button class="btn btn-primary">{{_("Validate")}}</button>
+        </div>
+    </div>
+
+    <div id="box1" class="row card mt-3" style="width:90%">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    {{_("Product name")}}
+
+                    {{dropdown('Select product',['12323','44224'])}}
+                </div>
+                <div class="col-md-4">
+                    {{_("Destination")}}
+                    {{dropdown('Select product',['12323','44224'])}}
+                </div>
+                <img class="close" src="/assets/erpnext/images/delete.svg" alt="" style="">
+            </div>
+
+            <div class="row mt-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">{{_("Sizing")}}</th>
+                            {% for s in sizes %}
+                            <th scope="col">{{s.size}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{_("Quantity")}}</th>
+                            {% for s in sizes %}
+                            <td><input type="text" class="form-control"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th scope="row">{{_("Modified quantity")}}</th>
+                            {% for s in sizes %}
+                            <td><input type="text" class="form-control"></td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">{{_("Total order")}}</th>
+                            <th scope="col">{{_("Price/Pcs")}}</th>
+                            <th scope="col">{{_("Total Price")}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>12113,00</td>
+                            <td>12113,00</td>
+                            <td>12113,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
+<a id="addtable" style="font-weight: bold;color: #3B3DBF;">Add order table + </a>
