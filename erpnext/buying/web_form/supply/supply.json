@@ -8,7 +8,7 @@
  "allow_print": 0,
  "amount": 0.0,
  "amount_based_on_field": 0,
- "breadcrumbs": "[{\"label\":_(\"Home\"), \"route\":\"brand-home\"},\n{\"label\":_(\"Home\"), \"route\":\"supply\"},\n{\"label\":_(\"Suppliers\"), \"route\":\"supplier\"}]",
+ "breadcrumbs": "[{\"label\":_(\"Home\"), \"route\":\"brand-dashboard\"},\n{\"label\":_(\"Home\"), \"route\":\"supply\"},\n{\"label\":_(\"Suppliers\"), \"route\":\"supplier\"}]",
  "button_label": "Save",
  "creation": "2020-04-02 21:50:30.024945",
  "currency": "INR",
