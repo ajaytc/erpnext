@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "format:{destination_name}-{client_name}",
  "creation": "2020-04-06 13:43:10.074057",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -104,7 +105,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-06 16:52:23.415958",
+ "modified": "2020-04-07 15:05:22.175829",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Destination",
