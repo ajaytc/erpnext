@@ -1,0 +1,15 @@
+{% if status=='onprocess' %}
+
+{% include 'erpnext/www/prototype-dashboard/onprocess.html' %}
+
+{% elif status=='validate' %}
+
+{% include 'erpnext/www/prototype-dashboard/validate.html' %}
+
+{% elif status=='notvalidate' %}
+
+{% include 'erpnext/www/prototype-dashboard/not-validate.html' %}
+
+{% endif %}
+
+{% include "erpnext/www/imports.html" %}
