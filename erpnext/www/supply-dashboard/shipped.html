@@ -1,0 +1,35 @@
+{% set status='shipped' %}
+{% include "erpnext/www/supply-dashboard/nav.html" %}
+
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{_("INTERNAL REF")}}</th>
+                <th scope="col">{{_("ORDER NUMBER")}}</th>
+                <th scope="col">{{_("PRODUCT NAME")}}</th>
+                <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
+                <th scope="col">{{_("ORDER DATE")}}</th>
+                <th scope="col">{{_("EX WORK DATE")}}</th>
+                <th scope="col">{{_("SHIPMENT")}}</th>
+                <th scope="col">{{_("INVOICE")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+            <tr>
+                <th></th>
+                <th>{{o[0]}}</th>
+                <th>{{o[2]}}</th>
+                <th>{{o[3]}}</th>
+                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include "erpnext/www/imports.html" %}

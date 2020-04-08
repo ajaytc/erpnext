@@ -1,0 +1,25 @@
+<button type="button" class="btn btn-primary"
+    onclick="window.location.href='/me'">{{_("Account")}}</button>
+<button type="button" class="btn btn-primary"
+    onclick="window.location.href='/me'">{{_("Support")}}</button>
+
+
+
+<ul class="nav nav-tabs mt-2">
+    <li class="nav-item">
+        <a class="nav-link {% if status=='waiting' %}active{% endif %}"
+            href="/supply-dashboard/waiting">{{_("Waiting for Validation")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='onprocess' %}active{% endif %}"
+            href="/supply-dashboard/onprocess">{{_("On Process")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='shipped' %}active{% endif %}"
+            href="/supply-dashboard/shipped">{{_("Shipped")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if status=='cancelled' %}active{% endif %}"
+            href="/supply-dashboard/cancelled">{{_("Cancelled")}}</a>
+    </li>
+</ul>
