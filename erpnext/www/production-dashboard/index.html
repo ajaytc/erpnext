@@ -1,0 +1,33 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#ppop" role="tab" aria-controls="home"
+            aria-selected="false">{{_("Pre-Production On Process")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ppf" role="tab" aria-controls="profile"
+            aria-selected="true">{{_("Pre-Production Finished")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pop" role="tab" aria-controls="contact"
+            aria-selected="false">{{_("Production On Process")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pf" role="tab" aria-controls="contact"
+            aria-selected="true">{{_("Production Finished")}}</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="ppop" role="tabpanel" aria-labelledby="ppop-tab">
+        {% include 'erpnext/www/production-dashboard/ppop.html' %}
+    </div>
+    <div class="tab-pane fade" id="ppf" role="ppf" aria-labelledby="profile-tab">
+        {% include 'erpnext/www/production-dashboard/ppf.html' %}</div>
+    <div class="tab-pane fade" id="pop" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/production-dashboard/pop.html' %}
+    </div>
+    <div class="tab-pane fade" id="pf" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/production-dashboard/pf.html' %}
+    </div>
+</div>
+
+{% include "erpnext/www/imports.html" %}
