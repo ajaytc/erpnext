@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "format:{parent_item_group} - {item_group_name}",
+ "autoname": "format:{item_group_name} - {brand_name}",
  "creation": "2013-03-28 10:35:29",
  "description": "Item Classification",
  "doctype": "DocType",
@@ -44,8 +44,7 @@
    "label": "Item Group Name",
    "oldfieldname": "item_group_name",
    "oldfieldtype": "Data",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "bold": 1,
@@ -117,8 +116,7 @@
    "depends_on": "show_in_website",
    "fieldname": "route",
    "fieldtype": "Data",
-   "label": "Route",
-   "unique": 1
+   "label": "Route"
   },
   {
    "fieldname": "weightage",
@@ -186,7 +184,8 @@
    "fieldname": "brand_name",
    "fieldtype": "Link",
    "label": "Brand",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-sitemap",
@@ -194,7 +193,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 3,
- "modified": "2020-04-08 17:09:09.723375",
+ "modified": "2020-04-08 21:07:09.577906",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Item Group",
