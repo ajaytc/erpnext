@@ -62,13 +62,6 @@ function generateSizingTable(sizes) {
 
 const cleartable = () => $('.table-section').html('')
 
-
-$('#validate').click(() => {
-    let p1 = $('.selected-product')[0]
-
-    console.log($('.table-section'))
-})
-
 const setClose = () => {
     $('.close').click(e => {
         if (tablecount > 1) {
@@ -79,3 +72,9 @@ const setClose = () => {
 }
 
 setClose()
+
+
+$('#validate').click(() => {
+    let products = $('.table-section')
+    console.log(products)
+})
