@@ -1,0 +1,52 @@
+{
+ "actions": [],
+ "creation": "2020-04-07 23:49:45.403502",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "order_id",
+  "product_id",
+  "size",
+  "quantity",
+  "modified_quantity"
+ ],
+ "fields": [
+  {
+   "fieldname": "order_id",
+   "fieldtype": "Date",
+   "label": "Order Id"
+  },
+  {
+   "fieldname": "product_id",
+   "fieldtype": "Data",
+   "label": "Product Id"
+  },
+  {
+   "fieldname": "size",
+   "fieldtype": "Data",
+   "label": "Size"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Data",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "modified_quantity",
+   "fieldtype": "Data",
+   "label": "Modified Quantity"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2020-04-08 00:10:46.819934",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Quantity Per Size",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
