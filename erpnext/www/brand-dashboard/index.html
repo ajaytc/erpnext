@@ -1,5 +1,160 @@
 <div class="row">
-    {% include 'erpnext/www/brand-dashboard/sidenav.html' %}
+    {# {% include 'erpnext/www/brand-dashboard/sidenav.html' %} #}
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <h2>Hello, {{username}}</h2>
+    <div class="page-with-sidebar">
+        <div class="sidebar">
+            <div class="list-group">
+
+                <a href="#" class="list-group-item active">
+                    <i class="fa fa-user"></i> Client
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-file"></i> Supply
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-file"></i> Pre-production
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-cog"></i> Production
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-truck"></i> Shipment
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-archive"></i> Stock
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-align-justify"></i> Invoice Packing List
+                </a>
+                <a href="#" class="list-group-item ">
+                    <i class="fa fa-dollar"></i> Finance
+                </a>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-expand">
+
+                <ul class="breadcrumbs">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">Sub page</a></li>
+                </ul>
+                <h1>
+                    Hello, {{frappe.user}}
+                </h1>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="mt-0">Reminders</h2>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xl">
+                        <div class="data-box orange">
+                            <img src="/assets/erpnext/images/mesh.png" alt="">
+                            <h3>Fabric</h3>
+                            <span class="notification">
+                                34
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xl">
+                        <div class="data-box blue">
+                            <img src="/assets/erpnext/images/mesh.png" alt="">
+                            <h3>Fabric</h3>
+                            <span class="notification">
+                                34
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xl">
+                        <div class="data-box red">
+                            <img src="/assets/erpnext/images/mesh.png" alt="">
+                            <h3>Fabric</h3>
+                            <span class="notification">
+                                34
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xl">
+                        <div class="data-box green">
+                            <img src="/assets/erpnext/images/mesh.png" alt="">
+                            <h3>Fabric</h3>
+                            <span class="notification">
+                                34
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 col-xl">
+                        <div class="data-box purple">
+                            <img src="/assets/erpnext/images/mesh.png" alt="">
+                            <h3>Fabric</h3>
+                            <span class="notification">
+                                34
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2>Shipping statuts</h2>
+                        <div class="table-wrapper">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">INTERNAL REF</th>
+                                        <th scope="col">ORDER NUMBER</th>
+                                        <th scope="col">PRODUCT NAME</th>
+                                        <th scope="col">PRODUCT CATEGORY</th>
+                                        <th scope="col">ORDER DATE</th>
+                                        <th scope="col">DESTINATION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>SAL-ORD-2020-00001</td>
+                                        <td>T Shirt 1_2</td>
+                                        <td>Brand 1 Products</td>
+                                        <td>25-03-2020</td>
+                                        <td><span class="badge active">Delivered</span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>SAL-ORD-2020-00002</td>
+                                        <td>Shirt 1_1</td>
+                                        <td>Brand 1 Products</td>
+                                        <td>30-03-2020</td>
+                                        <td><span class="badge">Delivered</span></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>SAL-ORD-2020-00002</td>
+                                        <td>Shirt 1_1</td>
+                                        <td>Brand 1 Products</td>
+                                        <td>30-03-2020</td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td>SAL-ORD-2020-00002</td>
+                                        <td>Shirt 1_1</td>
+                                        <td>Brand 1 Products</td>
+                                        <td>30-03-2020</td>
+                                        <td></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -77,4 +77,6 @@ setClose()
 $('#validate').click(() => {
     let products = $('.table-section')
     console.log(products)
+    so = frappe.new_doc('Sales Order')
+    console.log(so.insert())
 })
