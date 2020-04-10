@@ -1,0 +1,27 @@
+
+
+<button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+    <i class="fas fa-plus"></i>
+    New Shipping Order
+</button>
+
+<ul class="nav nav-tabs mt-5 nav-fill" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#active" role="tab" aria-controls="home"
+            aria-selected="true">{{_("Active")}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#completed" role="tab" aria-controls="profile"
+            aria-selected="false">{{_("Completed")}}</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+        {% include 'erpnext/www/shipping-list/active.html' %}
+    </div>
+    <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+        {% include 'erpnext/www/shipping-list/completed.html' %}
+    </div>
+</div>
+
+{% include "erpnext/www/imports.html" %}

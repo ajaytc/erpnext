@@ -1,0 +1,24 @@
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{_("Internal Ref")}}</th>
+                <th scope="col">{{_("Product Name")}}</th>
+                <th scope="col">{{_("Order Date")}}</th>
+                <th scope="col">{{_("Delivered Date")}}</th>
+                <th scope="col">{{_("Shipment")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in completed %}
+            <tr>
+                <th>{{o[0]}}</th>
+                <th>{{o[1]}}</th>
+                <th>{{frappe.format(o[2], {'fieldtype': 'Date'})}}</th>
+                <th>{{frappe.format(o[3], {'fieldtype': 'Date'})}}</th>
+                <th>{{o[4]}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
