@@ -1,9 +1,24 @@
 <h2>{{_("Validation Page")}}</h2>
 
+{% macro dropdown(placeholder,items,class,id) %}
+<div class="form-group">
+    <label for="{{id}}">{{_(placeholder)}}</label>
+    <select class="form-control {{class}}" id="{{id}}">
+        {% for i in items %}
+        {% if i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
 <div class="table-wrapper">
      <div class="row">
          <div class="col-md-4">
-             {{dropdown('Item',['test1','test2'],'item')}}
+             {{dropdown('Item',['00003','00005'],'item','product')}}
          </div>
      </div>
     <table class="table table-striped">

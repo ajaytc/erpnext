@@ -4,7 +4,8 @@ $(document).ready(function () {
     })
 })
 
-const productUpdateCallback = (e) => {
+const fetchSizesCallback = (e) => {
+    console.log('.....')
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     product = $(e.target).find("option:selected").text()
     frappe.call({
@@ -14,6 +15,7 @@ const productUpdateCallback = (e) => {
         },
         callback: function (r) {
             if (!r.exc) {
+                console.log(r.message.quantities)
                 let table = generateQuantityTable(r.message.quantities)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
@@ -21,6 +23,8 @@ const productUpdateCallback = (e) => {
         }
     });
 }
+
+$('#product').change(fetchSizesCallback)
 
 function generateQuantityTable(quantities) {
 
