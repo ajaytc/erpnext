@@ -1,7 +1,7 @@
 var tablecount = 1;
 
 $('#addtable').click(() => {
-    $('#box1').clone().appendTo('#container')
+    $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
     $('.selected-product').change(productUpdateCallback)
     setClose()
@@ -41,14 +41,14 @@ function generateSizingTable(sizes) {
     return `
             <table class="table table-bordered">
                 <thead>
-                    <tr>
+                    <tr class="sizing">
                         <th scope="col">{{_("Sizing")}}</th>
                         ${heads}
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="qty">
-                        <th scope="row">{{_("Quantity")}}</th>
+                        <th class="qty" scope="row">{{_("Quantity")}}</th>
                         ${inputs}
                     </tr>
                     <tr class="modified-qty">
@@ -74,26 +74,43 @@ const setClose = () => {
 setClose()
 
 
-$('#validate').click(() => {
-    let products = $('.table-section')
-    console.log(products)
 
-    
-    // frappe.call({
-    //     method: 'erpnext.modehero.sales_order.create_sales_order',
-    //     args: {
-    //         args: {}
-    //     },
-    //     callback: function (r) {
-    //         if (!r.exc) {
-    //             console.log(r)
-    //             frappe.msgprint({
-    //                 title: __('Notification'),
-    //                 indicator: 'green',
-    //                 message: __('Sales order created successfully')
-    //             });
-    //         }
-    //     }
-    // })
+$('#validate').click(() => {
+    let products = []
+    let garmentlabel = $('#garmentlabel>option:selected').text()
+    $('.product-table').map(function () {
+        let product = $($(this).find('.selected-product')[0]).find('option:selected').text()
+        let destination = $($(this).find('.destination')[0]).find('option:selected').text()
+
+        let qtys = []
+        $(this).find('.qty>td>input').map(function () {
+            qtys.push($(this).val())
+        })
+
+        products.push({
+            item: product,
+            destination,
+            quantities: qtys
+        })
+    })
+
+    console.log(products, garmentlabel)
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.create_sales_order',
+        args: {
+            items: products,
+            garmentlabel
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'green',
+                    message: __('Sales order created successfully')
+                });
+            }
+        }
+    })
 
 })

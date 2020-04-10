@@ -7,7 +7,7 @@ no_cache = 1
 
 
 def get_context(context):
-    context.sizes = frappe.get_list("Sizing", fields=["size"])
+    context.sizes = frappe.get_list("Sizing", fields=["size"], order_by='idx')
     brand = frappe.get_doc("User", frappe.session.user).brand_name
     context.products = frappe.get_list("Item", filters={'brand': brand})
 
@@ -18,7 +18,7 @@ def get_context(context):
     # frappe.throw("No customers for user")
 
     context.destinations = frappe.get_list(
-        "Destination", filters={"client_name": client[0].name})
+        "Destination", filters={"client_name": client[0].name}, fields=["destination_name"])
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles

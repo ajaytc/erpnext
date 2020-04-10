@@ -1,7 +1,8 @@
 import frappe
 
+
 @frappe.whitelist()
-def create_sales_order(args):
+def create_sales_order(items):
     todo = frappe.get_doc(
         {"doctype": "Sales Order",
          "name": "3",

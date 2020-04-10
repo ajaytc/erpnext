@@ -1,13 +1,15 @@
 <h2>{{_("Client Purchase")}}</h2>
 
 
-{% macro dropdown(placeholder,items,class) %}
+{% macro dropdown(placeholder,items,class,id) %}
 <div class="form-group">
     <label for="exampleFormControlSelect1">{{_(placeholder)}}</label>
-    <select class="form-control {{class}}" id="exampleFormControlSelect1">
+    <select class="form-control {{class}}" id="{{id}}">
         {% for i in items %}
         {% if i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.destination_name %}
+        <option value="{{i.destination_name}}">{{i.destination_name}}</option>
         {% else %}
         <option value="{{i}}">{{i}}</option>
         {% endif %}
@@ -38,7 +40,7 @@
 
         <div class="card mr-3" style="width:15rem">
             <div class="card-body">
-                {{dropdown('Garment Label',garmentlabel)}}
+                {{dropdown('Garment Label',garmentlabel,'','garmentlabel')}}
             </div>
         </div>
     </div>
@@ -46,7 +48,7 @@
     <div class="card mt-3" style="width: 15rem;padding:1rem">
         <div class="">
             {{_("Total order")}}
-            <span id="total">67899,00</span>
+            <span id="total"></span>
         </div>
         <div class="">
             <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
@@ -55,14 +57,14 @@
     </div>
 
     {# product table #}
-    <div id="box1" class="row card mt-3 product-table" style="width:90%">
+    <div id="box0" class="row card mt-3 product-table" style="width:90%">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     {{dropdown('Product name',products,'selected-product')}}
                 </div>
                 <div class="col-md-4">
-                    {{dropdown('Destination',['12323','44224'],'destination')}}
+                    {{dropdown('Destination',destinations,'destination')}}
                 </div>
                 <img class="close" src="/assets/erpnext/images/delete.svg" alt="" style="">
             </div>
@@ -70,7 +72,7 @@
             <div class="row mt-3 table-section">
                 <table class="table table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="sizing">
                             <th scope="col">{{_("Sizing")}}</th>
                             {% for s in sizes %}
                             <th scope="col">{{s.size}}</th>
@@ -105,9 +107,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>12113,00</td>
-                            <td>12113,00</td>
-                            <td>12113,00</td>
+                            <td class="total-order"></td>
+                            <td class="price-pp"></td>
+                            <td class="total-price"></td>
                         </tr>
                     </tbody>
                 </table>
