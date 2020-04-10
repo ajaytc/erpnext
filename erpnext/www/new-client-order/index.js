@@ -77,6 +77,23 @@ setClose()
 $('#validate').click(() => {
     let products = $('.table-section')
     console.log(products)
-    so = frappe.new_doc('Sales Order')
-    console.log(so.insert())
+
+    
+    // frappe.call({
+    //     method: 'erpnext.modehero.sales_order.create_sales_order',
+    //     args: {
+    //         args: {}
+    //     },
+    //     callback: function (r) {
+    //         if (!r.exc) {
+    //             console.log(r)
+    //             frappe.msgprint({
+    //                 title: __('Notification'),
+    //                 indicator: 'green',
+    //                 message: __('Sales order created successfully')
+    //             });
+    //         }
+    //     }
+    // })
+
 })

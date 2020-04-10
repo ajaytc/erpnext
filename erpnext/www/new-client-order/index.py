@@ -13,6 +13,13 @@ def get_context(context):
 
     context.garmentlabel = frappe.get_list("Garment Label")
 
+    client = frappe.get_list("Customer", filters={"user": frappe.session.user})
+    # if(True or len(client) == 0):
+    # frappe.throw("No customers for user")
+
+    context.destinations = frappe.get_list(
+        "Destination", filters={"client_name": client[0].name})
+
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles

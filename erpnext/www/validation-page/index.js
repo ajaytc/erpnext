@@ -8,6 +8,7 @@ const fetchSizesCallback = (e) => {
     console.log('.....')
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     product = $(e.target).find("option:selected").text()
+
     frappe.call({
         method: 'erpnext.modehero.quantity_per_size.getQuantities',
         args: {
@@ -16,9 +17,9 @@ const fetchSizesCallback = (e) => {
         callback: function (r) {
             if (!r.exc) {
                 console.log(r.message.quantities)
-                let table = generateQuantityTable(r.message.quantities)
-                // console.log(table)
-                $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
+                let table = generateQuantityTables(r.message.quantities)
+                console.log(table)
+                $('#tables').html(table)
             }
         }
     });
@@ -26,21 +27,29 @@ const fetchSizesCallback = (e) => {
 
 $('#product').change(fetchSizesCallback)
 
-function generateQuantityTable(quantities) {
+function generateQuantityTables(quantities) {
 
-    let heads = '', inputs = ''
+    let tables = ''
 
-    sizes.map(s => {
-        heads += `<th scope="col">${s}</th>`
-        inputs += `<td><input type="text" class="form-control"></td>`
-    })
+    for (let i in quantities) {
+        let heads = '', inputs = ''
+        quantities[i].map(j => {
+            console.log(j)
+            heads += `<th scope="col">${j[2]}</th>`
+            inputs += `<td><input type="text" class="form-control"></td>`
+        })
+        tables += generateTable(heads, inputs, i)
+    }
+    return tables
+}
 
-    return `
+function generateTable(heads, inputs, order) {
+    return `${order}
             <table class="table table-bordered">
                 <tbody>
                     <tr class="qty">
                         <th scope="row">{{_("Quantity")}}</th>
-                        ${inputs}
+                        ${heads}
                     </tr>
                     <tr class="modified-qty">
                         <th scope="row">{{_("Modified quantity")}}</th>
@@ -50,4 +59,3 @@ function generateQuantityTable(quantities) {
             </table>
     `
 }
-

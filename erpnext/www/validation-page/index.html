@@ -16,35 +16,10 @@
 {% endmacro %}
 
 <div class="table-wrapper">
-     <div class="row">
-         <div class="col-md-4">
-             {{dropdown('Item',['00003','00005'],'item','product')}}
-         </div>
-     </div>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">{{_("Customer")}}</th>
-                <th scope="col">{{_("Size A")}}</th>
-                <th scope="col">{{_("Size B")}}</th>
-                <th scope="col">{{_("Size C")}}</th>
-                <th scope="col">{{_("Size D")}}</th>
-                <th scope="col">{{_("Size E")}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for o in shipped %}
-            <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-4">
+            {{dropdown('Item',[_("select item"),'00003','00005'],'item','product')}}
+        </div>
+    </div>
+    <div id="tables"></div>
 </div>

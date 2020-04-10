@@ -33,30 +33,31 @@ class SalesOrder(SellingController):
 		super(SalesOrder, self).__init__(*args, **kwargs)
 
 	def validate(self):
-		super(SalesOrder, self).validate()
-		self.validate_delivery_date()
-		self.validate_proj_cust()
-		self.validate_po()
-		self.validate_uom_is_integer("stock_uom", "stock_qty")
-		self.validate_uom_is_integer("uom", "qty")
-		self.validate_for_items()
-		self.validate_warehouse()
-		self.validate_drop_ship()
-		self.validate_serial_no_based_delivery()
-		validate_inter_company_party(self.doctype, self.customer, self.company, self.inter_company_order_reference)
+		# super(SalesOrder, self).validate()
+		# self.validate_delivery_date()
+		# self.validate_proj_cust()
+		# self.validate_po()
+		# self.validate_uom_is_integer("stock_uom", "stock_qty")
+		# self.validate_uom_is_integer("uom", "qty")
+		# self.validate_for_items()
+		# self.validate_warehouse()
+		# self.validate_drop_ship()
+		# self.validate_serial_no_based_delivery()
+		# validate_inter_company_party(self.doctype, self.customer, self.company, self.inter_company_order_reference)
 
-		if self.coupon_code:
-			from erpnext.accounts.doctype.pricing_rule.utils import validate_coupon_code
-			validate_coupon_code(self.coupon_code)
+		# if self.coupon_code:
+		# 	from erpnext.accounts.doctype.pricing_rule.utils import validate_coupon_code
+		# 	validate_coupon_code(self.coupon_code)
 
-		from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
-		make_packing_list(self)
+		# from erpnext.stock.doctype.packed_item.packed_item import make_packing_list
+		# make_packing_list(self)
 
-		self.validate_with_previous_doc()
-		self.set_status()
+		# self.validate_with_previous_doc()
+		# self.set_status()
 
-		if not self.billing_status: self.billing_status = 'Not Billed'
-		if not self.delivery_status: self.delivery_status = 'Not Delivered'
+		# if not self.billing_status: self.billing_status = 'Not Billed'
+		# if not self.delivery_status: self.delivery_status = 'Not Delivered'
+		pass
 
 	def validate_po(self):
 		# validate p.o date v/s delivery date
