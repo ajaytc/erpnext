@@ -3,7 +3,7 @@ import json
 
 
 @frappe.whitelist()
-def create_sales_order(items):
+def create_sales_order(items, garmentlabel, internalref):
     prepared = []
     items = json.loads(items)
     for i in items:
@@ -21,11 +21,12 @@ def create_sales_order(items):
     order = frappe.get_doc(
         {"doctype": "Sales Order",
          #  "name": "3",
-         "internal_ref": "testing so",
+         "internal_ref": internalref,
          "customer": "Customer 1",
          "company": "Brand 1",
          "conversion_rate": 1,
          "plc_conversion_rate": 1,
+         "garment_label": garmentlabel,
          "items": prepared,
             "price_list_currency": "USD",
          })

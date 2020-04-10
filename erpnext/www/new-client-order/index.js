@@ -99,13 +99,15 @@ $('#validate').click(() => {
         method: 'erpnext.modehero.sales_order.create_sales_order',
         args: {
             items: products,
-            garmentlabel
+            garmentlabel,
+            internalref: $('#internal-ref').val()
         },
         callback: function (r) {
             if (!r.exc) {
                 console.log(r)
                 let order = r.message.order
                 if (order && order.name) {
+                    $('#order-no').html(order.name)
                     frappe.msgprint({
                         title: __('Notification'),
                         indicator: 'green',

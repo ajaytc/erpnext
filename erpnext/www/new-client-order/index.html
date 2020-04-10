@@ -1,9 +1,8 @@
 <h2>{{_("Client Purchase")}}</h2>
+{# this page is used for both new client purchase and client purchase summary page #}
 
-
-{% macro dropdown(placeholder,items,class,id) %}
+{% macro dropdown(items,class,id) %}
 <div class="form-group">
-    <label for="exampleFormControlSelect1">{{_(placeholder)}}</label>
     <select class="form-control {{class}}" id="{{id}}">
         {% for i in items %}
         {% if i.name %}
@@ -20,25 +19,45 @@
     <div class="row">
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
-                {{_("Date")}}
+                {{_("Date")}} <br />
+                <span>{% if date %}{{date}}{% endif %}
+                    {% if order %}
+                    {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
+                    {% endif %}
+                </span>
             </div>
         </div>
 
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
                 {{_("Order Number")}}
+                <span id="order-no">
+                    {% if order %}
+                    {{order.name}}
+                    {% endif %}
+                </span>
             </div>
         </div>
 
         <div class="card mr-3" style="width:10rem">
             <div class="card-body">
                 {{_("Internal ref")}}
+                {% if order %}
+                {{order.internal_ref}}
+                {% else %}
+                <input id="internal-ref" type="text" class="form-control mt-2">
+                {% endif %}
             </div>
         </div>
 
         <div class="card mr-3" style="width:15rem">
             <div class="card-body">
-                {{dropdown('Garment Label',garmentlabel,'','garmentlabel')}}
+                <label for="exampleFormControlSelect1">{{_("Garment Label")}}</label>
+                {% if order %}
+                {{order.garment_label}}
+                {% else %}
+                {{dropdown(garmentlabel,'','garmentlabel')}}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -55,14 +74,17 @@
     </div>
 
     {# product table #}
+    {% if not order %}
     <div id="box0" class="row card mt-3 product-table" style="width:90%">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    {{dropdown('Product name',products,'selected-product')}}
+                    <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                    {{dropdown(products,'selected-product')}}
                 </div>
                 <div class="col-md-4">
-                    {{dropdown('Destination',destinations,'destination')}}
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                    {{dropdown(destinations,'destination')}}
                 </div>
                 <img class="close" src="/assets/erpnext/images/delete.svg" alt="" style="">
             </div>
@@ -87,7 +109,7 @@
                         <tr class="modified-qty">
                             <th scope="row">{{_("Modified quantity")}}</th>
                             {% for s in sizes %}
-                            <td><input type="text" class="form-control"></td>
+                            <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
                             {% endfor %}
                         </tr>
                     </tbody>
@@ -114,6 +136,75 @@
             </div>
         </div>
     </div>
+    {% endif %}
+
+    {% if order %}
+    {% for o in order.items %}
+    <div id="box0" class="row card mt-3 product-table" style="width:90%">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                    <br />
+                    {{o.item_name}}
+                </div>
+                <div class="col-md-4">
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                    <br />
+                    {{o.item_destination}}
+                </div>
+                <img class="close" src="/assets/erpnext/images/delete.svg" alt="" style="">
+            </div>
+
+            <div class="row mt-3 table-section">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="sizing">
+                            <th scope="col">{{_("Sizing")}}</th>
+                            {% for s in sizes %}
+                            <th scope="col">{{s.size}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="qty">
+                            <th scope="row">{{_("Quantity")}}</th>
+                            {% for s in sizes %}
+                            <td><input type="text" class="form-control"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr class="modified-qty">
+                            <th scope="row">{{_("Modified quantity")}}</th>
+                            {% for s in sizes %}
+                            <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">{{_("Total order")}}</th>
+                            <th scope="col">{{_("Price/Pcs")}}</th>
+                            <th scope="col">{{_("Total Price")}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="total-order"></td>
+                            <td class="price-pp"></td>
+                            <td class="total-price"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
 
 </div>
 <a id="addtable" style="font-weight: bold;color: #3B3DBF;">Add order table + </a>
