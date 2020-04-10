@@ -8,8 +8,6 @@
         {% for i in items %}
         {% if i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
-        {% elif i.destination_name %}
-        <option value="{{i.destination_name}}">{{i.destination_name}}</option>
         {% else %}
         <option value="{{i}}">{{i}}</option>
         {% endif %}

@@ -18,7 +18,7 @@ def get_context(context):
     # frappe.throw("No customers for user")
 
     context.destinations = frappe.get_list(
-        "Destination", filters={"client_name": client[0].name}, fields=["destination_name"])
+        "Destination", filters={"client_name": client[0].name})
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles
