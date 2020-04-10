@@ -20,6 +20,7 @@
   "lead_name",
   "image",
   "column_break0",
+  "user",
   "account_manager",
   "customer_group",
   "territory",
@@ -465,13 +466,19 @@
    "fieldtype": "Table",
    "label": "Credit Limit",
    "options": "Customer Credit Limit"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
   }
  ],
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-01-29 20:36:37.879581",
+ "modified": "2020-04-10 12:29:09.819492",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
