@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
+                <th scope="col" class="order-no">{{_("ORDER NUMBER")}}</th>
                 <th scope="col">{{_("PRODUCT NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
                 <th scope="col">{{_("ORDER DATE")}}</th>
@@ -14,15 +14,15 @@
         <tbody>
             {% for o in waiting %}
             <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th>{{o[4]}}</th>
-                <th>
-                    <img class="delete" src="/assets/erpnext/images/delete.svg" alt="" style="">
-                </th>
+                <td>{{o[5]}}</td>
+                <td>{{o[0]}}</td>
+                <td>{{o[2]}}</td>
+                <td>{{o[3]}}</td>
+                <td>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</td>
+                <td>{{o[4]}}</td>
+                <td>
+                    <img class="delete" order-no="{{o[0]}}" src="/assets/erpnext/images/delete.svg" alt="" style="">
+                </td>
             </tr>
             {% endfor %}
         </tbody>

@@ -18,7 +18,7 @@ def create_sales_order(items):
             "item_destination": i['destination']
         })
 
-    todo = frappe.get_doc(
+    order = frappe.get_doc(
         {"doctype": "Sales Order",
          #  "name": "3",
          "internal_ref": "testing so",
@@ -29,6 +29,6 @@ def create_sales_order(items):
          "items": prepared,
             "price_list_currency": "USD",
          })
-    todo.insert()
+    order.insert()
     frappe.db.commit()
-    return {'status': 'ok'}
+    return {'status': 'ok', 'order': order}

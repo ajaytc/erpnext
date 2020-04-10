@@ -104,11 +104,14 @@ $('#validate').click(() => {
         callback: function (r) {
             if (!r.exc) {
                 console.log(r)
-                frappe.msgprint({
-                    title: __('Notification'),
-                    indicator: 'green',
-                    message: __('Sales order created successfully')
-                });
+                let order = r.message.order
+                if (order && order.name) {
+                    frappe.msgprint({
+                        title: __('Notification'),
+                        indicator: 'green',
+                        message: __('Sales order ' + order.name + ' created successfully')
+                    });
+                }
             }
         }
     })
