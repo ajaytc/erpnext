@@ -54,11 +54,11 @@ def create_sales_order(items, garmentlabel, internalref):
     return {'status': 'ok', 'order': order}
 
 
-def on_remove_sales_order_item(doc, method):
+def on_remove_sales_order(doc, method):
     for i in doc.items:
         docs = frappe.get_list("Quantity Per Size",
                                filters={"order_id": i.name})
         for j in docs:
-            doc = frappe.delete_doc("Quantity Per Size", j.name)
+            frappe.delete_doc("Quantity Per Size", j.name)
 
     frappe.msgprint("Sales order "+doc.name + " deleted")
