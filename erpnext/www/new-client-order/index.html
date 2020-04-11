@@ -69,10 +69,12 @@
         </div>
         <div class="">
             <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
+            {% if not isCustomer %}
             {% if order %}
             <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
             {% else %}
             <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+            {% endif %}
             {% endif %}
         </div>
     </div>

@@ -71,3 +71,9 @@ def validate_order(order):
     order.save()
     frappe.db.commit()
     frappe.msgprint("Sales order "+order.name+"validated")
+
+
+@frappe.whitelist()
+def delete(order):
+    frappe.delete_doc('Sales Order', order)
+    frappe.db.commit()

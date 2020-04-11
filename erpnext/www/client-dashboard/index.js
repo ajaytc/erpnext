@@ -11,15 +11,14 @@ $(document).ready(function () {
         let res = confirm('Are you sure you want to delete the sales order ' + so + ' ?');
         if (res) {
             frappe.call({
-                method: 'frappe.delete_doc',
+                method: 'erpnext.modehero.sales_order.delete',
                 args: {
-                    doctype: 'Sales Order',
-                    name: so,
-                    ignore_permissions: true
+                    order: so
                 },
                 callback: function (r) {
                     if (!r.exc) {
                         console.log(r)
+                        window.location.reload()
                     }
                 }
             })

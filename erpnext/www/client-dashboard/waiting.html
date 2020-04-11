@@ -15,7 +15,7 @@
             {% for o in waiting %}
             <tr>
                 <td>{{o[5]}}</td>
-                <td>{{o[0]}}</td>
+                <th><a href="/new-client-order?order={{o[0]}}">{{o[0]}}</a></th>
                 <td>{{o[2]}}</td>
                 <td>{{o[3]}}</td>
                 <td>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</td>
