@@ -197,10 +197,6 @@
                         </tr>
                         <tr class="modified-qty">
                             <th scope="row">{{_("Modified quantity")}}</th>
-                            {% for s in sizes %}
-                            <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
-                            {% endfor %}
-
                             {% for i in order.items %}
                             {% for s in qtys[i.name] %}
                             <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
