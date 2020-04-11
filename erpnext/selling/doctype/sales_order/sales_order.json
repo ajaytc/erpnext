@@ -139,7 +139,8 @@
   "to_date",
   "column_break_108",
   "auto_repeat",
-  "update_auto_repeat_reference"
+  "update_auto_repeat_reference",
+  "profoma"
  ],
  "fields": [
   {
@@ -1205,13 +1206,18 @@
    "fieldtype": "Link",
    "label": "Garment Label",
    "options": "Garment Label"
+  },
+  {
+   "fieldname": "profoma",
+   "fieldtype": "Attach",
+   "label": "Profoma"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-06 14:15:45.344665",
+ "modified": "2020-04-11 23:13:34.061343",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",
