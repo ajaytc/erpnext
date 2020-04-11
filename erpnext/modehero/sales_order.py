@@ -39,17 +39,26 @@ def create_sales_order(items, garmentlabel, internalref):
             qty = quantities[s]
 
             # qtypersize = frappe.new_doc('Quantity Per Size')
-            qtypersize = frappe.get_doc({
-                "doctype": "Quantity Per Size",
-                "size": s,
-                "quantity": qty,
-                "order_id": i.name
-            })
-            # qtypersize.size = s
-            # qtypersize.quantity = qty
-            # qtypersize.order_id = i.name
+            if qty != '':
+                qtypersize = frappe.get_doc({
+                    "doctype": "Quantity Per Size",
+                    "name": i.name,
+                    "size": s,
+                    "quantity": qty,
+                    "order_id": i.name
+                })
             qtypersize.insert()
 
     frappe.db.commit()
 
     return {'status': 'ok', 'order': order}
+
+
+def on_remove_sales_order_item(doc, method):
+    for i in doc.items:
+        docs = frappe.get_list("Quantity Per Size",
+                               filters={"order_id": i.name})
+        for j in docs:
+            doc = frappe.delete_doc("Quantity Per Size", j.name)
+
+    frappe.msgprint("Sales order "+doc.name + " deleted")

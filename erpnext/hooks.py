@@ -261,6 +261,9 @@ doc_events = {
 	},
 	"Email Unsubscribe": {
 		"after_insert": "erpnext.crm.doctype.email_campaign.email_campaign.unsubscribe_recipient"
+	},
+	"Sales Order": {
+		"on_trash": "erpnext.modehero.sales_order.on_remove_sales_order_item"
 	}
 }
 

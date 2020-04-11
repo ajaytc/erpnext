@@ -9,7 +9,8 @@
   "product_id",
   "size",
   "quantity",
-  "modified_quantity"
+  "modified_quantity",
+  "amended_from"
  ],
  "fields": [
   {
@@ -36,10 +37,20 @@
    "fieldname": "modified_quantity",
    "fieldtype": "Data",
    "label": "Modified Quantity"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Quantity Per Size",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
+ "is_submittable": 1,
  "links": [],
- "modified": "2020-04-11 16:40:14.361194",
+ "modified": "2020-04-11 18:52:08.734730",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quantity Per Size",
