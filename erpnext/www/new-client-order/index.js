@@ -136,3 +136,19 @@ $('#submit').click(() => {
     })
 
 })
+
+$('#validate').click(function () {
+    let order = $('#order-no').text().trim()
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.validate_order',
+        args: {
+            order
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+
+            }
+        }
+    })
+})

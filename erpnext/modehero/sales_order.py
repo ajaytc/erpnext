@@ -62,3 +62,12 @@ def on_remove_sales_order(doc, method):
             frappe.delete_doc("Quantity Per Size", j.name)
 
     frappe.msgprint("Sales order "+doc.name + " deleted")
+
+
+@frappe.whitelist()
+def validate_order(order):
+    order = frappe.get_doc('Sales Order', order)
+    order.docstatus = 1
+    order.save()
+    frappe.db.commit()
+    frappe.msgprint("Sales order "+order.name+"validated")
