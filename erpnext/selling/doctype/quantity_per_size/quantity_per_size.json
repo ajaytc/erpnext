@@ -38,9 +38,8 @@
    "label": "Modified Quantity"
   }
  ],
- "istable": 1,
  "links": [],
- "modified": "2020-04-09 21:22:25.412028",
+ "modified": "2020-04-11 16:40:14.361194",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quantity Per Size",

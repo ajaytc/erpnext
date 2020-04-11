@@ -3,7 +3,7 @@ var tablecount = 1;
 $('#addtable').click(() => {
     $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
-    $('.selected-product').change(productUpdateCallback)
+    $('.selected-product').click(productUpdateCallback)
     setClose()
 })
 
@@ -22,26 +22,29 @@ const productUpdateCallback = (e) => {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
+                {% if isCustomer %}
+                $('.modified-qty>td>input').attr('disabled', true)
+                {% endif %}
             }
         }
     });
 }
 
-$('.selected-product').change(productUpdateCallback)
+$('.selected-product').click(productUpdateCallback)
 
 function generateSizingTable(sizes) {
 
     let heads = '', inputs = ''
 
     sizes.map(s => {
-        heads += `<th scope="col">${s}</th>`
+        heads += `<th class="sizing" scope="col">${s}</th>`
         inputs += `<td><input type="text" class="form-control"></td>`
     })
 
     return `
             <table class="table table-bordered">
                 <thead>
-                    <tr class="sizing">
+                    <tr>
                         <th scope="col">{{_("Sizing")}}</th>
                         ${heads}
                     </tr>
@@ -74,27 +77,41 @@ const setClose = () => {
 setClose()
 
 
-
 $('#validate').click(() => {
-    let products = []
+    let products = {}
     let garmentlabel = $('#garmentlabel>option:selected').text()
+    let allnull = true
     $('.product-table').map(function () {
         let product = $($(this).find('.selected-product')[0]).find('option:selected').text()
         let destination = $($(this).find('.destination')[0]).find('option:selected').text()
 
-        let qtys = []
-        $(this).find('.qty>td>input').map(function () {
-            qtys.push($(this).val())
+        let qtys = {}
+        let sizes = []
+        let counter = 0
+
+        $(this).find('.sizing').map(function () {
+            sizes.push($(this).text())
         })
 
-        products.push({
+        $(this).find('.qty>td>input').map(function () {
+            if ($(this).val() != "") {
+                allnull = false
+            }
+            // qtys.push($(this).val())
+            qtys[sizes[counter++]] = $(this).val()
+        })
+
+        products[product] = {
             item: product,
             destination,
             quantities: qtys
-        })
+        }
     })
 
     console.log(products, garmentlabel)
+    if (allnull) {
+        frappe.throw(frappe._("Please fill quantities"))
+    }
     frappe.call({
         method: 'erpnext.modehero.sales_order.create_sales_order',
         args: {
