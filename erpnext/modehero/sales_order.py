@@ -47,7 +47,7 @@ def create_sales_order(items, garmentlabel, internalref):
                     "quantity": qty,
                     "order_id": i.name
                 })
-            qtypersize.insert()
+                qtypersize.insert()
 
     frappe.db.commit()
 

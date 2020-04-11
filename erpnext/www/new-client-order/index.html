@@ -69,10 +69,15 @@
         </div>
         <div class="">
             <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
+            {% if order %}
             <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+            {% else %}
+            <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+            {% endif %}
         </div>
     </div>
 
+    {% if not order %}
     <div class="card mt-3" style="width: 15rem;padding:1rem">
         <div class="input-group mb-3">
             <div class="custom-file">
@@ -84,7 +89,7 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
 
     {# product table #}
     {% if not order %}
@@ -174,16 +179,20 @@
                     <thead>
                         <tr class="sizing">
                             <th scope="col">{{_("Sizing")}}</th>
-                            {% for s in sizes %}
-                            <th scope="col">{{s.size}}</th>
+                            {% for i in order.items %}
+                            {% for s in qtys[i.name] %}
+                            <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['size']}}</th>
+                            {% endfor %}
                             {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="qty">
                             <th scope="row">{{_("Quantity")}}</th>
-                            {% for s in sizes %}
-                            <td><input type="text" class="form-control"></td>
+                            {% for i in order.items %}
+                            {% for s in qtys[i.name] %}
+                            <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['quantity']}}</th>
+                            {% endfor %}
                             {% endfor %}
                         </tr>
                         <tr class="modified-qty">
@@ -191,6 +200,13 @@
                             {% for s in sizes %}
                             <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
                             {% endfor %}
+
+                            {% for i in order.items %}
+                            {% for s in qtys[i.name] %}
+                            <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
+                            {% endfor %}
+                            {% endfor %}
+
                         </tr>
                     </tbody>
                 </table>

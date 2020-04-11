@@ -77,7 +77,7 @@ const setClose = () => {
 setClose()
 
 
-$('#validate').click(() => {
+$('#submit').click(() => {
     let products = {}
     let garmentlabel = $('#garmentlabel>option:selected').text()
     let allnull = true

@@ -32,8 +32,11 @@ def get_context(context):
         context.isCustomer = "Customer" in context.roles
         context.isBrand = "Brand User" in context.roles
         context.date = datetime.date.today()
-        
+
     else:
         context.order = frappe.get_doc('Sales Order', params.order)
-
+        context.qtys = {}
+        for i in context.order.items:
+            context.qtys[i.name] = frappe.get_list(
+                'Quantity Per Size', filters={'order_id': i.name})
     return context
