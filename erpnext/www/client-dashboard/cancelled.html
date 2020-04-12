@@ -8,6 +8,7 @@
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
                 <th scope="col">{{_("ORDER DATE")}}</th>
                 <th scope="col">{{_("DESTINATION")}}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,11 @@
                 <th>{{o[3]}}</th>
                 <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
                 <th></th>
+                <td>
+                    <span class="duplicate fa fa-clone" order-no="{{o[0]}}"></span>
+                    <img class="cancel" style="float: right;" order-no="{{o[0]}}"
+                        src="/assets/erpnext/images/delete.svg" alt="">
+                </td>
             </tr>
             {% endfor %}
         </tbody>
