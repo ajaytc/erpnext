@@ -1,5 +1,5 @@
 var tablecount = 1;
-
+var profoma = null;
 $('#addtable').click(() => {
     $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
@@ -117,7 +117,8 @@ $('#submit').click(() => {
         args: {
             items: products,
             garmentlabel,
-            internalref: $('#internal-ref').val()
+            internalref: $('#internal-ref').val(),
+            profoma
         },
         callback: function (r) {
             if (!r.exc) {
@@ -151,4 +152,39 @@ $('#validate').click(function () {
             }
         }
     })
+})
+
+$('#upload-profoma').click(function () {
+    let file = $('#profoma').prop('files')[0]
+    if (file.size / 1024 / 1024 > 5) {
+        frappe.throw("Please upload file less than 5mb")
+        return
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(file, reader, reader.result)
+    reader.onload = function () {
+        frappe.call({
+            method: 'frappe.handler.uploadfile',
+            // method: 'erpnext.modehero.sales_order.upload_test',
+            args: {
+                filename: file.name,
+                attached_to_doctype: 'Sales Order',
+                attached_to_field: profoma,
+                is_private: true,
+                filedata: reader.result,
+                from_form: true,
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    frappe.msgprint("File successfully uploaded")
+                    $('#profoma-label').html(r.message.file_url)
+                    profoma = r.message.file_url
+                }
+            }
+        })
+
+    }
+
 })

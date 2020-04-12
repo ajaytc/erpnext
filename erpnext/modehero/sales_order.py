@@ -3,7 +3,7 @@ import json
 
 
 @frappe.whitelist()
-def create_sales_order(items, garmentlabel, internalref):
+def create_sales_order(items, garmentlabel, internalref, profoma):
     prepared = []
     items = json.loads(items)
     for i in items:
@@ -27,6 +27,7 @@ def create_sales_order(items, garmentlabel, internalref):
          "conversion_rate": 1,
          "plc_conversion_rate": 1,
          "garment_label": garmentlabel,
+         "profoma": profoma,
          "items": prepared,
             "price_list_currency": "USD",
          })
@@ -77,3 +78,9 @@ def validate_order(order):
 def delete(order):
     frappe.delete_doc('Sales Order', order)
     frappe.db.commit()
+
+
+@frappe.whitelist()
+def duplicate(order):
+    doc = frappe.get_doc('Sales Order', order)
+    doc.save()
