@@ -1,5 +1,7 @@
 var tablecount = 1;
 var profoma = null;
+var numeric = /^\d+$/;
+
 $('#addtable').click(() => {
     $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
@@ -25,6 +27,8 @@ const productUpdateCallback = (e) => {
                 {% if isCustomer %}
                 $('.modified-qty>td>input').attr('disabled', true)
                 {% endif %}
+                $('.qty>td>input').change(priceUpdateCallback)
+
             }
         }
     });
@@ -38,7 +42,7 @@ function generateSizingTable(sizes) {
 
     sizes.map(s => {
         heads += `<th class="sizing" scope="col">${s}</th>`
-        inputs += `<td><input type="text" class="form-control"></td>`
+        inputs += `<td><input type="text" data-size="${s}" class="form-control"></td>`
     })
 
     return `
@@ -188,3 +192,12 @@ $('#upload-profoma').click(function () {
     }
 
 })
+
+function priceUpdateCallback(e) {
+    console.log(e.target.value, $(e.target).attr('data-size'))
+    if (!numeric.test(e.target.value)) {
+        $(e.target).css('border-color', 'red')
+    } else {
+        $(e.target).css('border', '1px solid #ced4da')
+    }
+}

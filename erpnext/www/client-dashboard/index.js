@@ -11,7 +11,7 @@ $(document).ready(function () {
         let res = confirm('Are you sure you want to delete the sales order ' + so + ' ?');
         if (res) {
             frappe.call({
-                method: 'erpnext.modehero.sales_order.delete',
+                method: 'erpnext.modehero.sales_order.cancel',
                 args: {
                     order: so
                 },

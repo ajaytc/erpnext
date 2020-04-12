@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:{customer}-{label_name}",
+ "autoname": "format:{label_name}-{customer}",
  "creation": "2020-04-06 00:40:40.153183",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -50,7 +50,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-07 14:33:24.721262",
+ "modified": "2020-04-12 16:57:23.666206",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Garment Label",

@@ -18,12 +18,19 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             "item_destination": items[i]['destination']
         })
 
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    customer = frappe.get_list(
+        'Customer', filters={'user': frappe.session.user})
+    if(len(customer) > 0):
+        customer = customer[0]['name']
+
     order = frappe.get_doc(
         {"doctype": "Sales Order",
          #  "name": "3",
          "internal_ref": internalref,
-         "customer": "Customer 1",
-         "company": "Brand 1",
+         "customer": customer,
+         "company": brand,
          "conversion_rate": 1,
          "plc_conversion_rate": 1,
          "garment_label": garmentlabel,
@@ -62,7 +69,7 @@ def on_remove_sales_order(doc, method):
         for j in docs:
             frappe.delete_doc("Quantity Per Size", j.name)
 
-    frappe.msgprint("Sales order "+doc.name + " deleted")
+    frappe.msgprint("Client Purchase Order "+doc.name + " deleted")
 
 
 @frappe.whitelist()
@@ -71,7 +78,7 @@ def validate_order(order):
     order.docstatus = 1
     order.save()
     frappe.db.commit()
-    frappe.msgprint("Sales order "+order.name+"validated")
+    frappe.msgprint("Client Purchase Order "+order.name+" validated")
 
 
 @frappe.whitelist()
@@ -84,3 +91,14 @@ def delete(order):
 def duplicate(order):
     doc = frappe.get_doc('Sales Order', order)
     doc.save()
+
+
+@frappe.whitelist()
+def cancel(order):
+    order = frappe.get_doc('Sales Order', order)
+    order.docstatus = 1
+    order.save()
+    order.docstatus = 2
+    order.save()
+    frappe.db.commit()
+    frappe.msgprint("Client Purchase Order "+order.name+" cancelled")
