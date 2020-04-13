@@ -27,7 +27,6 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
 
     order = frappe.get_doc(
         {"doctype": "Sales Order",
-         #  "name": "3",
          "internal_ref": internalref,
          "customer": customer,
          "company": brand,
@@ -50,7 +49,6 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             if qty != '':
                 qtypersize = frappe.get_doc({
                     "doctype": "Quantity Per Size",
-                    "name": i.name,
                     "size": s,
                     "quantity": qty,
                     "order_id": i.name,
@@ -70,7 +68,7 @@ def on_remove_sales_order(doc, method):
         for j in docs:
             frappe.delete_doc("Quantity Per Size", j.name)
 
-    frappe.msgprint("Client Purchase Order "+doc.name + " deleted")
+    frappe.msgprint(frappe._("Client Purchase Order ")+doc.name + " deleted")
 
 
 @frappe.whitelist()
@@ -79,7 +77,7 @@ def validate_order(order):
     order.docstatus = 1
     order.save()
     frappe.db.commit()
-    frappe.msgprint("Client Purchase Order "+order.name+" validated")
+    frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" validated")
 
 
 @frappe.whitelist()
@@ -95,19 +93,18 @@ def duplicate(order):
 
     for i in doc.items:
         prepared.append({
-                        "item_name": i['item_name'],
-                        "item_code": i['item_code'],
-                        "qty": i['qty'],
-                        "rate": i['rate'],
-                        "warehouse": i['warehouse'],
-                        "uom": i['uom'],
-                        "conversion_factor": i['conversion_factor'],
-                        "item_destination": i['item_destination']
+                        "item_name": i.item_name,
+                        "item_code": i.item_code,
+                        "qty": i.qty,
+                        "rate": i.rate,
+                        "warehouse": i.warehouse,
+                        "uom": i.uom,
+                        "conversion_factor": i.conversion_factor,
+                        "item_destination": i.item_destination
                         })
 
     order = frappe.get_doc(
         {"doctype": "Sales Order",
-         #  "name": "3",
          "internal_ref": doc.internal_ref,
          "customer": doc.customer,
          "company": doc.company,
@@ -120,16 +117,27 @@ def duplicate(order):
          })
 
     order.insert()
-    # qtypersize = frappe.get_doc({
-    #     "doctype": "Quantity Per Size",
-    #     "name": i.name,
-    #     "size": s,
-    #     "quantity": qty,
-    #     "order_id": i.name
-    # })
-    # qtypersize.insert()
+
+    for i in doc.items:
+        qtydocs = frappe.get_list(
+            'Quantity Per Size', filters={'order_id': i.name}, fields=['size', 'quantity', 'order_id'])
+
+        for q in qtydocs:
+            #get name of newly created sales order items
+            order_id = next(
+                item for item in order.items if item.item_name == i.item_code).name
+            qtypersize = frappe.get_doc({
+                "doctype": "Quantity Per Size",
+                "size": q.size,
+                "quantity": q.quantity,
+                "order_id": order_id,
+                "product_id": i.item_code
+            })
+            qtypersize.insert()
 
     frappe.db.commit()
+    frappe.msgprint(frappe._("Client Purchase Order ") +
+                    doc.name+" duplicated as "+order.name)
 
 
 @frappe.whitelist()
@@ -140,4 +148,4 @@ def cancel(order):
     order.docstatus = 2
     order.save()
     frappe.db.commit()
-    frappe.msgprint("Client Purchase Order "+order.name+" cancelled")
+    frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" cancelled")
