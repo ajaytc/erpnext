@@ -35,7 +35,7 @@ def get_context(context):
         context.qtys = {}
         for i in context.order.items:
             context.qtys[i.name] = frappe.get_list(
-                'Quantity Per Size', filters={'order_id': i.name})
+                'Quantity Per Size', filters={'order_id': i.name}, order_by='creation asc')
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles

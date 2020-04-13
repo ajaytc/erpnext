@@ -36,7 +36,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
          "garment_label": garmentlabel,
          "profoma": profoma,
          "items": prepared,
-            "price_list_currency": "USD",
+         "price_list_currency": "USD",
          })
 
     order.insert()
@@ -53,7 +53,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
                     "name": i.name,
                     "size": s,
                     "quantity": qty,
-                    "order_id": i.name
+                    "order_id": i.name,
+                    "product_id": i.item_code
                 })
                 qtypersize.insert()
 
@@ -90,7 +91,45 @@ def delete(order):
 @frappe.whitelist()
 def duplicate(order):
     doc = frappe.get_doc('Sales Order', order)
-    doc.save()
+    prepared = []
+
+    for i in doc.items:
+        prepared.append({
+                        "item_name": i['item_name'],
+                        "item_code": i['item_code'],
+                        "qty": i['qty'],
+                        "rate": i['rate'],
+                        "warehouse": i['warehouse'],
+                        "uom": i['uom'],
+                        "conversion_factor": i['conversion_factor'],
+                        "item_destination": i['item_destination']
+                        })
+
+    order = frappe.get_doc(
+        {"doctype": "Sales Order",
+         #  "name": "3",
+         "internal_ref": doc.internal_ref,
+         "customer": doc.customer,
+         "company": doc.company,
+         "conversion_rate": doc.conversion_rate,
+         "plc_conversion_rate": doc.plc_conversion_rate,
+         "garment_label": doc.garment_label,
+         "profoma": doc.profoma,
+         "items": prepared,
+         "price_list_currency": doc.price_list_currency,
+         })
+
+    order.insert()
+    # qtypersize = frappe.get_doc({
+    #     "doctype": "Quantity Per Size",
+    #     "name": i.name,
+    #     "size": s,
+    #     "quantity": qty,
+    #     "order_id": i.name
+    # })
+    # qtypersize.insert()
+
+    frappe.db.commit()
 
 
 @frappe.whitelist()

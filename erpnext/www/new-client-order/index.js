@@ -24,7 +24,7 @@ const productUpdateCallback = (e) => {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
-                {% if isCustomer %}
+                {% if isCustomer and not isBrand %}
                 $('.modified-qty>td>input').attr('disabled', true)
                 {% endif %}
                 $('.qty>td>input').change(priceUpdateCallback)
