@@ -123,7 +123,7 @@ def duplicate(order):
             'Quantity Per Size', filters={'order_id': i.name}, fields=['size', 'quantity', 'order_id'])
 
         for q in qtydocs:
-            #get name of newly created sales order items
+            # get name of newly created sales order items
             order_id = next(
                 item for item in order.items if item.item_name == i.item_code).name
             qtypersize = frappe.get_doc({
@@ -149,3 +149,29 @@ def cancel(order):
     order.save()
     frappe.db.commit()
     frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" cancelled")
+
+
+@frappe.whitelist()
+def calculate_price(products):
+    # request format,
+    #  products = {'0001':{'XS':1,'S':2},'0002':{'M':3}}
+
+    # response format
+    # { '0001':233123,'0002':3424324, 'total':321321313}
+
+    prices = {}
+    products = json.loads(products)
+    for p in products:
+        prices[p] = 0
+        for s in products[p]:
+            qty = products[p][s]
+            price = frappe.get_list('Prices for Quantity', filters={
+                                    'parent': p, 'from': ['<=', qty], 'to': ['>=', qty]}, fields=['price'])
+            if(len(price) > 0):
+                prices[p] += price[0]['price']*float(qty)
+
+    total = 0
+    for p in prices:
+        total += float(prices[p])
+    prices['total'] = total
+    return prices

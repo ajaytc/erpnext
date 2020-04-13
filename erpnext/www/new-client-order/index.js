@@ -3,7 +3,7 @@ var profoma = null;
 var numeric = /^\d+$/;
 
 $('#addtable').click(() => {
-    $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
+    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
     $('.selected-product').click(productUpdateCallback)
     setClose()
@@ -14,6 +14,7 @@ $('.close').click(e => console.log($(e.target).parent()))
 const productUpdateCallback = (e) => {
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     product = $(e.target).find("option:selected").text()
+    $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.stock.sizing.getSizes',
         args: {
@@ -28,7 +29,6 @@ const productUpdateCallback = (e) => {
                 $('.modified-qty>td>input').attr('disabled', true)
                 {% endif %}
                 $('.qty>td>input').change(priceUpdateCallback)
-
             }
         }
     });
@@ -194,10 +194,46 @@ $('#upload-profoma').click(function () {
 })
 
 function priceUpdateCallback(e) {
-    console.log(e.target.value, $(e.target).attr('data-size'))
+    // console.log(e.target.value, $(e.target).attr('data-size'))
     if (!numeric.test(e.target.value)) {
         $(e.target).css('border-color', 'red')
     } else {
+        let products = {}
+
         $(e.target).css('border', '1px solid #ced4da')
+        //calculate price 
+        $('.product-table').map(function () {
+            let product = $(this).find('.selected-product>option:selected').text()
+
+            $(this).find('.qty>td').map(function () {
+                let qty = $(this).find('input').val()
+                let size = $(this).find('input').attr('data-size')
+
+                if (!products[product]) {
+                    products[product] = {}
+                }
+                if (qty != '') {
+                    products[product][size] = qty
+                }
+            })
+
+        })
+        console.log(products)
+        frappe.call({
+            method: 'erpnext.modehero.sales_order.calculate_price',
+            args: {
+                products
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r.message)
+                    $('#total').html(r.message.total)
+                    let prices = r.message
+                    for (let p in prices) {
+                        $(`#${p}`).find('.pricing-table .total-order').html(prices[p])
+                    }
+                }
+            }
+        })
     }
 }
