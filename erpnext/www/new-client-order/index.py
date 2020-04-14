@@ -13,7 +13,7 @@ def get_context(context):
         # context.sizes = frappe.get_list(
         #     "Sizing", fields=["size"], order_by='idx')
         brand = frappe.get_doc("User", frappe.session.user).brand_name
-        context.products = frappe.get_list("Item", filters={'brand': brand})
+        context.products = frappe.get_all("Item", filters={'brand': brand})
 
         context.garmentlabel = frappe.get_list("Garment Label")
 
