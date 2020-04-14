@@ -23,7 +23,7 @@ def get_context(context):
         # frappe.throw("No customers for user")
 
         if(len(client) > 0):
-            context.destinations = frappe.get_list(
+            context.destinations = frappe.get_all(
                 "Destination", filters={"client_name": client[0].name})
         else:
             context.destinations = []
