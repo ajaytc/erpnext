@@ -9,9 +9,12 @@
   "fabric_vendor",
   "internal_ref",
   "fabric_ref",
-  "quantity",
   "column_break_5",
   "brand_name",
+  "section_break_6",
+  "quantity",
+  "column_break_8",
+  "in_stock",
   "section_break_1",
   "product_name",
   "production_factory",
@@ -100,11 +103,24 @@
    "options": "Fabric Order",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "in_stock",
+   "fieldtype": "Int",
+   "label": "In Stock"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-03 21:46:20.187260",
+ "modified": "2020-04-14 18:13:03.343123",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",

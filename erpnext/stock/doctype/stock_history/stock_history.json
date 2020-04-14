@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "creation": "2020-04-14 18:03:12.491917",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "in_out",
+  "quantity",
+  "stock"
+ ],
+ "fields": [
+  {
+   "fieldname": "in_out",
+   "fieldtype": "Select",
+   "label": "Entry Type",
+   "options": "In\nOut"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "label": "quantity"
+  },
+  {
+   "fieldname": "stock",
+   "fieldtype": "Int",
+   "label": "Stock"
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-14 18:03:12.491917",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Stock History",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2020-04-14 17:54:55.175671",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_type",
+  "product",
+  "internal_ref",
+  "trimming_category",
+  "color",
+  "size",
+  "quantity",
+  "localization",
+  "total_value"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_type",
+   "fieldtype": "Select",
+   "label": "Item Type",
+   "options": "Product\nFabric\nTrimming\nPackaging"
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "label": "Product Name",
+   "options": "Item"
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "label": "Internal Ref"
+  },
+  {
+   "fieldname": "trimming_category",
+   "fieldtype": "Link",
+   "label": "Trimming Category",
+   "options": "Trimming Category"
+  },
+  {
+   "fieldname": "color",
+   "fieldtype": "Link",
+   "label": "Color",
+   "options": "Color"
+  },
+  {
+   "fieldname": "size",
+   "fieldtype": "Link",
+   "label": "Size",
+   "options": "Packaging Size"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "localization",
+   "fieldtype": "Data",
+   "label": "Localization"
+  },
+  {
+   "fieldname": "total_value",
+   "fieldtype": "Currency",
+   "label": "Total Value "
+  }
+ ],
+ "links": [],
+ "modified": "2020-04-14 18:01:55.138392",
+ "modified_by": "Administrator",
+ "module": "Stock",
+ "name": "Stock",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
