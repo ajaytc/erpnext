@@ -70,10 +70,13 @@
                 <span id="total"></span>
             </div>
             <div class="">
+                {% if order and order.docstatus<2 %}
                 <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
-                {% if order %}
+                {% if order.docstatus==0 %}
                 <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
-                {% else %}
+                {% endif %}
+                {% endif %}
+                {% if not order %}
                 <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
                 {% endif %}
             </div>
