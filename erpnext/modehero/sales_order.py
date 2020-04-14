@@ -160,6 +160,7 @@ def calculate_price(products):
     # { '0001':233123,'0002':3424324, 'total':321321313}
 
     prices = {}
+    perpiece = {}
     products = json.loads(products)
     for p in products:
         prices[p] = 0
@@ -169,9 +170,11 @@ def calculate_price(products):
                                     'parent': p, 'from': ['<=', qty], 'to': ['>=', qty]}, fields=['price'])
             if(len(price) > 0):
                 prices[p] += price[0]['price']*float(qty)
+                perpiece[p] = price[0]['price']
 
     total = 0
     for p in prices:
         total += float(prices[p])
     prices['total'] = total
+    prices['perpiece'] = perpiece
     return prices

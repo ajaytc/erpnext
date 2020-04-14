@@ -230,7 +230,9 @@ function priceUpdateCallback(e) {
                     $('#total').html(r.message.total)
                     let prices = r.message
                     for (let p in prices) {
-                        $(`#${p}`).find('.pricing-table .total-order').html(prices[p])
+                        $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
+                        $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
+                        $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
                     }
                 }
             }
