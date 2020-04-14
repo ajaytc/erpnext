@@ -198,9 +198,9 @@ function priceUpdateCallback(e) {
     if (!numeric.test(e.target.value)) {
         $(e.target).css('border-color', 'red')
     } else {
+
         let products = {}
 
-        $(e.target).css('border', '1px solid #ced4da')
         //calculate price 
         $('.product-table').map(function () {
             let product = $(this).find('.selected-product>option:selected').text()
@@ -219,23 +219,55 @@ function priceUpdateCallback(e) {
 
         })
         console.log(products)
-        frappe.call({
-            method: 'erpnext.modehero.sales_order.calculate_price',
-            args: {
-                products
-            },
-            callback: function (r) {
-                if (!r.exc) {
-                    console.log(r.message)
-                    $('#total').html(r.message.total)
-                    let prices = r.message
-                    for (let p in prices) {
-                        $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
-                        $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
-                        $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
-                    }
-                }
-            }
-        })
+
+        $(e.target).css('border', '1px solid #ced4da')
+        calculatePrice(products)
     }
 }
+
+function calculatePrice(products) {
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.calculate_price',
+        args: {
+            products
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                $('#total').html(r.message.total)
+                let prices = r.message
+                for (let p in prices) {
+                    $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
+                    $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
+                    $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
+                }
+            }
+        }
+    })
+}
+
+function calculatePriceOnLoad() {
+    let products = {}
+    $('.product-table').map(function () {
+        let product = $(this).find('.product').html()
+        $(this).find('.qty>td').map(function () {
+            let qty = $(this).html().trim()
+            let size = $(this).attr('data-size')
+
+            if (!products[product]) {
+                products[product] = {}
+            }
+            if (qty != '') {
+                products[product][size] = qty
+            }
+        })
+    })
+    console.log(products)
+    calculatePrice(products)
+}
+
+{% if order %}
+setTimeout(() => {
+    calculatePriceOnLoad()
+}, 500);
+{% endif %}
