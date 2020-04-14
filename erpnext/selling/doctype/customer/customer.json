@@ -21,6 +21,7 @@
   "image",
   "column_break0",
   "user",
+  "contact",
   "account_manager",
   "customer_group",
   "territory",
@@ -37,12 +38,19 @@
   "column_break_14",
   "language",
   "address_contacts",
+  "address_line_1",
+  "address_line_2",
+  "city",
+  "zip_code",
+  "country",
   "address_html",
   "website",
   "column_break1",
   "contact_html",
   "primary_address_and_contact_detail",
   "customer_primary_contact",
+  "email_address",
+  "phone",
   "mobile_no",
   "email_id",
   "column_break_26",
@@ -165,7 +173,6 @@
    "oldfieldname": "customer_group",
    "oldfieldtype": "Link",
    "options": "Customer Group",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -177,8 +184,7 @@
    "oldfieldname": "territory",
    "oldfieldtype": "Link",
    "options": "Territory",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "fieldname": "tax_id",
@@ -472,13 +478,56 @@
    "fieldtype": "Link",
    "label": "User",
    "options": "User"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Link",
+   "label": "Contact",
+   "options": "Contact"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Data",
+   "label": "Address Line1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Data",
+   "label": "Address Line 2"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "zip_code",
+   "fieldtype": "Data",
+   "label": "Zip Code"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
   }
  ],
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-10 12:29:09.819492",
+ "modified": "2020-04-15 00:01:51.255945",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
