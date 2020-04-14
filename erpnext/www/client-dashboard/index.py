@@ -17,7 +17,7 @@ def get_context(context):
     context.show_sidebar = False
     context.status = 'waiting'
 
-    query = """select so.name, so.creation, i.item_name, i.item_group, i.item_destination, so.internal_ref from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name"""
+    query = """select so.name, so.creation, i.item_name, i.item_group, i.item_destination, so.internal_ref, so.profoma from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name"""
     context.waiting = frappe.db.sql(
         query+" where i.docstatus=0 order by so.creation desc")
     context.onprocess = frappe.db.sql(
@@ -30,5 +30,7 @@ def get_context(context):
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}
     # ]
-
+    context.roles = frappe.get_roles(frappe.session.user)
+    context.isCustomer = "Customer" in context.roles
+    context.isBrand = "Brand User" in context.roles
     return context

@@ -1,3 +1,4 @@
+{% if not isBrand %}
 <h1>Client Dashboard</h1>
 
 
@@ -5,7 +6,7 @@
     <i class="fas fa-plus"></i>
     Place new order
 </button>
-
+{% endif %}
 <ul class="nav nav-tabs mt-5 nav-fill" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#waiting" role="tab" aria-controls="home"

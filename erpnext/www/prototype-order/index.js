@@ -1,7 +1,9 @@
 var tablecount = 1;
+var profoma = null;
+var numeric = /^\d+$/;
 
 $('#addtable').click(() => {
-    $('#box0').clone().addClass('class', 'product-table').appendTo('#container')
+    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#container')
     tablecount++
     $('.selected-product').click(productUpdateCallback)
     setClose()
@@ -12,6 +14,7 @@ $('.close').click(e => console.log($(e.target).parent()))
 const productUpdateCallback = (e) => {
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     product = $(e.target).find("option:selected").text()
+    $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.stock.sizing.getSizes',
         args: {
@@ -22,9 +25,10 @@ const productUpdateCallback = (e) => {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
-                {% if isCustomer %}
+                {% if isCustomer and not isBrand %}
                 $('.modified-qty>td>input').attr('disabled', true)
                 {% endif %}
+                $('.qty>td>input').change(priceUpdateCallback)
             }
         }
     });
@@ -38,7 +42,7 @@ function generateSizingTable(sizes) {
 
     sizes.map(s => {
         heads += `<th class="sizing" scope="col">${s}</th>`
-        inputs += `<td><input type="text" class="form-control"></td>`
+        inputs += `<td><input type="text" data-size="${s}" class="form-control"></td>`
     })
 
     return `
@@ -52,10 +56,6 @@ function generateSizingTable(sizes) {
                 <tbody>
                     <tr class="qty">
                         <th class="qty" scope="row">{{_("Quantity")}}</th>
-                        ${inputs}
-                    </tr>
-                    <tr class="modified-qty">
-                        <th scope="row">{{_("Modified quantity")}}</th>
                         ${inputs}
                     </tr>
                 </tbody>
@@ -117,7 +117,8 @@ $('#submit').click(() => {
         args: {
             items: products,
             garmentlabel,
-            internalref: $('#internal-ref').val()
+            internalref: $('#internal-ref').val(),
+            profoma
         },
         callback: function (r) {
             if (!r.exc) {
@@ -152,3 +153,117 @@ $('#validate').click(function () {
         }
     })
 })
+
+$('#upload-profoma').click(function () {
+    let file = $('#profoma').prop('files')[0]
+    if (file.size / 1024 / 1024 > 5) {
+        frappe.throw("Please upload file less than 5mb")
+        return
+    }
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    console.log(file, reader, reader.result)
+    reader.onload = function () {
+        frappe.call({
+            method: 'frappe.handler.uploadfile',
+            // method: 'erpnext.modehero.sales_order.upload_test',
+            args: {
+                filename: file.name,
+                attached_to_doctype: 'Sales Order',
+                attached_to_field: profoma,
+                is_private: true,
+                filedata: reader.result,
+                from_form: true,
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    frappe.msgprint("File successfully uploaded")
+                    $('#profoma-label').html(r.message.file_url)
+                    profoma = r.message.file_url
+                }
+            }
+        })
+
+    }
+
+})
+
+function priceUpdateCallback(e) {
+    // console.log(e.target.value, $(e.target).attr('data-size'))
+    if (!numeric.test(e.target.value)) {
+        $(e.target).css('border-color', 'red')
+    } else {
+
+        let products = {}
+
+        //calculate price 
+        $('.product-table').map(function () {
+            let product = $(this).find('.selected-product>option:selected').text()
+
+            $(this).find('.qty>td').map(function () {
+                let qty = $(this).find('input').val()
+                let size = $(this).find('input').attr('data-size')
+
+                if (!products[product]) {
+                    products[product] = {}
+                }
+                if (qty != '') {
+                    products[product][size] = qty
+                }
+            })
+
+        })
+        console.log(products)
+
+        $(e.target).css('border', '1px solid #ced4da')
+        calculatePrice(products)
+    }
+}
+
+function calculatePrice(products) {
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.calculate_price',
+        args: {
+            products
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                $('#total').html(r.message.total)
+                let prices = r.message
+                for (let p in prices) {
+                    $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
+                    $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
+                    $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
+                }
+            }
+        }
+    })
+}
+
+function calculatePriceOnLoad() {
+    let products = {}
+    $('.product-table').map(function () {
+        let product = $(this).find('.product').html()
+        $(this).find('.qty>td').map(function () {
+            let qty = $(this).html().trim()
+            let size = $(this).attr('data-size')
+
+            if (!products[product]) {
+                products[product] = {}
+            }
+            if (qty != '') {
+                products[product][size] = qty
+            }
+        })
+    })
+    console.log(products)
+    calculatePrice(products)
+}
+
+{% if order %}
+setTimeout(() => {
+    calculatePriceOnLoad()
+}, 500);
+{% endif %}

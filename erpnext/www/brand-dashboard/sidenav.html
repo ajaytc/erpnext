@@ -1,31 +1,284 @@
-<div class="col-sm-3 col-md-3 sidebar" style="margin-left: -5%;margin-top: -3%;">
-    <div class="list-group">
-        {# <a href="#" class="list-group-item active">
-            <i class="fa fa-home"></i> {{_("Home")}}
-        </a> #}
-        <a href="/customer" class="list-group-item {% if page=='client' %}active{% endif %}">
-            <i class="fa fa-user"></i> {{_("Client")}}
-        </a>
-        <a href="/supply" class="list-group-item {% if page=='supply' %}active{% endif %}">
-            <i class="fa fa-file"></i> {{_("Supply")}}
-        </a>
-        <a href="#" class="list-group-item {% if page=='preprod' %}active{% endif %}">
-            <i class="fa fa-file"></i> {{_("Pre-production")}}
-        </a>
-        <a href="/production" class="list-group-item {% if page=='prod' %}active{% endif %}">
-            <i class="fa fa-cog"></i> {{_("Production")}}
-        </a>
-        <a href="#" class="list-group-item {% if page=='shipment' %}active{% endif %}">
-            <i class="fa fa-truck"></i> {{_("Shipment")}}
-        </a>
-        <a href="/stock" class="list-group-item {% if page=='stock' %}active{% endif %}">
-            <i class="fa fa-archive"></i> {{_("Stock")}}
-        </a>
-        <a href="#" class="list-group-item {% if page=='invoice' %}active{% endif %}">
-            <i class="fa fa-align-justify"></i> {{_("Invoice Packing List")}}
-        </a>
-        <a href="#" class="list-group-item {% if page=='finance' %}active{% endif %}">
-            <i class="fa fa-dollar"></i> {{_("Finance")}}
-        </a>
+<div class="list-group" id="accordionMenu" style="margin-left: 1rem;">
+
+    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapse3"
+        aria-expanded="true" aria-controls="collapse3">
+        <i class="fa fa-user"></i> {{_("Client")}}
+    </a>
+    <div id="collapse3" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Price List")}}
+            </a>
+            <a href="/client-dashboard" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("List of purchase")}}
+            </a>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c3a"
+                aria-expanded="false" aria-controls="c3a">
+                <i class="fa fa-cog"></i> {{_("Manage")}}
+            </a>
+            <div id="c3a" class="collapse" data-parent="#collapse3">
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">
+                        {{_("Create new client")}}
+                    </a>
+                    <a href="/customer" class="list-group-item ">
+                        {{_("Client list")}}
+                    </a>
+
+                </div>
+            </div>
+        </div>
     </div>
+    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapseOne"
+        aria-expanded="true" aria-controls="collapseOne">
+        <i class="fa fa-file"></i> {{_("Supply")}}
+    </a>
+    <div id="collapseOne" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1a"
+                aria-expanded="false" aria-controls="c1a">
+                <i class="fa fa-cog"></i> {{_("Fabric")}}
+            </a>
+            <div id="c1a" class="collapse" data-parent="#collapseOne">
+                <div class="list-group">
+                    <a href="/fabric-order?new=1" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("Order")}}
+                    </a>
+                    <a href="/supply-dashboard" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("List")}}
+                    </a>
+                    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
+                        aria-expanded="false" aria-controls="c1aa">
+                        <i class="fa fa-cog"></i> {{_("Manage")}}
+                    </a>
+                    <div id="c1aa" class="collapse" data-parent="#c1a">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item ">
+                                {{_("Fabric vendor")}}
+                            </a>
+                            <a href="/fabric-item?new=1" class="list-group-item ">
+                                {{_("Add new fabric")}}
+                            </a>
+                            <a href="/color?new=1" class="list-group-item ">
+                                {{_("Fabric Color")}}
+                            </a>
+                            <a href="/composition" class="list-group-item ">
+                                {{_("Composition")}}
+                            </a>
+                            <a href="/fabric-width" class="list-group-item ">
+                                {{_("Width")}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1b">
+                <i class="fa fa-cog"></i> {{_("Trimming")}}
+            </a>
+            <div id="c1b" class="collapse" data-parent="#collapseOne">
+                <div class="list-group">
+                    <a href="/trimming-order?new=1" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("Order")}}
+                    </a>
+                    <a href="/supply-dashboard" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("List")}}
+                    </a>
+                    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1ba"
+                        aria-expanded="false" aria-controls="c1ba">
+                        <i class="fa fa-cog"></i> {{_("Manage")}}
+                    </a>
+                    <div id="c1ba" class="collapse" data-parent="#c1b">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item ">
+                                {{_("Trimming vendor")}}
+                            </a>
+                            <a href="/trimming-item?new=1" class="list-group-item ">
+                                {{_("Trimming Item")}}
+                            </a>
+                            <a href="/trimming-size" class="list-group-item ">
+                                {{_("Trimming Size")}}
+                            </a>
+                            <a href="/trimming-category" class="list-group-item ">
+                                {{_("Trimming Category")}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1c">
+                <i class="fa fa-cog"></i> {{_("Packaging")}}
+            </a>
+            <div id="c1c" class="collapse" data-parent="#collapseOne">
+                <div class="list-group">
+                    <a href="/packaging-order?new=1" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("Order")}}
+                    </a>
+                    <a href="/supply-dashboard" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("List")}}
+                    </a>
+                    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1ca"
+                        aria-expanded="false" aria-controls="c1ca">
+                        <i class="fa fa-cog"></i> {{_("Manage")}}
+                    </a>
+                    <div id="c1ca" class="collapse" data-parent="#c1c">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item ">
+                                {{_("Packaging vendor")}}
+                            </a>
+                            <a href="/packaging-item?new=1" class="list-group-item ">
+                                {{_("Packaging Item")}}
+                            </a>
+                            <a href="/packaging-material" class="list-group-item ">
+                                {{_("Packaging Material")}}
+                            </a>
+                            <a href="/packaging-size" class="list-group-item ">
+                                {{_("Packaging Size")}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapseOTwo"
+        aria-expanded="true" aria-controls="collapseOTwo">
+        <i class="fa fa-file"></i> {{_("Pre-production")}}
+    </a>
+    <div id="collapseOTwo" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c2a"
+                aria-expanded="true" aria-controls="c2a">
+                <i class="fa fa-cog"></i> {{_("Prototype")}}
+            </a>
+            <div id="c2a" class="collapse" data-parent="#collapseOTwo">
+                <div class="list-group">
+                    <a href="/prototype-order" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("Order")}}
+                    </a>
+                    <a href="/prototype-dashboard" class="list-group-item ">
+                        <i class="fa fa-cog"></i> {{_("List")}}
+                    </a>
+                    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
+                        aria-expanded="false" aria-controls="c1aa">
+                        <i class="fa fa-cog"></i> {{_("Manage")}}
+                    </a>
+                    <div id="c1aa" class="collapse" data-parent="#c1a">
+                        <div class="list-group">
+                            {# <a href="#" class="list-group-item ">
+                                {{_("Fabric vendor")}}
+                            </a>
+                            <a href="#" class="list-group-item ">
+                                {{_("Fabric Ref")}}
+                            </a>
+                            <a href="#" class="list-group-item ">
+                                {{_("Fabric Color")}}
+                            </a> #}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {# <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Tech pack")}}
+            </a>
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Pattern")}}
+            </a> #}
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse4"
+        aria-expanded="true" aria-controls="collapse4">
+        <i class="fa fa-cog"></i> {{_("Production")}}
+    </a>
+    <div id="collapse4" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Order")}}
+            </a>
+            <a href="/production-dashboard" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("List")}}
+            </a>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c4a"
+                aria-expanded="false" aria-controls="c4a">
+                <i class="fa fa-cog"></i> {{_("Manage")}}
+            </a>
+            <div id="c4a" class="collapse" data-parent="#collapse4">
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">
+                        {{_("Create new product")}}
+                    </a>
+                    <a href="/production-factory?new=1" class="list-group-item ">
+                        {{_("Create new factory")}}
+                    </a>
+                    <a href="/product-category?new=1" class="list-group-item ">
+                        {{_("Create new product category")}}
+                    </a>
+                    <a href="/sizing-scheme" class="list-group-item ">
+                        {{_("Create new sizing scheme")}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse5"
+        aria-expanded="true" aria-controls="collapse5">
+        <i class="fa fa-truck"></i> {{_("Shipment")}}
+    </a>
+    <div id="collapse5" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="/shipment-order?new=1" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Order")}}
+            </a>
+            <a href="/shipping-list" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("List")}}
+            </a>
+            {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c5a"
+                aria-expanded="false" aria-controls="c5a">
+                <i class="fa fa-cog"></i> {{_("Manage")}}
+            </a>
+            <div id="c5a" class="collapse" data-parent="#collapse5">
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">
+                        {{_("List of carriers")}}
+                    </a>
+                </div>
+            </div> #}
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse6"
+        aria-expanded="true" aria-controls="collapse6">
+        <i class="fa fa-archive"></i> {{_("Stock")}}
+    </a>
+    <div id="collapse6" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Supply")}}
+            </a>
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Finished product")}}
+            </a>
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("History")}}
+            </a>
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
+        aria-expanded="true" aria-controls="collapse7">
+        <i class="fa fa-align-justify"></i> {{_("Invoice Packing List")}}
+    </a>
+    <div id="collapse7" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Order")}}
+            </a>
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("List")}}
+            </a>
+            <a href="#" class="list-group-item ">
+                <i class="fa fa-cog"></i> {{_("Manage")}}
+            </a>
+        </div>
+    </div>
+    {# <a href="#" class="list-group-item ">
+        <i class="fa fa-dollar"></i> {{_("Finance")}}
+    </a> #}
 </div>
