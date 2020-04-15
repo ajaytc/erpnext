@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="17.674" height="19.535" viewBox="0 0 17.674 19.535">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #828990;
+      }
+    </style>
+  </defs>
+  <g id="Document" transform="translate(-0.335 -0.186)">
+    <path id="Shape" class="cls-1" d="M16.279,19.535H1.395A1.4,1.4,0,0,1,0,18.139V5.582a1.4,1.4,0,0,1,.68-1.2L4.4.661A1.388,1.388,0,0,1,5.582,0h10.7a1.4,1.4,0,0,1,1.4,1.4V18.139A1.4,1.4,0,0,1,16.279,19.535ZM1.395,5.628V18.139H16.279L16.26,1.414H5.61v.028l-.028.028V5.6H1.451l-.028.028ZM4.186,2.847,2.847,4.186H4.186Z" transform="translate(0.335 0.186)"/>
+    <path id="Shape-2" data-name="Shape" class="cls-1" d="M10,0H.7a.7.7,0,0,0,0,1.4H10A.7.7,0,1,0,10,0Z" transform="translate(3.823 10.884)"/>
+    <path id="Shape-3" data-name="Shape" class="cls-1" d="M8.6,0H.7a.7.7,0,0,0,0,1.4H8.6A.7.7,0,0,0,8.6,0Z" transform="translate(3.823 14.14)"/>
+    <path id="Shape-4" data-name="Shape" class="cls-1" d="M4.186,5.582H1.395A1.4,1.4,0,0,1,0,4.186V1.395A1.4,1.4,0,0,1,1.395,0H4.186a1.4,1.4,0,0,1,1.4,1.395V4.186A1.4,1.4,0,0,1,4.186,5.582ZM1.395,1.395V4.186H4.186V1.395Z" transform="translate(9.172 3.442)"/>
+  </g>
+</svg>

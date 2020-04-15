@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="11.446" height="10.639" viewBox="0 0 11.446 10.639">
+  <defs>
+    <style>
+      .cls-1 {
+        opacity: 0.504;
+      }
+
+      .cls-2 {
+        fill: #828990;
+      }
+    </style>
+  </defs>
+  <g id="Arrow_Blazing_Right" data-name="Arrow Blazing  Right" class="cls-1" transform="translate(12.785 10.826) rotate(-180)">
+    <g id="Arrow-Blazing--Right" transform="translate(12.786 11) rotate(90)">
+      <path id="Rectangle" class="cls-2" d="M-.786,0-6.742.056A.717.717,0,0,0-7.452.77a.713.713,0,0,0,.7.716l5.962.069A.777.777,0,0,0,0,.787S0,.781,0,.778A.778.778,0,0,0-.778,0Z" transform="translate(-1.273 5.078) rotate(-45)"/>
+      <path id="Rectangle-2" data-name="Rectangle" class="cls-2" d="M.785,0,6.631.147a.716.716,0,0,1,.7.693.658.658,0,0,1-.636.679H6.675L.786,1.548A.782.782,0,0,1,0,.77s0,0,0,0A.766.766,0,0,1,.766,0Z" transform="translate(-9.718 5.053) rotate(45)"/>
+      <path id="Rectangle-3" data-name="Rectangle" class="cls-2" d="M.786,0H8.643a.786.786,0,0,1,0,1.571H.786A.786.786,0,0,1,.786,0Z" transform="translate(-4.714 0.001) rotate(90)"/>
+    </g>
+  </g>
+</svg>
