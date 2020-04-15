@@ -99,28 +99,18 @@
                         <button class="input-group-text" id="upload-picture">Upload</button>
                     </div>
                 </div>
-            </div>
-        </div>
 
-    </div>
-
-    <div class="row">
-        <div class="card mt-3" style="width: 15rem;padding:1rem">
-            <div class="">
-                {% if order %}
-                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
-                {% else %}
-                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+                {% if order and order.profoma is not none and order.profoma!='null' %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="{{order.profoma}}">Profoma</a>
+                </div>
                 {% endif %}
             </div>
         </div>
 
+        <div class="col-xs">
 
-        {% if order and order.profoma is not none and order.profoma!='null' %}
-        <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
-            <a href="{{order.profoma}}">Profoma</a>
         </div>
-        {% endif %}
     </div>
 
     {# product table #}
@@ -220,5 +210,17 @@
     </div>
     {% endfor %}
     {% endif %}
+
+    <div class="row">
+        <div class="card mt-3" style="width: 15rem;padding:1rem">
+            <div class="">
+                {% if order %}
+                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                {% else %}
+                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 </div>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18.563" height="17.438" viewBox="0 0 18.563 17.438">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #828990;
+      }
+    </style>
+  </defs>
+  <g id="List" transform="translate(-0.124 -0.225)">
+    <path id="Shape" class="cls-1" d="M.844,1.688H17.719a.844.844,0,0,0,0-1.687H.844a.844.844,0,0,0,0,1.688Z" transform="translate(0.124 0.225)"/>
+    <path id="Shape-2" data-name="Shape" class="cls-1" d="M.844,1.688H11.531a.844.844,0,0,0,0-1.687H.844a.844.844,0,0,0,0,1.688Z" transform="translate(0.124 4.162)"/>
+    <path id="Shape-3" data-name="Shape" class="cls-1" d="M.844,1.688h15.75a.844.844,0,0,0,0-1.687H.844a.844.844,0,0,0,0,1.688Z" transform="translate(0.124 8.1)"/>
+    <path id="Shape-4" data-name="Shape" class="cls-1" d="M.844,1.688H14.906a.844.844,0,0,0,0-1.687H.844a.844.844,0,0,0,0,1.688Z" transform="translate(0.124 12.038)"/>
+    <path id="Shape-5" data-name="Shape" class="cls-1" d="M17.719,0H.844a.844.844,0,0,0,0,1.688H17.719a.844.844,0,0,0,0-1.687Z" transform="translate(0.124 15.975)"/>
+  </g>
+</svg>
