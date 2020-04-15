@@ -1,0 +1,51 @@
+
+<div>
+    <h2>
+        List of Products in Stock
+    </h2>
+</div>
+
+<div>
+    <table class="table table-striped" >
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">{{_("Internal Ref")}}</th>
+                <th scope="col">{{_("Size")}}</th>
+                <th scope="col">{{_("Color")}}</th>
+                <th scope="col">{{_("Quantity")}}</th>
+                <th scope="col">{{_("Localization")}}</th>
+                <th scope="col">{{_("Total Value")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in packaging %}
+            <tr> 
+                <th><input id="checkbox_selection" type="checkbox" value="1" name="check1"></th>
+                <th>{{o[0]}}</th>
+                <th>{{o[1]}}</th>
+                <th>{{o[2]}}</th>
+                <th>{{o[3]}}</th>
+                <th>{{o[4]}}</th>
+                <th>{{o[5]}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+<div>
+    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+       Ship From existing Purchase
+    </button>
+    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+       Direct Ship
+    </button>
+    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+       Update Stock
+    </button>
+</div>
+
+
+{% include "erpnext/www/imports.html" %}

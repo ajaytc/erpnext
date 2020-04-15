@@ -21,7 +21,7 @@
    "fieldname": "item_type",
    "fieldtype": "Select",
    "label": "Item Type",
-   "options": "Product\nFabric\nTrimming\nPackaging"
+   "options": "product\nfabric\ntrimming\npackaging"
   },
   {
    "fieldname": "product",
@@ -69,7 +69,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-14 18:01:55.138392",
+ "modified": "2020-04-15 15:12:11.655140",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock",
