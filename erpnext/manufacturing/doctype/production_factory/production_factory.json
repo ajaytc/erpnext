@@ -10,7 +10,6 @@
   "column_break_1",
   "manufacturer",
   "address_and_contact",
-  "factory_address",
   "address_line_1",
   "address_line_2",
   "city_town",
@@ -46,40 +45,30 @@
    "label": "Address and Contact"
   },
   {
-   "fieldname": "factory_address",
-   "fieldtype": "Link",
-   "label": "Address",
-   "options": "Address"
-  },
-  {
    "fieldname": "address_line_1",
-   "fieldtype": "Text",
-   "label": "Address Line",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "Address Line"
   },
   {
    "fieldname": "address_line_2",
-   "fieldtype": "Text",
-   "label": "Address Line 2",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "Address Line 2"
   },
   {
    "fieldname": "city_town",
-   "fieldtype": "Text",
-   "label": "City/Town",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "City/Town"
   },
   {
    "fieldname": "country",
-   "fieldtype": "Text",
+   "fieldtype": "Link",
    "label": "Country",
-   "read_only": 1
+   "options": "Country"
   },
   {
    "fieldname": "postal_code",
-   "fieldtype": "Text",
-   "label": "Postal Code",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "Postal Code"
   },
   {
    "fieldname": "column_break_12",
@@ -87,19 +76,17 @@
   },
   {
    "fieldname": "email_address",
-   "fieldtype": "Text",
-   "label": "Email Address",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "Email Address"
   },
   {
    "fieldname": "phone",
-   "fieldtype": "Text",
-   "label": "Phone",
-   "read_only": 1
+   "fieldtype": "Data",
+   "label": "Phone"
   }
  ],
  "links": [],
- "modified": "2020-04-07 17:47:45.176755",
+ "modified": "2020-04-15 22:28:12.672604",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

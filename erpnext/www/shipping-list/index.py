@@ -17,9 +17,15 @@ def get_context(context):
     context.show_sidebar = False
     context.status = 'active'
 
-    query = """select so.internal_ref, i.item_name, so.shipping_date, so.expected_delivery_date, i.item_destination from `tabShipment Order` so left join `tabSales Order Item` i on i.name = so.product_order_id"""
-    context.active = frappe.db.sql(query+" where i.docstatus=1")
-    context.completed = frappe.db.sql(query+" where i.docstatus=0")
+    brand = frappe.get_doc("User", frappe.session.user).brand_name
+
+    query = """select so.internal_ref, i.item_name, so.shipping_date, so.expected_delivery_date, i.item_destination 
+                from `tabSales Order Item` i
+                left join `tabShipment Order` so on i.name = so.product_order_id
+                right join `tabSales Order` s on s.name = i.parent
+                where i.docstatus=%s and s.company=%s"""
+    context.active = frappe.db.sql(query,(1,brand))
+    context.completed = frappe.db.sql(query,(0,brand))
     
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}
