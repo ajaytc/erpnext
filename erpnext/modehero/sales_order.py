@@ -72,15 +72,6 @@ def on_remove_sales_order(doc, method):
 
 
 @frappe.whitelist()
-def validate_order(order):
-    order = frappe.get_doc('Sales Order', order)
-    order.docstatus = 1
-    order.save()
-    frappe.db.commit()
-    frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" validated")
-
-
-@frappe.whitelist()
 def delete(order):
     frappe.delete_doc('Sales Order', order)
     frappe.db.commit()
@@ -178,3 +169,31 @@ def calculate_price(products):
     prices['total'] = total
     prices['perpiece'] = perpiece
     return prices
+
+
+@frappe.whitelist()
+def validate_order(order, products):
+    products = json.loads(products)
+    order = frappe.get_doc('Sales Order', order)
+    order.docstatus = 1
+
+    update_sales_order(order, products)
+    order.save()
+    frappe.db.commit()
+    frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" validated")
+
+
+def update_sales_order(order, products):
+    # order is sales order doc
+    # products come in this dictionary format {'0001':{'XS':1,'S':2},'0002':{'M':3}}
+
+    for i in order.items:
+        qtys = frappe.get_all('Quantity Per Size',
+                              filters={'order_id': i.name}, fields=['name', 'size', 'quantity'])
+        for q in qtys:
+            if(products[i.item_code][q['size']] != q['quantity']):
+                frappe.db.set_value('Quantity Per Size', q.name, {
+                    'quantity': products[i.item_code][q['size']]
+                })
+
+    frappe.db.commit()

@@ -119,30 +119,6 @@
             </div>
 
             <div class="row mt-3 table-section">
-                {# <table class="table table-bordered">
-                    <thead>
-                        <tr class="sizing">
-                            <th scope="col">{{_("Sizing")}}</th>
-                            {% for s in sizes %}
-                            <th scope="col">{{s.size}}</th>
-                            {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="qty">
-                            <th scope="row">{{_("Quantity")}}</th>
-                            {% for s in sizes %}
-                            <td><input type="text" class="form-control"></td>
-                            {% endfor %}
-                        </tr>
-                        <tr class="modified-qty">
-                            <th scope="row">{{_("Modified quantity")}}</th>
-                            {% for s in sizes %}
-                            <td><input type="text" class="form-control" {% if isCustomer %}disabled{% endif %}></td>
-                            {% endfor %}
-                        </tr>
-                    </tbody>
-                </table> #}
             </div>
 
             <div>
@@ -202,11 +178,13 @@
                                 {{frappe.get_doc('Quantity Per Size',s)['quantity']}}</td>
                             {% endfor %}
                         </tr>
-                        <tr class="modified-qty">
+                        <tr>
                             <th scope="row">{{_("Modified quantity")}}</th>
                             {% for s in qtys[o.name] %}
-                            <td><input type="text" class="form-control"
-                                    {% if isCustomer and not isBrand %}disabled{% endif %}></td>
+                            <td><input type="text" class="form-control modified-qty"
+                                    data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}"
+                                    {% if isCustomer and not isBrand %}disabled{% endif %}
+                                    value="{{frappe.get_doc('Quantity Per Size',s)['quantity']}}"></td>
                             {% endfor %}
 
                         </tr>

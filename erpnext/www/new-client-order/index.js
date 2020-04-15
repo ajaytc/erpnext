@@ -142,22 +142,6 @@ $('#submit').click(() => {
 
 })
 
-$('#validate').click(function () {
-    let order = $('#order-no').text().trim()
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.validate_order',
-        args: {
-            order
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r)
-
-            }
-        }
-    })
-})
-
 $('#upload-profoma').click(function () {
     let file = $('#profoma').prop('files')[0]
     if (file.size / 1024 / 1024 > 5) {
@@ -271,3 +255,66 @@ setTimeout(() => {
     calculatePriceOnLoad()
 }, 500);
 {% endif %}
+
+$('.modified-qty').change(function () {
+    calculatePrice(getModifiedProducts())
+})
+
+$('#cancel').click(function () {
+    var r = confirm(frappe._("Are you sure want to cancel this order?"))
+    if (r == true) {
+        let order = $('#order-no').html().trim()
+        frappe.call({
+            method: 'erpnext.modehero.sales_order.cancel',
+            args: {
+                order
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    window.location.reload()
+                }
+            }
+        })
+    }
+})
+
+function getModifiedProducts() {
+    let products = {}
+    $('.product-table').map(function () {
+        let product = $(this).find('.product').html()
+        console.log(product)
+        $(this).find('.modified-qty').map(function () {
+            let qty = $(this).val()
+            let size = $(this).attr('data-size')
+            if (!products[product]) {
+                products[product] = {}
+            }
+            if (qty != '') {
+                products[product][size] = qty
+            }
+        })
+    })
+    console.log(products)
+    return products
+}
+
+$('#validate').click(function () {
+    var r = confirm(frappe._("Are you sure want to validate this order?"))
+    if (r == true) {
+        let order = $('#order-no').text().trim()
+        frappe.call({
+            method: 'erpnext.modehero.sales_order.validate_order',
+            args: {
+                order,
+                products: getModifiedProducts()
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    window.location.reload()
+                }
+            }
+        })
+    }
+})
