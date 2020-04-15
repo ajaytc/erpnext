@@ -2,13 +2,6 @@ var tablecount = 1;
 var profoma = null;
 var numeric = /^\d+$/;
 
-$('#addtable').click(() => {
-    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#container')
-    tablecount++
-    $('.selected-product').click(productUpdateCallback)
-    setClose()
-})
-
 $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {

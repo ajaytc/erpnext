@@ -52,7 +52,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
                     "size": s,
                     "quantity": qty,
                     "order_id": i.name,
-                    "product_id": i.item_code
+                    "product_id": i.item_code,
+                    "brand": brand
                 })
                 qtypersize.insert()
 
@@ -122,7 +123,8 @@ def duplicate(order):
                 "size": q.size,
                 "quantity": q.quantity,
                 "order_id": order_id,
-                "product_id": i.item_code
+                "product_id": i.item_code,
+                "brand": doc.company
             })
             qtypersize.insert()
 
