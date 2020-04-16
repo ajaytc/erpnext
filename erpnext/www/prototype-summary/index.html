@@ -1,0 +1,155 @@
+<h2>{{_("Prototype Order Summary")}}</h2>
+{# this page is used for both new client purchase and client purchase summary page #}
+
+{% macro dropdown(items,class,id) %}
+<div class="form-group">
+    <select class="form-control {{class}}" id="{{id}}">
+        {% for i in items %}
+        {% if i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+<div id="container" class="container mt-3">
+    <div class="card" style="">
+        <div class="card-body row">
+            {% if order %}
+            {% for o in order.items %}
+            <div id="{{o.item_code}}" class="mt-3 product-table" style="width:90%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                            <br />
+                            <span class="product">{{o.item_name}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 table-section">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="sizing">
+                                    <th scope="col">{{_("Sizing")}}</th>
+                                    {% for s in qtys[o.name] %}
+                                    <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['size']}}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="qty">
+                                    <th scope="row">{{_("Quantity")}}</th>
+                                    {% for s in qtys[o.name] %}
+                                    <td scope="col" data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}">
+                                        {{frappe.get_doc('Quantity Per Size',s)['quantity']}}</td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <table class="table table-bordered pricing-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">{{_("Price/Pcs")}}</th>
+                                    <th scope="col">{{_("Total Price")}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="price-pp"></td>
+                                    <td class="total-price"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Date")}} <br />
+                    <span>{% if date %}{{date}}{% endif %}
+                        {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
+                    </span>
+                </div>
+                <div id="order-no-section" class="m-3">
+                    {{_("Order Number")}}
+                    <span id="order-no">
+                        {{order.name}}
+                    </span>
+                </div>
+                <div class="m-3">
+                    {{_("Internal ref")}}
+                    <br />
+                    {{order.internal_ref}}
+                </div>
+
+                <div class="m-3">
+                    {{_("Fabric ref")}}
+                    <br />
+                    {{order.internal_ref}}
+                </div>
+                <div class="m-3">
+                    {{_("Fabric consumption")}}
+                    <br />
+                    {{order.internal_ref}}
+                </div>
+                <div class="m-3">
+                    {{_("Fabric Status")}}
+                    <br />
+                    {{order.internal_ref}}
+                </div>
+                <div class="m-3">
+                    <label for="exampleFormControlSelect1">{{_("Garment Label")}}</label>
+                    {{order.garment_label}}
+                </div>
+                <div class="m-3">
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                </div>
+                <div class="m-3">
+                    {{_("Comments")}}
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Production Factory Name")}}
+                </div>
+                <div class="m-3">
+                    {{_("Final Destination")}}
+                </div>
+                <div class="m-3">
+                    {{_("Trimming")}}
+                </div>
+                <div class="m-3">
+                    {{_("Trimming Status")}}
+                </div>
+
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="#">Tech pack</a>
+                </div>
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="#">Picture</a>
+                </div>
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="#">Pattern</a>
+                </div>
+            </div>
+
+            <div class="ml-5">
+                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,196 @@
+<h2>{{_("Production Order")}}</h2>
+{# this page is used for both new client purchase and client purchase summary page #}
+
+{% macro dropdown(items,class,id) %}
+<div class="form-group">
+    <select class="form-control {{class}}" id="{{id}}">
+        {% for i in items %}
+        {% if i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+<div id="container" class="container mt-3">
+    <div class="card" style="">
+        <div class="card-body row">
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Date")}} <br />
+                    <span>{% if date %}{{date}}{% endif %}
+                        {% if order %}
+                        {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
+                        {% endif %}
+                    </span>
+                </div>
+                <div id="order-no-section" class="m-3">
+                    {{_("Order Number")}}
+                    <span id="order-no">
+                        {% if order %}
+                        {{order.name}}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="m-3">
+                    {{_("Internal ref")}}
+                    {% if order %}
+                    <br />
+                    {{order.internal_ref}}
+                    {% else %}
+                    <input id="internal-ref" type="text" class="form-control mt-2">
+                    {% endif %}
+                </div>
+
+                <div class="m-3">
+                    {{_("Fabric ref")}}
+                    {% if order %}
+                    <br />
+                    {{order.internal_ref}}
+                    {% else %}
+                    {% endif %}
+                </div>
+                <div class="m-3">
+                    {{_("Fabric Status")}}
+                    {% if order %}
+                    <br />
+                    {{order.internal_ref}}
+                    {% else %}
+                    {% endif %}
+                </div>
+                <div class="m-3">
+                    <label for="exampleFormControlSelect1">{{_("Garment Label")}}</label>
+                    {% if order %}
+                    {{order.garment_label}}
+                    {% else %}
+                    {{dropdown(garmentlabel,'','garmentlabel')}}
+                    {% endif %}
+                </div>
+                <div class="m-3">
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                    {{dropdown(destinations,'destination')}}
+                </div>
+                <div class="m-3 form-group">
+                    {{_("Comments")}}
+                    <textarea class="form-control" id="comment" rows="4">
+                    </textarea>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Production Factory Info")}}
+                </div>
+                <div class="m-3">
+                    {{_("Trimming")}}
+                </div>
+                <div class="m-3">
+                    {{_("Packaging")}}
+                </div>
+
+
+                {% if order and order.profoma is not none and order.profoma!='null' %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="{{order.profoma}}">Profoma</a>
+                </div>
+                {% endif %}
+            </div>
+            {% if not order %}
+            <div class="col-12 m-3 product-table">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                        {{dropdown(products,'selected-product')}}
+                    </div>
+                </div>
+
+                <div class="row mt-3 table-section">
+                </div>
+
+                <div>
+                    <table class="table table-bordered pricing-table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">{{_("Price/Pcs")}}</th>
+                                <th scope="col">{{_("Total Price")}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="price-pp"></td>
+                                <td class="total-price"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+            <div class="ml-5">
+                {% if order %}
+                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                {% else %}
+                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    {% if order %}
+    {% for o in order.items %}
+    <div id="{{o.item_code}}" class="row card mt-3 product-table" style="width:90%">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                    <br />
+                    <span class="product">{{o.item_name}}</span>
+                </div>
+            </div>
+
+            <div class="row mt-3 table-section">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="sizing">
+                            <th scope="col">{{_("Sizing")}}</th>
+                            {% for s in qtys[o.name] %}
+                            <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['size']}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="qty">
+                            <th scope="row">{{_("Quantity")}}</th>
+                            {% for s in qtys[o.name] %}
+                            <td scope="col" data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}">
+                                {{frappe.get_doc('Quantity Per Size',s)['quantity']}}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table class="table table-bordered pricing-table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">{{_("Price/Pcs")}}</th>
+                            <th scope="col">{{_("Total Price")}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="price-pp"></td>
+                            <td class="total-price"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
