@@ -1,4 +1,3 @@
-
 <div>
     <h2>
         List of Products in Stock
@@ -19,7 +18,7 @@
         <tbody>
             {% for o in products %}
             <tr> 
-                <th><input id="checkbox_selection" type="checkbox" value="1" name="check1"></th>
+                <th><input type="radio" class = "selectedproduct" name="optradio" data-name = "{{o[4]}}" data-qty = "{{o[1]}}" data-item = "{{o[0]}}" checked></th>
                 <th>{{o[0]}}</th>
                 <th>{{o[1]}}</th>
                 <th>{{o[2]}}</th>
@@ -32,16 +31,87 @@
 
 
 <div>
-    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+    <button type="button" class="btn btn-primary" >
        Ship From existing Purchase
     </button>
-    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#directShip" id=directShipButton>
        Direct Ship
     </button>
-    <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateStock" id=updateStockButton>
        Update Stock
     </button>
 </div>
 
+{% macro dropdown(items,class,id) %}
+<div class="form-group">
+    <select class="form-control {{class}}" id="{{id}}">
+        {% for i in items %}
+        {% if i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+<div class="modal fade" id="updateStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Stock</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="in-stock" class="col-form-label">In Stock</label>
+              <input type="number" class="form-control" id="in-stock" readonly>
+            </div>
+            <div class="form-group">
+              <label for="real-stock" class="col-form-label">Real Stock</label>
+              <input type="number" class="form-control" id="real-stock" >
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="validatebutton">Validate</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="directShip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Direct Ship</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="quantity" class="col-form-label">Qty</label>
+              <input type="number" class="form-control" id="quantity">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                {{dropdown(destination,'','destination')}}
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id=shipbutton>Ship</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% include "erpnext/www/imports.html" %}
