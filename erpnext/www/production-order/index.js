@@ -27,7 +27,7 @@ const productUpdateCallback = (e) => {
     });
 }
 
-$('.selected-product').click(productUpdateCallback)
+$('#product').click(productUpdateCallback)
 
 function generateSizingTable(sizes) {
 
@@ -255,8 +255,26 @@ function calculatePriceOnLoad() {
     calculatePrice(products)
 }
 
-{% if order %}
-setTimeout(() => {
-    calculatePriceOnLoad()
-}, 500);
-{% endif %}
+function generateOptions(values) {
+    let html = ''
+    values.map(v => {
+        html += `<option value="${v.name}">${v.name}</option>`
+    })
+    return html
+}
+
+$('#category').change(function () {
+    let category = $(this).find('option:selected').text()
+    frappe.call({
+        method: 'erpnext.modehero.product.get_products_of_category',
+        args: {
+            category
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                $('#product').html(generateOptions(r.message))
+            }
+        }
+    })
+})
