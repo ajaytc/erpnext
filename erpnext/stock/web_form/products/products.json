@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-17 20:43:48.629417",
+ "modified": "2020-04-17 23:00:35.198730",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "products",
@@ -32,7 +32,7 @@
  "show_in_grid": 0,
  "show_sidebar": 0,
  "sidebar_items": [],
- "success_url": "/products",
+ "success_url": "/product-item",
  "title": "Products",
  "web_form_fields": [
   {
