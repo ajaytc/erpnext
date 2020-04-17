@@ -158,7 +158,7 @@ $('#upload-profoma').click(function () {
             args: {
                 filename: file.name,
                 attached_to_doctype: 'Sales Order',
-                attached_to_field: profoma,
+                attached_to_field: 'profoma',
                 is_private: true,
                 filedata: reader.result,
                 from_form: true,

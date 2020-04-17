@@ -36,7 +36,7 @@ function generateSizingTable(sizes) {
     })
 
     return `
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="product-table">
                 <thead>
                     <tr>
                         <th scope="col">{{_("Sizing")}}</th>
@@ -55,78 +55,6 @@ function generateSizingTable(sizes) {
 
 const cleartable = () => $('.table-section').html('')
 
-const setClose = () => {
-    $('.close').click(e => {
-        if (tablecount > 1) {
-            $(e.target).parent().parent().parent().remove()
-            tablecount--
-        }
-    })
-}
-
-setClose()
-
-
-$('#submit').click(() => {
-    let products = {}
-    let garmentlabel = $('#garmentlabel>option:selected').text()
-    let allnull = true
-    $('.product-table').map(function () {
-        let product = $($(this).find('.selected-product')[0]).find('option:selected').text()
-        let destination = $($(this).find('.destination')[0]).find('option:selected').text()
-
-        let qtys = {}
-        let sizes = []
-        let counter = 0
-
-        $(this).find('.sizing').map(function () {
-            sizes.push($(this).text())
-        })
-
-        $(this).find('.qty>td>input').map(function () {
-            if ($(this).val() != "") {
-                allnull = false
-            }
-            // qtys.push($(this).val())
-            qtys[sizes[counter++]] = $(this).val()
-        })
-
-        products[product] = {
-            item: product,
-            destination,
-            quantities: qtys
-        }
-    })
-
-    console.log(products, garmentlabel)
-    if (allnull) {
-        frappe.throw(frappe._("Please fill quantities"))
-    }
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.create_sales_order',
-        args: {
-            items: products,
-            garmentlabel,
-            internalref: $('#internal-ref').val(),
-            profoma
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r)
-                let order = r.message.order
-                if (order && order.name) {
-                    $('#order-no').html(order.name)
-                    frappe.msgprint({
-                        title: __('Notification'),
-                        indicator: 'green',
-                        message: __('Sales order ' + order.name + ' created successfully')
-                    });
-                }
-            }
-        }
-    })
-
-})
 
 $('#validate').click(function () {
     let order = $('#order-no').text().trim()
@@ -144,41 +72,6 @@ $('#validate').click(function () {
     })
 })
 
-$('#upload-profoma').click(function () {
-    let file = $('#profoma').prop('files')[0]
-    if (file.size / 1024 / 1024 > 5) {
-        frappe.throw("Please upload file less than 5mb")
-        return
-    }
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    console.log(file, reader, reader.result)
-    reader.onload = function () {
-        frappe.call({
-            method: 'frappe.handler.uploadfile',
-            // method: 'erpnext.modehero.sales_order.upload_test',
-            args: {
-                filename: file.name,
-                attached_to_doctype: 'Sales Order',
-                attached_to_field: profoma,
-                is_private: true,
-                filedata: reader.result,
-                from_form: true,
-            },
-            callback: function (r) {
-                if (!r.exc) {
-                    console.log(r)
-                    frappe.msgprint("File successfully uploaded")
-                    $('#profoma-label').html(r.message.file_url)
-                    profoma = r.message.file_url
-                }
-            }
-        })
-
-    }
-
-})
-
 function priceUpdateCallback(e) {
     // console.log(e.target.value, $(e.target).attr('data-size'))
     if (!numeric.test(e.target.value)) {
@@ -189,7 +82,7 @@ function priceUpdateCallback(e) {
 
         //calculate price 
         $('.product-table').map(function () {
-            let product = $(this).find('.selected-product>option:selected').text()
+            let product = $(this).find('#product>option:selected').text()
 
             $(this).find('.qty>td').map(function () {
                 let qty = $(this).find('input').val()
@@ -275,3 +168,91 @@ $('#category').change(function () {
         }
     })
 })
+
+$('#submit').click(() => {
+    let allnull = true
+
+    let product = $('#product').find('option:selected').text()
+    let destination = $('#destination').find('option:selected').text()
+
+    let qtys = {}
+    let sizes = []
+    let counter = 0
+
+    $('.sizing').map(function () {
+        sizes.push($(this).text())
+    })
+
+    $('.qty>td>input').map(function () {
+        if ($(this).val() != "") {
+            allnull = false
+            qtys[sizes[counter++]] = $(this).val()
+        }
+        // qtys.push($(this).val())
+    })
+
+    console.log(product, qtys)
+    if (allnull) {
+        frappe.throw(frappe._("Please fill quantities"))
+    }
+    // frappe.call({
+    //     method: 'erpnext.modehero.sales_order.create_sales_order',
+    //     args: {
+    //         items: products,
+    //         garmentlabel,
+    //         internalref: $('#internal-ref').val(),
+    //         profoma
+    //     },
+    //     callback: function (r) {
+    //         if (!r.exc) {
+    //             console.log(r)
+    //             let order = r.message.order
+    //             if (order && order.name) {
+    //                 $('#order-no').html(order.name)
+    //                 frappe.msgprint({
+    //                     title: __('Notification'),
+    //                     indicator: 'green',
+    //                     message: __('Sales order ' + order.name + ' created successfully')
+    //                 });
+    //             }
+    //         }
+    //     }
+    // })
+
+})
+
+function uploadFile(componentId) {
+    return new Promise((resolve, reject) => {
+        let file = $(`#${componentId}`).prop('files')[0]
+        if (file.size / 1024 / 1024 > 5) {
+            frappe.throw("Please upload file less than 5mb")
+            return
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        console.log(file, reader, reader.result)
+        reader.onload = function () {
+            frappe.call({
+                method: 'frappe.handler.uploadfile',
+                // method: 'erpnext.modehero.sales_order.upload_test',
+                args: {
+                    filename: file.name,
+                    attached_to_doctype: 'Prototype Order',
+                    attached_to_field: componentId,
+                    is_private: true,
+                    filedata: reader.result,
+                    from_form: true,
+                },
+                callback: function (r) {
+                    if (!r.exc) {
+                        console.log(r)
+                        $(`#${componentId}`).html(r.message.file_url)
+                        profoma = r.message.file_url
+                    }
+                }
+            })
+
+        }
+    })
+
+}

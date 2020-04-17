@@ -88,49 +88,49 @@ class Item(WebsiteGenerator):
 			self.set_opening_stock()
 
 	def validate(self):
-		super(Item, self).validate()
+		pass
+		# super(Item, self).validate()
+		# if not self.item_name:
+		# 	self.item_name = self.item_code
 
-		if not self.item_name:
-			self.item_name = self.item_code
+		# if not self.description:
+		# 	self.description = self.item_name
 
-		if not self.description:
-			self.description = self.item_name
+		# self.validate_uom()
+		# self.validate_description()
+		# self.add_default_uom_in_conversion_factor_table()
+		# self.validate_conversion_factor()
+		# self.validate_item_type()
+		# self.check_for_active_boms()
+		# self.fill_customer_code()
+		# self.check_item_tax()
+		# self.validate_barcode()
+		# self.validate_warehouse_for_reorder()
+		# self.update_bom_item_desc()
+		# self.synced_with_hub = 0
 
-		self.validate_uom()
-		self.validate_description()
-		self.add_default_uom_in_conversion_factor_table()
-		self.validate_conversion_factor()
-		self.validate_item_type()
-		self.check_for_active_boms()
-		self.fill_customer_code()
-		self.check_item_tax()
-		self.validate_barcode()
-		self.validate_warehouse_for_reorder()
-		self.update_bom_item_desc()
-		self.synced_with_hub = 0
+		# self.validate_has_variants()
+		# self.validate_stock_exists_for_template_item()
+		# self.validate_attributes()
+		# self.validate_variant_attributes()
+		# self.validate_variant_based_on_change()
+		# self.validate_website_image()
+		# self.make_thumbnail()
+		# self.validate_fixed_asset()
+		# self.validate_retain_sample()
+		# self.validate_uom_conversion_factor()
+		# self.validate_item_defaults()
+		# self.validate_customer_provided_part()
+		# self.update_defaults_from_item_group()
+		# self.validate_auto_reorder_enabled_in_stock_settings()
+		# self.cant_change()
+		# self.update_show_in_website()
 
-		self.validate_has_variants()
-		self.validate_stock_exists_for_template_item()
-		self.validate_attributes()
-		self.validate_variant_attributes()
-		self.validate_variant_based_on_change()
-		self.validate_website_image()
-		self.make_thumbnail()
-		self.validate_fixed_asset()
-		self.validate_retain_sample()
-		self.validate_uom_conversion_factor()
-		self.validate_item_defaults()
-		self.validate_customer_provided_part()
-		self.update_defaults_from_item_group()
-		self.validate_auto_reorder_enabled_in_stock_settings()
-		self.cant_change()
-		self.update_show_in_website()
-
-		if not self.get("__islocal"):
-			self.old_item_group = frappe.db.get_value(self.doctype, self.name, "item_group")
-			self.old_website_item_groups = frappe.db.sql_list("""select item_group
-					from `tabWebsite Item Group`
-					where parentfield='website_item_groups' and parenttype='Item' and parent=%s""", self.name)
+		# if not self.get("__islocal"):
+		# 	self.old_item_group = frappe.db.get_value(self.doctype, self.name, "item_group")
+		# 	self.old_website_item_groups = frappe.db.sql_list("""select item_group
+		# 			from `tabWebsite Item Group`
+		# 			where parentfield='website_item_groups' and parenttype='Item' and parent=%s""", self.name)
 
 	def on_update(self):
 		invalidate_cache_for_item(self)

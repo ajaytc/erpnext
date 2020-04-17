@@ -7,6 +7,8 @@
         {% for i in items %}
         {% if i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.fabric_ref %}
+        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
         {% else %}
         <option value="{{i}}">{{i}}</option>
         {% endif %}
@@ -30,27 +32,18 @@
 
                 <div class="m-3">
                     {{_("Fabric ref")}}
-                    <input id="fabric-ref" type="text" class="form-control mt-2">
+                    {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric-ref')}}
                 </div>
                 <div class="m-3">
                     {{_("Fabric consumption")}}
-                    <input id="fabric-ref" type="text" class="form-control mt-2">
+                    <input id="fabric-consumption" type="text" class="form-control mt-2">
                 </div>
                 <div class="m-3">
                     {{_("Fabric Status")}}
-                    <input id="fabric-ref" type="text" class="form-control mt-2">
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Garment Label")}}</label>
-                    {{dropdown(garmentlabel,'','garmentlabel')}}
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                    {{dropdown(destinations,'destination')}}
                 </div>
                 <div class="m-3">
                     {{_("Comments")}}
-                    <input id="fabric-ref" type="text" class="form-control mt-2">
+                    <textarea class="form-control" id="comment" rows="4"></textarea>
                 </div>
 
             </div>
@@ -59,14 +52,15 @@
                     {{_("Production Factory Name")}}
                 </div>
                 <div class="m-3">
-                    {{_("Final Destination")}}
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                    {{dropdown(destinations,'','destination')}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming")}}
+                    {{dropdown(frappe.get_list('Trimming Item'),'','timming')}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming Status")}}
-                    <input id="fabric-ref" type="text" class="form-control mt-2">
                 </div>
 
                 <div class="input-group mb-3">
@@ -74,26 +68,17 @@
                         <input type="file" class="custom-file-input" id="techpack">
                         <label id="techpack-label" class="custom-file-label" for="techpack">{{_("Techpack")}}</label>
                     </div>
-                    <div class="input-group-append">
-                        <button class="input-group-text" id="upload-techpack">Upload</button>
-                    </div>
                 </div>
                 <div class="input-group mb-3">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="pattern">
                         <label id="pattern-label" class="custom-file-label" for="pattern">{{_("Pattern")}}</label>
                     </div>
-                    <div class="input-group-append">
-                        <button class="input-group-text" id="upload-pattern">Upload</button>
-                    </div>
                 </div>
                 <div class="input-group mb-3">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="picture">
                         <label id="picture-label" class="custom-file-label" for="picture">{{_("Picture")}}</label>
-                    </div>
-                    <div class="input-group-append">
-                        <button class="input-group-text" id="upload-picture">Upload</button>
                     </div>
                 </div>
 
@@ -127,7 +112,7 @@
                 </div>
             </div>
             <div class="ml-5">
-                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
             </div>
         </div>
     </div>
