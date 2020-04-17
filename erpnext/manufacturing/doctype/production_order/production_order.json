@@ -16,7 +16,8 @@
   "trimming",
   "packaging",
   "section_break_3",
-  "comment"
+  "comment",
+  "quantity"
  ],
  "fields": [
   {
@@ -84,10 +85,16 @@
    "fieldname": "comment",
    "fieldtype": "Small Text",
    "label": "Comment"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Table",
+   "label": "Quantity",
+   "options": "Production Quantity Per Size"
   }
  ],
  "links": [],
- "modified": "2020-04-07 18:37:27.027667",
+ "modified": "2020-04-17 14:51:22.224760",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",
