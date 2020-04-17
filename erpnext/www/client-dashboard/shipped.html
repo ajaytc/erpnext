@@ -16,14 +16,14 @@
         <tbody>
             {% for o in shipped %}
             <tr>
-                <th>{{o[5]}}</th>
-                <th><a href="/new-client-order?order={{o[0]}}">{{o[0]}}</a></th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <td>{{o[5]}}</td>
+                <td><a href="/new-client-order?order={{o[0]}}">{{o[0]}}</a></td>
+                <td>{{o[2]}}</td>
+                <td>{{o[3]}}</td>
+                <td>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
                     <span class="duplicate fa fa-clone" order-no="{{o[0]}}"></span>
                     <img class="cancel" style="float: right;" order-no="{{o[0]}}"
