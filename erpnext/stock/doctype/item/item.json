@@ -44,6 +44,7 @@
   "consumption",
   "pricing_section",
   "production_price",
+  "avg_price",
   "section_break_11",
   "brand",
   "description",
@@ -1102,6 +1103,12 @@
    "fieldtype": "Table",
    "label": "Production Price",
    "options": "Prices for Quantity"
+  },
+  {
+   "fieldname": "avg_price",
+   "fieldtype": "Float",
+   "label": "Average Wholesale Price",
+   "precision": "2"
   }
  ],
  "has_web_view": 1,
@@ -1110,7 +1117,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-04-09 15:58:26.692549",
+ "modified": "2020-04-17 20:44:11.391693",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",

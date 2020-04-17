@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-14 22:25:57.222648",
+ "modified": "2020-04-17 20:43:48.629417",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "products",
@@ -277,6 +277,18 @@
    "max_length": 0,
    "max_value": 0,
    "options": "Prices for Quantity",
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "avg_price",
+   "fieldtype": "Float",
+   "hidden": 0,
+   "label": "Average Wholesale Price",
+   "max_length": 0,
+   "max_value": 0,
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0

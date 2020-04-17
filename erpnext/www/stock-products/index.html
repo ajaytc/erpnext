@@ -18,7 +18,7 @@
         <tbody>
             {% for o in products %}
             <tr> 
-                <th><input type="radio" class = "selectedproduct" name="optradio" data-name = "{{o[4]}}" data-qty = "{{o[1]}}" data-item = "{{o[0]}}" checked></th>
+                <th><input type="radio" class = "selectedproduct" name="optradio" data-name = "{{o[4]}}" data-qty = "{{o[1]}}" data-item = "{{o[0]}}" data-price = "{{o[5]}}" checked></th>
                 <th>{{o[0]}}</th>
                 <th>{{o[1]}}</th>
                 <th>{{o[2]}}</th>
@@ -112,6 +112,6 @@
         </div>
       </div>
     </div>
-  </div>
+ </div>
 
 {% include "erpnext/www/imports.html" %}

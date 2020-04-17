@@ -11,6 +11,7 @@
   "color",
   "composition",
   "width",
+  "unit_price",
   "amended_from"
  ],
  "fields": [
@@ -61,11 +62,15 @@
    "options": "Fabric",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "unit_price",
+   "fieldtype": "Float",
+   "label": "Unit Price"
   }
  ],
- "is_submittable": 1,
  "links": [],
- "modified": "2020-04-03 17:12:11.435947",
+ "modified": "2020-04-17 20:47:19.627343",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",

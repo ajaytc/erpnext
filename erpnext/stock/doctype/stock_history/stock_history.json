@@ -7,14 +7,15 @@
  "field_order": [
   "in_out",
   "quantity",
-  "stock"
+  "stock",
+  "description"
  ],
  "fields": [
   {
    "fieldname": "in_out",
    "fieldtype": "Select",
    "label": "Entry Type",
-   "options": "In\nOut"
+   "options": "in\nout"
   },
   {
    "fieldname": "quantity",
@@ -25,10 +26,15 @@
    "fieldname": "stock",
    "fieldtype": "Int",
    "label": "Stock"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
   }
  ],
  "links": [],
- "modified": "2020-04-14 18:03:12.491917",
+ "modified": "2020-04-17 16:47:29.317509",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock History",

@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "field:internal_ref",
+ "autoname": "format:{internal_ref} - {trimming_vendor}",
  "creation": "2020-04-03 18:28:31.795501",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,10 +14,12 @@
   "material",
   "trimming_size",
   "other_info",
+  "unit_price",
   "section_break_3",
   "vendor_ref",
   "internal_ref",
-  "amended_from"
+  "amended_from",
+  "data_13"
  ],
  "fields": [
   {
@@ -58,7 +60,7 @@
    "fieldname": "trimming_size",
    "fieldtype": "Link",
    "label": "Size",
-   "options": "Trimming size"
+   "options": "Trimming Size"
   },
   {
    "fieldname": "other_info",
@@ -91,11 +93,20 @@
    "options": "Trimming Item",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "data_13",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "unit_price",
+   "fieldtype": "Currency",
+   "label": "Unit Price"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-03 18:43:45.688830",
+ "modified": "2020-04-17 20:07:52.277505",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

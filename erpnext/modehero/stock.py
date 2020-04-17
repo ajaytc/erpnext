@@ -1,18 +1,32 @@
 import frappe
 import json
 
+@frappe.whitelist
+def createNewProductStock(doc):
 
-@frappe.whitelist()
+    total_value = int(doc.avg_price)*0
+    docStock = frappe.get_doc({
+	"doctype": "Stock",
+    "item_type": 'product',
+    "product": doc.name,
+    "quantity": quantity,
+    "total_value": total_value
+    })
+    docStock.insert()
+    frappe.db.commit()
+
+
+
 def stockIn(stock_name,amount,quantity,description):
     doc = frappe.get_doc({
 	"doctype": "Stock History",
     "parent": stock_name,
     "parentfield": "name",
     "parenttype":"Stock",
-	"in_out": "In",
+	"in_out": "in",
 	"quantity": amount,
     "stock": quantity,
-    "_comments": description
+    "description": description
     })
     doc.insert()
     frappe.db.commit()
@@ -23,24 +37,33 @@ def stockOut(stock_name,amount,quantity,description):
     "parent": stock_name,
     "parentfield": "name",
     "parenttype":"Stock",
-	"in_out": "Out",
+	"in_out": "out",
 	"quantity": amount,
     "stock": quantity,
-    "_comments": description
+    "description": description
     })
     doc.insert()
     frappe.db.commit()
 
-
-def updateQuantityProduct(stock_name,quantity):
+def updateQuantity(stock_name,quantity,price):
+    total_value = float(quantity)*float(price)
     frappe.db.set_value('Stock',stock_name, {
-    'quantity': quantity
-    }
-    )
+    'quantity': quantity,
+    'total_value': total_value
+    })
+
+    frappe.db.commit()
+
+def updateQuantityRaw(stock_name,quantity,price):
+    total_value = float(quantity)*float(price)
+    frappe.db.set_value('Stock',stock_name, {
+    'quantity': quantity,
+    'total_value': total_value
+    })
     frappe.db.commit()
 
 @frappe.whitelist()
-def updateStock(stock_name,quantity,old_quantity,description):
+def updateStock(stock_name,quantity,old_quantity,description,price):
 
     if quantity > old_quantity:
         amount = int(quantity)-int(old_quantity)
@@ -51,4 +74,12 @@ def updateStock(stock_name,quantity,old_quantity,description):
     else:
         pass
 
-    updateQuantityProduct(stock_name,quantity)
+    updateQuantity(stock_name,quantity,price)
+
+@frappe.whitelist()
+def directShip(stock_name,amount,old_stock,description,price):
+    new_stock = int(old_stock)-int(amount)
+
+    stockOut(stock_name,amount,new_stock,description)
+    updateQuantity(stock_name,new_stock,price)
+

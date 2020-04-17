@@ -64,12 +64,12 @@
   },
   {
    "fieldname": "total_value",
-   "fieldtype": "Currency",
+   "fieldtype": "Float",
    "label": "Total Value "
   }
  ],
  "links": [],
- "modified": "2020-04-15 15:12:11.655140",
+ "modified": "2020-04-17 20:43:24.379869",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock",

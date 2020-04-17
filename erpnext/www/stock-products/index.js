@@ -7,16 +7,14 @@ $(document).ready(function () {
 
 var stock_name =null;
 var quantity = $('.selectedproduct:checked').attr('data-qty');
+var price = null;
 
 $('#updateStock').on('show.bs.modal', function (event) {
-    //var button = $(event.relatedTarget) // Button that triggered the modal
-    //var realStock = button.data('watever') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    //var stockname = input.data('name')
+
     stock_name = $('.selectedproduct:checked').attr('data-name')
     quantity = $('.selectedproduct:checked').attr('data-qty')
     var item_name = $('.selectedproduct:checked').attr('data-item')
+    price = $('.selectedproduct:checked').attr('data-price')
 
     var modal = $(this)
 
@@ -35,7 +33,8 @@ $('#validatebutton').click(() => {
             stock_name,
             quantity,
             old_quantity,
-            description : 'Update Stock'
+            description : 'Update Stock',
+            price : price
         },
         callback: function (r) {
             if (!r.exc) {
@@ -44,5 +43,44 @@ $('#validatebutton').click(() => {
             }
         }
     })
-    //console.log($('#real-stock').val())
+
+})
+
+
+var old_stock = $('.selectedproduct:checked').attr('data-qty');
+
+$('#directShip').on('show.bs.modal', function (event) {
+    stock_name = $('.selectedproduct:checked').attr('data-name')
+    old_stock = $('.selectedproduct:checked').attr('data-qty');
+    var item_name = $('.selectedproduct:checked').attr('data-item')
+    price = $('.selectedproduct:checked').attr('data-price')
+
+    var modal = $(this)
+
+    modal.find('.modal-title').text('Direct Ship ' + item_name)
+})
+
+$('#shipbutton').click(() => {
+    var amount = $('.modal-body #quantity').val()
+    var destination = $('.modal-body #destination').val()
+    
+    console.log(amount)
+    console.log(destination)
+
+    frappe.call({
+        method: 'erpnext.modehero.stock.directShip',
+        args: {
+            stock_name,
+            amount,
+            old_stock,
+            description : destination,
+            price : price
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                window.location.reload()
+            }
+        }
+    })
 })

@@ -18,8 +18,10 @@ def get_context(context):
 
     brand = frappe.get_doc("User", frappe.session.user).brand_name
 
-    query = """select f.fabric_ref, s.quantity, s.localization, s.total_value from `tabStock` s left join `tabFabric` f on f.name = s.internal_ref where s.item_type=%s and i.brand=%s"""
+    context.destination = frappe.get_list("Production Factory")
 
-    context.fabrics = frappe.db.sql(query,("fabric",brand))
+    query = """select f.fabric_ref, s.quantity, s.localization, s.total_value, f.fabric_ref, f.unit_price from `tabStock` s left join `tabFabric` f on f.name = s.internal_ref where s.item_type=%s"""
+
+    context.fabrics = frappe.db.sql(query,"fabric")
 
     return context
