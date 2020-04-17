@@ -50,24 +50,3 @@ $('#validatebutton').click(() => {
     })
 
 })
-
-
-$('#directShip').on('show.bs.modal', function (event) {
-    stock_name = $('.selectedfabric:checked').attr('data-name')
-    old_stock = $('.selectedfabric:checked').attr('data-stock');
-    fabric_name = $('.selectedfabric:checked').attr('data-item')
-    price = $('.selectedfabric:checked').attr('data-price')
-
-    var modal = $(this)
-
-    modal.find('.modal-title').text('Direct Ship ' + fabric_name)
-})
-
-$('#shipbutton').click(() => {
-    var amount = $('.modal-body #quantity').val()
-    var destination = $('.modal-body #destination').val()
-    
-    console.log(amount)
-    console.log(destination)
-
-})
