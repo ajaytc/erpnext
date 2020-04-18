@@ -25,7 +25,8 @@
   "price_section",
   "price_per_unit",
   "comment",
-  "quantity_per_size"
+  "quantity_per_size",
+  "brand"
  ],
  "fields": [
   {
@@ -131,10 +132,16 @@
    "fieldtype": "Table",
    "label": "Quantity Per Size",
    "options": "Prototype Quantity Per Size"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Brand"
   }
  ],
  "links": [],
- "modified": "2020-04-18 16:48:27.772221",
+ "modified": "2020-04-18 17:50:36.936430",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",
