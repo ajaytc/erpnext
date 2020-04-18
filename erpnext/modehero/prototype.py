@@ -7,6 +7,7 @@ def create_prototype_order(data):
     data = json.loads(data)
     order = frappe.get_doc({
         'doctype': 'Prototype Order',
+        'internal_ref': data['internal_ref'],
         'product_category': data['product_category'],
         'product': data['product'],
         'fabric_ref': data['fabric_ref'],
@@ -18,7 +19,8 @@ def create_prototype_order(data):
         'pattern': data['pattern'],
         'picture': data['picture'],
         'price_per_unit': data['price'],
-        'quantity_per_size': data['quantity']
+        'quantity_per_size': data['quantity'],
+        'comment': data['comment']
     })
 
     order.insert()

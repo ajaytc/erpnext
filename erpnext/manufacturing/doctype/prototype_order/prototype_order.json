@@ -12,10 +12,8 @@
   "section_break_4",
   "fabric_ref",
   "consumption",
-  "fabric_status",
   "column_break_8",
   "trimming_item",
-  "trimming_status",
   "manufacturing_section",
   "production_factory",
   "destination_section",
@@ -62,11 +60,6 @@
    "label": "Consumption"
   },
   {
-   "fieldname": "fabric_status",
-   "fieldtype": "Data",
-   "label": "Fabric status"
-  },
-  {
    "fieldname": "column_break_8",
    "fieldtype": "Column Break"
   },
@@ -75,11 +68,6 @@
    "fieldtype": "Link",
    "label": "Trimming",
    "options": "Trimming Item"
-  },
-  {
-   "fieldname": "trimming_status",
-   "fieldtype": "Data",
-   "label": "Trimming Status"
   },
   {
    "fieldname": "manufacturing_section",
@@ -146,7 +134,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-17 14:51:35.071707",
+ "modified": "2020-04-18 16:48:27.772221",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",

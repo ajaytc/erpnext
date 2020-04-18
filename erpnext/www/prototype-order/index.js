@@ -18,7 +18,6 @@ const productUpdateCallback = (e) => {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
-                $('.qty>td>input').change(priceUpdateCallback)
             }
         }
     });
@@ -54,96 +53,6 @@ function generateSizingTable(sizes) {
 }
 
 const cleartable = () => $('.table-section').html('')
-
-
-$('#validate').click(function () {
-    let order = $('#order-no').text().trim()
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.validate_order',
-        args: {
-            order
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r)
-
-            }
-        }
-    })
-})
-
-function priceUpdateCallback(e) {
-    // console.log(e.target.value, $(e.target).attr('data-size'))
-    if (!numeric.test(e.target.value)) {
-        $(e.target).css('border-color', 'red')
-    } else {
-
-        let products = {}
-
-        //calculate price 
-        $('.product-table').map(function () {
-            let product = $(this).find('#product>option:selected').text()
-
-            $(this).find('.qty>td').map(function () {
-                let qty = $(this).find('input').val()
-                let size = $(this).find('input').attr('data-size')
-
-                if (!products[product]) {
-                    products[product] = {}
-                }
-                if (qty != '') {
-                    products[product][size] = qty
-                }
-            })
-
-        })
-        console.log(products)
-
-        $(e.target).css('border', '1px solid #ced4da')
-        calculatePrice(products)
-    }
-}
-
-function calculatePrice(products) {
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.calculate_price',
-        args: {
-            products
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r.message)
-                $('#total').html(r.message.total)
-                let prices = r.message
-                for (let p in prices) {
-                    $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
-                    $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
-                    $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
-                }
-            }
-        }
-    })
-}
-
-function calculatePriceOnLoad() {
-    let products = {}
-    $('.product-table').map(function () {
-        let product = $(this).find('.product').html()
-        $(this).find('.qty>td').map(function () {
-            let qty = $(this).html().trim()
-            let size = $(this).attr('data-size')
-
-            if (!products[product]) {
-                products[product] = {}
-            }
-            if (qty != '') {
-                products[product][size] = qty
-            }
-        })
-    })
-    console.log(products)
-    calculatePrice(products)
-}
 
 function generateOptions(values) {
     let html = ''
@@ -242,11 +151,11 @@ function createOrder(product, qtys, techpack, pattern, picture) {
                 console.log(r)
                 let order = r.message.order
                 if (order && order.name) {
-                    // frappe.msgprint({
-                    //     title: __('Notification'),
-                    //     indicator: 'green',
-                    //     message: __('Sales order ' + order.name + ' created successfully')
-                    // });
+                    frappe.msgprint({
+                        title: __('Notification'),
+                        indicator: 'green',
+                        message: __('Prototype order ' + order.name + ' created successfully')
+                    });
                 }
             }
         }

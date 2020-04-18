@@ -10,14 +10,13 @@
   "internal_ref",
   "product_name",
   "section_break_2",
-  "fabric",
-  "fabric_status",
+  "fabric_ref",
   "production_factory",
   "trimming",
   "packaging",
   "section_break_3",
   "comment",
-  "quantity"
+  "quantity_per_size"
  ],
  "fields": [
   {
@@ -48,17 +47,6 @@
    "label": "Raw Material"
   },
   {
-   "fieldname": "fabric",
-   "fieldtype": "Link",
-   "label": "Fabric",
-   "options": "Fabric"
-  },
-  {
-   "fieldname": "fabric_status",
-   "fieldtype": "Data",
-   "label": "Fabric Status"
-  },
-  {
    "fieldname": "production_factory",
    "fieldtype": "Link",
    "label": "Production Factory",
@@ -87,14 +75,19 @@
    "label": "Comment"
   },
   {
-   "fieldname": "quantity",
+   "fieldname": "fabric_ref",
+   "fieldtype": "Data",
+   "label": "Fabric"
+  },
+  {
+   "fieldname": "quantity_per_size",
    "fieldtype": "Table",
    "label": "Quantity",
    "options": "Production Quantity Per Size"
   }
  ],
  "links": [],
- "modified": "2020-04-17 14:51:22.224760",
+ "modified": "2020-04-18 16:48:11.947483",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",
