@@ -3,26 +3,16 @@
         <thead>
             <tr>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
                 <th scope="col">{{_("PRODUCT NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
-                <th scope="col">{{_("ORDER DATE")}}</th>
-                <th scope="col">{{_("DESTINATION")}}</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for o in waiting %}
+            {% for o in cancelled %}
             <tr>
                 <th></th>
                 <th>{{o[0]}}</th>
                 <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
-                <th>
-                    <img class="delete" src="/assets/erpnext/images/delete.svg" alt="" style="">
-                </th>
             </tr>
             {% endfor %}
         </tbody>

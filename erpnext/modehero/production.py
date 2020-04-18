@@ -5,6 +5,8 @@ import json
 @frappe.whitelist()
 def create_production_order(data):
     data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
     order = frappe.get_doc({
         'doctype': 'Prototype Order',
         'product_category': data['product_category'],
@@ -15,7 +17,8 @@ def create_production_order(data):
         'packaging': data['packaging_item'],
         'production_factory': data['production_factory'],
         'quantity_per_size': data['quantity'],
-        'comment': data['comment']
+        'comment': data['comment'],
+        'brand': brand
     })
 
     order.insert()

@@ -17,7 +17,17 @@
   "section_break_3",
   "comment",
   "quantity_per_size",
-  "brand"
+  "brand",
+  "section_break_14",
+  "expected_work_date",
+  "confirmation_doc",
+  "profoma",
+  "invoice",
+  "shipment",
+  "carrier",
+  "tracking_number",
+  "shipment_date",
+  "production_comment"
  ],
  "fields": [
   {
@@ -91,10 +101,59 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Brand"
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "expected_work_date",
+   "fieldtype": "Date",
+   "label": "Expected work date"
+  },
+  {
+   "fieldname": "confirmation_doc",
+   "fieldtype": "Attach",
+   "label": "Confirmation Doc"
+  },
+  {
+   "fieldname": "profoma",
+   "fieldtype": "Attach",
+   "label": "Profoma"
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Attach",
+   "label": "Invoice"
+  },
+  {
+   "fieldname": "shipment",
+   "fieldtype": "Section Break",
+   "label": "Shipment"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Data",
+   "label": "Shipment Carrier"
+  },
+  {
+   "fieldname": "tracking_number",
+   "fieldtype": "Data",
+   "label": "Tracking Number"
+  },
+  {
+   "fieldname": "shipment_date",
+   "fieldtype": "Date",
+   "label": "Date of Shipment"
+  },
+  {
+   "fieldname": "production_comment",
+   "fieldtype": "Text Editor",
+   "label": "Production Comment"
   }
  ],
  "links": [],
- "modified": "2020-04-18 17:50:09.461066",
+ "modified": "2020-04-18 21:48:28.318212",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

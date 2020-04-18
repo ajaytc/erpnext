@@ -17,11 +17,12 @@ def get_context(context):
     context.show_sidebar = False
     context.status = 'waiting'
 
-    query = """select so.name, so.creation, i.item_name, i.item_group from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name"""
-    context.waiting = frappe.db.sql(query+" where i.docstatus=0")
-    context.onprocess = frappe.db.sql(query+" where i.docstatus=1")
-    context.shipped = frappe.db.sql(query+" where i.docstatus=3")
-    context.cancelled = frappe.db.sql(query+" where i.docstatus=2")
+    context.onprocess = frappe.get_list(
+        'Prototype Order', fields=['internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'ex_work_date', 'tracking_number'])
+    context.validate = frappe.get_list(
+        'Prototype Order', fields=['internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'tracking_number'])
+    context.notvalidate = frappe.get_list(
+        'Prototype Order', fields=['internal_ref', 'product', 'product_category'])
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}

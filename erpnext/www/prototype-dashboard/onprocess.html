@@ -2,28 +2,32 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
                 <th scope="col">{{_("PRODUCT NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
-                <th scope="col">{{_("ORDER DATE")}}</th>
-                <th scope="col">{{_("EX WORK DATE")}}</th>
-                <th scope="col">{{_("DESTINATION")}}</th>
-                <th scope="col">{{_("PERFORMA")}}</th>
+                <th scope="col">{{_("SIZE")}}</th>
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("DATE EXPECTATIONS")}}</th>
+                <th scope="col">{{_("SHIPMENT TRACKING NUMBER")}}</th>
             </tr>
         </thead>
         <tbody>
             {% for o in onprocess %}
+            {% if o.quantity_per_size %}
+            {% for s in o.quantity_per_size %}
             <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th><input type="checkbox" class="selected"></th>
+                <th>{{o.internal_ref}}</th>
+                <th>{{o.product}}</th>
+                <th>{{o.product_category}}</th>
+                <th>{{s.size}}</th>
+                <th>{{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{frappe.format(o.ex_work_date, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.tracking_number}}</th>
             </tr>
+            {% endfor %}
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>

@@ -3,15 +3,15 @@
         <thead>
             <tr>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
                 <th scope="col">{{_("PRODUCT NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
-                <th scope="col">{{_("ORDER DATE")}}</th>
-                <th scope="col">{{_("DESTINATION")}}</th>
+                <th scope="col">{{_("SIZE")}}</th>
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("SHIPMENT TRACKING NUMBER")}}</th>
             </tr>
         </thead>
         <tbody>
-            {% for o in cancelled %}
+            {% for o in shipped %}
             <tr>
                 <th></th>
                 <th>{{o[0]}}</th>

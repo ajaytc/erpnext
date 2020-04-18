@@ -1,32 +1,25 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#waiting" role="tab" aria-controls="home"
-            aria-selected="true">{{_("Waiting for Validation")}}</a>
-    </li>
-    <li class="nav-item">
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#onprocess" role="tab" aria-controls="profile"
             aria-selected="false">{{_("On Process")}}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="contact"
-            aria-selected="false">{{_("Shipped")}}</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#validate" role="tab" aria-controls="contact"
+            aria-selected="false">{{_("Validate")}}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="contact"
-            aria-selected="false">{{_("Cancelled")}}</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#notvalidate" role="tab" aria-controls="contact"
+            aria-selected="false">{{_("Not Validate")}}</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
-        {% include 'erpnext/www/prototype-dashboard/waiting.html' %}
-    </div>
-    <div class="tab-pane fade" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
+    <div class="tab-pane fade show active" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
         {% include 'erpnext/www/prototype-dashboard/onprocess.html' %}</div>
-    <div class="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
-        {% include 'erpnext/www/prototype-dashboard/shipped.html' %}
+    <div class="tab-pane fade" id="validate" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/prototype-dashboard/validate.html' %}
     </div>
-    <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="contact-tab">
-        {% include 'erpnext/www/prototype-dashboard/cancelled.html' %}
+    <div class="tab-pane fade" id="notvalidate" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/prototype-dashboard/notvalidate.html' %}
     </div>
 </div>
 

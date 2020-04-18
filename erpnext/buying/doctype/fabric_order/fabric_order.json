@@ -21,7 +21,17 @@
   "section_break_2",
   "price_per_unit",
   "total_price",
-  "amended_from"
+  "amended_from",
+  "section_break_17",
+  "ex_work_date",
+  "confirmation_doc",
+  "profoma",
+  "invoice",
+  "shipment_section",
+  "carrier",
+  "tracking_number",
+  "shipment_date",
+  "production_comment"
  ],
  "fields": [
   {
@@ -116,11 +126,60 @@
    "fieldname": "in_stock",
    "fieldtype": "Int",
    "label": "In Stock"
+  },
+  {
+   "fieldname": "ex_work_date",
+   "fieldtype": "Date",
+   "label": "Expected work date"
+  },
+  {
+   "fieldname": "confirmation_doc",
+   "fieldtype": "Attach",
+   "label": "Confirmation doc"
+  },
+  {
+   "fieldname": "profoma",
+   "fieldtype": "Attach",
+   "label": "Profoma"
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Attach",
+   "label": "Invoice"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Data",
+   "label": "Shipment Carrier"
+  },
+  {
+   "fieldname": "tracking_number",
+   "fieldtype": "Data",
+   "label": "Shipment Tracking No"
+  },
+  {
+   "fieldname": "shipment_date",
+   "fieldtype": "Date",
+   "label": "Date of Shipment"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "shipment_section",
+   "fieldtype": "Section Break",
+   "label": "Shipment"
+  },
+  {
+   "fieldname": "production_comment",
+   "fieldtype": "Text Editor",
+   "label": "Production Comment"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-14 18:13:03.343123",
+ "modified": "2020-04-18 21:51:07.253017",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",

@@ -26,7 +26,16 @@
   "price_per_unit",
   "comment",
   "quantity_per_size",
-  "brand"
+  "brand",
+  "section_break_22",
+  "ex_work_date",
+  "invoice",
+  "shipment",
+  "carrier",
+  "tracking_number",
+  "shipment_date",
+  "shipment_price",
+  "production_comment"
  ],
  "fields": [
   {
@@ -138,10 +147,54 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Brand"
+  },
+  {
+   "fieldname": "section_break_22",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "ex_work_date",
+   "fieldtype": "Date",
+   "label": "Expected work date"
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Attach",
+   "label": "Invoice"
+  },
+  {
+   "fieldname": "shipment",
+   "fieldtype": "Section Break",
+   "label": "Shipment"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Data",
+   "label": "Shipping Carrier"
+  },
+  {
+   "fieldname": "tracking_number",
+   "fieldtype": "Data",
+   "label": "Shipment Tracking No"
+  },
+  {
+   "fieldname": "shipment_date",
+   "fieldtype": "Date",
+   "label": "Date of Shipment"
+  },
+  {
+   "fieldname": "shipment_price",
+   "fieldtype": "Data",
+   "label": "Shipment Price"
+  },
+  {
+   "fieldname": "production_comment",
+   "fieldtype": "Text Editor",
+   "label": "Production Comment"
   }
  ],
  "links": [],
- "modified": "2020-04-18 17:50:36.936430",
+ "modified": "2020-04-18 21:33:05.485655",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",
