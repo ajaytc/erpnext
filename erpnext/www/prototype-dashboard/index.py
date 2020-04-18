@@ -18,9 +18,9 @@ def get_context(context):
     context.status = 'waiting'
 
     context.onprocess = frappe.get_list(
-        'Prototype Order', fields=['internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'ex_work_date', 'tracking_number'])
+        'Prototype Order', fields=['name', 'internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'ex_work_date', 'tracking_number'])
     context.validate = frappe.get_list(
-        'Prototype Order', fields=['internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'tracking_number'])
+        'Prototype Order', fields=['name', 'internal_ref', 'product', 'product_category', 'quantity_per_size', 'creation', 'tracking_number'])
     context.notvalidate = frappe.get_list(
         'Prototype Order', fields=['internal_ref', 'product', 'product_category'])
 

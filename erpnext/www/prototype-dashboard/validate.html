@@ -2,6 +2,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
                 <th scope="col">{{_("PRODUCT NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
@@ -12,14 +13,17 @@
         </thead>
         <tbody>
             {% for o in shipped %}
+            {% for s in frappe.get_list('Prototype Quantity Per Size',filters={'parent':o.name},fields=['size']) %}
             <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
+                <th><input type="checkbox" class="selected" data-order="{{o.name}}"></th>
+                <th>{{o.internal_ref}}</th>
+                <th>{{o.product}}</th>
+                <th>{{o.product_category}}</th>
+                <th>{{s.size}}</th>
+                <th>{{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.tracking_number}}</th>
             </tr>
+            {% endfor %}
             {% endfor %}
         </tbody>
     </table>

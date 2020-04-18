@@ -14,10 +14,9 @@
         </thead>
         <tbody>
             {% for o in onprocess %}
-            {% if o.quantity_per_size %}
-            {% for s in o.quantity_per_size %}
+            {% for s in frappe.get_list('Prototype Quantity Per Size',filters={'parent':o.name},fields=['size']) %}
             <tr>
-                <th><input type="checkbox" class="selected"></th>
+                <th><input type="checkbox" class="selected" data-order="{{o.name}}"></th>
                 <th>{{o.internal_ref}}</th>
                 <th>{{o.product}}</th>
                 <th>{{o.product_category}}</th>
@@ -27,7 +26,6 @@
                 <th>{{o.tracking_number}}</th>
             </tr>
             {% endfor %}
-            {% endif %}
             {% endfor %}
         </tbody>
     </table>
