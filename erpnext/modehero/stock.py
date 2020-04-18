@@ -46,9 +46,10 @@ def stockOut(stock_name,amount,quantity,description):
     frappe.db.commit()
 
 def updateQuantity(stock_name,quantity,price):
-    #total_value = float(quantity)*float(price)
+    total_value = float(quantity)*float(price)
     frappe.db.set_value('Stock',stock_name, {
-    'quantity': quantity
+    'quantity': quantity,
+    'total_value': total_value
     })
 
     frappe.db.commit()
@@ -62,7 +63,7 @@ def updateStock(stock_name,quantity,old_quantity,description,price):
     if quantity > old_quantity:
         amount = quantity-old_quantity
         stockIn(stock_name,amount,quantity,description)
-    if old_quantity > quantity:
+    elif old_quantity > quantity:
         amount = old_quantity-quantity
         stockOut(stock_name,amount,quantity,description)
     else:
@@ -76,3 +77,4 @@ def directShip(stock_name,amount,old_stock,description,price):
 
     stockOut(stock_name,amount,new_stock,description)
     updateQuantity(stock_name,new_stock,price)
+
