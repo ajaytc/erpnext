@@ -50,6 +50,7 @@
             <div class="col-6">
                 <div class="m-3">
                     {{_("Production Factory Name")}}
+                    {{dropdown(frappe.get_list('Production Factory'),'','factory')}}
                 </div>
                 <div class="m-3">
                     <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
@@ -57,7 +58,7 @@
                 </div>
                 <div class="m-3">
                     {{_("Trimming")}}
-                    {{dropdown(frappe.get_list('Trimming Item'),'','timming')}}
+                    {{dropdown(frappe.get_list('Trimming Item'),'','trimming')}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming Status")}}
@@ -82,6 +83,10 @@
                     </div>
                 </div>
 
+                <div class="m-3">
+                    {{_("Price/unit")}}
+                    <input id="price" type="text" class="form-control mt-2">
+                </div>
             </div>
             <div class="col-12 m-3 product-table">
                 <div class="row">
@@ -94,22 +99,6 @@
                 <div class="row mt-3 table-section">
                 </div>
 
-                <div>
-                    <table class="table table-bordered pricing-table">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">{{_("Price/Pcs")}}</th>
-                                <th scope="col">{{_("Total Price")}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="price-pp"></td>
-                                <td class="total-price"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
             <div class="ml-5">
                 <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>

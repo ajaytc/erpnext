@@ -173,9 +173,8 @@ $('#submit').click(() => {
     let allnull = true
 
     let product = $('#product').find('option:selected').text()
-    let destination = $('#destination').find('option:selected').text()
 
-    let qtys = {}
+    let qtys = []
     let sizes = []
     let counter = 0
 
@@ -186,7 +185,10 @@ $('#submit').click(() => {
     $('.qty>td>input').map(function () {
         if ($(this).val() != "") {
             allnull = false
-            qtys[sizes[counter++]] = $(this).val()
+            qtys.push({
+                size: sizes[counter++],
+                quantity: $(this).val()
+            })
         }
         // qtys.push($(this).val())
     })
@@ -195,38 +197,67 @@ $('#submit').click(() => {
     if (allnull) {
         frappe.throw(frappe._("Please fill quantities"))
     }
-    // frappe.call({
-    //     method: 'erpnext.modehero.sales_order.create_sales_order',
-    //     args: {
-    //         items: products,
-    //         garmentlabel,
-    //         internalref: $('#internal-ref').val(),
-    //         profoma
-    //     },
-    //     callback: function (r) {
-    //         if (!r.exc) {
-    //             console.log(r)
-    //             let order = r.message.order
-    //             if (order && order.name) {
-    //                 $('#order-no').html(order.name)
-    //                 frappe.msgprint({
-    //                     title: __('Notification'),
-    //                     indicator: 'green',
-    //                     message: __('Sales order ' + order.name + ' created successfully')
-    //                 });
-    //             }
-    //         }
-    //     }
-    // })
+
+    let techpack = '', picture = '', pattern = ''
+    let files = ['techpack', 'picture', 'pattern']
+
+    Promise.all(files.map(f => {
+        if ($(`#${f}`).prop('files')[0]) {
+            return uploadFile(f)
+        } else {
+            return ''
+        }
+    })).then(files => {
+        console.log(files)
+        createOrder(product, qtys, files[0], files[1], files[2])
+    }).catch(e => {
+        frappe.throw(e)
+    })
 
 })
+
+function createOrder(product, qtys, techpack, pattern, picture) {
+    frappe.call({
+        method: 'erpnext.modehero.prototype.create_prototype_order',
+        args: {
+            data: {
+                internal_ref: $('#internal-ref').val(),
+                techpack,
+                pattern,
+                picture,
+                comment: $('#comment').val(),
+                consumption: $('#fabric-consumption').val(),
+                product_category: $('#category>option:selected').text(),
+                fabric_ref: $('#fabric-ref>option:selected').text(),
+                product,
+                destination: $('#destination').find('option:selected').text(),
+                trimming_item: $('#trimming>option:selected').text(),
+                production_factory: $('#factory>option:selected').text(),
+                quantity: qtys,
+                price: $('#price').val()
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                let order = r.message.order
+                if (order && order.name) {
+                    // frappe.msgprint({
+                    //     title: __('Notification'),
+                    //     indicator: 'green',
+                    //     message: __('Sales order ' + order.name + ' created successfully')
+                    // });
+                }
+            }
+        }
+    })
+}
 
 function uploadFile(componentId) {
     return new Promise((resolve, reject) => {
         let file = $(`#${componentId}`).prop('files')[0]
         if (file.size / 1024 / 1024 > 5) {
-            frappe.throw("Please upload file less than 5mb")
-            return
+            reject("Please upload file less than 5mb")
         }
         var reader = new FileReader();
         reader.readAsDataURL(file);
@@ -246,8 +277,8 @@ function uploadFile(componentId) {
                 callback: function (r) {
                     if (!r.exc) {
                         console.log(r)
-                        $(`#${componentId}`).html(r.message.file_url)
-                        profoma = r.message.file_url
+                        $(`#${componentId}-label`).html(r.message.file_url)
+                        resolve(r.message.file_url)
                     }
                 }
             })
@@ -256,3 +287,14 @@ function uploadFile(componentId) {
     })
 
 }
+$('#techpack').change(function () {
+    $('#techpack-label').html($(this).prop('files')[0].name)
+})
+
+$('#pattern').change(function () {
+    $('#pattern-label').html($(this).prop('files')[0].name)
+})
+
+$('#picture').change(function () {
+    $('#picture-label').html($(this).prop('files')[0].name)
+})
