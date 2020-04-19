@@ -13,7 +13,7 @@ $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
-    product = $(e.target).find("option:selected").text()
+    product = $(e.target).find("option:selected").val()
     $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.stock.sizing.getSizes',

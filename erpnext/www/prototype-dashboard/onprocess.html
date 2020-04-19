@@ -17,7 +17,7 @@
             {% for s in frappe.get_list('Prototype Quantity Per Size',filters={'parent':o.name},fields=['size']) %}
             <tr>
                 <th><input type="checkbox" class="selected" data-order="{{o.name}}"></th>
-                <th>{{o.internal_ref}}</th>
+                <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
                 <th>{{o.product}}</th>
                 <th>{{o.product_category}}</th>
                 <th>{{s.size}}</th>

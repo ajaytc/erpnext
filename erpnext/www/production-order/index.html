@@ -1,11 +1,13 @@
 <h2>{{_("Production Order")}}</h2>
 {# this page is used for both new client purchase and client purchase summary page #}
 
-{% macro dropdown(items,class,id) %}
+{% macro dropdown(items,class,id,typetwo) %}
 <div class="form-group">
     <select class="form-control {{class}}" id="{{id}}">
         {% for i in items %}
-        {% if i.name %}
+        {% if typetwo %}
+        <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
         {% elif i.fabric_ref %}
         <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
@@ -70,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
-                        {{dropdown(products,'','product')}}
+                        {{dropdown(products,'','product',true)}}
                     </div>
                 </div>
 

@@ -2,27 +2,23 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
-                <th scope="col">{{_("PRODUCT NAME")}}</th>
+                <th scope="col">{{_("PROTOTYPE NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
                 <th scope="col">{{_("ORDER DATE")}}</th>
                 <th scope="col">{{_("EX WORK DATE")}}</th>
-                <th scope="col">{{_("SHIPMENT")}}</th>
-                <th scope="col">{{_("INVOICE")}}</th>
             </tr>
         </thead>
         <tbody>
-            {% for o in shipped %}
+            {% for o in prod_onprocess %}
             <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th><input type="checkbox" class="selected" data-order="{{o.name}}" /></th>
+                <th><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
+                <th>{{o.product}}</th>
+                <th>{{o.product_category}}</th>
+                <th>{{o.creation}}</th>
+                <th>{{o.expected_work_date}}</th>
             </tr>
             {% endfor %}
         </tbody>

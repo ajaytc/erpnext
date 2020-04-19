@@ -8,7 +8,7 @@ def create_production_order(data):
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
     order = frappe.get_doc({
-        'doctype': 'Prototype Order',
+        'doctype': 'Production Order',
         'product_category': data['product_category'],
         'internal_ref': data['internal_ref'],
         'product_name': data['product_name'],

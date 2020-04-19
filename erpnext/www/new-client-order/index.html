@@ -1,12 +1,16 @@
 <h2>{{_("Client Purchase")}}</h2>
 {# this page is used for both new client purchase and client purchase summary page #}
 
-{% macro dropdown(items,class,id) %}
+{% macro dropdown(items,class,id,typetwo) %}
 <div class="form-group">
     <select class="form-control {{class}}" id="{{id}}">
         {% for i in items %}
-        {% if i.name %}
+        {% if typetwo %}
+        <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.fabric_ref %}
+        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
         {% else %}
         <option value="{{i}}">{{i}}</option>
         {% endif %}
@@ -109,7 +113,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
-                    {{dropdown(products,'selected-product')}}
+                    {{dropdown(products,'selected-product','',true)}}
                 </div>
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
@@ -151,7 +155,7 @@
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
                     <br />
-                    <span class="product">{{o.item_name}}</span>
+                    <span class="product">{{frappe.db.get_value('Item',o.item_name,'item_name')}}</span>
                 </div>
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Destination")}}</label>

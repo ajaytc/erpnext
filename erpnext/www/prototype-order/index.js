@@ -57,7 +57,7 @@ const cleartable = () => $('.table-section').html('')
 function generateOptions(values) {
     let html = ''
     values.map(v => {
-        html += `<option value="${v.name}">${v.name}</option>`
+        html += `<option value="${v.name}">${v.item_name}</option>`
     })
     return html
 }
@@ -81,7 +81,7 @@ $('#category').change(function () {
 $('#submit').click(() => {
     let allnull = true
 
-    let product = $('#product').find('option:selected').text()
+    let product = $('#product').find('option:selected').val()
 
     let qtys = []
     let sizes = []
