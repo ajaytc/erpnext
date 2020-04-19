@@ -146,7 +146,7 @@
    "fieldname": "brand",
    "fieldtype": "Link",
    "label": "Brand",
-   "options": "Brand"
+   "options": "Company"
   },
   {
    "fieldname": "section_break_22",
@@ -194,7 +194,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-18 21:33:05.485655",
+ "modified": "2020-04-19 19:25:58.235747",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",
