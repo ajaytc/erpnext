@@ -50,3 +50,41 @@ $('#validatebutton').click(() => {
     })
 
 })
+
+$('#directShip').on('show.bs.modal', function (event) {
+    stock_name = $('.selectedfabric:checked').attr('data-name')
+    in_stock = $('.selectedfabric:checked').attr('data-stock')
+    old_stock = $('.selectedfabric:checked').attr('data-stock')
+    fabric_name = $('.selectedfabric:checked').attr('data-item')
+    unit_price = $('.selectedfabric:checked').attr('data-price')
+
+    var modal = $(this)
+
+    modal.find('.modal-title').text('Direct Ship ' + fabric_name)
+})
+
+$('#shipbutton').click(() => {
+    var amount = $('.modal-body #quantity').val()
+    var destination = $('.modal-body #destination').val()
+    
+    console.log(amount)
+    console.log(destination)
+
+    frappe.call({
+        method: 'erpnext.modehero.stock.directShip',
+        args: {
+            stock_name,
+            amount,
+            old_stock,
+            description : destination,
+            price : unit_price
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                window.location.reload()
+            }
+        }
+    })
+    console.log(amount+ " of "+ fabric_name+ " shipped to " + destination)
+})

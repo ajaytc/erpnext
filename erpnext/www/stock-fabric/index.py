@@ -20,7 +20,7 @@ def get_context(context):
 
     context.destination = frappe.get_list("Production Factory")
 
-    query = """select f.fabric_ref, s.quantity, s.localization, s.total_value, f.fabric_ref, f.unit_price from `tabStock` s left join `tabFabric` f on f.name = s.internal_ref where s.item_type=%s"""
+    query = """select f.fabric_ref, s.quantity, s.localization, s.total_value, s.name, f.unit_price from `tabStock` s left join `tabFabric` f on f.name = s.internal_ref where s.item_type=%s"""
 
     context.fabrics = frappe.db.sql(query,"fabric")
 
