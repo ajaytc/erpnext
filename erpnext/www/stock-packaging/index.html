@@ -36,7 +36,7 @@
 
 
 <div>
-    <button type="button" class="btn btn-primary" >
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipFromExisting" id=shipFromExistingButton >
        Ship From existing Purchase
     </button>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#directShip" id=directShipButton>
@@ -60,6 +60,35 @@
     </select>
 </div>
 {% endmacro %}
+
+<div class="modal fade" id="shipFromExisting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ship From Existing</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div>
+          <label for="exampleFormControlSelect1">{{_("Vendor")}}</label>
+          {{dropdown(vendors,'selected-vendor')}}
+        </div>
+
+        <div>
+          <label for="exampleFormControlSelect2">{{_("Purchase List")}}</label>
+          {{dropdown(orders,'selected-orders','orders')}}
+        </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="validatebutton">Ship</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="updateStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

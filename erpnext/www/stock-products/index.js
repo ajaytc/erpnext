@@ -108,10 +108,8 @@ function generateOptions(values) {
 }
 
 const clientUpdateCallback = (e) => {
-    // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     var client = $(e.target).find("option:selected").val()
     console.log(client)
-    //$(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.modehero.stock.get_purchase',
         args: {
@@ -125,10 +123,8 @@ const clientUpdateCallback = (e) => {
 }
 
 const purchaseUpdateCallback = (e) => {
-    // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     var purchase = $(e.target).find("option:selected").val()
     console.log(purchase)
-    //$(e.target).closest('.product-table').attr('id', product)
 
     frappe.call({
         method: 'erpnext.modehero.stock.get_qps',
@@ -144,17 +140,6 @@ const purchaseUpdateCallback = (e) => {
             }
         }
     });
-    frappe.call({
-        method: 'erpnext.modehero.stock.get_purchase_items',
-        args: {
-            purchase
-        },
-        callback: function (r) {
-            //console.log(r.message)
-
-        }
-    });
-
 }
 
 function generateQuantityTables(quantities) {
@@ -163,12 +148,14 @@ function generateQuantityTables(quantities) {
 
     for (let i in quantities) {
         let sizes = '', inputs = '',qtys ='',name = ''
+        let cal =0
         quantities[i].map(j => {
             console.log(j)
-            name = j[0]
+            cal++
+            name = `<th style colspan="${cal}">${j[0]}</th>`
             sizes += `<th scope="col">${j[1]}</th>`
             qtys += `<th scope="col">${j[2]}</th>`
-            inputs += `<td><input type="text" class="form-control"></td>`
+            inputs += `<td><input type="number" class="form-control" value="${j[2]}" min="0" max="${j[2]}"></td>`
         })
         tables += generateTable(sizes, qtys,  inputs, name)
     }
@@ -177,8 +164,9 @@ function generateQuantityTables(quantities) {
 
 function generateTable(sizes, qtys, inputs, name) {
     return `<table class="table table-bordered">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <tbody>
-                    <tr class="sizes">
+                    <tr class="name">
                         <th scope="row">{{_("Product Name")}}</th>
                         ${name}
                     </tr>

@@ -90,6 +90,32 @@ def get_purchase(client):
 
 
 @frappe.whitelist()
+def get_fabric_orders(vendor):
+
+    orders = frappe.get_list("Fabric Order", filters={
+        "fabric_vendor": vendor})
+
+    return orders
+
+
+@frappe.whitelist()
+def get_trimming_orders(vendor):
+
+    orders = frappe.get_list("Trimming Order", filters={
+        "trimming_vendor": vendor})
+
+    return orders
+
+@frappe.whitelist()
+def get_packaging_orders(vendor):
+
+    orders = frappe.get_list("Packaging Order", filters={
+        "packaging_vendor": vendor})
+
+    return orders
+
+
+@frappe.whitelist()
 def get_purchase_items(purchase):
 
     order = frappe.get_doc('Sales Order', purchase)

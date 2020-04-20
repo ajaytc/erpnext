@@ -88,3 +88,39 @@ $('#shipbutton').click(() => {
     })
     console.log(amount+ " of "+ fabric_name+ " shipped to " + destination)
 })
+
+$('#shipFromExisting').on('show.bs.modal', function (event) {
+
+    var modal = $(this)
+
+    var vendor = $('.modal-body #selected-vendor').val()
+    console.log(vendor)
+
+    $('.selected-vendor').click(vendorUpdateCallback)
+
+    //$('.selected-purchase').click(purchaseUpdateCallback)
+    
+})
+
+function generateOptions(values) {
+    let html = ''
+    values.map(v => {
+        html += `<option value="${v.name}">${v.name}</option>`
+    })
+    return html
+}
+
+const vendorUpdateCallback = (e) => {
+    var vendor = $(e.target).find("option:selected").val()
+    console.log(vendor)
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_fabric_orders',
+        args: {
+            vendor
+        },
+        callback: function (r) {
+            //console.log(r.message)
+            $('#orders').html(generateOptions(r.message))
+        }
+    });
+}
