@@ -84,3 +84,117 @@ $('#shipbutton').click(() => {
         }
     })
 })
+
+
+$('#shipFromExisting').on('show.bs.modal', function (event) {
+
+    var modal = $(this)
+
+    var client = $('.modal-body #selected-client').val()
+    console.log(client)
+
+    $('.selected-client').click(clientUpdateCallback)
+
+    $('.selected-purchase').click(purchaseUpdateCallback)
+    
+})
+
+function generateOptions(values) {
+    let html = ''
+    values.map(v => {
+        html += `<option value="${v.name}">${v.name}</option>`
+    })
+    return html
+}
+
+const clientUpdateCallback = (e) => {
+    // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
+    var client = $(e.target).find("option:selected").val()
+    console.log(client)
+    //$(e.target).closest('.product-table').attr('id', product)
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_purchase',
+        args: {
+            client
+        },
+        callback: function (r) {
+            //console.log(r.message)
+            $('#purchase').html(generateOptions(r.message))
+        }
+    });
+}
+
+const purchaseUpdateCallback = (e) => {
+    // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
+    var purchase = $(e.target).find("option:selected").val()
+    console.log(purchase)
+    //$(e.target).closest('.product-table').attr('id', product)
+
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_qps',
+        args: {
+            purchase
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                let table = generateQuantityTables(r.message.quantities)
+                console.log(table)
+                $('#tables').html(table)
+            }
+        }
+    });
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_purchase_items',
+        args: {
+            purchase
+        },
+        callback: function (r) {
+            //console.log(r.message)
+
+        }
+    });
+
+}
+
+function generateQuantityTables(quantities) {
+
+    let tables = ''
+
+    for (let i in quantities) {
+        let sizes = '', inputs = '',qtys ='',name = ''
+        quantities[i].map(j => {
+            console.log(j)
+            name = j[0]
+            sizes += `<th scope="col">${j[1]}</th>`
+            qtys += `<th scope="col">${j[2]}</th>`
+            inputs += `<td><input type="text" class="form-control"></td>`
+        })
+        tables += generateTable(sizes, qtys,  inputs, name)
+    }
+    return tables
+}
+
+function generateTable(sizes, qtys, inputs, name) {
+    return `<table class="table table-bordered">
+                <tbody>
+                    <tr class="sizes">
+                        <th scope="row">{{_("Product Name")}}</th>
+                        ${name}
+                    </tr>
+                    <tr class="sizes">
+                        <th scope="row">{{_("Sizes")}}</th>
+                        ${sizes}
+                    </tr>
+                    <tr class="qty">
+                        <th scope="row">{{_("Quantity")}}</th>
+                        ${qtys}
+                    </tr>
+                    <tr class="qty-to-ship">
+                        <th scope="row">{{_("Quantity to Ship")}}</th>
+                        ${inputs}
+                    </tr>
+                </tbody>
+            </table>
+    `
+}
