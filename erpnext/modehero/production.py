@@ -23,3 +23,17 @@ def create_production_order(data):
 
     order.insert()
     return {'status': 'ok', 'order': order}
+
+
+@frappe.whitelist()
+def validate(order, isvalidate):
+    order = frappe.get_doc('Production Order', order)
+    if isvalidate == 'true':
+        order.docstatus = 1
+    else:
+        order.docstatus = 1
+        order.save()
+        order.docstatus = 2
+    order.save()
+    frappe.db.commit()
+    return order

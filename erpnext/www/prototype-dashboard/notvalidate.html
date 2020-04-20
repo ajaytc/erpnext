@@ -8,10 +8,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for o in cancelled %}
+            {% for o in notvalidate %}
             {% for s in frappe.get_list('Prototype Quantity Per Size',filters={'parent':o.name},fields=['size']) %}
             <tr>
-                <th>{{o.internal_ref}}</th>
+                <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
                 <th>{{o.product}}</th>
                 <th>{{o.product_category}}</th>
             </tr>

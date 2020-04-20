@@ -146,7 +146,9 @@
             </div>
 
             <div class="ml-5">
+                {% if order.docstatus==0 %}
                 <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                {% endif %}
             </div>
             {% endif %}
         </div>
