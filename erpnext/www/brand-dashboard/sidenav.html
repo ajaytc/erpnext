@@ -193,7 +193,7 @@
     </a>
     <div id="collapse4" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="#" class="list-group-item ">
+            <a href="/production-order" class="list-group-item ">
                 {{_("Order")}}
             </a>
             <a href="/production-dashboard" class="list-group-item ">
@@ -252,9 +252,23 @@
     </a>
     <div id="collapse6" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="#" class="list-group-item ">
+            <a href="#"class="list-group-item" type="button" data-toggle="collapse" data-target="#c6a"
+                aria-expanded="false" aria-controls="c6a">
                 {{_("Supply")}}
             </a>
+            <div id="c6a" class="collapse" data-parent="#collapse6">
+                <div class="list-group">
+                    <a href="/stock-fabric" class="list-group-item ">
+                        {{_("Fabric Stock")}}
+                    </a>
+                    <a href="/stock-trimming" class="list-group-item ">
+                        {{_("Trimming Stock")}}
+                    </a>
+                    <a href="/stock-packaging" class="list-group-item ">
+                        {{_("Packaging Stock")}}
+                    </a>
+                </div>
+            </div>
             <a href="#" class="list-group-item ">
                 {{_("Finished product")}}
             </a>
