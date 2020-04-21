@@ -155,7 +155,8 @@
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
                     <br />
-                    <span class="product">{{frappe.db.get_value('Item',o.item_name,'item_name')}}</span>
+                    <span class="product"
+                        data-product="{{o.item_code}}">{{frappe.db.get_value('Item',o.item_name,'item_name')}}</span>
                 </div>
                 <div class="col-md-4">
                     <label for="exampleFormControlSelect1">{{_("Destination")}}</label>

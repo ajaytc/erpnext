@@ -4,8 +4,12 @@
 <div class="form-group">
     <select class="form-control {{class}}" id="{{id}}">
         {% for i in items %}
-        {% if i.name %}
+        {% if typetwo %}
+        <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.fabric_ref %}
+        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
         {% else %}
         <option value="{{i}}">{{i}}</option>
         {% endif %}
@@ -24,7 +28,8 @@
                         <div class="col-md-4">
                             <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
                             <br />
-                            <span class="product">{{frappe.db.get_value('Item',order.product_name,'item_name')}}</span>
+                            <span class="product"
+                                data-product="{{order.product}}">{{frappe.db.get_value('Item',order.product_name,'item_name')}}</span>
                         </div>
                     </div>
 
@@ -154,6 +159,18 @@
         </div>
     </div>
 
-
+    {# bottom part of summary page should go below, should be accessible only by production user(factory user) #}
+    <div class="card" style="">
+        <div class="card-body row">
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

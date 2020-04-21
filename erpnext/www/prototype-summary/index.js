@@ -6,7 +6,7 @@ $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
-    product = $(e.target).find("option:selected").text()
+    product = $(e.target).find("option:selected").val()
     $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.stock.sizing.getSizes',
@@ -75,7 +75,7 @@ $('#submit').click(() => {
     let garmentlabel = $('#garmentlabel>option:selected').text()
     let allnull = true
     $('.product-table').map(function () {
-        let product = $($(this).find('.selected-product')[0]).find('option:selected').text()
+        let product = $($(this).find('.selected-product')[0]).find('option:selected').val()
         let destination = $($(this).find('.destination')[0]).find('option:selected').text()
 
         let qtys = {}
@@ -192,7 +192,7 @@ function priceUpdateCallback(e) {
 
         //calculate price 
         $('.product-table').map(function () {
-            let product = $(this).find('.selected-product>option:selected').text()
+            let product = $(this).find('.selected-product>option:selected').val()
 
             $(this).find('.qty>td').map(function () {
                 let qty = $(this).find('input').val()
@@ -238,7 +238,7 @@ function calculatePrice(products) {
 function calculatePriceOnLoad() {
     let products = {}
     $('.product-table').map(function () {
-        let product = $(this).find('.product').html()
+        let product = $(this).find('.product').attr('data-product')
         $(this).find('.qty>td').map(function () {
             let qty = $(this).html().trim()
             let size = $(this).attr('data-size')
@@ -260,3 +260,7 @@ setTimeout(() => {
     calculatePriceOnLoad()
 }, 500);
 {% endif %}
+
+// $(function () {
+//     $('#datetimepicker1').datetimepicker();
+// });

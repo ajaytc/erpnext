@@ -233,7 +233,7 @@ function calculatePrice(products) {
 function calculatePriceOnLoad() {
     let products = {}
     $('.product-table').map(function () {
-        let product = $(this).find('.product').html()
+        let product = $(this).find('.product').attr('data-product')
         $(this).find('.qty>td').map(function () {
             let qty = $(this).html().trim()
             let size = $(this).attr('data-size')
@@ -282,7 +282,7 @@ $('#cancel').click(function () {
 function getModifiedProducts() {
     let products = {}
     $('.product-table').map(function () {
-        let product = $(this).find('.product').html()
+        let product = $(this).find('.product').attr('data-product')
         console.log(product)
         $(this).find('.modified-qty').map(function () {
             let qty = $(this).val()
