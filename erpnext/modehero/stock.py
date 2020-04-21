@@ -81,6 +81,14 @@ def directShip(stock_name, amount, old_stock, description, price):
 
 
 @frappe.whitelist()
+def shipFromExisting(stock_name, amount, old_stock, description, price):
+    new_stock = int(old_stock)+int(amount)
+
+    stockIn(stock_name,amount,new_stock,description)
+    updateQuantity(stock_name,new_stock,price)
+
+
+@frappe.whitelist()
 def get_purchase(client):
 
     purchase = frappe.get_list("Sales Order", filters={
@@ -148,3 +156,29 @@ def get_qps(purchase):
         temp[i[0]].append(i)
 
     return {"quantities": temp}
+
+@frappe.whitelist()
+def get_order_details_fabric(order):
+    fabric_order = frappe.get_doc('Fabric Order', order)
+    #need to get the name of the stock for fabric (fabric_order.fabric_ref)
+    #and put it to (fabric_stock_name)
+
+    fabric_stock_name = frappe.get_all('Stock', filters={'item_type': 'fabric','internal_ref':fabric_order.fabric_ref}, fields=['name'])
+    fabric_stock = frappe.get_doc('Stock',fabric_stock_name)
+
+    return{"fabric_ref":fabric_order.fabric_ref,"quantity":fabric_order.quantity,"stock_name":fabric_stock.name,"old_stock":fabric_stock.quantity,"price":fabric_order.price_per_unit}
+
+@frappe.whitelist()
+def get_order_details_trimming(order):
+    fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')
+    quantity = frappe.get_value('Fabric Order', order, 'quantity')
+
+    return{"fabric_ref":fabric_ref,"quantity":quantity}
+
+@frappe.whitelist()
+def get_order_details_packaging(order):
+
+    fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')
+    quantity = frappe.get_value('Fabric Order', order, 'quantity')
+
+    return{"fabric_ref":fabric_ref,"quantity":quantity}

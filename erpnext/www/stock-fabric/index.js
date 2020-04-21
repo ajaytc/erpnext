@@ -8,7 +8,8 @@ var stock_name =null;
 var price = null;
 var in_stock = null;
 var fabric_name = null;
-var old_stock =null
+var old_stock =null;
+var unit_price =null;
 
 $('#updateStock').on('show.bs.modal', function (event) {
 
@@ -89,6 +90,7 @@ $('#shipbutton').click(() => {
     console.log(amount+ " of "+ fabric_name+ " shipped to " + destination)
 })
 
+
 $('#shipFromExisting').on('show.bs.modal', function (event) {
 
     var modal = $(this)
@@ -98,7 +100,7 @@ $('#shipFromExisting').on('show.bs.modal', function (event) {
 
     $('.selected-vendor').click(vendorUpdateCallback)
 
-    //$('.selected-purchase').click(purchaseUpdateCallback)
+    $('.selected-orders').click(purchaseUpdateCallback)
     
 })
 
@@ -124,3 +126,56 @@ const vendorUpdateCallback = (e) => {
         }
     });
 }
+const purchaseUpdateCallback = (e) => {
+    var order = $(e.target).find("option:selected").val()
+    console.log(order)
+
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_order_details_fabric',
+        args: {
+            order
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                name = r.message.fabric_ref
+                qty = r.message.quantity
+                stock_name = r.message.stock_name
+                old_stock = r.message.old_stock
+                unit_price = r.message.price
+
+                console.log(name)
+                console.log(qty)
+                let inputfield = generateInputField(name,qty)
+                console.log(inputfield)
+                $('#input-field').html(inputfield)
+            }
+        }
+    });
+}
+
+function generateInputField(name,qty) {
+    return `    <label>${name}</label>    
+                <input type="number" class="form-control" value="${qty}" min="0" max="${qty} id="shipfromexistingqty">
+    `
+}
+
+$('#shipfromExistingbutton').click(() => {
+    var amount = $('.modal-body #shipfromexistingqty').val()
+    frappe.call({
+        method: 'erpnext.modehero.stock.shipFromExisting',
+        args: {
+            stock_name,
+            amount,
+            old_stock,
+            description : 'Fabric Received',
+            price : unit_price
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                window.location.reload()
+            }
+        }
+    })
+})
