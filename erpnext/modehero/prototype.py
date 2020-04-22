@@ -42,3 +42,17 @@ def validate(order, isvalidate):
     order.save()
     frappe.db.commit()
     return order
+
+@frappe.whitelist()
+def submit_production_info(data):
+    data=json.loads(data);
+    order = frappe.get_doc('Prototype Order', data['order'])
+    order.ex_work_date = data['ex_work_date'];
+    order.invoice=data['invoice'];
+    order.tracking_number=data['tracking_number'];
+    order.carrier=data['carrier'];
+    order.shipment_date=data['shipment_date'];
+    order.shipment_price=data['shipment_price'];
+    order.production_comment=data['production_comment'];
+    order.save();
+    return order
