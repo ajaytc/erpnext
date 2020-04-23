@@ -14,7 +14,8 @@
   "shipping_date",
   "expected_delivery_date",
   "shipping_price",
-  "shipping_document"
+  "shipping_document",
+  "brand"
  ],
  "fields": [
   {
@@ -65,10 +66,16 @@
    "fieldname": "shipping_document",
    "fieldtype": "Attach",
    "label": "Shipping Document"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-10 19:30:41.023701",
+ "modified": "2020-04-22 18:09:33.092819",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",

@@ -261,6 +261,95 @@ setTimeout(() => {
 }, 500);
 {% endif %}
 
-// $(function () {
-//     $('#datetimepicker1').datetimepicker();
-// });
+
+function uploadFile(componentId) {
+    return new Promise((resolve, reject) => {
+        let file = $(`#${componentId}`).prop('files')[0]
+        if (!file) {
+            resolve('')
+        }
+        if (file.size / 1024 / 1024 > 5) {
+            reject("Please upload file less than 5mb")
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        console.log(file, reader, reader.result)
+        reader.onload = function () {
+            frappe.call({
+                method: 'frappe.handler.uploadfile',
+                // method: 'erpnext.modehero.sales_order.upload_test',
+                args: {
+                    filename: file.name,
+                    attached_to_doctype: 'Prototype Order',
+                    attached_to_field: componentId,
+                    is_private: true,
+                    filedata: reader.result,
+                    from_form: true,
+                },
+                callback: function (r) {
+                    if (!r.exc) {
+                        console.log(r)
+                        $(`#${componentId}-label`).html(r.message.file_url)
+                        resolve(r.message.file_url)
+                    }
+                }
+            })
+
+        }
+    })
+
+}
+
+
+$('#prodSubmit').click(function () {
+    checkFileUpload('invoice').then(res =>
+        frappe.call({
+            method: 'erpnext.modehero.prototype.submit_production_info',
+            args: {
+                data: {
+                    order: "{{frappe.form_dict.order}}",
+                    ex_work_date: $('#exWorkDate').val(),
+                    invoice: res,
+                    carrier: $('#career').val(),
+                    tracking_number: $('#tracking_number').val(),
+                    shipment_date: $('#shipmentDate').val(),
+                    shipment_price: $('#price').val(),
+                    production_comment: $('#comment').val(),
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                }
+            }
+        })
+
+    )
+
+
+})
+
+function checkFileUpload(componentId) {
+    return new Promise((resolve, reject) => {
+
+        let file = $(`#${componentId}`).prop('files')[0]
+        if (!file) {
+            if ("{{order.invoice}}" == null) {
+                console.error('invoice must upload');
+
+            } else {
+                filename = "{{order.invoice}}";
+                resolve(filename);
+            }
+
+        } else {
+            uploadFile(componentId).then(res => resolve(res));
+
+        }
+    })
+
+}
+
+$('#invoice').change(function () {
+    $('#invoice-label').html($(this).prop('files')[0].name)
+})
