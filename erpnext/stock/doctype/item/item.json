@@ -319,7 +319,7 @@
    "label": "Brand",
    "oldfieldname": "brand",
    "oldfieldtype": "Link",
-   "options": "Brand",
+   "options": "Company",
    "print_hide": 1
   },
   {
@@ -1117,7 +1117,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-04-17 22:26:34.099645",
+ "modified": "2020-04-23 13:45:07.325119",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
