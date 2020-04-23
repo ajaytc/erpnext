@@ -13,15 +13,35 @@ def get_context(context):
     if frappe.session.user == 'Guest':
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
+    
+    context.roles = frappe.get_roles(frappe.session.user)
 
-    context.show_sidebar = False
-    context.status = 'waiting'
+    context.isFabric = "Fabric Vendor" in context.roles
+    context.isPackaging = "Packaging Vendor" in context.roles
+    context.isTrimming = "Trimming Vendor" in context.roles
 
-    query = """select so.name, so.creation, i.item_name, i.item_group from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name"""
-    context.waiting = frappe.db.sql(query+" where i.docstatus=0")
-    context.onprocess = frappe.db.sql(query+" where i.docstatus=1")
-    context.shipped = frappe.db.sql(query+" where i.docstatus=3")
-    context.cancelled = frappe.db.sql(query+" where i.docstatus=2")
+    fileds = ['internal_ref','name','product_name','brand_name','creation','tracking_number','ex_work_date','profoma','shipment_date','invoice']
+
+    if context.isFabric:
+        orderType = 'Fabric Order'
+        context.neworders = frappe.get_all(orderType,filters={'docstatus':0},fields=fileds)
+        context.onprocess = frappe.get_all(orderType,filters={'docstatus':1},fields=fileds)
+        context.ready = frappe.get_all(orderType,filters={'docstatus':2},fields=fileds)
+        context.shipped = frappe.get_all(orderType,filters={'docstatus':3},fields=fileds)
+
+    elif context.isPackaging:
+        orderType = 'Packaging Order'
+        context.neworders = frappe.get_all(orderType,filters={'docstatus':0},fields=fileds)
+        context.onprocess = frappe.get_all(orderType,filters={'docstatus':1},fields=fileds)
+        context.ready = frappe.get_all(orderType,filters={'docstatus':2},fields=fileds)
+        context.shipped = frappe.get_all(orderType,filters={'docstatus':3},fields=fileds)
+            
+    elif context.isTrimming:
+        orderType = 'Trimming Order'
+        context.neworders = frappe.get_all(orderType,filters={'docstatus':0},fields=fileds)
+        context.onprocess = frappe.get_all(orderType,filters={'docstatus':1},fields=fileds)
+        context.ready = frappe.get_all(orderType,filters={'docstatus':2},fields=fileds)
+        context.shipped = frappe.get_all(orderType,filters={'docstatus':3},fields=fileds)
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}

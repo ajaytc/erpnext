@@ -3,26 +3,28 @@
         <thead>
             <tr>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
-                <th scope="col">{{_("ORDER NUMBER")}}</th>
-                <th scope="col">{{_("PRODUCT NAME")}}</th>
-                <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
+                <th scope="col">{{_("ITEM NAME")}}</th>
+                <th scope="col">{{_("ITEM CATEGORY")}}</th>
                 <th scope="col">{{_("ORDER DATE")}}</th>
                 <th scope="col">{{_("DESTINATION")}}</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
-            {% for o in waiting %}
+            {% for o in neworders %}
             <tr>
-                <th></th>
-                <th>{{o[0]}}</th>
-                <th>{{o[2]}}</th>
-                <th>{{o[3]}}</th>
-                <th>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</th>
-                <th></th>
                 <th>
-                    <img class="delete" src="/assets/erpnext/images/delete.svg" alt="" style="">
+                    {% if isFabric %}
+                    <a href="/fabric-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    {% elif isTrimming %}
+                        <a href="/trimming-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    {% elif isPackaging %}
+                        <a href="/packaging-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    {% endif %}
                 </th>
+                <th>{{o['product_name']}}</th>
+                <th>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</th>
+                <th>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</th>
+                <th></th>
             </tr>
             {% endfor %}
         </tbody>
