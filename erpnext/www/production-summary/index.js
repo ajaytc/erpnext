@@ -260,3 +260,169 @@ setTimeout(() => {
     calculatePriceOnLoad()
 }, 500);
 {% endif %}
+
+
+$('#prodSubmit').click(function () {
+let files = ['confirmation_doc', 'profoma', 'invoice']
+
+    Promise.all(files.map(f => {
+        
+        return checkFileUpload(f)
+        
+    })).then(files => {
+        console.log(files);
+        submitProductionSummary(files);
+
+    }).catch(e => {
+        
+        frappe.throw(e)
+    })
+    
+});
+
+function checkFileUpload(componentId) {
+    return new Promise((resolve, reject) => {
+        let file = $(`#${componentId}`).prop('files')[0]
+        switch (componentId) {
+            case "confirmation_doc":
+                
+                if (!file) {
+                    if ("{{order.confirmation_doc}}" == null) {
+                        console.error('confirmation doc must upload');
+        
+                    } else {
+                        filename = "{{order.confirmation_doc}}";
+                        resolve(filename);
+                    }
+        
+                } else {
+                    uploadFile(componentId).then(res => resolve(res));
+        
+                }
+                break;
+            case "profoma":
+                
+                if (!file) {
+                    if ("{{order.profoma}}" == null) {
+                        console.error('profoma must upload');
+        
+                    } else {
+                        filename = "{{order.profoma}}";
+                        resolve(filename);
+                    }
+        
+                } else {
+                    uploadFile(componentId).then(res => resolve(res));
+        
+                }
+                
+                break;
+            case "invoice":
+                
+                if (!file) {
+                    if ("{{order.invoice}}" == null) {
+                        console.error('invoice must upload');
+        
+                    } else {
+                        filename = "{{order.invoice}}";
+                        resolve(filename);
+                    }
+        
+                } else {
+                    uploadFile(componentId).then(res => resolve(res));
+        
+                }
+                
+                break;
+        
+            
+        }
+        
+    })
+
+}
+
+function submitProductionSummary(files) {
+    frappe.call({
+        method: 'erpnext.modehero.production.submit_production_summary_info',
+        args: {
+            data: {
+                order: "{{frappe.form_dict.order}}",
+                ex_work_date: $('#exWorkDate').val(),
+                confirmation_doc:files[0],
+                profoma:files[1],
+                invoice: files[2],
+                carrier: $('#carrier').val(),
+                tracking_number: $('#tracking_number').val(),
+                shipment_date: $('#shipmentDate').val(),
+                production_comment: $('#comment').val(),
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'green',
+                    message: __('Production order ' + "{{order.name}}" + ' summary created successfully')
+                });
+
+            }else{
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'red',
+                    message: __('Production order ' + "{{order.name}}" + ' summary created Failed')
+                });
+            }
+        }
+    })
+    
+}
+
+function uploadFile(componentId) {
+    return new Promise((resolve, reject) => {
+        let file = $(`#${componentId}`).prop('files')[0]
+        if (file.size / 1024 / 1024 > 5) {
+            reject("Please upload file less than 5mb")
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        console.log(file, reader, reader.result)
+        reader.onload = function () {
+            frappe.call({
+                method: 'frappe.handler.uploadfile',
+                // method: 'erpnext.modehero.sales_order.upload_test',
+                args: {
+                    filename: file.name,
+                    attached_to_doctype: 'Production Order',
+                    attached_to_field: componentId,
+                    is_private: true,
+                    filedata: reader.result,
+                    from_form: true,
+                },
+                callback: function (r) {
+                    if (!r.exc) {
+                        console.log(r)
+                        $(`#${componentId}-label`).html(r.message.file_url)
+                        resolve(r.message.file_url)
+                    }
+                }
+            })
+
+        }
+    })
+
+}
+
+$('#confirmation_doc').change(function () {
+    $('#confirmation_doc-label').html($(this).prop('files')[0].name)
+})
+
+$('#profoma').change(function () {
+    $('#profoma-label').html($(this).prop('files')[0].name)
+})
+
+$('#invoice').change(function () {
+    $('#invoice-label').html($(this).prop('files')[0].name)
+})
+

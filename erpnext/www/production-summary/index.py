@@ -15,6 +15,7 @@ def get_context(context):
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles
+    context.isProd="Manufacturing User" in context.roles
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}
