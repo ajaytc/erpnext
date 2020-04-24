@@ -193,6 +193,7 @@ def createNewFabricStock(doc, method):
     docStock = frappe.get_doc({
         "doctype": "Stock",
         "item_type": 'fabric',
+        "internal_ref": doc.name,
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
@@ -206,6 +207,7 @@ def createNewTrimmingStock(doc, method):
     docStock = frappe.get_doc({
         "doctype": "Stock",
         "item_type": 'trimming',
+        "internal_ref": doc.name,
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
@@ -219,6 +221,7 @@ def createNewPackagingStock(doc, method):
     docStock = frappe.get_doc({
         "doctype": "Stock",
         "item_type": 'packaging',
+        "internal_ref": doc.name,
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
