@@ -42,6 +42,25 @@ def updateQuantity(stock_name, quantity, price):
     frappe.db.commit()
 
 
+def updateStock2(stock_name, quantity, old_quantity, description, price):
+    quantity = int(quantity)
+    if(old_quantity == None):
+        old_quantity = frappe.get_doc('Stock', stock_name).quantity
+    else:
+        old_quantity = int(old_quantity)
+
+    if quantity > old_quantity:
+        amount = quantity-old_quantity
+        stockIn(stock_name, amount, quantity, description)
+    elif old_quantity > quantity:
+        amount = old_quantity-quantity
+        stockOut(stock_name, amount, quantity, description)
+    else:
+        pass
+
+    updateQuantity(stock_name, quantity, price)
+
+
 @frappe.whitelist()
 def updateStock(stock_name, quantity, old_quantity, description, price):
     quantity = int(quantity)
