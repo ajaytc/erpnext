@@ -1,6 +1,6 @@
 import frappe
 import json
-
+import ast
 
 @frappe.whitelist()
 def create_production_order(data):
@@ -38,6 +38,19 @@ def validate(order, isvalidate):
     frappe.db.commit()
     return order
 
+@frappe.whitelist()
+def set_finish(orderslist):
+    orderslist = ast.literal_eval(orderslist)
+    res_status = "ok"
+    for order in orderslist:
+        order = frappe.get_doc('Production Order', order)
+        if (order):
+            order.docstatus = 1
+            order.save()
+        else:
+            res_status = "no"
+    frappe.db.commit()
+    return {'status': res_status}
 
 @frappe.whitelist()
 def submit_production_summary_info(data):

@@ -1,32 +1,25 @@
-<div class="mb-3">
-    <button id="finished" type="button" class="btn btn-primary">
-        {{_("Mark Finished")}}
-    </button>
-    {# <button id="" type="button" class="btn btn-primary">
-        {{_("Received Order")}}
-    </button>
-    <button id="" type="button" class="btn btn-primary" id=directShipButton>
-        {{_("Account")}}
-    </button>
-    <button id="" type="button" class="btn btn-primary" id=updateStockButton>
-        {{_("Support")}}
-    </button> #}
-</div>
+{% if isManufacture %}
+    <div class="mb-3">
+        <button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary">
+            {{_("Mark Finished")}}
+        </button>
+    </div>
+{% endif %}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#ppop" role="tab" aria-controls="home"
+        <a class="nav-link active" id="pre-pro-on-pro" data-toggle="tab" href="#ppop" role="tab" aria-controls="home"
             aria-selected="false">{{_("Pre-Production On Process")}}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ppf" role="tab" aria-controls="profile"
+        <a class="nav-link" id="pre-pro-fin" data-toggle="tab" href="#ppf" role="tab" aria-controls="profile"
             aria-selected="true">{{_("Pre-Production Finished")}}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pop" role="tab" aria-controls="contact"
+        <a class="nav-link" id="pro-on-pro" data-toggle="tab" href="#pop" role="tab" aria-controls="contact"
             aria-selected="false">{{_("Production On Process")}}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#pf" role="tab" aria-controls="contact"
+        <a class="nav-link" id="pro-fin" data-toggle="tab" href="#pf" role="tab" aria-controls="contact"
             aria-selected="true">{{_("Production Finished")}}</a>
     </li>
 </ul>
