@@ -1,4 +1,4 @@
-<h1>Trimming Order Summary</h1>
+<h1>Packaging Order Summary</h1>
 
 
 <div id="container" class="container mt-3">
@@ -8,7 +8,7 @@
                 <div class="m-3">
                     {{_("Date")}} <br />
                     <span>{% if date %}{{date}}{% endif %}
-                        {{frappe.format(trimOrder.creation, {'fieldtype': 'Date'})}}
+                        {{frappe.format(packOrder.creation, {'fieldtype': 'Date'})}}
                     </span>
                 </div>
                
@@ -16,7 +16,7 @@
                     {{_("Order Number")}}
                     <br />
                     <span id="order-no">
-                        {{trimOrder.name}}
+                        {{packOrder.name}}
                     </span>
                 </div>
                 
@@ -25,7 +25,7 @@
                     {{_("Internal ref")}}
                     <br />
                     <span id="order-internal">
-                        {{trimOrder.internal_ref}}
+                        {{packOrder.internal_ref}}
                     </span>
                 
                 </div>
@@ -36,7 +36,7 @@
                     {{_("Item")}}
                     <br />
                     <span id="order-item">
-                        {{trimOrder.trimming_item}}
+                        {{packOrder.packaging_item}}
                     </span>
                 
                 </div>
@@ -44,7 +44,7 @@
                     {{_("Color")}}
                     <br />
                     <span id="order-color">
-                        {{trimmingItem.color}}
+                        {{packItem.color}}
                     </span>
                 
                 </div>
@@ -52,7 +52,7 @@
                     {{_("Quantity")}}
                     <br />
                     <span id="order-quantity">
-                        {{trimOrder.quantity}}
+                        {{packOrder.quantity}}
                     </span>
                 
                 </div>
@@ -60,7 +60,7 @@
                     {{_("Material")}}
                     <br />
                     <span id="order-material">
-                        {{trimmingItem.material}}
+                        {{packItem.packaging_material}}
                     </span>
                 
                 </div>
@@ -68,7 +68,7 @@
                     {{_("Size")}}
                     <br />
                     <span id="order-itemSize">
-                        {{trimmingItem.trimming_size}}
+                        {{packItem.packaging_size}}
                     </span>
                 
                 </div>
@@ -77,7 +77,7 @@
                     {{_("Other info")}}
                     <br />
                     <span id="order-otherInfo">
-                        {{trimmingItem.other_info}}
+                        {{packItem.other_info}}
                     </span>
                 
                 </div>
@@ -90,7 +90,7 @@
                     {{_("Price Per Unit")}}
                     <br />
                     <span id="order-otherInfo">
-                        {{trimOrder.price_per_unit}}
+                        {{packOrder.price_per_unit}}
                     </span>
                 
                 </div>
@@ -98,7 +98,7 @@
                     {{_("Price")}}
                     <br />
                     <span id="order-otherInfo">
-                        {{trimOrder.total_price}}
+                        {{packOrder.total_price}}
                     </span>
                 
                 </div>
@@ -106,28 +106,27 @@
                 <div class="m-3">
                     {{_("Payment Proof")}}
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.payment_proof}} name="paymentProof" id="paymentProof">
+                        <input type="file" class="custom-file-input" value={{packOrder.payment_proof}} name="paymentProof" id="paymentProof">
                      
-                        <label id="paymentProof-label" class="custom-file-label" for="paymentProof">{% if trimOrder.payment_proof %}{{trimOrder.payment_proof}}{% endif %}</label>
+                        <label id="paymentProof-label" class="custom-file-label" for="paymentProof">{% if packOrder.payment_proof %}{{packOrder.payment_proof}}{% endif %}</label>
                         
                     </div>
                 </div>
-                {% if trimOrder.payment_proof %}
+                {% if packOrder.payment_proof %}
                 <div class="m-3">
                     {{_("Submitted Payment Proof")}}
                     <br>
-                    <a href="{{trimOrder.payment_proof}}" download>Download Submitted Document</a>
+                    <a href="{{packOrder.payment_proof}}" download>Download Submitted Document</a>
                 </div>
                 {% endif %}
                 
-
-               
+                
                     <div class="m-3">
                         {{_("Comments")}}
                         <textarea class="form-control" id="proofComment"
-                            rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
+                            rows="4">{% if packOrder.comment %}{{packOrder.comment}}{% endif %}</textarea>
                     </div>
-               
+                
 
                 <div class="ml-5">
                     
@@ -140,7 +139,7 @@
         </div>
     </div>
 {# bottom part of summary page should go below #}
-{% if isTrimVendor %}
+{% if isPackVendor %}
 <div class="card" style="">
     <div class="card-body row">
         <div class="col-6">
@@ -151,7 +150,7 @@
                 {{_("Expected Work Date")}}
                 <span>
                     <div class="input-group date">
-                        <input id="exWorkDate" class="form-control" value={% if trimOrder.ex_work_date %}{{trimOrder.ex_work_date}}{% endif %} name="workDate"
+                        <input id="exWorkDate" class="form-control" value={% if packOrder.ex_work_date %}{{packOrder.ex_work_date}}{% endif %} name="workDate"
                             placeholder="Desired date" type="date">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -163,9 +162,9 @@
             <div class="m-3">
                 {{_("Confirmation Doc")}}
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}} name="confirmation_doc" id="confirmation_doc">
+                    <input type="file" class="custom-file-input" value={{packOrder.confirmation_doc}} name="confirmation_doc" id="confirmation_doc">
                  
-                    <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
+                    <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">{% if packOrder.confirmation_doc %}{{packOrder.confirmation_doc}}{% endif %}</label>
                     
                 </div>
             </div>
@@ -173,9 +172,9 @@
             <div class="m-3">
                 {{_("Proforma")}}
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma" id="profoma">
+                    <input type="file" class="custom-file-input" value={{packOrder.profoma}} name="profoma" id="profoma">
                    
-                    <label id="profoma-label" class="custom-file-label" for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
+                    <label id="profoma-label" class="custom-file-label" for="profoma">{% if packOrder.profoma %}{{packOrder.profoma}}{% endif %}</label>
                 
                 </div>
             </div>
@@ -183,9 +182,9 @@
             <div class="m-3">
                 {{_("Invoice")}}
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice" id="invoice">
+                    <input type="file" class="custom-file-input" value={{packOrder.invoice}} name="invoice" id="invoice">
 
-                    <label id="invoice-label" class="custom-file-label" for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
+                    <label id="invoice-label" class="custom-file-label" for="invoice">{% if packOrder.invoice %}{{packOrder.invoice}}{% endif %}</label>
             
                 
             </div>
@@ -196,17 +195,17 @@
 
             <div class="m-3">
                 {{_("Carrier")}}
-                <input id="carrier" type="text" value="{% if trimOrder.carrier %}{{trimOrder.carrier}}{% endif %}" class="form-control mt-2">
+                <input id="carrier" type="text" value="{% if packOrder.carrier %}{{packOrder.carrier}}{% endif %}" class="form-control mt-2">
             </div>
             <div class="m-3">
                 {{_("Tracking Number")}}
-                <input id="tracking_number" type="text" value="{% if trimOrder.tracking_number %}{{trimOrder.tracking_number}}{% endif %}" class="form-control mt-2">
+                <input id="tracking_number" type="text" value="{% if packOrder.tracking_number %}{{packOrder.tracking_number}}{% endif %}" class="form-control mt-2">
             </div>
 
             <div class="m-3">
                 {{_("Date of Shipment")}}
                 <div class="input-group date">
-                    <input id="shipmentDate" class="form-control" value={{trimOrder.shipment_date}} name="desireddate"
+                    <input id="shipmentDate" class="form-control" value={{packOrder.shipment_date}} name="desireddate"
                         placeholder="Desired date" type="date">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -215,7 +214,7 @@
             </div>
 
             <div class="ml-5">
-                {% if trimOrder.docstatus==0 %}
+                {% if packOrder.docstatus==0 %}
                 <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
                 {% endif %}
             </div>
@@ -226,7 +225,7 @@
         <div class="m-3">
             {{_("Comments")}}
             <textarea class="form-control" id="comment"
-                rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
+                rows="4">{% if packOrder.production_comment %}{{packOrder.production_comment}}{% endif %}</textarea>
         </div>
     </div>
 </div>
