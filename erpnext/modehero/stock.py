@@ -174,7 +174,6 @@ def get_order_details_packaging(order):
     return{"fabric_ref": fabric_ref, "quantity": quantity}
 
 
-@frappe.whitelist
 def createNewProductStock(doc, method):
 
     total_value = int(doc.avg_price)*0
@@ -189,7 +188,6 @@ def createNewProductStock(doc, method):
     frappe.db.commit()
 
 
-@frappe.whitelist
 def createNewFabricStock(doc, method):
 
     docStock = frappe.get_doc({
@@ -198,13 +196,11 @@ def createNewFabricStock(doc, method):
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
-        "color": doc.color
     })
     docStock.insert()
     frappe.db.commit()
 
 
-@frappe.whitelist
 def createNewTrimmingStock(doc, method):
 
     docStock = frappe.get_doc({
@@ -213,15 +209,11 @@ def createNewTrimmingStock(doc, method):
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
-        "trimming_category": doc.item_category,
-        "size": doc.trimming_size,
-        "color": doc.color
     })
     docStock.insert()
     frappe.db.commit()
 
 
-@frappe.whitelist
 def createNewPackagingStock(doc, method):
 
     docStock = frappe.get_doc({
@@ -230,8 +222,6 @@ def createNewPackagingStock(doc, method):
         "parent": doc.name,
         "quantity": 0,
         "total_value": 0,
-        "size": doc.packaging_size,
-        "color": doc.color
     })
     docStock.insert()
     frappe.db.commit()
