@@ -2,20 +2,6 @@ import frappe
 import json
 
 
-@frappe.whitelist
-def createNewProductStock(doc):
-
-    total_value = int(doc.avg_price)*0
-    docStock = frappe.get_doc({
-        "doctype": "Stock",
-        "item_type": 'product',
-        "product": doc.name,
-        "quantity": quantity,
-        "total_value": total_value
-    })
-    docStock.insert()
-    frappe.db.commit()
-
 def stockIn(stock_name, amount, quantity, description):
     doc = frappe.get_doc({
         "doctype": "Stock History",
@@ -84,8 +70,8 @@ def directShip(stock_name, amount, old_stock, description, price):
 def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
-    stockIn(stock_name,amount,new_stock,description)
-    updateQuantity(stock_name,new_stock,price)
+    stockIn(stock_name, amount, new_stock, description)
+    updateQuantity(stock_name, new_stock, price)
 
 
 @frappe.whitelist()
@@ -114,6 +100,7 @@ def get_trimming_orders(vendor):
 
     return orders
 
+
 @frappe.whitelist()
 def get_packaging_orders(vendor):
 
@@ -129,11 +116,10 @@ def get_purchase_items(purchase):
     order = frappe.get_doc('Sales Order', purchase)
     qtys = {}
     for i in order.items:
-        item_name = frappe.db.get_value("Item",i.item_name,'item_name')
+        item_name = frappe.db.get_value("Item", i.item_name, 'item_name')
 
         qtys[item_name] = frappe.get_list(
-            'Quantity Per Size', filters={'order_id': i.name}, fields=['size','quantity'], order_by='creation asc')
-
+            'Quantity Per Size', filters={'order_id': i.name}, fields=['size', 'quantity'], order_by='creation asc')
 
     return qtys
 
@@ -147,7 +133,7 @@ def get_qps(purchase):
     where soi.parent = %s
     order by i.item_name"""
 
-    qps = frappe.db.sql(query,purchase)
+    qps = frappe.db.sql(query, purchase)
 
     temp = {}
     for i in qps:
@@ -157,23 +143,27 @@ def get_qps(purchase):
 
     return {"quantities": temp}
 
+
 @frappe.whitelist()
 def get_order_details_fabric(order):
     fabric_order = frappe.get_doc('Fabric Order', order)
-    #need to get the name of the stock for fabric (fabric_order.fabric_ref)
-    #and put it to (fabric_stock_name)
+    # need to get the name of the stock for fabric (fabric_order.fabric_ref)
+    # and put it to (fabric_stock_name)
 
-    fabric_stock_name = frappe.get_all('Stock', filters={'item_type': 'fabric','internal_ref':fabric_order.fabric_ref}, fields=['name'])
-    fabric_stock = frappe.get_doc('Stock',fabric_stock_name)
+    fabric_stock_name = frappe.get_all('Stock', filters={
+                                       'item_type': 'fabric', 'internal_ref': fabric_order.fabric_ref}, fields=['name'])
+    fabric_stock = frappe.get_doc('Stock', fabric_stock_name)
 
-    return{"fabric_ref":fabric_order.fabric_ref,"quantity":fabric_order.quantity,"stock_name":fabric_stock.name,"old_stock":fabric_stock.quantity,"price":fabric_order.price_per_unit}
+    return{"fabric_ref": fabric_order.fabric_ref, "quantity": fabric_order.quantity, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "price": fabric_order.price_per_unit}
+
 
 @frappe.whitelist()
 def get_order_details_trimming(order):
     fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')
     quantity = frappe.get_value('Fabric Order', order, 'quantity')
 
-    return{"fabric_ref":fabric_ref,"quantity":quantity}
+    return{"fabric_ref": fabric_ref, "quantity": quantity}
+
 
 @frappe.whitelist()
 def get_order_details_packaging(order):
@@ -181,4 +171,67 @@ def get_order_details_packaging(order):
     fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')
     quantity = frappe.get_value('Fabric Order', order, 'quantity')
 
-    return{"fabric_ref":fabric_ref,"quantity":quantity}
+    return{"fabric_ref": fabric_ref, "quantity": quantity}
+
+
+@frappe.whitelist
+def createNewProductStock(doc, method):
+
+    total_value = int(doc.avg_price)*0
+    docStock = frappe.get_doc({
+        "doctype": "Stock",
+        "item_type": 'product',
+        "product": doc.name,
+        "quantity": 0,
+        "total_value": total_value
+    })
+    docStock.insert()
+    frappe.db.commit()
+
+
+@frappe.whitelist
+def createNewFabricStock(doc, method):
+
+    docStock = frappe.get_doc({
+        "doctype": "Stock",
+        "item_type": 'fabric',
+        "parent": doc.name,
+        "quantity": 0,
+        "total_value": 0,
+        "color": doc.color
+    })
+    docStock.insert()
+    frappe.db.commit()
+
+
+@frappe.whitelist
+def createNewTrimmingStock(doc, method):
+
+    docStock = frappe.get_doc({
+        "doctype": "Stock",
+        "item_type": 'trimming',
+        "parent": doc.name,
+        "quantity": 0,
+        "total_value": 0,
+        "trimming_category": doc.item_category,
+        "size": doc.trimming_size,
+        "color": doc.color
+    })
+    docStock.insert()
+    frappe.db.commit()
+
+
+@frappe.whitelist
+def createNewPackagingStock(doc, method):
+
+    docStock = frappe.get_doc({
+        "doctype": "Stock",
+        "item_type": 'packaging',
+        "parent": doc.name,
+        "quantity": 0,
+        "total_value": 0,
+        "size": doc.packaging_size,
+        "color": doc.color
+    })
+    docStock.insert()
+    frappe.db.commit()

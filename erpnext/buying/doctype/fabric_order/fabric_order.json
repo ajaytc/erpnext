@@ -22,6 +22,8 @@
   "price_per_unit",
   "total_price",
   "amended_from",
+  "payment_proof",
+  "comment",
   "section_break_17",
   "ex_work_date",
   "confirmation_doc",
@@ -175,11 +177,21 @@
    "fieldname": "production_comment",
    "fieldtype": "Text Editor",
    "label": "Production Comment"
+  },
+  {
+   "fieldname": "payment_proof",
+   "fieldtype": "Attach",
+   "label": "Payment Proof"
+  },
+  {
+   "fieldname": "comment",
+   "fieldtype": "Data",
+   "label": "Comment"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-18 21:51:07.253017",
+ "modified": "2020-04-24 13:42:36.976585",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",
