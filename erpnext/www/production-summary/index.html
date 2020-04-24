@@ -130,6 +130,101 @@
         </div>
     </div>
 
+{# bottom part of summary page should go below #}
+{% if isProd %}
+    <div class="card" style="">
+        <div class="card-body row">
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Production")}}
+                </div>
+                <div class="m-3">
+                    {{_("Expected Work Date")}}
+                    <span>
+                        <div class="input-group date">
+                            <input id="exWorkDate" class="form-control" value={% if order.expected_work_date %}{{order.expected_work_date}}{% endif %} name="workDate"
+                                placeholder="Desired date" type="date">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </span>
+                </div>
+
+                <div class="m-3">
+                    {{_("Confirmation Doc")}}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{order.confirmation_doc}} name="confirmation_doc" id="confirmation_doc">
+                     
+                        <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">{% if order.confirmation_doc %}{{order.confirmation_doc}}{% endif %}</label>
+                        
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    {{_("Proforma")}}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{order.profoma}} name="profoma" id="profoma">
+                       
+                        <label id="profoma-label" class="custom-file-label" for="profoma">{% if order.profoma %}{{order.profoma}}{% endif %}</label>
+                    
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    {{_("Invoice")}}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{order.invoice}} name="invoice" id="invoice">
+    
+                        <label id="invoice-label" class="custom-file-label" for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
+                
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    {{_("Shipment")}}
+                </div>
+
+                <div class="m-3">
+                    {{_("Carrier")}}
+                    <input id="carrier" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}" class="form-control mt-2">
+                </div>
+                <div class="m-3">
+                    {{_("Tracking Number")}}
+                    <input id="tracking_number" type="text" value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
+                </div>
+
+                <div class="m-3">
+                    {{_("Date of Shipment")}}
+                    <div class="input-group date">
+                        <input id="shipmentDate" class="form-control" value={{order.shipment_date}} name="desireddate"
+                            placeholder="Desired date" type="date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="ml-5">
+                    {% if order.docstatus==0 %}
+                    <button class="btn btn-primary" id="prodSubmit">{{_("Submit")}}</button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Comments")}}
+                    <textarea class="form-control" id="comment"
+                        rows="4">{% if order.production_comment %}{{order.production_comment}}{% endif %}</textarea>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endif %}
+
 
 
 </div>

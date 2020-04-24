@@ -550,4 +550,5 @@ role_home_page = {
 	"Trimming Vendor":"/supply-dashboard",
 	"Fabric Vendor":"/supply-dashboard",
 	"Packaging Vendor":"/supply-dashboard",
+	"Manufacturing User": "/production-dashboard"
 }

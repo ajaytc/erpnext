@@ -170,7 +170,7 @@
                     {{_("Date")}}
                     <span>
                         <div class="input-group date">
-                            <input id="exWorkDate" class="form-control" value={% if order.shipment_price %}{{order.ex_work_date}}{% endif %} name="workDate"
+                            <input id="exWorkDate" class="form-control" value={% if order.ex_work_date %}{{order.ex_work_date}}{% endif %} name="workDate"
                                 placeholder="Desired date" type="date">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -186,7 +186,7 @@
                         {% if order.invoice==null %}
                         <label id="invoice-label" class="custom-file-label" for="invoice">{{_("Invoice")}}</label>
                         {% elif order.docstatus!=null %}
-                        <label id="invoice-label" class="custom-file-label" for="invoice">{% if order.shipment_price %}{{order.invoice}}{% endif %}</label>
+                        <label id="invoice-label" class="custom-file-label" for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
                         {% endif %}
                     </div>
                 </div>
@@ -197,11 +197,11 @@
 
                 <div class="m-3">
                     {{_("Career")}}
-                    <input id="career" type="text" value="{% if order.shipment_price %}{{order.carrier}}{% endif %}" class="form-control mt-2">
+                    <input id="career" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}" class="form-control mt-2">
                 </div>
                 <div class="m-3">
                     {{_("Tracking Number")}}
-                    <input id="tracking_number" type="text" value="{% if order.shipment_price %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
+                    <input id="tracking_number" type="text" value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
                 </div>
 
                 <div class="m-3">

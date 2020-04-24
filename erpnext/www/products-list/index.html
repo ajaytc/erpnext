@@ -1,0 +1,28 @@
+<div class="mb-3" >
+    <button id="finished" type="button" onclick="location.href='/product-item?new=1'" class="btn btn-primary">
+        {{_("Add")}}
+    </button>
+</div>
+   
+
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{_("PRODUCT NAME")}}</th>
+                <th scope="col">{{_("PRODUCT CATAGERY")}}</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <th><a href="/product-item?name={{item.name}}">{{item.item_name}}</a></th>
+                <th>{{item.item_group}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>

@@ -51,3 +51,21 @@ def set_finish(orderslist):
             res_status = "no"
     frappe.db.commit()
     return {'status': res_status}
+
+@frappe.whitelist()
+def submit_production_summary_info(data):
+    data=json.loads(data);
+    order = frappe.get_doc('Production Order', data['order']);
+    order.expected_work_date=data['ex_work_date'];
+    order.confirmation_doc=data['confirmation_doc'];
+    order.profoma=data['profoma'];
+    order.invoice=data['invoice'];
+    order.carrier=data['carrier'];
+    order.tracking_number=data['tracking_number'];
+    order.shipment_date=data['shipment_date'];
+    order.production_comment=data['production_comment'];
+    order.save()
+    
+    return order;
+
+

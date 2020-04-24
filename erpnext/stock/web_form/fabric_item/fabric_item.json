@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-06 14:41:33.644369",
+ "modified": "2020-04-23 15:49:42.140183",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "fabric-item",
@@ -97,19 +97,6 @@
    "options": "Width",
    "read_only": 0,
    "reqd": 1,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "hidden": 0,
-   "label": "Amended From",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Fabric",
-   "read_only": 1,
-   "reqd": 0,
    "show_in_filter": 0
   }
  ]

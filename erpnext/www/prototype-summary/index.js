@@ -320,6 +320,12 @@ $('#prodSubmit').click(function () {
             callback: function (r) {
                 if (!r.exc) {
                     console.log(r)
+                    frappe.msgprint({
+                        title: __('Notification'),
+                        indicator: 'green',
+                        message: __('Prototype order ' + "{{order.name}}'s" + ' production summary created successfully')
+                    });
+
                 }
             }
         })
