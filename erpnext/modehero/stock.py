@@ -200,6 +200,7 @@ def createNewProductStock(doc, method):
         "doctype": "Stock",
         "item_type": 'product',
         "product": doc.name,
+        "parent": doc.name,
         "quantity": 0,
         "total_value": total_value
     })
