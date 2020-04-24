@@ -2,6 +2,7 @@ import frappe
 import json
 import ast
 
+
 @frappe.whitelist()
 def create_production_order(data):
     data = json.loads(data)
@@ -13,8 +14,11 @@ def create_production_order(data):
         'internal_ref': data['internal_ref'],
         'product_name': data['product_name'],
         'fabric_ref': data['fabric_ref'],
+        'fabric_consumption': data['fabric_consumption'],
         'trimming': data['trimming_item'],
+        'trimming_consumption': data['trimming_consumption'],
         'packaging': data['packaging_item'],
+        'packaging_consumption': data['packaging_consumption'],
         'production_factory': data['production_factory'],
         'quantity_per_size': data['quantity'],
         'comment': data['comment'],
@@ -38,6 +42,7 @@ def validate(order, isvalidate):
     frappe.db.commit()
     return order
 
+
 @frappe.whitelist()
 def set_finish(orderslist):
     orderslist = ast.literal_eval(orderslist)
@@ -52,20 +57,18 @@ def set_finish(orderslist):
     frappe.db.commit()
     return {'status': res_status}
 
+
 @frappe.whitelist()
 def submit_production_summary_info(data):
-    data=json.loads(data);
-    order = frappe.get_doc('Production Order', data['order']);
-    order.expected_work_date=data['ex_work_date'];
-    order.confirmation_doc=data['confirmation_doc'];
-    order.profoma=data['profoma'];
-    order.invoice=data['invoice'];
-    order.carrier=data['carrier'];
-    order.tracking_number=data['tracking_number'];
-    order.shipment_date=data['shipment_date'];
-    order.production_comment=data['production_comment'];
+    data = json.loads(data)
+    order = frappe.get_doc('Production Order', data['order'])
+    order.expected_work_date = data['ex_work_date']
+    order.confirmation_doc = data['confirmation_doc']
+    order.profoma = data['profoma']
+    order.invoice = data['invoice']
+    order.carrier = data['carrier']
+    order.tracking_number = data['tracking_number']
+    order.shipment_date = data['shipment_date']
+    order.production_comment = data['production_comment']
     order.save()
-    
-    return order;
-
-
+    return order

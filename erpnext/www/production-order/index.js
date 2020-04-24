@@ -120,9 +120,12 @@ function createOrder(product, qtys) {
                 product_name: product,
                 quantity: qtys,
                 fabric_ref: $('#fabric-ref>option:selected').text(),
+                fabric_consumption: $('#fabric-consumption').val(),
                 production_factory: $('#factory>option:selected').text(),
                 trimming_item: $('#trimming>option:selected').text(),
+                trimming_consumption: $('#trimming-consumption').val(),
                 packaging_item: $('#packaging>option:selected').text(),
+                packaging_consumption: $('#packaging-consumption').val(),
                 comment: $('#comment').val(),
             }
         },

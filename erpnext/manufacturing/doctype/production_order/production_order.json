@@ -11,9 +11,12 @@
   "product_name",
   "section_break_2",
   "fabric_ref",
+  "fabric_consumption",
   "production_factory",
   "trimming",
+  "trimming_consumption",
   "packaging",
+  "packaging_consumption",
   "section_break_3",
   "comment",
   "quantity_per_size",
@@ -150,10 +153,25 @@
    "fieldname": "production_comment",
    "fieldtype": "Text Editor",
    "label": "Production Comment"
+  },
+  {
+   "fieldname": "fabric_consumption",
+   "fieldtype": "Data",
+   "label": "Fabric Consumption"
+  },
+  {
+   "fieldname": "trimming_consumption",
+   "fieldtype": "Data",
+   "label": "Trimming Consumption"
+  },
+  {
+   "fieldname": "packaging_consumption",
+   "fieldtype": "Data",
+   "label": "Packaging Consumption"
   }
  ],
  "links": [],
- "modified": "2020-04-19 19:26:07.209363",
+ "modified": "2020-04-24 19:20:40.061144",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

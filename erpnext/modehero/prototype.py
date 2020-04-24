@@ -2,6 +2,7 @@ import frappe
 import json
 import ast
 
+
 @frappe.whitelist()
 def create_prototype_order(data):
     data = json.loads(data)
@@ -13,8 +14,9 @@ def create_prototype_order(data):
         'product_category': data['product_category'],
         'product': data['product'],
         'fabric_ref': data['fabric_ref'],
-        'consumption': data['consumption'],
+        'fabric_consumption': data['fabric_consumption'],
         'trimming-item': data['trimming_item'],
+        'trimming_consumption': data['trimming_consumption'],
         'production_factory': data['production_factory'],
         'final_destination': data['destination'],
         'techpack': data['techpack'],
@@ -43,19 +45,21 @@ def validate(order, isvalidate):
     frappe.db.commit()
     return order
 
+
 @frappe.whitelist()
 def submit_production_info(data):
-    data=json.loads(data);
+    data = json.loads(data)
     order = frappe.get_doc('Prototype Order', data['order'])
-    order.ex_work_date = data['ex_work_date'];
-    order.invoice=data['invoice'];
-    order.tracking_number=data['tracking_number'];
-    order.carrier=data['carrier'];
-    order.shipment_date=data['shipment_date'];
-    order.shipment_price=data['shipment_price'];
-    order.production_comment=data['production_comment'];
-    order.save();
+    order.ex_work_date = data['ex_work_date']
+    order.invoice = data['invoice']
+    order.tracking_number = data['tracking_number']
+    order.carrier = data['carrier']
+    order.shipment_date = data['shipment_date']
+    order.shipment_price = data['shipment_price']
+    order.production_comment = data['production_comment']
+    order.save()
     return order
+
 
 @frappe.whitelist()
 def set_finish(orderslist):
@@ -70,4 +74,3 @@ def set_finish(orderslist):
             res_status = "no"
     frappe.db.commit()
     return {'status': res_status}
-

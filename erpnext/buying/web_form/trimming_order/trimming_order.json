@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-14 18:26:09.337669",
+ "modified": "2020-04-24 18:29:38.347128",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "trimming-order",
@@ -201,19 +201,6 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "hidden": 0,
-   "label": "Amended From",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Trimming Order",
-   "read_only": 1,
    "reqd": 0,
    "show_in_filter": 0
   }

@@ -37,6 +37,10 @@
                     {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric-ref')}}
                 </div>
                 <div class="m-3">
+                    {{_("Fabric consumption")}}
+                    <input id="fabric-consumption" type="text" class="form-control mt-2">
+                </div>
+                <div class="m-3">
                     {{_("Fabric Status")}}
                 </div>
                 <div class="m-3">
@@ -63,10 +67,17 @@
                     {{dropdown(frappe.get_list('Trimming Item'),'','timming')}}
                 </div>
                 <div class="m-3">
+                    {{_("Trimming consumption")}}
+                    <input id="trimming-consumption" type="text" class="form-control mt-2">
+                </div>
+                <div class="m-3">
                     {{_("Packaging")}}
                     {{dropdown(frappe.get_list('Packaging Item'),'','packaging')}}
                 </div>
-
+                <div class="m-3">
+                    {{_("Packaging consumption")}}
+                    <input id="packaging-consumption" type="text" class="form-control mt-2">
+                </div>
             </div>
             <div class="col-12 m-3 product-table">
                 <div class="row">

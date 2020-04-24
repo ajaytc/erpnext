@@ -11,9 +11,10 @@
   "product",
   "section_break_4",
   "fabric_ref",
-  "consumption",
+  "fabric_consumption",
   "column_break_8",
   "trimming_item",
+  "trimming_consumption",
   "manufacturing_section",
   "production_factory",
   "destination_section",
@@ -63,11 +64,6 @@
    "fieldname": "fabric_ref",
    "fieldtype": "Data",
    "label": "Fabric Ref"
-  },
-  {
-   "fieldname": "consumption",
-   "fieldtype": "Data",
-   "label": "Consumption"
   },
   {
    "fieldname": "column_break_8",
@@ -191,10 +187,20 @@
    "fieldname": "production_comment",
    "fieldtype": "Text Editor",
    "label": "Production Comment"
+  },
+  {
+   "fieldname": "trimming_consumption",
+   "fieldtype": "Data",
+   "label": "Trimming Consumption"
+  },
+  {
+   "fieldname": "fabric_consumption",
+   "fieldtype": "Data",
+   "label": "Fabric Consumption"
   }
  ],
  "links": [],
- "modified": "2020-04-19 19:25:58.235747",
+ "modified": "2020-04-24 19:13:53.157853",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",
