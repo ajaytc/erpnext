@@ -2,7 +2,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th></th>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
                 <th scope="col">{{_("PROTOTYPE NAME")}}</th>
                 <th scope="col">{{_("PRODUCT CATEGORY")}}</th>
@@ -14,7 +13,6 @@
         <tbody>
             {% for o in prod_finished %}
             <tr>
-                <th><input type="checkbox" class="selected" data-order="{{o.name}}" /></th>
                 <th><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
                 <th>{{o.product}}</th>
                 <th>{{o.product_category}}</th>
