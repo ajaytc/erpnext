@@ -62,7 +62,8 @@
   "zip_code",
   "contact",
   "phone_number",
-  "email"
+  "email",
+  "brand"
  ],
  "fields": [
   {
@@ -406,13 +407,19 @@
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-25 17:31:52.452786",
+ "modified": "2020-04-25 22:27:41.297446",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
