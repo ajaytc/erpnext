@@ -55,7 +55,14 @@
   "website",
   "supplier_details",
   "column_break_30",
-  "is_frozen"
+  "is_frozen",
+  "address1",
+  "adress2",
+  "city",
+  "zip_code",
+  "contact",
+  "phone_number",
+  "email"
  ],
  "fields": [
   {
@@ -364,13 +371,48 @@
    "fieldname": "is_frozen",
    "fieldtype": "Check",
    "label": "Is Frozen"
+  },
+  {
+   "fieldname": "address1",
+   "fieldtype": "Data",
+   "label": "Address Line 1"
+  },
+  {
+   "fieldname": "adress2",
+   "fieldtype": "Data",
+   "label": "Address Line 2"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "zip_code",
+   "fieldtype": "Data",
+   "label": "Zip Code"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Data",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Data",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2019-12-19 18:17:16.614567",
+ "modified": "2020-04-25 17:31:52.452786",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
