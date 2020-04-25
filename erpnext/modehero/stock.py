@@ -320,3 +320,16 @@ def createNewPackagingStock(doc, method):
     })
     docStock.insert()
     frappe.db.commit()
+
+
+@frappe.whitelist()
+def get_status(item, requiredQuantity):
+    doc = frappe.get_list('Stock', filters={'internal_ref': item}, fields=[
+                          'name', 'quantity'])
+    if len(doc) > 0:
+        if doc[0].quantity > int(requiredQuantity):
+            return {'status': frappe._("In Stock")}
+        else:
+            return {'status': frappe._("No Stock")}
+
+    return {'status': frappe._("Enter quantities")}

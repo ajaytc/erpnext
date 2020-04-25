@@ -18,9 +18,59 @@ const productUpdateCallback = (e) => {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
                 $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
+                $('.qty>td>input').change(priceUpdateCallback)
             }
         }
     });
+}
+
+function priceUpdateCallback(e) {
+    // console.log(e.target.value, $(e.target).attr('data-size'))
+    if (!numeric.test(e.target.value)) {
+        $(e.target).css('border-color', 'red')
+    } else {
+
+        let products = {}
+        let totalqty = 0
+
+        //calculate price 
+        $('#product-table').map(function () {
+            let product = $(this).find('.selected-product>option:selected').text()
+
+            $(this).find('.qty>td').map(function () {
+                let qty = $(this).find('input').val()
+                let size = $(this).find('input').attr('data-size')
+
+                if (!products[product]) {
+                    products[product] = {}
+                }
+                if (qty != '') {
+                    products[product][size] = qty
+                    totalqty += parseInt(qty)
+                }
+            })
+
+        })
+
+        $(e.target).css('border', '1px solid #ced4da')
+
+        //getting fabric status
+        let item = $('#fabric-status').find('option:selected').text()
+        let consumption = parseInt($('#fabric-consumption').val())
+        console.log(totalqty, consumption)
+
+        getStatus(item, consumption * totalqty).then(status => {
+            $('#fabric-status').html(status)
+        })
+
+
+        // item = $('#trimming-status').find('option:selected').text()
+        // consumption = parseInt($('#trimming-consumption').val())
+
+        // getStatus(item, consumption * totalqty).then(status => {
+        //     $('#trimming-status').html(status)
+        // })
+    }
 }
 
 $('#product').click(productUpdateCallback)
@@ -142,5 +192,23 @@ function createOrder(product, qtys) {
                 }
             }
         }
+    })
+}
+
+function getStatus(item, requiredQuantity) {
+    return new Promise((resolve, reject) => {
+        frappe.call({
+            method: 'erpnext.modehero.stock.get_status',
+            args: {
+                item,
+                requiredQuantity
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    resolve(r.message.status)
+                }
+            }
+        })
     })
 }
