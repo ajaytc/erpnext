@@ -18,7 +18,8 @@
   "postal_code",
   "column_break_12",
   "email_address",
-  "phone"
+  "phone",
+  "brand"
  ],
  "fields": [
   {
@@ -84,10 +85,16 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-17 19:52:44.352671",
+ "modified": "2020-04-25 21:55:55.447975",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

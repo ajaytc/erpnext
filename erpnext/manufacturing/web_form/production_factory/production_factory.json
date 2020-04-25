@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-15 22:28:51.747594",
+ "modified": "2020-04-25 21:56:25.502165",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "production-factory",
@@ -186,6 +186,19 @@
    "label": "Phone",
    "max_length": 0,
    "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "hidden": 0,
+   "label": "brand",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Company",
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0

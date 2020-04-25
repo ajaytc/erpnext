@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:{fabric_ref} - {fabric_vendor}",
+ "autoname": "field:fabric_ref",
  "creation": "2020-04-03 17:08:21.857433",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -12,7 +12,7 @@
   "composition",
   "width",
   "unit_price",
-  "amended_from"
+  "brand"
  ],
  "fields": [
   {
@@ -55,22 +55,19 @@
    "reqd": 1
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Fabric",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "unit_price",
    "fieldtype": "Float",
    "label": "Unit Price"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-21 23:31:32.372795",
+ "modified": "2020-04-25 21:50:41.200144",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",

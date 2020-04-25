@@ -18,8 +18,7 @@
   "section_break_3",
   "vendor_ref",
   "internal_ref",
-  "amended_from",
-  "data_13"
+  "brand"
  ],
  "fields": [
   {
@@ -86,27 +85,20 @@
    "unique": 1
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Trimming Item",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "data_13",
-   "fieldtype": "Data"
-  },
-  {
    "fieldname": "unit_price",
    "fieldtype": "Currency",
    "label": "Unit Price"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-17 20:07:52.277505",
+ "modified": "2020-04-25 21:51:13.478993",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

@@ -34,7 +34,8 @@
   "carrier",
   "tracking_number",
   "shipment_date",
-  "production_comment"
+  "production_comment",
+  "brand"
  ],
  "fields": [
   {
@@ -186,11 +187,17 @@
    "fieldname": "comment",
    "fieldtype": "Data",
    "label": "Comment"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-24 13:43:23.542299",
+ "modified": "2020-04-25 21:43:25.321623",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Packaging Order",

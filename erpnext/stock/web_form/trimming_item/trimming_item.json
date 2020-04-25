@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-06 14:50:20.066103",
+ "modified": "2020-04-25 21:53:06.516993",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "trimming-item",
@@ -174,14 +174,14 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "amended_from",
+   "fieldname": "brand",
    "fieldtype": "Link",
    "hidden": 0,
-   "label": "Amended From",
+   "label": "Brand",
    "max_length": 0,
    "max_value": 0,
-   "options": "Trimming Item",
-   "read_only": 1,
+   "options": "Company",
+   "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
   }

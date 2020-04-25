@@ -32,7 +32,8 @@
   "carrier",
   "tracking_number",
   "shipment_date",
-  "production_comment"
+  "production_comment",
+  "brand"
  ],
  "fields": [
   {
@@ -176,11 +177,17 @@
    "fieldname": "comment",
    "fieldtype": "Data",
    "label": "Comment"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-24 15:17:51.472694",
+ "modified": "2020-04-25 21:43:23.540107",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Trimming Order",

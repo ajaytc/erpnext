@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-14 18:14:40.029106",
+ "modified": "2020-04-25 21:46:44.873743",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "fabric-order",
@@ -80,19 +80,6 @@
    "hidden": 0,
    "max_length": 0,
    "max_value": 0,
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "brand_name",
-   "fieldtype": "Link",
-   "hidden": 0,
-   "label": "Brand",
-   "max_length": 0,
-   "max_value": 0,
-   "options": "Company",
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
@@ -213,6 +200,19 @@
    "label": "Total Price",
    "max_length": 0,
    "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "hidden": 0,
+   "label": "Brand",
+   "max_length": 0,
+   "max_value": 0,
+   "options": "Company",
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0

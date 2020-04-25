@@ -16,7 +16,7 @@
   "section_break_2",
   "vendor_ref",
   "internal_ref",
-  "amended_from"
+  "brand"
  ],
  "fields": [
   {
@@ -70,23 +70,20 @@
    "unique": 1
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Packaging Item",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "unit_price",
    "fieldtype": "Currency",
    "label": "Unit Price"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-17 20:09:11.365805",
+ "modified": "2020-04-25 21:51:33.374975",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Packaging Item",
