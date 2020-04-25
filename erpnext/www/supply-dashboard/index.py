@@ -31,39 +31,41 @@ def get_context(context):
 
     fileds = ['internal_ref', 'name', 'product_name', 'brand_name', 'creation',
               'tracking_number', 'ex_work_date', 'profoma', 'shipment_date', 'invoice']
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
 
     if context.isFabric:
         orderType = 'Fabric Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2}, fields=fileds)
+            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
     elif context.isPackaging:
         orderType = 'Packaging Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2}, fields=fileds)
+            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
     elif context.isTrimming:
         orderType = 'Trimming Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2}, fields=fileds)
+            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}
