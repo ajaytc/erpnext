@@ -12,7 +12,8 @@
         <tbody>
             {% for o in completed %}
             <tr>
-                <th>{{o[0]}}</th>
+                
+                <th><a href="/shipment-order?name={{o[5]}}">{{o[0]}}</a></th>
                 <th>{{o[1]}}</th>
                 <th>{{frappe.format(o[2], {'fieldtype': 'Date'})}}</th>
                 <th>{{frappe.format(o[3], {'fieldtype': 'Date'})}}</th>

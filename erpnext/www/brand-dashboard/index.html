@@ -81,7 +81,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    
+                                        {% for o in shipmentOrdersList %}
+                                        <tr>
+                                            <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
+                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</th>
+                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</th>
+                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</th>
+                                            <th>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}</th>
+                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</th>
+                                        </tr>
+                                        {% endfor %}
+                                    
                                 </tbody>
                             </table>
                         </div>

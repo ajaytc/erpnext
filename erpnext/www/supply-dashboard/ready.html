@@ -15,11 +15,11 @@
             <tr>
                 <th>
                     {% if isFabric %}
-                    <a href="/fabric-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    <a href="/fabric-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isTrimming %}
-                        <a href="/trimming-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                        <a href="/trimming-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isPackaging %}
-                        <a href="/packaging-order?name={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                        <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% endif %}
                 </th>
                 <th>{{o['product_name']}}</th>
