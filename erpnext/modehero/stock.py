@@ -176,6 +176,78 @@ def get_order_details_fabric(order):
     return{"fabric_ref": fabric_order.fabric_ref, "quantity": fabric_order.quantity, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "price": fabric_order.price_per_unit}
 
 
+def get_details_fabric_from_order(order):
+    # returns fabric details of the stock from an order
+    if order.fabric_ref == None:
+        return None
+    fabric_stock_name = frappe.get_all('Stock', filters={
+                                       'item_type': 'fabric', 'internal_ref': order.fabric_ref}, fields=['name'])
+    if fabric_stock_name==None or len(fabric_stock_name)==0:
+        return None
+    fabric_stock = frappe.get_doc('Stock', fabric_stock_name[0].name)
+    fabric_item = frappe.get_doc(
+        'Fabric', order.fabric_ref)
+
+    return{"fabric_ref": order.fabric_ref, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "unit_price": fabric_item.unit_price}
+
+
+def get_details_trimming_from_order(order,order_type):
+    trimming_item = None
+    if order_type=="prototype":
+        trimming_item = order.trimming_item
+    elif order_type=="production":
+        trimming_item = order.trimming
+    # returns trimmng details of the stock from any kind of order from prototype and production
+
+    if trimming_item == None:
+        return None
+        
+    trimming_item = frappe.get_all('Trimming Item',filters={'name':trimming_item}, fields=['internal_ref','unit_price'])
+
+    trimming_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'trimming', 'internal_ref': trimming_item[0].internal_ref}, fields=['name'])
+    if trimming_stock_name==None or len(trimming_stock_name)==0:
+        return None
+    trimming_stock = frappe.get_doc('Stock', trimming_stock_name[0].name)
+
+    return{"trimming_ref": trimming_item, "stock_name": trimming_stock.name, "old_stock": trimming_stock.quantity, "unit_price": trimming_item[0].unit_price}
+
+def get_details_packaging_from_order(order,order_type):
+    # returns packaging details of the stock from any kind of order from prototype and production
+    packaging_item = None
+    if order_type=="production":
+        packaging_item = order.packaging
+
+    if packaging_item == None:
+        return None
+        
+    packaging_item = frappe.get_all('Packaging Item',filters={'name':packaging_item}, fields=['internal_ref','unit_price'])
+
+    packaging_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'packaging', 'internal_ref': packaging_item[0].internal_ref}, fields=['name'])
+    if packaging_stock_name==None or len(packaging_stock_name)==0:
+        return None
+    packaging_stock = frappe.get_doc('Stock', packaging_stock_name[0].name)
+
+    return{"trimming_ref": packaging_item, "stock_name": packaging_stock.name, "old_stock": packaging_stock.quantity, "unit_price": packaging_item[0].unit_price}
+
+    
+def get_product_details_from_order(order,order_type):
+    # returns product type details of the stock from any kind of order from prototype and production
+    product = None
+    if order_type=="prototype":
+        product = order.product
+    elif order_type=="production":
+        product = order.product_name
+    if product==None:
+        return None
+    production_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'product', 'product': product}, fields=['name'])
+    if production_stock_name==None or len(production_stock_name)==0:
+        return None
+    production_stock = frappe.get_doc('Stock', production_stock_name[0].name)
+    return {'stock_name':production_stock_name[0].name, 'old_stock':production_stock.quantity}
+
 @frappe.whitelist()
 def get_order_details_trimming(order):
     fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')

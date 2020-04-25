@@ -14,7 +14,7 @@
             {% for o in preprod_onprocess %}
             <tr>
                 <th><input type="checkbox" class="selected" data-order="{{o.name}}" /></th>
-                <th><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
+                <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
                 <th>{{o.product}}</th>
                 <th>{{o.product_category}}</th>
                 <th>{{o.creation}}</th>

@@ -1,6 +1,7 @@
 import frappe
 import json
 import ast
+from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order
 
 
 @frappe.whitelist()
@@ -37,6 +38,16 @@ def validate(order, isvalidate):
     order = frappe.get_doc('Prototype Order', order)
     if isvalidate == 'true':
         order.docstatus = 1
+        order_quantities = get_order_quantities(order)
+        if order_quantities != None:
+            existing_details = get_old_quantities_unitprice(order)
+            if existing_details['fabric_details']:
+                updateStock2(existing_details['fabric_details']['stock_name'], existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
+                             existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'])
+            if existing_details['trimming_details']:
+                updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock']- order_quantities['trimming_quantity'],
+                             existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'])
+
     else:
         order.docstatus = 1
         order.save()
@@ -70,7 +81,47 @@ def set_finish(orderslist):
         if (order):
             order.docstatus = 1
             order.save()
+            order_quantity = get_total_quantity(order)
+            if (order_quantity == None):
+                continue
+            existing_details = get_product_details_from_order(order,"prototype")
+            if existing_details == None:
+                continue
+            if order.price_per_unit=='' or None:
+                order.price_per_unit=0
+
+            updateStock2(existing_details['stock_name'], order_quantity+existing_details['old_stock'],
+                         existing_details['old_stock'],"", order.price_per_unit)
         else:
             res_status = "no"
     frappe.db.commit()
     return {'status': res_status}
+
+
+def get_total_quantity(order):
+    total_quantity = 0
+    for size in order.quantity_per_size:
+        if (size.quantity != None):
+            total_quantity = total_quantity + int(size.quantity)
+    return total_quantity
+
+
+def get_order_quantities(order):
+    total_quantity = get_total_quantity(order)
+    if (total_quantity == 0):
+        return None
+    try:
+        fabric_quantity = total_quantity*int(order.fabric_consumption)
+        trimming_quantity = total_quantity*int(order.trimming_consumption)
+        return {'total_quantity': total_quantity, 'fabric_quantity': fabric_quantity, 'trimming_quantity': trimming_quantity}
+    except:
+        return None
+
+
+def get_old_quantities_unitprice(order):
+    # this function returns a dictionary of old quantity values and other details of fabric/trimming
+    # data is gathered by functions in stock.py
+    fabric_details = get_details_fabric_from_order(order)
+    trimming_details = get_details_trimming_from_order(order,"prototype")
+
+    return {'fabric_details': fabric_details, 'trimming_details': trimming_details}
