@@ -14,7 +14,7 @@
         <tbody>
             {% for factory in factories %}
             <tr>
-                <th>{{factory.factory_name}}</th>
+                <th><a href="/production-factory?name={{factory.name}}">{{factory.factory_name}}</a></th>
                 <th></th>
                 <th>{{factory.email_address}}</th>
                 <th>{{factory.phone}}</th>

@@ -15,7 +15,7 @@
         <tbody>
             {% for supplier in suppliers %}
             <tr>
-                <th>{{supplier.supplier_name}}</th>
+                <th><a href="/supply?name={{supplier.name}}">{{supplier.supplier_name}}</a></th>
                 <th>{{supplier.supplier_group}}</th>
                 <th>{{supplier.contact}}</th>
                 <th>{{supplier.email}}</th>

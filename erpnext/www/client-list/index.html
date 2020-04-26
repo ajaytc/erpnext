@@ -14,7 +14,7 @@
         <tbody>
             {% for customer in customers %}
             <tr>
-                <th>{{customer.customer_name}}</th>
+                <th><a href="/client?name={{customer.name}}">{{customer.customer_name}}</a></th>
                 <th>{{customer.contact}}</th>
                 <th>{{customer.email_address}}</th>
                 <th>{{customer.phone}}</th>
