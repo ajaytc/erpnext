@@ -1,0 +1,29 @@
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">{{_("FACTORY NAME")}}</th>
+                <th scope="col">{{_("CONTACT")}}</th>
+                <th scope="col">{{_("EMAIL")}}</th>
+                <th scope="col">{{_("PHONE NUMBER")}}</th>
+                <th scope="col">{{_("CITY")}}</th>
+                <th scope="col">{{_("ZIP CODE")}}</th>
+                <th scope="col">{{_("COUNTRY")}}</th>                
+            </tr>
+        </thead>
+        <tbody>
+            {% for factory in factories %}
+            <tr>
+                <th><a href="/production-factory?name={{factory.name}}">{{factory.factory_name}}</a></th>
+                <th></th>
+                <th>{{factory.email_address}}</th>
+                <th>{{factory.phone}}</th>
+                <th>{{factory.city_town}}</th>
+                <th></th>
+                <th>{{factory.country}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
