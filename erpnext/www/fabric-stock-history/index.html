@@ -1,0 +1,64 @@
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <h2>{{product.fabric_ref}} - {{_("IN")}}</h2>
+        <thead>
+            <tr>
+               
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("QUANTITY")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in historyList %}
+            {%if o.in_out=='in' %}
+            
+            <tr>
+                
+                <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.quantity}}</th>
+            </tr>
+            {% endif %}
+            
+            
+             {% endfor %}
+        </tbody>
+        
+    </table>
+
+    
+    
+</div>
+<br>
+
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <h2>{{product.fabric_ref}} - {{_("OUT")}}</h2>
+        <thead>
+            <tr>
+               
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("QUANTITY")}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in historyList %}
+            {%if o.in_out=='out' %}
+            
+            <tr>
+               
+                <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.quantity}}</th>
+            </tr>
+            {% endif %}
+            
+            
+            {% endfor %}
+        </tbody>
+        
+    </table>
+
+    
+    
+</div>
+
+<h2>Total Value - {{stock.total_value}}</h2>
