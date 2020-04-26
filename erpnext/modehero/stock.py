@@ -2,65 +2,6 @@ import frappe
 import json
 
 
-def stockIn(stock_name, amount, quantity, description):
-    doc = frappe.get_doc({
-        "doctype": "Stock History",
-        "parent": stock_name,
-        "parentfield": "name",
-        "parenttype": "Stock",
-        "in_out": "in",
-        "quantity": amount,
-        "stock": quantity,
-        "description": description
-    })
-    doc.insert()
-    frappe.db.commit()
-
-
-def stockOut(stock_name, amount, quantity, description):
-    doc = frappe.get_doc({
-        "doctype": "Stock History",
-        "parent": stock_name,
-        "parentfield": "name",
-        "parenttype": "Stock",
-        "in_out": "out",
-        "quantity": amount,
-        "stock": quantity,
-        "description": description
-    })
-    doc.insert()
-    frappe.db.commit()
-
-
-def updateQuantity(stock_name, quantity, price):
-    total_value = float(quantity)*float(price)
-    frappe.db.set_value('Stock', stock_name, {
-        'quantity': quantity,
-        'total_value': total_value
-    })
-
-    frappe.db.commit()
-
-
-def updateStock2(stock_name, quantity, old_quantity, description, price):
-    quantity = int(quantity)
-    if(old_quantity == None):
-        old_quantity = frappe.get_doc('Stock', stock_name).quantity
-    else:
-        old_quantity = int(old_quantity)
-
-    if quantity > old_quantity:
-        amount = quantity-old_quantity
-        stockIn(stock_name, amount, quantity, description)
-    elif old_quantity > quantity:
-        amount = old_quantity-quantity
-        stockOut(stock_name, amount, quantity, description)
-    else:
-        pass
-
-    updateQuantity(stock_name, quantity, price)
-
-
 @frappe.whitelist()
 def updateStock(stock_name, quantity, old_quantity, description, price):
     quantity = int(quantity)
@@ -176,78 +117,6 @@ def get_order_details_fabric(order):
     return{"fabric_ref": fabric_order.fabric_ref, "quantity": fabric_order.quantity, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "price": fabric_order.price_per_unit}
 
 
-def get_details_fabric_from_order(order):
-    # returns fabric details of the stock from an order
-    if order.fabric_ref == None:
-        return None
-    fabric_stock_name = frappe.get_all('Stock', filters={
-                                       'item_type': 'fabric', 'internal_ref': order.fabric_ref}, fields=['name'])
-    if fabric_stock_name==None or len(fabric_stock_name)==0:
-        return None
-    fabric_stock = frappe.get_doc('Stock', fabric_stock_name[0].name)
-    fabric_item = frappe.get_doc(
-        'Fabric', order.fabric_ref)
-
-    return{"fabric_ref": order.fabric_ref, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "unit_price": fabric_item.unit_price}
-
-
-def get_details_trimming_from_order(order,order_type):
-    trimming_item = None
-    if order_type=="prototype":
-        trimming_item = order.trimming_item
-    elif order_type=="production":
-        trimming_item = order.trimming
-    # returns trimmng details of the stock from any kind of order from prototype and production
-
-    if trimming_item == None:
-        return None
-        
-    trimming_item = frappe.get_all('Trimming Item',filters={'name':trimming_item}, fields=['internal_ref','unit_price'])
-
-    trimming_stock_name = frappe.get_all('Stock', filters={
-        'item_type': 'trimming', 'internal_ref': trimming_item[0].internal_ref}, fields=['name'])
-    if trimming_stock_name==None or len(trimming_stock_name)==0:
-        return None
-    trimming_stock = frappe.get_doc('Stock', trimming_stock_name[0].name)
-
-    return{"trimming_ref": trimming_item, "stock_name": trimming_stock.name, "old_stock": trimming_stock.quantity, "unit_price": trimming_item[0].unit_price}
-
-def get_details_packaging_from_order(order,order_type):
-    # returns packaging details of the stock from any kind of order from prototype and production
-    packaging_item = None
-    if order_type=="production":
-        packaging_item = order.packaging
-
-    if packaging_item == None:
-        return None
-        
-    packaging_item = frappe.get_all('Packaging Item',filters={'name':packaging_item}, fields=['internal_ref','unit_price'])
-
-    packaging_stock_name = frappe.get_all('Stock', filters={
-        'item_type': 'packaging', 'internal_ref': packaging_item[0].internal_ref}, fields=['name'])
-    if packaging_stock_name==None or len(packaging_stock_name)==0:
-        return None
-    packaging_stock = frappe.get_doc('Stock', packaging_stock_name[0].name)
-
-    return{"trimming_ref": packaging_item, "stock_name": packaging_stock.name, "old_stock": packaging_stock.quantity, "unit_price": packaging_item[0].unit_price}
-
-    
-def get_product_details_from_order(order,order_type):
-    # returns product type details of the stock from any kind of order from prototype and production
-    product = None
-    if order_type=="prototype":
-        product = order.product
-    elif order_type=="production":
-        product = order.product_name
-    if product==None:
-        return None
-    production_stock_name = frappe.get_all('Stock', filters={
-        'item_type': 'product', 'product': product}, fields=['name'])
-    if production_stock_name==None or len(production_stock_name)==0:
-        return None
-    production_stock = frappe.get_doc('Stock', production_stock_name[0].name)
-    return {'stock_name':production_stock_name[0].name, 'old_stock':production_stock.quantity}
-
 @frappe.whitelist()
 def get_order_details_trimming(order):
     fabric_ref = frappe.get_value('Fabric Order', order, 'fabric_ref')
@@ -263,6 +132,95 @@ def get_order_details_packaging(order):
     quantity = frappe.get_value('Fabric Order', order, 'quantity')
 
     return{"fabric_ref": fabric_ref, "quantity": quantity}
+
+
+@frappe.whitelist()
+def get_status(item, requiredQuantity):
+    doc = frappe.get_list('Stock', filters={'internal_ref': item}, fields=[
+                          'name', 'quantity'])
+    if len(doc) > 0:
+        if doc[0].quantity > int(requiredQuantity):
+            return {'status': frappe._("In Stock")}
+        else:
+            return {'status': frappe._("No Stock")}
+
+    return {'status': frappe._("Enter quantities")}
+
+
+def get_details_fabric_from_order(order):
+    # returns fabric details of the stock from an order
+    if order.fabric_ref == None:
+        return None
+    fabric_stock_name = frappe.get_all('Stock', filters={
+                                       'item_type': 'fabric', 'internal_ref': order.fabric_ref}, fields=['name'])
+    if fabric_stock_name == None or len(fabric_stock_name) == 0:
+        return None
+    fabric_stock = frappe.get_doc('Stock', fabric_stock_name[0].name)
+    fabric_item = frappe.get_doc(
+        'Fabric', order.fabric_ref)
+
+    return{"fabric_ref": order.fabric_ref, "stock_name": fabric_stock.name, "old_stock": fabric_stock.quantity, "unit_price": fabric_item.unit_price}
+
+
+def get_details_trimming_from_order(order, order_type):
+    trimming_item = None
+    if order_type == "prototype":
+        trimming_item = order.trimming_item
+    elif order_type == "production":
+        trimming_item = order.trimming
+    # returns trimmng details of the stock from any kind of order from prototype and production
+
+    if trimming_item == None:
+        return None
+
+    trimming_item = frappe.get_all('Trimming Item', filters={
+                                   'name': trimming_item}, fields=['internal_ref', 'unit_price'])
+
+    trimming_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'trimming', 'internal_ref': trimming_item[0].internal_ref}, fields=['name'])
+    if trimming_stock_name == None or len(trimming_stock_name) == 0:
+        return None
+    trimming_stock = frappe.get_doc('Stock', trimming_stock_name[0].name)
+
+    return{"trimming_ref": trimming_item, "stock_name": trimming_stock.name, "old_stock": trimming_stock.quantity, "unit_price": trimming_item[0].unit_price}
+
+
+def get_details_packaging_from_order(order, order_type):
+    # returns packaging details of the stock from any kind of order from prototype and production
+    packaging_item = None
+    if order_type == "production":
+        packaging_item = order.packaging
+
+    if packaging_item == None:
+        return None
+
+    packaging_item = frappe.get_all('Packaging Item', filters={
+                                    'name': packaging_item}, fields=['internal_ref', 'unit_price'])
+
+    packaging_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'packaging', 'internal_ref': packaging_item[0].internal_ref}, fields=['name'])
+    if packaging_stock_name == None or len(packaging_stock_name) == 0:
+        return None
+    packaging_stock = frappe.get_doc('Stock', packaging_stock_name[0].name)
+
+    return{"trimming_ref": packaging_item, "stock_name": packaging_stock.name, "old_stock": packaging_stock.quantity, "unit_price": packaging_item[0].unit_price}
+
+
+def get_product_details_from_order(order, order_type):
+    # returns product type details of the stock from any kind of order from prototype and production
+    product = None
+    if order_type == "prototype":
+        product = order.product
+    elif order_type == "production":
+        product = order.product_name
+    if product == None:
+        return None
+    production_stock_name = frappe.get_all('Stock', filters={
+        'item_type': 'product', 'product': product}, fields=['name'])
+    if production_stock_name == None or len(production_stock_name) == 0:
+        return None
+    production_stock = frappe.get_doc('Stock', production_stock_name[0].name)
+    return {'stock_name': production_stock_name[0].name, 'old_stock': production_stock.quantity}
 
 
 def createNewProductStock(doc, method):
@@ -322,14 +280,119 @@ def createNewPackagingStock(doc, method):
     frappe.db.commit()
 
 
-@frappe.whitelist()
-def get_status(item, requiredQuantity):
-    doc = frappe.get_list('Stock', filters={'internal_ref': item}, fields=[
-                          'name', 'quantity'])
-    if len(doc) > 0:
-        if doc[0].quantity > int(requiredQuantity):
-            return {'status': frappe._("In Stock")}
-        else:
-            return {'status': frappe._("No Stock")}
+def stockIn(stock_name, amount, quantity, description):
+    doc = frappe.get_doc({
+        "doctype": "Stock History",
+        "parent": stock_name,
+        "parentfield": "name",
+        "parenttype": "Stock",
+        "in_out": "in",
+        "quantity": amount,
+        "stock": quantity,
+        "description": description
+    })
+    doc.insert()
+    frappe.db.commit()
 
-    return {'status': frappe._("Enter quantities")}
+
+def stockOut(stock_name, amount, quantity, description):
+    doc = frappe.get_doc({
+        "doctype": "Stock History",
+        "parent": stock_name,
+        "parentfield": "name",
+        "parenttype": "Stock",
+        "in_out": "out",
+        "quantity": amount,
+        "stock": quantity,
+        "description": description
+    })
+    doc.insert()
+    frappe.db.commit()
+
+
+def updateQuantity(stock_name, quantity, price):
+    total_value = float(quantity)*float(price)
+    frappe.db.set_value('Stock', stock_name, {
+        'quantity': quantity,
+        'total_value': total_value
+    })
+
+    frappe.db.commit()
+
+
+def updateStock2(stock_name, quantity, old_quantity, description, price):
+    quantity = int(quantity)
+    if(old_quantity == None):
+        old_quantity = frappe.get_doc('Stock', stock_name).quantity
+    else:
+        old_quantity = int(old_quantity)
+
+    if quantity > old_quantity:
+        amount = quantity-old_quantity
+        stockIn(stock_name, amount, quantity, description)
+    elif old_quantity > quantity:
+        amount = old_quantity-quantity
+        stockOut(stock_name, amount, quantity, description)
+    else:
+        pass
+
+    updateQuantity(stock_name, quantity, price)
+
+
+def get_total_quantity(order):
+    # this functio returns total quantity of the order collecting all size quantities
+    total_quantity = 0
+    for size in order.quantity_per_size:
+        if (size.quantity != None):
+            total_quantity = total_quantity + int(size.quantity)
+    return total_quantity
+
+def calculate_price(products):
+    # request format,
+    #  products = {'0001':{'XS':1,'S':2},'0002':{'M':3}}
+
+    # response format
+    # { '0001':233123,'0002':3424324, 'total':321321313}
+
+    prices = {}
+    perpiece = {}
+    for p in products:
+        prices[p] = 0
+        for s in products[p]:
+            qty = products[p][s]
+            price = frappe.get_list('Prices for Quantity', filters={
+                                    'parent': p, 'from': ['<=', qty], 'to': ['>=', qty]}, fields=['price'])
+            if(len(price) > 0):
+                prices[p] += price[0]['price']*float(qty)
+                perpiece[p] = price[0]['price']
+
+    total = 0
+    for p in prices:
+        total += float(prices[p])
+    prices['total'] = total
+    prices['perpiece'] = perpiece
+    return prices
+
+def get_size_sales_order(sales_order):
+    # this returns a dictionary of size quantities with product name
+    # output of this function can be used in calculate_price function
+    size_order = {}
+    size_order.update([(order.item_code, {})])
+    for size in order.quantity_per_size:
+        size_order[order.product_name].update(
+            [(size.size, int(size.quantity))])
+    return size_order
+    
+def updateShipmentorderStocks(doc, method):
+    sales_order_item = frappe.get_doc('Sales Order Item', doc.product_order_id)
+    quantity = get_total_quantity(sales_order_item)
+    if quantity == 0 or sales_order_item.item_code == None:
+        return None
+    production_stock_name = frappe.get_all(
+        'Stock', filters={'item_type': 'product', 'product': sales_order_item.item_code}, fields=['name'])
+    if production_stock_name == None or len(production_stock_name) == 0:
+        return None
+    production_stock = frappe.get_doc('Stock', production_stock_name[0].name)
+    total_price = calculate_price(get_size_sales_order(sales_order_item))
+    final_quantity = production_stock.quantity-quantity
+    updateStock2(production_stock_name[0].name,final_quantity,production_stock.quantity,"",float(total_price)/final_quantity)
