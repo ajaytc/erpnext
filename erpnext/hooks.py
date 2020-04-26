@@ -303,15 +303,15 @@ doc_events = {
     "Packaging Item": {
         "after_insert": "erpnext.modehero.stock.createNewPackagingStock"
     },
-    "Customer":{
-        "after_insert": "erpnext.modehero.user.signup"
-    },
-    "Supplier":{
-        "after_insert": "erpnext.modehero.user.signup"
-    },
-    "Production Factory":{
-        "after_insert": "erpnext.modehero.user.signup"
-    },
+    # "Customer":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
+    # "Supplier":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
+    # "Production Factory":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
 
 }
 

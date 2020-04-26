@@ -63,8 +63,7 @@
   "contact",
   "phone_number",
   "email",
-  "brand",
-  "password"
+  "brand"
  ],
  "fields": [
   {
@@ -415,19 +414,13 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
-  },
-  {
-   "fieldname": "password",
-   "fieldtype": "Password",
-   "label": "Password",
-   "reqd": 1
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-26 12:44:17.136753",
+ "modified": "2020-04-26 16:40:18.877175",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",

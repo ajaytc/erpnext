@@ -76,8 +76,7 @@
   "sales_team_section",
   "sales_team",
   "customer_pos_id",
-  "brand",
-  "password"
+  "brand"
  ],
  "fields": [
   {
@@ -529,18 +528,13 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
-  },
-  {
-   "fieldname": "password",
-   "fieldtype": "Data",
-   "label": "Password"
   }
  ],
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-26 09:39:52.257402",
+ "modified": "2020-04-26 16:42:51.809811",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

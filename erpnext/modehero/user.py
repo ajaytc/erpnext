@@ -12,12 +12,12 @@ def signup(doc, method):
     
     if (doc.doctype=="Customer"):
         roles=[{"role": "Customer"}]
-        email= doc.email_address;
-        first_name=doc.customer_name;
+        email= doc.email_address
+        first_name=doc.customer_name
 
     elif (doc.doctype=="Supplier"):
-        email=doc.email;
-        first_name=doc.supplier_name;
+        email=doc.email
+        first_name=doc.supplier_name
         if (doc.supplier_group=="Packaging"):
             roles=[{"role": "Packaging Vendor"}]
         elif (doc.supplier_group=="Fabric"):
@@ -25,9 +25,9 @@ def signup(doc, method):
         elif (doc.supplier_group=="Trimming"):
             roles=[{"role": "Trimming Vendor"}]
     elif (doc.doctype=="Production Factory"):
-        roles=[{"role": "Manufacturing User"}];
-        email= doc.email_address;
-        first_name=doc.factory_name;
+        roles=[{"role": "Manufacturing User"}]
+        email= doc.email_address
+        first_name=doc.factory_name
         
 
     
