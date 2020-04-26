@@ -63,7 +63,8 @@
   "contact",
   "phone_number",
   "email",
-  "brand"
+  "brand",
+  "password"
  ],
  "fields": [
   {
@@ -406,20 +407,27 @@
   {
    "fieldname": "email",
    "fieldtype": "Data",
-   "label": "Email"
+   "label": "Email",
+   "reqd": 1
   },
   {
    "fieldname": "brand",
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Password",
+   "label": "Password",
+   "reqd": 1
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-25 22:27:41.297446",
+ "modified": "2020-04-26 12:44:17.136753",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",

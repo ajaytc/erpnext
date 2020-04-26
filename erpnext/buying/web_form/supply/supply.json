@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-25 22:28:59.824574",
+ "modified": "2020-04-26 12:47:09.680306",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "supply",
@@ -108,7 +108,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -232,6 +232,18 @@
    "options": "Company",
    "read_only": 0,
    "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Password",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
    "show_in_filter": 0
   }
  ]

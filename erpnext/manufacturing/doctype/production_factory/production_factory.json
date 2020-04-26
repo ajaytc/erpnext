@@ -19,7 +19,8 @@
   "column_break_12",
   "email_address",
   "phone",
-  "brand"
+  "brand",
+  "password"
  ],
  "fields": [
   {
@@ -91,10 +92,15 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "label": "Password"
   }
  ],
  "links": [],
- "modified": "2020-04-25 21:55:55.447975",
+ "modified": "2020-04-26 14:02:11.741748",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

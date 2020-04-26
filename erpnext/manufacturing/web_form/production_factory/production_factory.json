@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-25 21:56:25.502165",
+ "modified": "2020-04-26 14:38:08.046449",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "production-factory",
@@ -175,7 +175,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
@@ -201,6 +201,18 @@
    "options": "Company",
    "read_only": 0,
    "reqd": 0,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "password",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 1,
    "show_in_filter": 0
   }
  ]
