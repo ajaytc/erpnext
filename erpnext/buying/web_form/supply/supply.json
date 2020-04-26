@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-25 22:28:59.824574",
+ "modified": "2020-04-26 16:40:34.478140",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "supply",
@@ -108,7 +108,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {

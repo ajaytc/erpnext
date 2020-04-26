@@ -306,6 +306,16 @@ doc_events = {
     "Shipment Order": {
         "after_insert": "erpnext.modehero.stock.updateShipmentorderStocks"
     }
+    # "Customer":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
+    # "Supplier":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
+    # "Production Factory":{
+    #     "after_insert": "erpnext.modehero.user.signup"
+    # },
+
 }
 
 # On cancel event Payment Entry will be exempted and all linked submittable doctype will get cancelled.

@@ -22,7 +22,7 @@
       <tr>
         <th><input type="radio" class="selectedpackaging" name="optradio" data-name="{{o[6]}}" data-stock="{{o[3]}}"
             data-item="{{o[0]}}" data-price="{{o[5]}}" checked></th>
-        <th>{{o[0]}}</th>
+        <th><a href="/packaging-stock-history?stock={{o[6]}}">{{o[0]}}</a></th>
         <th>{{o[1]}}</th>
         <th>{{o[2]}}</th>
         <th>{{o[3]}}</th>
@@ -86,7 +86,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="validatebutton">Ship</button>
+          <button type="button" class="btn btn-primary" id="shipfromExistingbutton">Ship</button>
         </div>
       </div>
     </div>

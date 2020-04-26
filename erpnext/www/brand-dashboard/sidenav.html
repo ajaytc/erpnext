@@ -272,12 +272,26 @@
             <a href="#" class="list-group-item ">
                 {{_("Finished product")}}
             </a>
-            <a href="#" class="list-group-item ">
+            {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c6b"
+                aria-expanded="false" aria-controls="c6b">
                 {{_("History")}}
             </a>
+            <div id="c6b" class="collapse" data-parent="#collapse6">
+                <div class="list-group">
+                    <a href="/fabric-stock-history" class="list-group-item ">
+                        {{_("Fabric Stock History")}}
+                    </a>
+                    <a href="/trimming-stock-history" class="list-group-item ">
+                        {{_("Trimming Stock History")}}
+                    </a>
+                    <a href="/packaging-stock-history" class="list-group-item ">
+                        {{_("Packaging Stock History")}}
+                    </a>
+                </div>
+            </div> #}
         </div>
     </div>
-    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
+   {# <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
         aria-expanded="false" aria-controls="collapse7">
         <i class="custom-icon icon-list"></i> {{_("Invoice Packing List")}}
     </a>
@@ -294,7 +308,7 @@
             </a>
         </div>
     </div>
-    {# <a href="#" class="list-group-item ">
+     <a href="#" class="list-group-item ">
         <i class="custom-icon icon-finance"></i> {{_("Finance")}}
     </a> #}
 </div>

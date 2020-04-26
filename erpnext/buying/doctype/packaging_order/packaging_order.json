@@ -35,7 +35,12 @@
   "tracking_number",
   "shipment_date",
   "production_comment",
-  "brand"
+  "brand",
+  "confirmation_reminder",
+  "profoma_reminder",
+  "payment_reminder",
+  "shipment_reminder",
+  "reception_reminder"
  ],
  "fields": [
   {
@@ -193,11 +198,36 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "confirmation_reminder",
+   "fieldtype": "Data",
+   "label": "Confirmation Reminder"
+  },
+  {
+   "fieldname": "profoma_reminder",
+   "fieldtype": "Data",
+   "label": "Profoma Reminder"
+  },
+  {
+   "fieldname": "payment_reminder",
+   "fieldtype": "Data",
+   "label": "Payment Reminder"
+  },
+  {
+   "fieldname": "shipment_reminder",
+   "fieldtype": "Data",
+   "label": "Shipment Reminder"
+  },
+  {
+   "fieldname": "reception_reminder",
+   "fieldtype": "Data",
+   "label": "Reception Reminder"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-25 21:43:25.321623",
+ "modified": "2020-04-26 16:16:07.372677",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Packaging Order",

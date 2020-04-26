@@ -75,7 +75,8 @@
   "default_commission_rate",
   "sales_team_section",
   "sales_team",
-  "customer_pos_id"
+  "customer_pos_id",
+  "brand"
  ],
  "fields": [
   {
@@ -521,13 +522,19 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-15 00:01:51.255945",
+ "modified": "2020-04-26 16:42:51.809811",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

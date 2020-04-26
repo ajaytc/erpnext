@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-25 21:56:25.502165",
+ "modified": "2020-04-26 16:43:36.826586",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "production-factory",
@@ -175,7 +175,7 @@
    "max_length": 0,
    "max_value": 0,
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {

@@ -33,7 +33,12 @@
   "tracking_number",
   "shipment_date",
   "production_comment",
-  "brand"
+  "brand",
+  "confirmation_reminder",
+  "profoma_reminder",
+  "payment_reminder",
+  "shipment_reminder",
+  "reception_reminder"
  ],
  "fields": [
   {
@@ -183,11 +188,36 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "confirmation_reminder",
+   "fieldtype": "Date",
+   "label": "Confirmation Reminder"
+  },
+  {
+   "fieldname": "profoma_reminder",
+   "fieldtype": "Date",
+   "label": "Profoma Reminder"
+  },
+  {
+   "fieldname": "payment_reminder",
+   "fieldtype": "Date",
+   "label": "Payment Reminder"
+  },
+  {
+   "fieldname": "shipment_reminder",
+   "fieldtype": "Date",
+   "label": "Shipment Reminder"
+  },
+  {
+   "fieldname": "reception_reminder",
+   "fieldtype": "Date",
+   "label": "Reception Reminder"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-25 21:43:23.540107",
+ "modified": "2020-04-26 16:13:05.312324",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Trimming Order",
