@@ -61,7 +61,7 @@
   "city",
   "zip_code",
   "contact",
-  "phone_number",
+  "phone",
   "email",
   "brand"
  ],
@@ -399,11 +399,6 @@
    "label": "Contact"
   },
   {
-   "fieldname": "phone_number",
-   "fieldtype": "Data",
-   "label": "Phone Number"
-  },
-  {
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email",
@@ -414,13 +409,18 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone Number"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-26 16:40:18.877175",
+ "modified": "2020-04-27 12:20:49.474465",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",

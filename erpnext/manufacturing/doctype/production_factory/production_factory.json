@@ -15,7 +15,7 @@
   "address_line_2",
   "city_town",
   "country",
-  "postal_code",
+  "zip_code",
   "column_break_12",
   "email_address",
   "phone",
@@ -68,11 +68,6 @@
    "options": "Country"
   },
   {
-   "fieldname": "postal_code",
-   "fieldtype": "Data",
-   "label": "Postal Code"
-  },
-  {
    "fieldname": "column_break_12",
    "fieldtype": "Column Break"
   },
@@ -91,10 +86,15 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "zip_code",
+   "fieldtype": "Data",
+   "label": "Zip Code"
   }
  ],
  "links": [],
- "modified": "2020-04-26 16:43:21.017631",
+ "modified": "2020-04-27 12:08:59.737971",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",
