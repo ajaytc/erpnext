@@ -7,7 +7,8 @@
  "field_order": [
   "order",
   "type",
-  "seen"
+  "seen",
+  "order_type"
  ],
  "fields": [
   {
@@ -19,17 +20,23 @@
    "fieldname": "type",
    "fieldtype": "Select",
    "label": "Type",
-   "options": "fabric\ntrimming\npackaging"
+   "options": "confirmation\nprofoma\npayment\nshipment\nreception"
   },
   {
    "fieldname": "seen",
    "fieldtype": "Select",
    "label": "Seen",
    "options": "0\n1"
+  },
+  {
+   "fieldname": "order_type",
+   "fieldtype": "Data",
+   "label": "Order",
+   "options": "fabric\ntrimming\npackaging"
   }
  ],
  "links": [],
- "modified": "2020-04-27 14:12:53.155642",
+ "modified": "2020-04-27 16:13:01.813787",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Reminder",
