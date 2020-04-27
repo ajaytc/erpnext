@@ -33,13 +33,13 @@ def create_production_order(data):
         existing_details = get_old_quantities_unitprice(order)
         if existing_details['fabric_details']:
             updateStock2(existing_details['fabric_details']['stock_name'],   existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
-                         existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'])
+                         existing_details['fabric_details']['old_stock'], "Production Fabric", existing_details['fabric_details']['unit_price'])
         if existing_details['trimming_details']:
             updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock']-order_quantities['trimming_quantity'],
-                         existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'])
+                         existing_details['trimming_details']['old_stock'], "Production Trimming", existing_details['trimming_details']['unit_price'])
         if existing_details['packaging_details']:
             updateStock2(existing_details['packaging_details']['stock_name'], existing_details['packaging_details']['old_stock']-order_quantities['packaging_quantity'],
-                         existing_details['packaging_details']['old_stock'], "", existing_details['packaging_details']['unit_price'])
+                         existing_details['packaging_details']['old_stock'], "Production Packaging", existing_details['packaging_details']['unit_price'])
     return {'status': 'ok', 'order': order}
 
 
@@ -78,7 +78,7 @@ def set_finish(orderslist):
             price = calculate_price(size_order)[order.product_name] + existing_details['old_value']
             total_quantity = order_quantity+existing_details['old_stock']
             updateStock2(existing_details['stock_name'], total_quantity,
-                         existing_details['old_stock'], "", price*1.0/total_quantity)
+                         existing_details['old_stock'], "Production", price*1.0/total_quantity)
         else:
             res_status = "no"
     frappe.db.commit()

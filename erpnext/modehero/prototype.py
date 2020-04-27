@@ -43,10 +43,10 @@ def validate(order, isvalidate):
             existing_details = get_old_quantities_unitprice(order)
             if existing_details['fabric_details']:
                 updateStock2(existing_details['fabric_details']['stock_name'], existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
-                             existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'])
+                             existing_details['fabric_details']['old_stock'], "Prototype Fabric", existing_details['fabric_details']['unit_price'])
             if existing_details['trimming_details']:
                 updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock']- order_quantities['trimming_quantity'],
-                             existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'])
+                             existing_details['trimming_details']['old_stock'], "Prototype Trimming", existing_details['trimming_details']['unit_price'])
 
     else:
         order.docstatus = 1
@@ -93,7 +93,7 @@ def set_finish(orderslist):
             order_value = order.price_per_unit * order_quantity
             total_price = existing_details['old_value'] +  order_value
             updateStock2(existing_details['stock_name'], total_quantity,
-                         existing_details['old_stock'],"", float(total_price)/total_quantity)
+                         existing_details['old_stock'],"Prototype", float(total_price)/total_quantity)
         else:
             res_status = "no"
     frappe.db.commit()
