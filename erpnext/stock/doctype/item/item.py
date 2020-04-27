@@ -68,7 +68,7 @@ class Item(WebsiteGenerator):
 				set_name_by_naming_series(self)
 				self.item_code = self.name
 
-		self.item_code = strip(self.item_code)
+		self.item_code = strip(str(self.item_code))
 		self.name = self.item_code
 
 	def before_insert(self):

@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "format:{item_code}-{item_name}",
+ "autoname": "format:{item_code}",
  "creation": "2013-05-03 10:45:46",
  "description": "A Product or a Service that is bought, sold or kept in stock.",
  "doctype": "DocType",
@@ -224,8 +224,7 @@
    "label": "Default Unit of Measure",
    "oldfieldname": "stock_uom",
    "oldfieldtype": "Link",
-   "options": "UOM",
-   "reqd": 1
+   "options": "UOM"
   },
   {
    "fieldname": "column_break0",
@@ -1108,7 +1107,8 @@
    "fieldname": "avg_price",
    "fieldtype": "Float",
    "label": "Average Wholesale Price",
-   "precision": "2"
+   "precision": "2",
+   "reqd": 1
   }
  ],
  "has_web_view": 1,
@@ -1117,7 +1117,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-04-23 13:45:07.325119",
+ "modified": "2020-04-27 19:03:32.534885",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
