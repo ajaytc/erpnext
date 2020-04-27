@@ -43,3 +43,29 @@ $('#delivered').click(function () {
 
 
 })
+
+
+
+$('#test').click(function () {
+
+    frappe.call({
+        method: 'erpnext.modehero.reminder.order_reminder',
+        args: {
+            data: {
+                orders: "test"
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                location.reload();
+
+            } else {
+                console.log(r)
+            }
+        }
+    })
+
+
+
+})

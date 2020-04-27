@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-26 16:19:07.634753",
+ "modified": "2020-04-27 21:27:10.860864",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "packaging-order",
@@ -222,7 +222,7 @@
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "confirmation_reminder",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "hidden": 0,
    "label": "Confirmation Reminder",
    "max_length": 0,
@@ -234,7 +234,7 @@
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "profoma_reminder",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "hidden": 0,
    "label": "Profoma Reminder",
    "max_length": 0,
@@ -246,7 +246,7 @@
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "payment_reminder",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "hidden": 0,
    "label": "Payment Reminder",
    "max_length": 0,
@@ -258,7 +258,7 @@
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "shipment_reminder",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "hidden": 0,
    "label": "Shipment Reminder",
    "max_length": 0,
@@ -270,7 +270,7 @@
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "reception_reminder",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "hidden": 0,
    "label": "Reception Reminder",
    "max_length": 0,
