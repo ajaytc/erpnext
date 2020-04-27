@@ -89,9 +89,11 @@ def set_finish(orderslist):
                 continue
             if order.price_per_unit=='' or None:
                 order.price_per_unit=0
-
-            updateStock2(existing_details['stock_name'], order_quantity+existing_details['old_stock'],
-                         existing_details['old_stock'],"", order.price_per_unit)
+            total_quantity = order_quantity+existing_details['old_stock']
+            order_value = order.price_per_unit * order_quantity
+            total_price = existing_details['old_value'] +  order_value
+            updateStock2(existing_details['stock_name'], total_quantity,
+                         existing_details['old_stock'],"", float(total_price)/total_quantity)
         else:
             res_status = "no"
     frappe.db.commit()

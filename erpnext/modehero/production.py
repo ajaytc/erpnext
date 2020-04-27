@@ -75,10 +75,10 @@ def set_finish(orderslist):
                 continue
 
             size_order = get_size_order(order)
-            price = calculate_price(size_order)
+            price = calculate_price(size_order)[order.product_name] + existing_details['old_value']
             total_quantity = order_quantity+existing_details['old_stock']
             updateStock2(existing_details['stock_name'], total_quantity,
-                         existing_details['old_stock'], "", price[order.product_name]*1.0/total_quantity)
+                         existing_details['old_stock'], "", price*1.0/total_quantity)
         else:
             res_status = "no"
     frappe.db.commit()

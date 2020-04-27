@@ -303,6 +303,9 @@ doc_events = {
     "Packaging Item": {
         "after_insert": "erpnext.modehero.stock.createNewPackagingStock"
     },
+    "Shipment Order": {
+        "after_insert": "erpnext.modehero.stock.updateShipmentorderStocks"
+    }
     # "Customer":{
     #     "after_insert": "erpnext.modehero.user.signup"
     # },
