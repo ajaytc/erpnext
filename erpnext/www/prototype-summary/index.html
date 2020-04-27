@@ -29,12 +29,12 @@
                             <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
                             <br />
                             <span class="product"
-                                data-product="{{order.product}}">{{frappe.db.get_value('Item',order.product_name,'item_name')}}</span>
+                                data-product="{{order.product}}">{{frappe.db.get_value('Item',order.product,'item_name')}}</span>
                         </div>
                     </div>
 
                     <div class="row mt-3 table-section">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered product-table">
                             <thead>
                                 <tr class="sizing">
                                     <th scope="col">{{_("Sizing")}}</th>
@@ -102,12 +102,7 @@
                 <div class="m-3">
                     {{_("Fabric consumption")}}
                     <br />
-                    {{order.consumption}}
-                </div>
-                <div class="m-3">
-                    {{_("Fabric Status")}}
-                    <br />
-                    {{order.fabric_status}}
+                    {{order.fabric_consumption}}
                 </div>
                 <div class="m-3">
                     <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
@@ -122,17 +117,24 @@
             <div class="col-6">
                 <div class="m-3">
                     {{_("Production Factory Name")}}
+                    <br />
                     {{order.production_factory}}
                 </div>
                 <div class="m-3">
                     {{_("Final Destination")}}
+                    <br />
                     {{order.final_destination}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming")}}
+                    <br />
                     {{order.trimming_item}}
                 </div>
-
+                <div class="m-3">
+                    {{_("Trimming consumption")}}
+                    <br />
+                    {{order.trimming_consumption}}
+                </div>
                 {% if order.techpack %}
                 <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
                     <a href="{{order.techpack}}">Tech pack</a>
@@ -170,7 +172,8 @@
                     {{_("Date")}}
                     <span>
                         <div class="input-group date">
-                            <input id="exWorkDate" class="form-control" value={% if order.ex_work_date %}{{order.ex_work_date}}{% endif %} name="workDate"
+                            <input id="exWorkDate" class="form-control"
+                                value={% if order.ex_work_date %}{{order.ex_work_date}}{% endif %} name="workDate"
                                 placeholder="Desired date" type="date">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -186,7 +189,8 @@
                         {% if order.invoice==null %}
                         <label id="invoice-label" class="custom-file-label" for="invoice">{{_("Invoice")}}</label>
                         {% elif order.docstatus!=null %}
-                        <label id="invoice-label" class="custom-file-label" for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
+                        <label id="invoice-label" class="custom-file-label"
+                            for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
                         {% endif %}
                     </div>
                 </div>
@@ -197,11 +201,14 @@
 
                 <div class="m-3">
                     {{_("Career")}}
-                    <input id="career" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}" class="form-control mt-2">
+                    <input id="career" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}"
+                        class="form-control mt-2">
                 </div>
                 <div class="m-3">
                     {{_("Tracking Number")}}
-                    <input id="tracking_number" type="text" value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
+                    <input id="tracking_number" type="text"
+                        value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}"
+                        class="form-control mt-2">
                 </div>
 
                 <div class="m-3">
@@ -217,7 +224,9 @@
 
                 <div class="m-3">
                     {{_("Price")}}
-                    <input id="price" type="text" value="{% if order.shipment_price %}{{order.shipment_price}}{% endif %}" class="form-control mt-2">
+                    <input id="price" type="text"
+                        value="{% if order.shipment_price %}{{order.shipment_price}}{% endif %}"
+                        class="form-control mt-2">
                 </div>
 
                 <div class="ml-5">

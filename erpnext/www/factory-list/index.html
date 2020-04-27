@@ -1,3 +1,7 @@
+<button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3"
+    onclick="window.location.href='/production-factory?new=1'">
+    {{_("New Factory")}}
+</button>
 <div class="table-wrapper">
     <table class="table table-striped">
         <thead>
@@ -8,22 +12,22 @@
                 <th scope="col">{{_("PHONE NUMBER")}}</th>
                 <th scope="col">{{_("CITY")}}</th>
                 <th scope="col">{{_("ZIP CODE")}}</th>
-                <th scope="col">{{_("COUNTRY")}}</th>                
+                <th scope="col">{{_("COUNTRY")}}</th>
             </tr>
         </thead>
         <tbody>
             {% for factory in factories %}
             <tr>
                 <th><a href="/production-factory?name={{factory.name}}">{{factory.factory_name}}</a></th>
-                <th></th>
+                <th>{{factory.contact}}</th>
                 <th>{{factory.email_address}}</th>
                 <th>{{factory.phone}}</th>
                 <th>{{factory.city_town}}</th>
-                <th></th>
+                <th>{{factory.zip_code}}</th>
                 <th>{{factory.country}}</th>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
+
 </div>

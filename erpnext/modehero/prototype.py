@@ -16,7 +16,7 @@ def create_prototype_order(data):
         'product': data['product'],
         'fabric_ref': data['fabric_ref'],
         'fabric_consumption': data['fabric_consumption'],
-        'trimming-item': data['trimming_item'],
+        'trimming_item': data['trimming_item'],
         'trimming_consumption': data['trimming_consumption'],
         'production_factory': data['production_factory'],
         'final_destination': data['destination'],
@@ -30,7 +30,38 @@ def create_prototype_order(data):
     })
 
     order.insert()
+
+    reduce_supply_stock(order)
+
     return {'status': 'ok', 'order': order}
+
+
+def reduce_supply_stock(order):
+    order_quantities = get_order_quantities(order)
+    if order_quantities != None:
+        existing_details = get_old_quantities_unitprice(order)
+        if existing_details['fabric_details']:
+            updateStock2(existing_details['fabric_details']['stock_name'], existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
+                         existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'])
+        if existing_details['trimming_details']:
+            updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock'] - order_quantities['trimming_quantity'],
+                         existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'])
+
+
+def increase_product_stock(order):
+    order_quantity = get_total_quantity(order)
+    if (order_quantity == None):
+        return
+    existing_details = get_product_details_from_order(order, "prototype")
+    if existing_details == None:
+        return
+    if order.price_per_unit == '' or None:
+        order.price_per_unit = 0
+    total_quantity = order_quantity+existing_details['old_stock']
+    order_value = order.price_per_unit * order_quantity
+    total_price = existing_details['old_value'] + int(order_value)
+    updateStock2(existing_details['stock_name'], total_quantity,
+                 existing_details['old_stock'], "", float(total_price)/total_quantity)
 
 
 @frappe.whitelist()
@@ -38,16 +69,6 @@ def validate(order, isvalidate):
     order = frappe.get_doc('Prototype Order', order)
     if isvalidate == 'true':
         order.docstatus = 1
-        order_quantities = get_order_quantities(order)
-        if order_quantities != None:
-            existing_details = get_old_quantities_unitprice(order)
-            if existing_details['fabric_details']:
-                updateStock2(existing_details['fabric_details']['stock_name'], existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
-                             existing_details['fabric_details']['old_stock'], "Prototype Fabric", existing_details['fabric_details']['unit_price'])
-            if existing_details['trimming_details']:
-                updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock']- order_quantities['trimming_quantity'],
-                             existing_details['trimming_details']['old_stock'], "Prototype Trimming", existing_details['trimming_details']['unit_price'])
-
     else:
         order.docstatus = 1
         order.save()
@@ -79,23 +100,12 @@ def set_finish(orderslist):
     for order in orderslist:
         order = frappe.get_doc('Prototype Order', order)
         if (order):
-            order.docstatus = 1
+            order.docstatus = 5
             order.save()
-            order_quantity = get_total_quantity(order)
-            if (order_quantity == None):
-                continue
-            existing_details = get_product_details_from_order(order,"prototype")
-            if existing_details == None:
-                continue
-            if order.price_per_unit=='' or None:
-                order.price_per_unit=0
-            total_quantity = order_quantity+existing_details['old_stock']
-            order_value = order.price_per_unit * order_quantity
-            total_price = existing_details['old_value'] +  order_value
-            updateStock2(existing_details['stock_name'], total_quantity,
-                         existing_details['old_stock'],"Prototype", float(total_price)/total_quantity)
         else:
             res_status = "no"
+        increase_product_stock(order)
+        
     frappe.db.commit()
     return {'status': res_status}
 
@@ -124,6 +134,6 @@ def get_old_quantities_unitprice(order):
     # this function returns a dictionary of old quantity values and other details of fabric/trimming
     # data is gathered by functions in stock.py
     fabric_details = get_details_fabric_from_order(order)
-    trimming_details = get_details_trimming_from_order(order,"prototype")
+    trimming_details = get_details_trimming_from_order(order, "prototype")
 
     return {'fabric_details': fabric_details, 'trimming_details': trimming_details}

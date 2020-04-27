@@ -31,6 +31,7 @@ function validate(isvalidate) {
                                     indicator: 'green',
                                     message: __('Sales order ' + order.name + ' created successfully')
                                 });
+                                window.location.reload()
                             }
                         }
                     }

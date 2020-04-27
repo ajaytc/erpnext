@@ -55,7 +55,7 @@ function priceUpdateCallback(e) {
         $(e.target).css('border', '1px solid #ced4da')
 
         //getting fabric status
-        let item = $('#fabric-status').find('option:selected').text()
+        let item = $('#fabric-ref').find('option:selected').text()
         let consumption = parseInt($('#fabric-consumption').val())
         console.log(totalqty, consumption)
 

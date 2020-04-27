@@ -6,9 +6,9 @@
     </a>
     <div id="collapse3" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="#" class="list-group-item ">
+            {# <a href="#" class="list-group-item ">
                 {{_("Price List")}}
-            </a>
+            </a> #}
             <a href="/client-dashboard" class="list-group-item ">
                 {{_("List of purchase")}}
             </a>
@@ -21,7 +21,7 @@
                     <a href="#" class="list-group-item ">
                         {{_("Create new client")}}
                     </a>
-                    <a href="#" class="list-group-item ">
+                    <a href="/client-list" class="list-group-item ">
                         {{_("Client list")}}
                     </a>
                     <a href="/client-destinations" class="list-group-item ">
@@ -37,6 +37,9 @@
     </a>
     <div id="collapseOne" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
+            <a href="/supply-list" class="list-group-item ">
+                {{_("Supplier List")}}
+            </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1a"
                 aria-expanded="false" aria-controls="c1a">
                 {{_("Fabric")}}
@@ -160,10 +163,10 @@
                     <a href="/prototype-dashboard" class="list-group-item ">
                         {{_("List")}}
                     </a>
-                    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
+                    {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
                         aria-expanded="false" aria-controls="c1aa">
                         {{_("Manage")}}
-                    </a>
+                    </a> #}
                     <div id="c1aa" class="collapse" data-parent="#c1a">
                         <div class="list-group">
                             {# <a href="#" class="list-group-item ">
@@ -206,10 +209,10 @@
             <div id="c4a" class="collapse" data-parent="#collapse4">
                 <div class="list-group">
                     <a href="/products-list" class="list-group-item ">
-                        {{_("Create new product")}}
+                        {{_("Products List")}}
                     </a>
-                    <a href="/production-factory" class="list-group-item ">
-                        {{_("Create new factory")}}
+                    <a href="/factory-list" class="list-group-item ">
+                        {{_("Factory List")}}
                     </a>
                     <a href="/product-category?new=1" class="list-group-item ">
                         {{_("Create new product category")}}
@@ -252,6 +255,9 @@
     </a>
     <div id="collapse6" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
+            <a href="/stock-products" class="list-group-item ">
+                {{_("Product Stock")}}
+            </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c6a"
                 aria-expanded="false" aria-controls="c6a">
                 {{_("Supply")}}
@@ -269,9 +275,9 @@
                     </a>
                 </div>
             </div>
-            <a href="#" class="list-group-item ">
+            {# <a href="#" class="list-group-item ">
                 {{_("Finished product")}}
-            </a>
+            </a> #}
             {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c6b"
                 aria-expanded="false" aria-controls="c6b">
                 {{_("History")}}

@@ -1,3 +1,7 @@
+<button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3"
+    onclick="window.location.href='/supply?new=1'">
+    {{_("New Supplier")}}
+</button>
 <div class="table-wrapper">
     <table class="table table-striped">
         <thead>
@@ -19,7 +23,7 @@
                 <th>{{supplier.supplier_group}}</th>
                 <th>{{supplier.contact}}</th>
                 <th>{{supplier.email}}</th>
-                <th>{{supplier.phone_number}}</th>
+                <th>{{supplier.phone}}</th>
                 <th>{{supplier.city}}</th>
                 <th>{{supplier.zip_code}}</th>
                 <th>{{supplier.country}}</th>

@@ -55,18 +55,17 @@ function priceUpdateCallback(e) {
         $(e.target).css('border', '1px solid #ced4da')
 
         //getting fabric status
-        let item = $('#fabric-status').find('option:selected').text()
+        let item = $('#fabric-ref').find('option:selected').text()
         let consumption = parseInt($('#fabric-consumption').val())
-        console.log(totalqty, consumption)
+        console.log(totalqty, consumption, item)
 
         getStatus(item, consumption * totalqty).then(status => {
             $('#fabric-status').html(status)
         })
 
 
-        item = $('#trimming-status').find('option:selected').text()
+        item = $('#trimming').find('option:selected').text()
         consumption = parseInt($('#trimming-consumption').val())
-
         getStatus(item, consumption * totalqty).then(status => {
             $('#trimming-status').html(status)
         })

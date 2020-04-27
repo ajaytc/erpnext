@@ -12,7 +12,7 @@
             {% for s in frappe.get_list('Prototype Quantity Per Size',filters={'parent':o.name},fields=['size']) %}
             <tr>
                 <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
-                <th>{{o.product}}</th>
+                <th>{{frappe.db.get_value('Item',o.product,'item_name')}}</th>
                 <th>{{o.product_category}}</th>
             </tr>
             {% endfor %}

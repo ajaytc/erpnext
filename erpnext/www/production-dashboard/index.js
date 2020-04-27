@@ -16,6 +16,7 @@ $('#finished').click(function () {
 })
 
 $('.nav-link').click(function () {
+    $('.selected').attr('checked', false)
     if (($(this).attr('id') == "pre-pro-fin") || ($(this).attr('id') == "pro-fin")) {
         $('#finished').hide()
     }
@@ -54,6 +55,7 @@ function validate(isvalidate) {
                                     indicator: 'green',
                                     message: __('Sales order ' + order.name + ' created successfully')
                                 });
+                                window.location.reload()
                             }
                         }
                     }
