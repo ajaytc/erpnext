@@ -156,7 +156,7 @@ def packaging_order_reminder():
                 "doctype": "Reminder",
                 "order": packReminder.name,
                 "type": "confirmation",
-                "order_type": "trimming"
+                "order_type": "packaging"
             })
 
             confReminder.insert()
@@ -166,7 +166,7 @@ def packaging_order_reminder():
                 "doctype": "Reminder",
                 "order": packReminder.name,
                 "type": "profoma",
-                "order_type": "trimming"
+                "order_type": "packaging"
             })
 
             profReminder.insert()
@@ -176,7 +176,7 @@ def packaging_order_reminder():
                 "doctype": "Reminder",
                 "order": packReminder.name,
                 "type": "payment",
-                "order_type": "trimming"
+                "order_type": "packaging"
             })
 
             paymReminder.insert()
@@ -186,7 +186,7 @@ def packaging_order_reminder():
                 "doctype": "Reminder",
                 "order": packReminder.name,
                 "type": "shipment",
-                "order_type": "trimming"
+                "order_type": "packaging"
             })
 
             shipReminder.insert()
@@ -196,7 +196,7 @@ def packaging_order_reminder():
                 "doctype": "Reminder",
                 "order": packReminder.name,
                 "type": "reception",
-                "order_type": "trimming"
+                "order_type": "packaging"
             })
 
             recepReminder.insert()
