@@ -1,0 +1,52 @@
+{% set product = frappe.form_dict.product %}
+{% set orders = frappe.get_list('Sales Order Item',filters={'item_code':product},fields=['name','parent']) %}
+{% set scheme = frappe.get_list('Item',filters={'item_code':product},fields=['sizing'])[0].sizing %}
+{% set sizes = frappe.get_list('Sizing',filters={'parent':scheme},fields=['size'],order_by='idx asc')%}
+
+
+<h2>{{frappe.get_list('Item',filters={'item_code':product},fields=['item_name'])[0].item_name}}</h2>
+
+{% for o in orders %}
+{{frappe.get_list('Sales Order',filters={'name':o.parent},fields=['customer'])[0].customer}}
+<table class="table table-bordered">
+    <thead>
+        <th>Sizing</th>
+        {% for s in sizes %}
+        <th>{{s.size}}</th>
+        {% endfor %}
+    </thead>
+    <tbody>
+        <tr>
+            <th>Quantity</th>
+            {% for s in sizes %}
+            <th>
+                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity',]) %}
+                {% for q in quantities %}
+                {% if q.size==s.size %}
+                {{q.quantity}}
+                {% endif %}
+                {% endfor %}
+            </th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Modified Quantity</th>
+            {% for s in sizes %}
+            <th>
+                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity',]) %}
+                {% for q in quantities %}
+                {% if q.size==s.size %}
+                <input class="form-control" type="text">
+                {% endif %}
+                {% endfor %}
+            </th>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+{% endfor %}
+
+<button id="validate" type="button" class="btn btn-primary">
+    {{_("Validate")}}
+</button>
