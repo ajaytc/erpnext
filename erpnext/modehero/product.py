@@ -9,6 +9,6 @@ def get_products_of_category(category):
 
 @frappe.whitelist()
 def get_item_code():
-    items = frappe.get_list(
+    items = frappe.get_all(
         'Item', order_by='creation desc', fields=['item_code'])
     return int(items[0].item_code)+1
