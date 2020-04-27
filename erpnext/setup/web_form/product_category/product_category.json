@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-22 15:47:18.768014",
+ "modified": "2020-04-27 20:15:53.414592",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "product-category",
@@ -37,18 +37,6 @@
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "gs",
-   "fieldtype": "Section Break",
-   "hidden": 0,
-   "label": "General Settings",
-   "max_length": 0,
-   "max_value": 0,
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
    "fieldname": "item_group_name",
    "fieldtype": "Data",
    "hidden": 0,
@@ -61,19 +49,7 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "image",
-   "fieldtype": "Attach Image",
-   "hidden": 1,
-   "label": "Image",
-   "max_length": 0,
-   "max_value": 0,
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "column_break_5",
+   "fieldname": "",
    "fieldtype": "Column Break",
    "hidden": 0,
    "max_length": 0,

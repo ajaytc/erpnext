@@ -193,11 +193,10 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 3,
- "modified": "2020-04-08 21:07:09.577906",
+ "modified": "2020-04-27 20:40:38.794533",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Item Group",
- "name_case": "Title Case",
  "owner": "Administrator",
  "permissions": [
   {
@@ -249,6 +248,18 @@
    "read": 1,
    "report": 1,
    "role": "Accounts User"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Brand User",
+   "share": 1,
+   "write": 1
   }
  ],
  "search_fields": "parent_item_group",
