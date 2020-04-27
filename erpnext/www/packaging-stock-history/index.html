@@ -3,7 +3,7 @@
         <h2>{{product.internal_ref}} - {{_("IN")}}</h2>
         <thead>
             <tr>
-               
+
                 <th scope="col">{{_("DATE")}}</th>
                 <th scope="col">{{_("QUANTITY")}}</th>
             </tr>
@@ -11,22 +11,22 @@
         <tbody>
             {% for o in historyList %}
             {%if o.in_out=='in' %}
-            
+
             <tr>
-                
+
                 <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
                 <th>{{o.quantity}}</th>
             </tr>
             {% endif %}
-            
-            
-             {% endfor %}
+
+
+            {% endfor %}
         </tbody>
-        
+
     </table>
 
-    
-    
+
+
 </div>
 <br>
 
@@ -35,7 +35,7 @@
         <h2>{{product.internal_ref}} - {{_("OUT")}}</h2>
         <thead>
             <tr>
-               
+
                 <th scope="col">{{_("DATE")}}</th>
                 <th scope="col">{{_("QUANTITY")}}</th>
             </tr>
@@ -43,16 +43,15 @@
         <tbody>
             {% for o in historyList %}
             {%if o.in_out=='out' %}
-            
+
             <tr>
-               
                 <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
                 <th>{{o.quantity}}</th>
             </tr>
             {% endif %}
             {% endfor %}
         </tbody>
-        
+
     </table>
 </div>
 

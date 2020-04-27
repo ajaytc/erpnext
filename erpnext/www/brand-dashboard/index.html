@@ -1,103 +1,133 @@
-    {# {% include 'erpnext/www/brand-dashboard/sidenav.html' %} #}
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+{# {% include 'erpnext/www/brand-dashboard/sidenav.html' %} #}
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-    <div class="page-with-sidebar">
-        <div class="sidebar">
-            {% include 'erpnext/www/brand-dashboard/sidenav.html'%}
-        </div>
-        <div class="page-body">
-            <div class="container-expand">
+<div class="page-with-sidebar">
+    <div class="sidebar">
+        {% include 'erpnext/www/brand-dashboard/sidenav.html'%}
+    </div>
+    <div class="page-body">
+        <div class="container-expand">
 
-                <h1>
-                    Hello, {{username}}
-                </h1>
+            <h1>
+                Hello, {{username}}
+            </h1>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h2 class="mt-0">Reminders</h2>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="mt-0">Reminders</h2>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xl">
+                    <div class="data-box orange">
+                        <img src="/assets/erpnext/images/mesh.png" alt="">
+                        <h3>Fabric</h3>
+                        <span class="notification">
+                            0
+                        </span>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl">
-                        <div class="data-box orange">
-                            <img src="/assets/erpnext/images/mesh.png" alt="">
-                            <h3>Fabric</h3>
-                            <span class="notification">
-                                0
-                            </span>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xl">
+                    <div class="data-box blue">
+                        <img src="/assets/erpnext/images/settings.png" alt="">
+                        <h3>Fabric</h3>
+                        <span class="notification">
+                            0
+                        </span>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl">
-                        <div class="data-box blue">
-                            <img src="/assets/erpnext/images/settings.png" alt="">
-                            <h3>Fabric</h3>
-                            <span class="notification">
-                                0
-                            </span>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xl">
+                    <div class="data-box red">
+                        <img src="/assets/erpnext/images/shipment.png" alt="">
+                        <h3>Shipment</h3>
+                        <span class="notification">
+                            0
+                        </span>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl">
-                        <div class="data-box red">
-                            <img src="/assets/erpnext/images/shipment.png" alt="">
-                            <h3>Shipment</h3>
-                            <span class="notification">
-                                0
-                            </span>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xl">
+                    <div class="data-box green">
+                        <img src="/assets/erpnext/images/stock.png" alt="">
+                        <h3>Fabric</h3>
+                        <span class="notification">
+                            0
+                        </span>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl">
-                        <div class="data-box green">
-                            <img src="/assets/erpnext/images/stock.png" alt="">
-                            <h3>Fabric</h3>
-                            <span class="notification">
-                                0
-                            </span>
-                        </div>
+                </div>
+                <div class="col-md-6 col-lg-3 col-xl">
+                    <div class="data-box purple">
+                        <img src="/assets/erpnext/images/button.png" alt="">
+                        <h3>Fabric</h3>
+                        <span class="notification">
+                            0
+                        </span>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl">
-                        <div class="data-box purple">
-                            <img src="/assets/erpnext/images/button.png" alt="">
-                            <h3>Fabric</h3>
-                            <span class="notification">
-                                0
-                            </span>
-                        </div>
-                    </div>
-
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h2>Shipping statuts</h2>
-                        <div class="table-wrapper">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">INTERNAL REF</th>
-                                        <th scope="col">ORDER NUMBER</th>
-                                        <th scope="col">PRODUCT NAME</th>
-                                        <th scope="col">PRODUCT CATEGORY</th>
-                                        <th scope="col">ORDER DATE</th>
-                                        <th scope="col">DESTINATION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                        {% for o in shipmentOrdersList %}
-                                        <tr>
-                                            <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
-                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</th>
-                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</th>
-                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</th>
-                                            <th>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}</th>
-                                            <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</th>
-                                        </tr>
-                                        {% endfor %}
-                                    
-                                </tbody>
-                            </table>
-                        </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2>Shipping statuts</h2>
+                    <div class="mb-3">
+                        <button id="delivered" type="button" class="btn btn-primary" disabled>
+                            {{_("Validate")}}
+                        </button>
+
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th scope="col">INTERNAL REF</th>
+                                    <th scope="col">ORDER NUMBER</th>
+                                    <th scope="col">PRODUCT NAME</th>
+                                    <th scope="col">PRODUCT CATEGORY</th>
+                                    <th scope="col">ORDER DATE</th>
+                                    <th scope="col">DESTINATION</th>
+                                    <th scope="col">DELIVERY STATUS</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {% for o in shipmentOrdersList %}
+                                <tr>
+                                    <th><input type="checkbox" class="selectedShipOrder" name="orderCheck" onchange="validateButton()"
+                                            data-name="{{o.name}}"></th>
+                                    <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
+                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</th>
+                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</th>
+                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</th>
+                                    <th>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}
+                                    </th>
+                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</th>
+
+                                    <th>
+                                        {%if o.docstatus==1%}
+                                        <div id="deliveredSt" class="mb-3">
+                                            <label id="deliverStatus" style="color:green">
+                                                {{_("Delivered")}}
+                                            </label>
+                                        </div>
+                                        {%endif%}
+                                        {%if o.docstatus==0%}
+                                        <div id="notDeliveredSt" class="mb-3">
+                                            <label id="deliverStatus" style="color:red">
+                                                {{_("Not Delivered")}}
+                                            </label>
+                                        </div>
+                                        {%endif%}
+                                    </th>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

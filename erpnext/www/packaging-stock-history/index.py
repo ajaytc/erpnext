@@ -12,9 +12,10 @@ def get_context(context):
     if('stock' in params):
         context.stock = frappe.get_doc('Stock', params.stock)
 
-    context.product=frappe.get_doc("Packaging Item",context.stock.internal_ref)
+    context.product = frappe.get_doc(
+        "Packaging Item", context.stock.internal_ref)
 
-    context.historyList=frappe.get_all("Stock History", fields=["in_out,name,creation,quantity"],filters={"parent":context.stock.name})
+    context.historyList = frappe.get_all("Stock History", fields=[
+                                         "in_out,name,creation,quantity"], filters={"parent": context.stock.name})
 
-    
     return context
