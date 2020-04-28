@@ -38,7 +38,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
          "price_list_currency": "USD",
          })
 
-    order.insert()
+    order.insert(ignore_permissions=True)
 
     for i in order.items:
         quantities = items[i.item_name]['quantities']
