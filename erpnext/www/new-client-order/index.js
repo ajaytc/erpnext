@@ -82,11 +82,14 @@ setClose()
 
 
 $('#submit').click(() => {
+    if ($('#internal-ref').val() == '') {
+        frappe.throw(frappe._("Please enter internal ref"))
+    }
     let products = {}
     let garmentlabel = $('#garmentlabel>option:selected').text()
     let allnull = true
     $('.product-table').map(function () {
-        let product = $($(this).find('.selected-product')[0]).find('option:selected').text()
+        let product = $($(this).find('.selected-product')[0]).find('option:selected').val()
         let destination = $($(this).find('.destination')[0]).find('option:selected').text()
 
         let qtys = {}
