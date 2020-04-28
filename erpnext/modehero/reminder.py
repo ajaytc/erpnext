@@ -78,9 +78,8 @@ def fabric_order_reminder():
     return doc_list
 
 
-
 def trimming_order_reminder():
-    
+
     doc_list = frappe.get_all("Trimming Order",
                               or_filters=[["confirmation_reminder", "=", nowdate()], ["profoma_reminder", "=", nowdate()], ["payment_reminder", "=", nowdate()], [
                                   "shipment_reminder", "=", nowdate()], ["reception_reminder", "=", nowdate()]],
@@ -202,3 +201,21 @@ def packaging_order_reminder():
             recepReminder.insert()
 
     return doc_list
+
+
+@frappe.whitelist()
+def markSeen(data):
+    data = json.loads(data)
+    if(data['reminder'] == 'fabric_reminder'):
+        orderType = "fabric"
+
+    elif(data['reminder'] == 'trimming_reminder'):
+        orderType = "trimming"
+    elif (data['reminder'] == 'pack_reminder'):
+        orderType = "packaging"
+
+    unseenReminders = frappe.db.sql("update `tabReminder` set seen='1' where seen='0' and  order_type='"+orderType+"'")
+
+
+
+    return unseenReminders

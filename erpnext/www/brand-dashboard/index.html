@@ -18,33 +18,37 @@
                     <h2 class="mt-0">Reminders</h2>
                 </div>
                 <div class="col-md-6 col-lg-3 col-xl">
-                    <div class="data-box orange">
+                    <div class="data-box orange" data-toggle="modal" data-target="#fabric_reminder"
+                        id="fabricRemButton">
                         <img src="/assets/erpnext/images/mesh.png" alt="">
                         <h3>Fabric</h3>
                         <span class="notification">
-                            0
+
+                            <div id="fabCount">{{fabCount[0][0]}}</div>
+
                         </span>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 col-xl">
-                    <div class="data-box blue">
+                    <div class="data-box blue" data-toggle="modal" data-target="#trimming_reminder"
+                        id="trimmingRemButton">
                         <img src="/assets/erpnext/images/settings.png" alt="">
-                        <h3>Fabric</h3>
+                        <h3>Trimming</h3>
                         <span class="notification">
-                            0
+                            <div id="trimCount">{{trimCount[0][0]}}</div>
                         </span>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 col-xl">
-                    <div class="data-box red">
+                    <div class="data-box red" data-toggle="modal" data-target="#pack_reminder" id="packRemButton">
                         <img src="/assets/erpnext/images/shipment.png" alt="">
-                        <h3>Shipment</h3>
+                        <h3>Packaging</h3>
                         <span class="notification">
-                            0
+                            <div id="packCount">{{packCount[0][0]}}</div>
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 col-xl">
+                <!-- <div class="col-md-6 col-lg-3 col-xl">
                     <div class="data-box green">
                         <img src="/assets/erpnext/images/stock.png" alt="">
                         <h3>Fabric</h3>
@@ -58,10 +62,9 @@
                         <img src="/assets/erpnext/images/button.png" alt="">
                         <h3>Fabric</h3>
                         <span class="notification">
-                            0
                         </span>
                     </div>
-                </div>
+                </div> -->
 
             </div>
 
@@ -94,8 +97,8 @@
 
                                 {% for o in shipmentOrdersList %}
                                 <tr>
-                                    <th><input type="checkbox" class="selectedShipOrder" name="orderCheck" onchange="validateButton()"
-                                            data-name="{{o.name}}"></th>
+                                    <th><input type="checkbox" class="selectedShipOrder" name="orderCheck"
+                                            onchange="validateButton()" data-name="{{o.name}}"></th>
                                     <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
                                     <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</th>
                                     <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</th>
@@ -124,7 +127,251 @@
                                 {% endfor %}
 
                             </tbody>
+                            
                         </table>
+                    </div>
+
+
+                    <div class="modal fade" id="fabric_reminder" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Reminders of Fabric Orders</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-wrapper">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+
+                                                    <th scope="col">DATE</th>
+                                                    <th scope="col">ORDER NUMBER</th>
+                                                    <th scope="col">SUPPLIER</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for r in fabricReminders %}
+                                                <tr>
+
+                                                    {%if r[7]=='confirmation'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle fab" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[2], {'fieldtype': 'Date'})}}
+                                                    </th>
+
+                                                    {%elif r[7]=='profoma'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle fab" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[3], {'fieldtype': 'Date'})}}
+                                                    </th>
+
+                                                    {%elif r[7]=='payment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle fab" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[4], {'fieldtype': 'Date'})}}
+                                                    </th>
+
+                                                    {%elif r[7]=='shipment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle fab" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[5], {'fieldtype': 'Date'})}}
+                                                    </th>
+
+                                                    {%elif r[7]=='reception'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle fab" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[6], {'fieldtype': 'Date'})}}
+                                                    </th>
+
+                                                    {%endif%}
+                                                    <th><a href="/fabric-summary?order={{r[0]}}">{{r[0]}}</a></th>
+                                                    <th>{{r[1]}}</th>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="trimming_reminder" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Reminders of Trimming Orders</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-wrapper">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+
+                                                    <th scope="col">DATE</th>
+                                                    <th scope="col">ORDER NUMBER</th>
+                                                    <th scope="col">SUPPLIER</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for r in trimmingReminders %}
+                                                <tr>
+
+                                                    {%if r[7]=='confirmation'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle trim" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[2], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='profoma'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle trim" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[3], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='payment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle trim" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[4], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='shipment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle trim" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[5], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='reception'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle trim" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[6], {'fieldtype': 'Date'})}}</th>
+                                                    {%endif%}
+                                                    <th><a href="/trimming-summary?order={{r[0]}}">{{r[0]}}</a> </th>
+                                                    <th>{{r[1]}}</th>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="pack_reminder" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Reminders of Packaging Orders</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-wrapper">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+
+                                                    <th scope="col">DATE</th>
+                                                    <th scope="col">ORDER NUMBER</th>
+                                                    <th scope="col">SUPPLIER</th>
+
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                {% for r in packReminders %}
+                                                <tr>
+
+                                                    {%if r[7]=='confirmation'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle pack" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[2], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='profoma'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle pack" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[3], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='payment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle pack" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[4], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='shipment'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle pack" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[5], {'fieldtype': 'Date'})}}</th>
+                                                    {%elif r[7]=='reception'%}
+                                                    <th>
+                                                        {%if r[8]=='0'%}
+                                                        <i class="fa fa-circle pack" aria-hidden="true"
+                                                            style="color:red"></i>
+                                                        {%endif%}
+                                                        {{frappe.format(r[6], {'fieldtype': 'Date'})}}</th>
+                                                    {%endif%}
+                                                    <th><a href="/packaging-summary?order={{r[0]}}">{{r[0]}}</a> </th>
+                                                    <th>{{r[1]}}</th>
+                                                </tr>
+                                                {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
