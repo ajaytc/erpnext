@@ -13,6 +13,46 @@
 <table class="table table-bordered" id="{{o.name}}" data-order="{{o.name}}">
     <thead>
         <th>Sizing</th>
+        {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
+        {% for q in quantities %}
+        <th>
+            {{q.size}}
+        </th>
+        {% endfor %}
+    </thead>
+    <tbody>
+        <tr>
+            <th>Quantity</th>
+            {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
+            {% for q in quantities %}
+            <th>
+                {{q.quantity}}
+            </th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th>Modified Quantity</th>
+            {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
+            {% for q in quantities %}
+            <th>
+                <input class="modified-qty form-control" data-size="{{q.size}}" type="text" value="{{q.quantity}}">
+
+            </th>
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+{% endfor %}
+
+<button id="validate" type="button" class="btn btn-primary">
+    {{_("Validate")}}
+</button>
+
+{# table for all sizes
+    <table class="table table-bordered" id="{{o.name}}" data-order="{{o.name}}">
+    <thead>
+        <th>Sizing</th>
         {% for s in sizes %}
         <th class="size">{{s.size}}</th>
         {% endfor %}
@@ -46,9 +86,5 @@
         </tr>
     </tbody>
 </table>
-
-{% endfor %}
-
-<button id="validate" type="button" class="btn btn-primary">
-    {{_("Validate")}}
-</button>
+    
+    #}
