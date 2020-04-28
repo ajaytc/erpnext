@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-28 08:28:21.878541",
+ "modified": "2020-04-28 15:07:09.761766",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "fabric-order",
@@ -73,13 +73,15 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "section_break_6",
+   "fieldname": "",
    "fieldtype": "Section Break",
    "hidden": 0,
+   "label": "",
    "max_length": 0,
    "max_value": 0,
+   "options": "",
    "read_only": 0,
-   "reqd": 0,
+   "reqd": 1,
    "show_in_filter": 0
   },
   {
