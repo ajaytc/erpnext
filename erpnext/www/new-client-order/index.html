@@ -77,7 +77,9 @@
                 {% if order and order.docstatus<2 %}
                 <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
                 {% if order.docstatus==0 %}
+                {% if not isCustomer %}
                 <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                {% endif %}
                 {% endif %}
                 {% endif %}
                 {% if not order %}
