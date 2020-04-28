@@ -1,5 +1,5 @@
 {% set product = frappe.form_dict.product %}
-{% set orders = frappe.get_list('Sales Order Item',filters={'item_code':product},fields=['name','parent']) %}
+{% set orders = frappe.get_list('Sales Order Item',filters={'item_code':product,'docstatus':0},fields=['name','parent']) %}
 {% set scheme = frappe.get_list('Item',filters={'item_code':product},fields=['sizing'])[0].sizing %}
 {% set sizes = frappe.get_list('Sizing',filters={'parent':scheme},fields=['size'],order_by='idx asc')%}
 
@@ -8,11 +8,13 @@
 
 {% for o in orders %}
 {{frappe.get_list('Sales Order',filters={'name':o.parent},fields=['customer'])[0].customer}}
-<table class="table table-bordered">
+<br />
+<input type="checkbox" class="order-select" style="zoom:1.5" data-order="{{o.name}}">{{_("Order")}} - {{o.name}}
+<table class="table table-bordered" id="{{o.name}}" data-order="{{o.name}}">
     <thead>
         <th>Sizing</th>
         {% for s in sizes %}
-        <th>{{s.size}}</th>
+        <th class="size">{{s.size}}</th>
         {% endfor %}
     </thead>
     <tbody>
@@ -20,7 +22,7 @@
             <th>Quantity</th>
             {% for s in sizes %}
             <th>
-                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity',]) %}
+                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
                 {% for q in quantities %}
                 {% if q.size==s.size %}
                 {{q.quantity}}
@@ -33,10 +35,10 @@
             <th>Modified Quantity</th>
             {% for s in sizes %}
             <th>
-                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity',]) %}
+                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
                 {% for q in quantities %}
                 {% if q.size==s.size %}
-                <input class="form-control" type="text">
+                <input class="modified-qty form-control" data-size="{{s.size}}" type="text" value="{{q.quantity}}">
                 {% endif %}
                 {% endfor %}
             </th>

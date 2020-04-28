@@ -199,3 +199,22 @@ def update_sales_order(order, products):
                 })
 
     frappe.db.commit()
+
+
+@frappe.whitelist()
+def validate_multiple_orders(orders):
+    # order format = "{"a270d41181":{"L":"10","XL":"11","XXL":"12"},"1529ae1888":{"L":"10","XL":"11","XXL":"12"}}"
+    orders = json.loads(orders)
+    for o in orders:
+        qtys = frappe.get_all('Quantity Per Size', filters={
+                              'order_id': o}, fields=['name', 'size', 'quantity'])
+        for q in qtys:
+            if(orders[o][q['size']] != q['quantity']):
+                frappe.db.set_value('Quantity Per Size', q.name, {
+                    'quantity': orders[o][q['size']]
+                })
+        order = frappe.get_doc('Sales Order Item', o)
+        order.docstatus = 1
+        order.save()
+    frappe.db.commit()
+    return {'status': 'ok'}

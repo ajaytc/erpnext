@@ -13,7 +13,8 @@
     {# {% set item = frappe.get_doc('Item',o.item_code) %} #}
     <a
         href="/product-orders?product={{i.item_code}}">{{frappe.get_list('Item',{'item_code':i.item_code},'item_name')[0].item_name}}</a>
-
+    <br />
+    {{_("Order")}} - {{i.name}}
     <table class="table table-bordered">
         <thead>
             <th>Sizing</th>
