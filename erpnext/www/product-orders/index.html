@@ -1,13 +1,13 @@
 {% set product = frappe.form_dict.product %}
-{% set orders = frappe.get_list('Sales Order Item',filters={'item_code':product,'docstatus':0},fields=['name','parent']) %}
-{% set scheme = frappe.get_list('Item',filters={'item_code':product},fields=['sizing'])[0].sizing %}
-{% set sizes = frappe.get_list('Sizing',filters={'parent':scheme},fields=['size'],order_by='idx asc')%}
+{% set orders = frappe.get_all('Sales Order Item',filters={'item_code':product,'docstatus':0},fields=['name','parent']) %}
+{% set scheme = frappe.get_all('Item',filters={'item_code':product},fields=['sizing'])[0].sizing %}
+{% set sizes = frappe.get_all('Sizing',filters={'parent':scheme},fields=['size'],order_by='idx asc')%}
 
 
-<h2>{{frappe.get_list('Item',filters={'item_code':product},fields=['item_name'])[0].item_name}}</h2>
+<h2>{{frappe.get_all('Item',filters={'item_code':product},fields=['item_name'])[0].item_name}}</h2>
 
 {% for o in orders %}
-{{frappe.get_list('Sales Order',filters={'name':o.parent},fields=['customer'])[0].customer}}
+{{frappe.get_all('Sales Order',filters={'name':o.parent},fields=['customer'])[0].customer}}
 <br />
 <input type="checkbox" class="order-select" style="zoom:1.5" data-order="{{o.name}}">{{_("Order")}} - {{o.name}}
 <table class="table table-bordered" id="{{o.name}}" data-order="{{o.name}}">
@@ -22,7 +22,7 @@
             <th>Quantity</th>
             {% for s in sizes %}
             <th>
-                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
+                {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
                 {% for q in quantities %}
                 {% if q.size==s.size %}
                 {{q.quantity}}
@@ -35,7 +35,7 @@
             <th>Modified Quantity</th>
             {% for s in sizes %}
             <th>
-                {% set quantities =frappe.get_list('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
+                {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':o.name,'product_id':product},fields=['size','quantity']) %}
                 {% for q in quantities %}
                 {% if q.size==s.size %}
                 <input class="modified-qty form-control" data-size="{{s.size}}" type="text" value="{{q.quantity}}">

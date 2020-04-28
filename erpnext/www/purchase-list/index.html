@@ -7,12 +7,12 @@
 <h2>{{_("List of purchase")}}</h2>
 <div class="table-wrapper">
     {% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
-    {% set orders = frappe.get_list('Sales Order', filters={'company': brand, 'docstatus': 0}, fields=['name', 'customer'])%}
+    {% set orders = frappe.get_all('Sales Order', filters={'company': brand, 'docstatus': 0}, fields=['name', 'customer'])%}
     {% for o in orders %}
     {% for i in frappe.get_list('Sales Order Item',filters={'parent':o.name},fields=['name','item_code']) %}
     {# {% set item = frappe.get_doc('Item',o.item_code) %} #}
     <a
-        href="/product-orders?product={{i.item_code}}">{{frappe.get_list('Item',{'item_code':i.item_code},'item_name')[0].item_name}}</a>
+        href="/product-orders?product={{i.item_code}}">{{frappe.get_all('Item',{'item_code':i.item_code},'item_name')[0].item_name}}</a>
     <br />
     {{_("Order")}} - {{i.name}}
     <table class="table table-bordered">
