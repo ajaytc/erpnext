@@ -190,7 +190,7 @@ function priceUpdateCallback(e) {
 
         //calculate price 
         $('.product-table').map(function () {
-            let product = $(this).find('.selected-product>option:selected').text()
+            let product = $(this).find('.selected-product>option:selected').val()
 
             $(this).find('.qty>td').map(function () {
                 let qty = $(this).find('input').val()
