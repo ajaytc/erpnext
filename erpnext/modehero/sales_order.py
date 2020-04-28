@@ -55,7 +55,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
                     "product_id": i.item_code,
                     "brand": brand
                 })
-                qtypersize.insert()
+                qtypersize.insert(ignore_permissions=True)
 
     frappe.db.commit()
 
