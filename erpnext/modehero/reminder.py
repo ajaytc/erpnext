@@ -14,6 +14,11 @@ def order_reminder(data):
     trimming_order_reminder()
     packaging_order_reminder()
 
+def cron_order_reminder():
+    fabric_order_reminder()
+    trimming_order_reminder()
+    packaging_order_reminder()
+
 
 def fabric_order_reminder():
 

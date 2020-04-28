@@ -341,7 +341,7 @@ scheduler_events = {
         "erpnext.support.doctype.issue.issue.set_service_level_agreement_variance",
     ],
     "daily": [
-        "erpnext.modehero.reminder.order_reminder",
+        "erpnext.modehero.reminder.cron_order_reminder",
         "erpnext.stock.reorder_item.reorder_item",
         "erpnext.support.doctype.issue.issue.auto_close_tickets",
         "erpnext.crm.doctype.opportunity.opportunity.auto_close_opportunity",
