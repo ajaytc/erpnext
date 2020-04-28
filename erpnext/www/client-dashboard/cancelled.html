@@ -16,7 +16,12 @@
             <tr>
                 <td>{{o[5]}}</td>
                 <td><a href="/new-client-order?order={{o[0]}}">{{o[0]}}</a></td>
+                {% set item = frappe.get_all('Item',filters={'item_code':o[2]},fields=['item_name']) %}
+                {% if item|length >0 %}
+                <td>{{item[0].item_name}}</td>
+                {% else %}
                 <td>{{o[2]}}</td>
+                {% endif %}
                 <td>{{o[3]}}</td>
                 <td>{{frappe.format(o[1], {'fieldtype': 'Date'})}}</td>
                 <td>{{o[4]}}</td>
