@@ -45,6 +45,7 @@ def signup(doc, method):
 
 
 def auto_deactivate():
+    print('running user deactivation cron')
     users = frappe.get_all('User')
     dateformat = '%d-%m-%Y'
     for u in users:
