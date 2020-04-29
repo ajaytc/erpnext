@@ -2,8 +2,16 @@ var tablecount = 1;
 var profoma = null;
 var numeric = /^\d+$/;
 
-$('#addtable').click(() => {
-    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#container')
+// $('#addtable').click(() => {
+//     $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#container')
+//     tablecount++
+//     $('.selected-product').click(productUpdateCallback)
+//     setClose()
+// })
+
+$('#addtable').click((e) => {
+    e.preventDefault();
+    $('#box0').clone().addClass('class', 'product-table').appendTo('#table_container')
     tablecount++
     $('.selected-product').click(productUpdateCallback)
     setClose()
