@@ -386,11 +386,12 @@ def get_size_sales_order(sales_order):
     return size_order
 
 
+# decrease item quantity from stock
 def updateShipmentorderStocks(doc, method):
     sales_order_item = frappe.get_doc('Sales Order Item', doc.product_order_id)
-    sales_order_item.docstatus = 3
-    sales_order_item.save()
-    frappe.db.commit()
+    # sales_order_item.docstatus = 3
+    # sales_order_item.save()
+    # frappe.db.commit()
     quantity = get_total_quantity(sales_order_item)
     if quantity != 0 and sales_order_item.item_code != None:
         production_stock_name = frappe.get_all(

@@ -41,7 +41,7 @@ def get_context(context):
         context.onprocess = frappe.get_all(
             orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
             orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
@@ -52,7 +52,7 @@ def get_context(context):
         context.onprocess = frappe.get_all(
             orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
             orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
@@ -63,7 +63,7 @@ def get_context(context):
         context.onprocess = frappe.get_all(
             orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 2, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
         context.shipped = frappe.get_all(
             orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
 
