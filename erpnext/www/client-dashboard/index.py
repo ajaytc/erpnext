@@ -34,6 +34,15 @@ def get_context(context):
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles
 
-    context.destinations=frappe.get_all("Destination",fields=["destination_name","city_town","client_name","name"])
+    context.destinations = frappe.get_all(
+        "Destination", fields=["destination_name", "city_town", "client_name", "name"])
+
+    context = frappe._dict({
+        "post_login": [
+            {"label": _("Information"), "url": "/me"},
+            {"label": _("Destination"), "url": "/client-destinations"},
+            {"label": _("Logout"), "url": "/?cmd=web_logout"}
+        ]
+    })
 
     return context

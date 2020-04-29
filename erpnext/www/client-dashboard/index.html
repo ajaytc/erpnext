@@ -1,3 +1,5 @@
+{# to add red dot to tab, add `notification` class to span sorrounding tab name #}
+
 {% if not isBrand %}
 <h1>Client Dashboard</h1>
 
@@ -6,7 +8,8 @@
     <i class="fas fa-plus"></i>
     Place new order
 </button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#destination_modal" id="destinatonButton">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#destination_modal"
+    id="destinatonButton">
     <i class="fas fa-plus"></i>
     {{_("Destinations")}}
 </button>
@@ -19,19 +22,19 @@
     <li class="nav-item">
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#waiting" role="tab" aria-controls="home"
             aria-selected="true">
-            <span class="notification">{{_("Waiting for Validation")}}</span></a>
+            <span id="waiting-notf" class="">{{_("Waiting for Validation")}}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#onprocess" role="tab" aria-controls="profile"
-            aria-selected="false"><span class="">{{_("On Process")}}</span></a>
+            aria-selected="false"><span id="onprocess-notf" class="">{{_("On Process")}}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="contact"
-            aria-selected="false"><span class="">{{_("Shipped")}}</span></a>
+            aria-selected="false"><span id="shipped-notf" class="">{{_("Shipped")}}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#cancelled" role="tab" aria-controls="contact"
-            aria-selected="false"><span class="">{{_("Cancelled")}}</span></a>
+            aria-selected="false"><span id="cancelled-notf" class="">{{_("Cancelled")}}</span></a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -79,14 +82,15 @@
                                 <th>{{dest.destination_name}}</th>
                                 <th>{{dest.city_town}}</th>
                                 <th><a href="/client-destinations?name={{dest.name}}">{{_("See more info +")}}</a></th>
-                                
+
                             </tr>
                             {% endfor %}
 
                         </tbody>
                     </table>
                     <div class="mb-3">
-                        <button id="newDest" type="button" class="btn btn-primary" onclick="window.location.href='/client-destinations?new=1'">
+                        <button id="newDest" type="button" class="btn btn-primary"
+                            onclick="window.location.href='/client-destinations?new=1'">
                             {{_("Add Destination")}}
                         </button>
 
