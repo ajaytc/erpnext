@@ -13,6 +13,11 @@ def submit_fabric_vendor_summary_info(data):
     fabricOrder.tracking_number=data['tracking_number'];
     fabricOrder.shipment_date=data['shipment_date'];
     fabricOrder.production_comment=data['production_comment'];
+    if(fabricOrder.confirmation_doc != 'None' or fabricOrder.profoma != 'None' or fabricOrder.invoice != 'None' or fabricOrder.ex_work_date ):
+        fabricOrder.docstatus=4
+    if(fabricOrder.carrier or fabricOrder.tracking_number or fabricOrder.shipment_date):
+        fabricOrder.docstatus=3
+
     fabricOrder.save()
     
     return fabricOrder;

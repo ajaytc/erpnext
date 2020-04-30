@@ -89,6 +89,8 @@ def submit_production_info(data):
     order.shipment_date = data['shipment_date']
     order.shipment_price = data['shipment_price']
     order.production_comment = data['production_comment']
+    if(order.invoice != 'None' or order.ex_work_date or order.tracking_number or order.carrier or order.shipment_date or order.shipment_price ):
+        order.docstatus=5
     order.save()
     return order
 
