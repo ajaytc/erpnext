@@ -124,7 +124,6 @@
         </div>
     </div>
     {# bottom part of summary page should go below #}
-    {% if isFabricVendor %}
     <div class="card" style="">
         <div class="card-body row">
             <div class="col-6">
@@ -223,10 +222,11 @@
                         </span>
                     </div>
                 </div>
-
+                {% if isFabricVendor %}
                 <div class="ml-5">
                     <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
                 </div>
+                {% endif %}
             </div>
 
             <div class="col-6">
@@ -240,5 +240,4 @@
 
         </div>
     </div>
-    {% endif %}
 </div>

@@ -141,7 +141,6 @@
         </div>
     </div>
     {# bottom part of summary page should go below #}
-    {% if isPackVendor %}
     <div class="card" style="">
         <div class="card-body row">
             <div class="col-6">
@@ -242,8 +241,10 @@
                     </div>
 
                     <div class="ml-5">
+                        {% if isPackVendor %}
                         {% if packOrder.docstatus==0 %}
                         <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
+                        {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -257,6 +258,5 @@
                 </div>
             </div>
         </div>
-        {% endif %}
 
     </div>
