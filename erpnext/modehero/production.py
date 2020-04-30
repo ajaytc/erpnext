@@ -66,24 +66,28 @@ def set_finish(orderslist):
         if (order):
             order.docstatus = 1
             order.save()
-            order_quantity = get_total_quantity(order)
-            if (order_quantity == None):
-                continue
-            existing_details = get_product_details_from_order(
-                order, "production")
-            if existing_details == None:
-                continue
-
-            size_order = get_size_order(order)
-            price = calculate_price(size_order)[
-                order.product_name] + existing_details['old_value']
-            total_quantity = int(order_quantity)+existing_details['old_stock']
-            updateStock2(existing_details['stock_name'], total_quantity,
-                         existing_details['old_stock'], "Production", price*1.0/total_quantity)
+            stockUpdateAfterFinish(order)
         else:
             res_status = "no"
     frappe.db.commit()
     return {'status': res_status}
+
+
+def stockUpdateAfterFinish(order):
+    order_quantity = get_total_quantity(order)
+       if (order_quantity == None):
+            continue
+        existing_details = get_product_details_from_order(
+            order, "production")
+        if existing_details == None:
+            continue
+
+        size_order = get_size_order(order)
+        price = calculate_price(size_order)[
+            order.product_name] + existing_details['old_value']
+        total_quantity = int(order_quantity)+existing_details['old_stock']
+        updateStock2(existing_details['stock_name'], total_quantity,
+                     existing_details['old_stock'], "Production", price*1.0/total_quantity)
 
 
 @frappe.whitelist()
@@ -101,6 +105,7 @@ def submit_production_summary_info(data):
     if(order.invoice != 'None' or order.confirmation_doc != 'None' or order.profoma != 'None' or order.expected_work_date or order.tracking_number or order.carrier or order.shipment_date):
         order.docstatus = 1
     order.save()
+    stockUpdateAfterFinish(order)
     return order
 
 
