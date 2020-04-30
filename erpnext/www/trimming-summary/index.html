@@ -11,7 +11,7 @@
                         {{frappe.format(trimOrder.creation, {'fieldtype': 'Date'})}}
                     </span>
                 </div>
-               
+
                 <div id="order-no-section" class="m-3">
                     {{_("Order Number")}}
                     <br />
@@ -19,26 +19,26 @@
                         {{trimOrder.name}}
                     </span>
                 </div>
-                
-                
+
+
                 <div class="m-3">
                     {{_("Internal ref")}}
                     <br />
                     <span id="order-internal">
                         {{trimOrder.internal_ref}}
                     </span>
-                
+
                 </div>
 
                 <h2>{{_("Order Info")}}</h2>
-                
+
                 <div class="m-3">
                     {{_("Item")}}
                     <br />
                     <span id="order-item">
                         {{trimOrder.trimming_item}}
                     </span>
-                
+
                 </div>
                 <div class="m-3">
                     {{_("Color")}}
@@ -46,7 +46,7 @@
                     <span id="order-color">
                         {{trimmingItem.color}}
                     </span>
-                
+
                 </div>
                 <div class="m-3">
                     {{_("Quantity")}}
@@ -54,7 +54,7 @@
                     <span id="order-quantity">
                         {{trimOrder.quantity}}
                     </span>
-                
+
                 </div>
                 <div class="m-3">
                     {{_("Material")}}
@@ -62,7 +62,7 @@
                     <span id="order-material">
                         {{trimmingItem.material}}
                     </span>
-                
+
                 </div>
                 <div class="m-3">
                     {{_("Size")}}
@@ -70,7 +70,7 @@
                     <span id="order-itemSize">
                         {{trimmingItem.trimming_size}}
                     </span>
-                
+
                 </div>
 
                 <div class="m-3">
@@ -79,7 +79,7 @@
                     <span id="order-otherInfo">
                         {{trimmingItem.other_info}}
                     </span>
-                
+
                 </div>
 
             </div>
@@ -92,7 +92,7 @@
                     <span id="order-otherInfo">
                         {{trimOrder.price_per_unit}}
                     </span>
-                
+
                 </div>
                 <div class="m-3">
                     {{_("Price")}}
@@ -100,16 +100,18 @@
                     <span id="order-otherInfo">
                         {{trimOrder.total_price}}
                     </span>
-                
+
                 </div>
 
                 <div class="m-3">
                     {{_("Payment Proof")}}
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.payment_proof}} name="paymentProof" id="paymentProof">
-                     
-                        <label id="paymentProof-label" class="custom-file-label" for="paymentProof">{% if trimOrder.payment_proof %}{{trimOrder.payment_proof}}{% endif %}</label>
-                        
+                        <input type="file" class="custom-file-input" value={{trimOrder.payment_proof}}
+                            name="paymentProof" id="paymentProof">
+
+                        <label id="paymentProof-label" class="custom-file-label"
+                            for="paymentProof">{% if trimOrder.payment_proof %}{{trimOrder.payment_proof}}{% endif %}</label>
+
                     </div>
                 </div>
                 {% if trimOrder.payment_proof %}
@@ -119,117 +121,143 @@
                     <a href="{{trimOrder.payment_proof}}" download>Download Submitted Document</a>
                 </div>
                 {% endif %}
-                
 
-               
-                    <div class="m-3">
-                        {{_("Comments")}}
-                        <textarea class="form-control" id="proofComment"
-                            rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
-                    </div>
-               
+
+
+                <div class="m-3">
+                    {{_("Comments")}}
+                    <textarea class="form-control" id="proofComment"
+                        rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
+                </div>
+
 
                 <div class="ml-5">
-                    
+
                     <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
-                   
+
                 </div>
             </div>
             <div>
             </div>
         </div>
     </div>
-{# bottom part of summary page should go below #}
-{% if isTrimVendor %}
-<div class="card" style="">
-    <div class="card-body row">
-        <div class="col-6">
-            <div class="m-3">
-                {{_("Trimming Vendor")}}
-            </div>
-            <div class="m-3">
-                {{_("Expected Work Date")}}
-                <span>
-                    <div class="input-group date">
-                        <input id="exWorkDate" class="form-control" value={% if trimOrder.ex_work_date %}{{trimOrder.ex_work_date}}{% endif %} name="workDate"
-                            placeholder="Desired date" type="date">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </span>
-            </div>
-
-            <div class="m-3">
-                {{_("Confirmation Doc")}}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}} name="confirmation_doc" id="confirmation_doc">
-                 
-                    <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
-                    
+    {# bottom part of summary page should go below #}
+    {% if isTrimVendor %}
+    <div class="card" style="">
+        <div class="card-body row">
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Trimming Vendor")}}
                 </div>
-            </div>
-
-            <div class="m-3">
-                {{_("Proforma")}}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma" id="profoma">
-                   
-                    <label id="profoma-label" class="custom-file-label" for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
-                
-                </div>
-            </div>
-
-            <div class="m-3">
-                {{_("Invoice")}}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice" id="invoice">
-
-                    <label id="invoice-label" class="custom-file-label" for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
-            
-                
-            </div>
-
-            <div class="m-3">
-                {{_("Shipment")}}
-            </div>
-
-            <div class="m-3">
-                {{_("Carrier")}}
-                <input id="carrier" type="text" value="{% if trimOrder.carrier %}{{trimOrder.carrier}}{% endif %}" class="form-control mt-2">
-            </div>
-            <div class="m-3">
-                {{_("Tracking Number")}}
-                <input id="tracking_number" type="text" value="{% if trimOrder.tracking_number %}{{trimOrder.tracking_number}}{% endif %}" class="form-control mt-2">
-            </div>
-
-            <div class="m-3">
-                {{_("Date of Shipment")}}
-                <div class="input-group date">
-                    <input id="shipmentDate" class="form-control" value={{trimOrder.shipment_date}} name="desireddate"
-                        placeholder="Desired date" type="date">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                <div class="m-3">
+                    {{_("Expected Work Date")}}
+                    <span>
+                        <div class="input-group date">
+                            <input id="exWorkDate" class="form-control"
+                                value={% if trimOrder.ex_work_date %}{{trimOrder.ex_work_date}}{% endif %}
+                                name="workDate" placeholder="Desired date" type="date">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
                     </span>
                 </div>
-            </div>
 
-            <div class="ml-5">
-                {% if trimOrder.docstatus==0 %}
-                <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
-                {% endif %}
+                <div class="m-3">
+                    {{_("Confirmation Doc")}}
+                    {% if trimOrder.confirmation_doc != None %}
+                    <br />
+                    <a href="{{trimOrder.confirmation_doc}}">{{trimOrder.confirmation_doc}}</a>
+                    {% else %}
+                    {% endif %}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}}
+                            name="confirmation_doc" id="confirmation_doc">
+
+                        <label id="confirmation_doc-label" class="custom-file-label"
+                            for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
+
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    {{_("Proforma")}}
+                    {% if trimOrder.profoma != None %}
+                    <br />
+                    <a href="{{trimOrder.profoma}}">{{trimOrder.profoma}}</a>
+                    {% else %}
+                    {% endif %}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma"
+                            id="profoma">
+
+                        <label id="profoma-label" class="custom-file-label"
+                            for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
+
+                    </div>
+                </div>
+
+                <div class="m-3">
+                    {{_("Invoice")}}
+                    {% if trimOrder.invoice != None %}
+                    <br />
+                    <a href="{{trimOrder.invoice}}">{{trimOrder.invoice}}</a>
+                    {% else %}
+                    {% endif %}
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice"
+                            id="invoice">
+
+                        <label id="invoice-label" class="custom-file-label"
+                            for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
+
+
+                    </div>
+
+                    <div class="m-3">
+                        {{_("Shipment")}}
+                    </div>
+
+                    <div class="m-3">
+                        {{_("Carrier")}}
+                        <input id="carrier" type="text"
+                            value="{% if trimOrder.carrier %}{{trimOrder.carrier}}{% endif %}"
+                            class="form-control mt-2">
+                    </div>
+                    <div class="m-3">
+                        {{_("Tracking Number")}}
+                        <input id="tracking_number" type="text"
+                            value="{% if trimOrder.tracking_number %}{{trimOrder.tracking_number}}{% endif %}"
+                            class="form-control mt-2">
+                    </div>
+
+                    <div class="m-3">
+                        {{_("Date of Shipment")}}
+                        <div class="input-group date">
+                            <input id="shipmentDate" class="form-control" value={{trimOrder.shipment_date}}
+                                name="desireddate" placeholder="Desired date" type="date">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ml-5">
+                        {% if trimOrder.docstatus==0 %}
+                        <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Comments")}}
+                    <textarea class="form-control" id="comment"
+                        rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
+                </div>
             </div>
         </div>
+        {% endif %}
 
     </div>
-    <div class="col-6">
-        <div class="m-3">
-            {{_("Comments")}}
-            <textarea class="form-control" id="comment"
-                rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-</div>
