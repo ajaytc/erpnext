@@ -18,7 +18,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-22 18:11:36.776144",
+ "modified": "2020-04-29 17:26:13.964412",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "shipment-order",
@@ -34,29 +34,6 @@
  "success_url": "/shipping-list",
  "title": "Shipment Order",
  "web_form_fields": [
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "internal_ref",
-   "fieldtype": "Data",
-   "hidden": 0,
-   "label": "Internal Ref",
-   "max_length": 0,
-   "max_value": 0,
-   "read_only": 0,
-   "reqd": 1,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
-   "fieldname": "section_break_2",
-   "fieldtype": "Section Break",
-   "hidden": 0,
-   "max_length": 0,
-   "max_value": 0,
-   "read_only": 0,
-   "reqd": 0,
-   "show_in_filter": 0
-  },
   {
    "allow_read_on_all_link_options": 0,
    "fieldname": "product_order_id",

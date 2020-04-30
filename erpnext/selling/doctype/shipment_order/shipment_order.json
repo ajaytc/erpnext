@@ -6,8 +6,6 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "internal_ref",
-  "section_break_2",
   "product_order_id",
   "tracking_number",
   "carrier_company",
@@ -18,17 +16,6 @@
   "brand"
  ],
  "fields": [
-  {
-   "fieldname": "internal_ref",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Internal Ref",
-   "reqd": 1
-  },
-  {
-   "fieldname": "section_break_2",
-   "fieldtype": "Section Break"
-  },
   {
    "fieldname": "product_order_id",
    "fieldtype": "Link",
@@ -75,7 +62,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-22 18:09:33.092819",
+ "modified": "2020-04-29 17:25:58.365043",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",
