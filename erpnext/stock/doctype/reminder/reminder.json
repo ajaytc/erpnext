@@ -9,7 +9,8 @@
   "type",
   "seen",
   "order_type",
-  "message"
+  "message",
+  "recipient"
  ],
  "fields": [
   {
@@ -39,10 +40,16 @@
    "fieldname": "message",
    "fieldtype": "Data",
    "label": "Message"
+  },
+  {
+   "fieldname": "recipient",
+   "fieldtype": "Link",
+   "label": "Recipient",
+   "options": "User"
   }
  ],
  "links": [],
- "modified": "2020-04-27 16:18:29.961162",
+ "modified": "2020-05-01 09:45:56.586274",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Reminder",
