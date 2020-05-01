@@ -1,4 +1,5 @@
-$('#new_trimming_order').submit(function() {
+$('#new_trimming_order').submit(function(event) {
+    event.preventDefault();
     var $inputs = $('#new_trimming_order :input');
     var values = {};
     $inputs.each(function() {

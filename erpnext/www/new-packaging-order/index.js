@@ -1,4 +1,5 @@
-$('#new_packaging_order').submit(function() {
+$('#new_packaging_order').submit(function(event) {
+    event.preventDefault();
     var $inputs = $('#new_packaging_order :input');
     var values = {};
     $inputs.each(function() {

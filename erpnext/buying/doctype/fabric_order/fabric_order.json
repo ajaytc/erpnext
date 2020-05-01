@@ -89,7 +89,7 @@
    "fieldname": "production_factory",
    "fieldtype": "Link",
    "label": "Production Factory",
-   "options": "Manufacturer"
+   "options": "Production Factory"
   },
   {
    "fieldname": "section_break_2",
@@ -221,7 +221,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-26 16:04:07.555545",
+ "modified": "2020-05-01 21:20:21.633513",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",

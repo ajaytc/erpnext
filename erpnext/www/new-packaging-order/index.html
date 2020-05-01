@@ -18,8 +18,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Packaging vendor <span><a href="#">Add new +</a></span></label>
-                <input class="form-control" required name="packaging_vendor">
+                <label>Packaging vendor <span><a href="#" data-toggle="modal" data-target="#form_modal"
+                      class="add-supplier" data-group="trimming">Add new +</a></span></label>
+                <select class="form-control" required name="packaging_vendor">
+                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
+                  <option>{{vendor.name}}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <div class="col-md-3">
@@ -163,3 +168,4 @@
     </div>
   </div>
 </div>
+{% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}

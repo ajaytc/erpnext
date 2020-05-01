@@ -17,7 +17,7 @@
                 <div class="col-sm-12">
                     <h2 class="mt-0">Reminders</h2>
                 </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="col-md-6 col-lg-2">
                     <div class="data-box orange" data-toggle="modal" data-target="#fabric_reminder"
                         id="fabricRemButton">
                         <img src="/assets/erpnext/images/mesh.png" alt="">
@@ -29,7 +29,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="col-md-6 col-lg-2">
                     <div class="data-box blue" data-toggle="modal" data-target="#trimming_reminder"
                         id="trimmingRemButton">
                         <img src="/assets/erpnext/images/settings.png" alt="">
@@ -39,7 +39,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="col-md-6 col-lg-2">
                     <div class="data-box red" data-toggle="modal" data-target="#pack_reminder" id="packRemButton">
                         <img src="/assets/erpnext/images/shipment.png" alt="">
                         <h3>Packaging</h3>
@@ -97,17 +97,17 @@
 
                                 {% for o in shipmentOrdersList %}
                                 <tr>
-                                    <th><input type="checkbox" class="selectedShipOrder" name="orderCheck"
-                                            onchange="validateButton()" data-name="{{o.name}}"></th>
-                                    <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
-                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</th>
-                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</th>
-                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</th>
-                                    <th>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}
-                                    </th>
-                                    <th>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</th>
+                                    <td><input type="checkbox" class="selectedShipOrder" name="orderCheck"
+                                            onchange="validateButton()" data-name="{{o.name}}"></td>
+                                    <td><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></td>
+                                    <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</td>
+                                    <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</td>
+                                    <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</td>
+                                    <td>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}
+                                    </td>
+                                    <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</td>
 
-                                    <th>
+                                    <td>
                                         {%if o.docstatus==1%}
                                         <div id="deliveredSt" class="mb-3">
                                             <label id="deliverStatus" style="color:green">
@@ -122,7 +122,7 @@
                                             </label>
                                         </div>
                                         {%endif%}
-                                    </th>
+                                    </td>
                                 </tr>
                                 {% endfor %}
 
@@ -369,99 +369,12 @@
                                         </table>
                                     </div>
                                 </div>
-                                
+
 
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="form_modal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Create a new <span id='form_group_name'></span> vendor</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="container">
-                                        <form id="create_vendor">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="col-form-label" >Vendor name</label>
-                                                        <input id="supply_name" class="form-control" required name="supply_name">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label >Contact</label>
-                                                        <input id="suply_contact" class="form-control" required name="supply_contact">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label >Phone number</label>
-                                                        <input id="suply_phone" class="form-control"  required name = "supply_phone">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label >Email</label>
-                                                        <input id="suply_email" class="form-control" required  name="supply_email">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label >Address line 1</label>
-                                                        <input id="suply_ad1" class="form-control"  name = "supply_ad1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label >Address line 2</label>
-                                                        <input id="suply_ad2" class="form-control" name = "supply_ad2">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label >City</label>
-                                                        <input id="suply_city" class="form-control" required name = "supply_city">
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <label >Zip code</label>
-                                                        <input id="suply_zip" class="form-control" required name = "supply_zip">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group" style="text-align: center;">
-                                                        <button type="submit" id="update"
-                                                        class="btn btn-primary">{{_("Add")}}</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
                 </div>
             </div>
         </div>

@@ -1,5 +1,8 @@
 <div class="list-group" id="accordionMenu">
 
+    <a href="/brand-dashboard">
+        <i class="custom-icon icon-home"></i> {{_("Home")}}
+    </a>
     <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapse3"
         aria-expanded="false" aria-controls="collapse3">
         <i class="custom-icon icon-home"></i> {{_("Client")}}
@@ -46,7 +49,7 @@
             </a>
             <div id="c1a" class="collapse" data-parent="#collapseOne">
                 <div class="list-group">
-                    <a href="/fabric-order?new=1" class="list-group-item ">
+                    <a href="/new-fabric-order" class="list-group-item ">
                         {{_("Order")}}
                     </a>
                     <a href="/supply-dashboard?type=fabric" class="list-group-item ">
@@ -58,7 +61,8 @@
                     </a>
                     <div id="c1aa" class="collapse" data-parent="#c1a">
                         <div class="list-group">
-                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="fabric" data-target="#form_modal" >
+                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="fabric"
+                                data-target="#form_modal">
                                 {{_("Fabric vendor")}}
                             </a>
                             <a href="/fabric-item?new=1" class="list-group-item ">
@@ -82,7 +86,7 @@
             </a>
             <div id="c1b" class="collapse" data-parent="#collapseOne">
                 <div class="list-group">
-                    <a href="/trimming-order?new=1" class="list-group-item ">
+                    <a href="/new-trimming-order" class="list-group-item ">
                         {{_("Order")}}
                     </a>
                     <a href="/supply-dashboard?type=trimming" class="list-group-item ">
@@ -94,7 +98,8 @@
                     </a>
                     <div id="c1ba" class="collapse" data-parent="#c1b">
                         <div class="list-group">
-                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="trimming" data-target="#form_modal">
+                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="trimming"
+                                data-target="#form_modal">
                                 {{_("Trimming vendor")}}
                             </a>
                             <a href="/trimming-item?new=1" class="list-group-item ">
@@ -115,7 +120,7 @@
             </a>
             <div id="c1c" class="collapse" data-parent="#collapseOne">
                 <div class="list-group">
-                    <a href="/packaging-order?new=1" class="list-group-item ">
+                    <a href="/new-packaging-order" class="list-group-item ">
                         {{_("Order")}}
                     </a>
                     <a href="/supply-dashboard?type=packaging" class="list-group-item ">
@@ -127,7 +132,8 @@
                     </a>
                     <div id="c1ca" class="collapse" data-parent="#c1c">
                         <div class="list-group">
-                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="packaging" data-target="#form_modal">
+                            <a href="#" class="list-group-item form-modal" data-toggle="modal" data-group="packaging"
+                                data-target="#form_modal">
                                 {{_("Packaging vendor")}}
                             </a>
                             <a href="/packaging-item?new=1" class="list-group-item ">

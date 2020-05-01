@@ -18,8 +18,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Trimming vendor <span><a href="#">Add new +</a></span></label>
-                <input class="form-control" required name="trimming_vendor">
+                <label>Trimming vendor <span><a href="#" data-toggle="modal" data-target="#form_modal"
+                      class="add-supplier" data-group="trimming">Add new +</a></span></label>
+                <select class="form-control" required name="trimming_vendor">
+                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming'}) %}
+                  <option>{{vendor.name}}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <div class="col-md-3">
@@ -32,7 +37,7 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label>Packaging Ref<span><a href="#">Add new +</a></span></label>
+                <label>Trimming Ref<span><a href="#">Add new +</a></span></label>
                 <select class="form-control" required name="trimming_item">
                   {% for trimming_item in trimming_items %}
                   <option>{{trimming_item.name}}</option>
@@ -163,3 +168,4 @@
     </div>
   </div>
 </div>
+{% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}

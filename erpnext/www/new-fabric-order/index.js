@@ -1,4 +1,5 @@
-$('#new_fabric_order').submit(function () {
+$('#new_fabric_order').submit(function (event) {
+    event.preventDefault();
     var $inputs = $('#new_fabric_order :input');
     var values = {};
     $inputs.each(function () {
