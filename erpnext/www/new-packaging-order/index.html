@@ -10,16 +10,16 @@
     <div class="container-expand">
       <div class="row">
         <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-        <h2>{{_("Fabric order form")}}</h2>
+        <h2>{{_("Packaging order form")}}</h2>
       </div>
 
       <div class="row">
-        <form id="new_fabric_order">
+        <form id="new_packaging_order">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Fabric vendor <span><a href="#">Add new +</a></span></label>
-                <input class="form-control" required name="fabric_vendor">
+                <label>Packaging vendor <span><a href="#">Add new +</a></span></label>
+                <input class="form-control" required name="packaging_vendor">
               </div>
             </div>
             <div class="col-md-3">
@@ -32,10 +32,10 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label>Fabric Ref<span><a href="#">Add new +</a></span></label>
-                <select class="form-control" required name="fabric_ref">
-                  {% for fabric in fabric_refs %}
-                  <option>{{fabric.fabric_ref}}</option>
+                <label>Packaging Ref<span><a href="#">Add new +</a></span></label>
+                <select class="form-control" required name="packaging_item">
+                  {% for packaging_item in packaging_items %}
+                  <option>{{packaging_item.name}}</option>
                   {% endfor %}
                 </select>
               </div>
@@ -87,7 +87,6 @@
               </div>
             </div>
           </div>
-
           <div class="row">
             <!-- <img src="/assets/erpnext/images/mesh.png" > -->
             <h2>{{_("Reminders")}}</h2>
@@ -152,7 +151,6 @@
               </div>
             </span>
           </div>
-
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">

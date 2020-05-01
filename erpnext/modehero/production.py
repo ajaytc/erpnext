@@ -75,7 +75,7 @@ def set_finish(orderslist):
 
 def stockUpdateAfterFinish(order):
     order_quantity = get_total_quantity(order)
-       if (order_quantity == None):
+        if (order_quantity == None):
             continue
         existing_details = get_product_details_from_order(
             order, "production")

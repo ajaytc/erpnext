@@ -13,8 +13,8 @@ def get_context(context):
     context.product_names = frappe.get_list(
         'Item', filters={'brand': brand}, fields=['item_name','item_code' ])
         
-    context.fabric_refs = frappe.get_list(
-        'Fabric', filters={'brand': brand}, fields=['fabric_ref'])
+    context.trimming_items = frappe.get_list(
+        'Trimming Item', filters={'brand': brand}, fields=['name'])
 
     context.production_facories = frappe.get_list(
         'Production Factory', filters={'brand': brand}, fields=['name'])

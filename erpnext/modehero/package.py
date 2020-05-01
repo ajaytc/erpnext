@@ -33,3 +33,30 @@ def submit_payment_proof(data):
     frappe.db.commit()
 
     return packOrder
+
+@frappe.whitelist()
+def create_packaging_order(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    order = frappe.get_doc({
+        'doctype': 'Packaging Order',
+        'brand' : brand,
+        'packaging_vendor' : data['packaging_vendor'],
+        'internal_ref' : data['internal_ref'],
+        'packaging_item' : data['packaging_item'],
+        'product_name' : data['item_code'],
+        'production_factory' : data['production_factory'],
+        'quantity' : int(data['quantity']),
+        'in_stock' : int(data['in_stock']),
+        'price_per_unit' : data['price_per_unit'],
+        'total_price' : data['total_price'],
+        'profoma_reminder' : data['profoma_reminder'],
+        'confirmation_reminder' : data['confirmation_reminder'],
+        'payment_reminder' : data['payment_reminder'],
+        'reception_reminder' : data['reception_reminder'],
+        'shipment_reminder' : data['shipment_reminder']
+    })
+    order.insert()
+    frappe.db.commit()
+    return {'status': 'ok', 'order': order}
