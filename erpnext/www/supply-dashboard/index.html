@@ -1,10 +1,10 @@
-{#% if frappe.form_dict.type=='fabric' %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
+{% if frappe.form_dict.type=='fabric' %}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
 {% elif frappe.form_dict.type=='trimming' %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'#'}]) }}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'#'}]) }}
 {% else %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging Order List','url':'#'}]) }}
-{% endif %#}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging Order List','url':'#'}]) }}
+{% endif %}
 
 <div class="col-12">
     <ul class="page-links yellow">
