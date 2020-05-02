@@ -1,52 +1,69 @@
-<div class="page-with-sidebar">
-    <div class="sidebar">
-        {% include 'erpnext/www/brand-dashboard/sidenav.html'%}
-    </div>
-    <div class="page-body">
-        <div class="container-expand">
-            <div class="row">
-                <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-                {# <h2>{{_("Supply Dashboard")}}</h2> #}
-            </div>
+{#% if frappe.form_dict.type=='fabric' %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
+{% elif frappe.form_dict.type=='trimming' %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'#'}]) }}
+{% else %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging Order List','url':'#'}]) }}
+{% endif %#}
 
-            {# to add red dot to tab, add `notification` class to span sorrounding tab name #}
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#neworders" role="tab"
-                        aria-controls="home" aria-selected="true"><span id="new-order-notf"
-                            class="">{{_("New Orders")}}</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#onprocess" role="tab"
-                        aria-controls="profile" aria-selected="false"><span id="on-process-notf"
-                            class="">{{_("On Process")}}</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ready" role="tab"
-                        aria-controls="contact" aria-selected="false"><span id="ready-notf"
-                            class="">{{_("Ready")}}</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#shipped" role="tab"
-                        aria-controls="contact" aria-selected="false"><span id="shipped-notf"
-                            class="">{{_("Shipped")}}</span></a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="neworders" role="tabpanel" aria-labelledby="neworders-tab">
-                    {% include 'erpnext/www/supply-dashboard/neworders.html' %}
-                </div>
-                <div class="tab-pane fade" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
-                    {% include 'erpnext/www/supply-dashboard/onprocess.html' %}</div>
-                <div class="tab-pane fade" id="ready" role="tabpanel" aria-labelledby="contact-tab">
-                    {% include 'erpnext/www/supply-dashboard/ready.html' %}
-                </div>
-                <div class="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
-                    {% include 'erpnext/www/supply-dashboard/shipped.html' %}
-                </div>
-            </div>
-
-        </div>
+<div class="col-12">
+    <ul class="page-links yellow">
+        {% if frappe.form_dict.type=='fabric' %}
+        <li><a href="/new-fabric-order">Order</a></li>
+        {% elif frappe.form_dict.type=='trimming' %}
+        <li><a href="/new-trimming-order">Order</a></li>
+        {% else %}
+        <li><a href="/new-packaging-order">Order</a></li>
+        {% endif %}
+        <li><a class="active" href="/supply-dashboard?type={{frappe.form_dict.type}}">List</a></li>
+        <!-- <li><a href="#">Manage</a></li> -->
+    </ul>
+</div>
+<div class="col-12">
+    <div class="title-with-image d-flex align-items-center">
+        {% if frappe.form_dict.type=='fabric' %}
+        <h2 class="my-0">{{_("Fabric Orders")}}</h2>
+        {% elif frappe.form_dict.type=='trimming' %}
+        <h2 class="my-0">{{_("Trimming Orders")}}</h2>
+        {% else %}
+        <h2 class="my-0">{{_("Packaging Orders")}}</h2>
+        {% endif %}
     </div>
 </div>
-{% include "erpnext/www/imports.html" %}
+
+{# to add red dot to tab, add `notification` class to span sorrounding tab name #}
+<ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#neworders" role="tab" aria-controls="home"
+            aria-selected="true"><span id="new-order-notf" class="">{{_("New Orders")}}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#onprocess" role="tab" aria-controls="profile"
+            aria-selected="false"><span id="on-process-notf" class="">{{_("On Process")}}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#ready" role="tab" aria-controls="contact"
+            aria-selected="false"><span id="ready-notf" class="">{{_("Ready")}}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="contact"
+            aria-selected="false"><span id="shipped-notf" class="">{{_("Shipped")}}</span></a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="neworders" role="tabpanel" aria-labelledby="neworders-tab">
+        {% include 'erpnext/www/supply-dashboard/neworders.html' %}
+    </div>
+    <div class="tab-pane fade" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
+        {% include 'erpnext/www/supply-dashboard/onprocess.html' %}</div>
+    <div class="tab-pane fade" id="ready" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/supply-dashboard/ready.html' %}
+    </div>
+    <div class="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/supply-dashboard/shipped.html' %}
+    </div>
+</div>
+
+</div>
+</div>
+</div>

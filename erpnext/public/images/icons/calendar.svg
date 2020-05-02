@@ -1,0 +1,17 @@
+<svg id="icon_calendar" data-name="icon calendar" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <rect id="Rectangle" width="32" height="32" rx="6" fill="#f7f8fa"/>
+  <g id="Calender_Type_2" data-name="Calender Type 2" transform="translate(8 9)">
+    <rect id="Rectangle-2" data-name="Rectangle" width="16.211" height="12.488" rx="2" transform="translate(0 1.512)" fill="none" stroke="#828990" stroke-miterlimit="10" stroke-width="1"/>
+    <path id="Path-8" d="M0,.184H14.609" transform="translate(0.801 6.021)" fill="none" stroke="#828990" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+    <path id="Path-8-2" data-name="Path-8" d="M0,.5H5.817" transform="translate(4.338 6.011) rotate(-90)" fill="none" stroke="#828990" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+    <path id="Path-8-Copy" d="M0,.5H5.817" transform="translate(11.257 6.011) rotate(-90)" fill="none" stroke="#828990" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+    <g id="Group-3" transform="translate(4.261 7.756)">
+      <ellipse id="Oval-Copy" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(0 0)" fill="#828990"/>
+      <ellipse id="Oval-Copy-6" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(0 3.102)" fill="#828990"/>
+      <ellipse id="Oval-Copy-2" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(3.076 0)" fill="#828990"/>
+      <ellipse id="Oval-Copy-7" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(3.076 3.102)" fill="#828990"/>
+      <ellipse id="Oval-Copy-3" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(6.151 0)" fill="#828990"/>
+      <ellipse id="Oval-Copy-8" cx="0.769" cy="0.776" rx="0.769" ry="0.776" transform="translate(6.151 3.102)" fill="#828990"/>
+    </g>
+  </g>
+</svg>

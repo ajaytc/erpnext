@@ -1,171 +1,158 @@
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<div class="row">
+  <!-- <img src="/assets/erpnext/images/mesh.png" > -->
+  <h2>{{_("Packaging order form")}}</h2>
+</div>
 
-
-<div class="page-with-sidebar">
-  <div class="sidebar">
-    {% include 'erpnext/www/brand-dashboard/sidenav.html'%}
-  </div>
-  <div class="page-body">
-    <div class="container-expand">
-      <div class="row">
-        <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-        <h2>{{_("Packaging order form")}}</h2>
+<div class="row">
+  <form id="new_packaging_order">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Packaging vendor <span><a href="#" data-toggle="modal" data-target="#form_modal" class="add-supplier"
+                data-group="trimming">Add new +</a></span></label>
+          <select class="form-control" required name="packaging_vendor">
+            {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
+            <option>{{vendor.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
       </div>
-
-      <div class="row">
-        <form id="new_packaging_order">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Packaging vendor <span><a href="#" data-toggle="modal" data-target="#form_modal"
-                      class="add-supplier" data-group="trimming">Add new +</a></span></label>
-                <select class="form-control" required name="packaging_vendor">
-                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
-                  <option>{{vendor.name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Internal Ref</label>
-                <input class="form-control" required name="internal_ref">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Packaging Ref<span><a href="#">Add new +</a></span></label>
-                <select class="form-control" required name="packaging_item">
-                  {% for packaging_item in packaging_items %}
-                  <option>{{packaging_item.name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Product name<span><a href="#">Add new +</a></span></label>
-                <select class="form-control" required name="product_name">
-                  {% for product_name  in product_names %}
-                  <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Production Factory<span><a href="#">Add new +</a></span></label>
-                <select class="form-control" required name="production_factory">
-                  {% for production_factory  in production_facories %}
-                  <option>{{production_factory.name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Quantity</label>
-                <input class="form-control" required name="quantity">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Stock</label>
-                <input class="form-control" required name="stock">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Price / Unit</label>
-                <input class="form-control" required name="price_per_unit">
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="form-group">
-                <label>Total price</label>
-                <input class="form-control" required name="total_price">
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-            <h2>{{_("Reminders")}}</h2>
-          </div>
-
-          <div class="row">
-            {{_("Confirmation")}}
-            <span>
-              <div class="input-group date">
-                <input class="form-control" name="confirmation_date" placeholder="Confirmation date" type="date">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </span>
-          </div>
-
-          <div class="row">
-            {{_("Proforma")}}
-            <span>
-              <div class="input-group date">
-                <input class="form-control" name="proforma_date" placeholder="Proforma date" type="date">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </span>
-          </div>
-
-          <div class="row">
-            {{_("Payment")}}
-            <span>
-              <div class="input-group date">
-                <input class="form-control" name="payment_date" placeholder="Payment date" type="date">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </span>
-          </div>
-
-          <div class="row">
-            {{_("Shipment")}}
-            <span>
-              <div class="input-group date">
-                <input class="form-control" name="shipment_date" placeholder="Shipment date" type="date">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </span>
-          </div>
-
-          <div class="row">
-            {{_("Reception")}}
-            <span>
-              <div class="input-group date">
-                <input class="form-control" name="reception_date" placeholder="Reception date" type="date">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </span>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
-              </div>
-            </div>
-          </div>
-        </form>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Internal Ref</label>
+          <input class="form-control" required name="internal_ref">
+        </div>
       </div>
     </div>
-  </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Packaging Ref<span><a href="#">Add new +</a></span></label>
+          <select class="form-control" required name="packaging_item">
+            {% for packaging_item in packaging_items %}
+            <option>{{packaging_item.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Product name<span><a href="#">Add new +</a></span></label>
+          <select class="form-control" required name="product_name">
+            {% for product_name  in product_names %}
+            <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Production Factory<span><a href="#">Add new +</a></span></label>
+          <select class="form-control" required name="production_factory">
+            {% for production_factory  in production_facories %}
+            <option>{{production_factory.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Quantity</label>
+          <input class="form-control" required name="quantity">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Stock</label>
+          <input class="form-control" required name="stock">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Price / Unit</label>
+          <input class="form-control" required name="price_per_unit">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>Total price</label>
+          <input class="form-control" required name="total_price">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- <img src="/assets/erpnext/images/mesh.png" > -->
+      <h2>{{_("Reminders")}}</h2>
+    </div>
+
+    <div class="row">
+      {{_("Confirmation")}}
+      <span>
+        <div class="input-group date">
+          <input class="form-control" name="confirmation_date" placeholder="Confirmation date" type="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </span>
+    </div>
+
+    <div class="row">
+      {{_("Proforma")}}
+      <span>
+        <div class="input-group date">
+          <input class="form-control" name="proforma_date" placeholder="Proforma date" type="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </span>
+    </div>
+
+    <div class="row">
+      {{_("Payment")}}
+      <span>
+        <div class="input-group date">
+          <input class="form-control" name="payment_date" placeholder="Payment date" type="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </span>
+    </div>
+
+    <div class="row">
+      {{_("Shipment")}}
+      <span>
+        <div class="input-group date">
+          <input class="form-control" name="shipment_date" placeholder="Shipment date" type="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </span>
+    </div>
+
+    <div class="row">
+      {{_("Reception")}}
+      <span>
+        <div class="input-group date">
+          <input class="form-control" name="reception_date" placeholder="Reception date" type="date">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </span>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}

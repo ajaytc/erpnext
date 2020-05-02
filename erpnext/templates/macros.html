@@ -1,0 +1,12 @@
+{% macro breadcrumb(items,class,id,typetwo) %}
+<ol class="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+
+    {% for i in items %}
+    <li class="breadcrumb-item">
+        <a href="{{i.url}}" itemprop="url">
+            {{i.label}}
+        </a>
+    </li>
+    {% endfor %}
+</ol>
+{% endmacro %}

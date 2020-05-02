@@ -1,0 +1,35 @@
+{% extends "templates/web.html" %}
+{% block content %}
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<div class="page-with-sidebar">
+    <div class="sidebar">
+        {% include 'erpnext/www/sidenav.html'%}
+    </div>
+    <div class="page-body">
+        <div class="container-expand">
+
+            {% import 'erpnext/templates/macros.html' as macros %}
+
+            {%block breadcrumbs%}{%endblock%}
+
+            {% block pageTitle %}
+            <!-- <div class="col-12">
+                <div class="title-with-image d-flex align-items-center">
+                    <img src="/assets/erpnext/images/icons/title-fabric.svg" alt="" class="mr-3">
+                    <h2 class="my-0">{{pageTitle}}</h2>
+                </div>
+            </div> -->
+            {% endblock%}
+
+            {% block modecontent %}
+
+            {% endblock %}
+
+        </div>
+    </div>
+</div>
+{% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
+
+{% endblock %}
