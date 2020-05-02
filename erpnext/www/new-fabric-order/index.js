@@ -21,7 +21,7 @@ $('#new_fabric_order').submit(function (event) {
 function validate_form(input) {
 
     for (var key of Object.keys(input)) {
-        if (key != "" && key != "shipment_date" && key != "reception_date" && key != "payment_date" && key != "confirmation_date" && key != "proforma_date"  && String(input[key]).trim() == "") {
+        if (key != "" && key != "shipment_date" && key != "reception_date" && key != "payment_date" && key != "confirmation_date" && key != "proforma_date" && String(input[key]).trim() == "") {
             return { status: "not", message: "Please fill all required fields!" }
         }
     }
@@ -68,6 +68,9 @@ function create_fabric_order(data) {
     })
 }
 
-$(".datepicker").on('changeDate', function(){
-    $(".datepicker .dropdown-menu").css("display","none");
+$(".datepicker").datepicker({
+    autoclose: true
+})
+$(".datepicker").on('changeDate', function () {
+    $(".datepicker .dropdown-menu").css("display", "none");
 });

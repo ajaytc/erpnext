@@ -34,8 +34,11 @@ def get_context(context):
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles
 
-    context.destinations = frappe.get_all(
-        "Destination", fields=["destination_name", "city_town", "client_name", "name"])
+    if context.isCustomer:
+        customer = frappe.get_list(
+            'Customer', filters={'user': frappe.session.user})[0].name
+        context.destinations = frappe.get_all(
+            "Destination", filters={'client_name': customer}, fields=["destination_name", "city_town", "client_name", "name"])
 
     context = frappe._dict({
         "post_login": [
