@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Trimming Ref<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="#">Add new +</a></span></label>
+              <label class="d-flex">Trimming Ref<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/trimming-item?new=1">Add new +</a></span></label>
               <select class="form-control" required name="trimming_item">
                 {% for trimming_item in trimming_items %}
                 <option>{{trimming_item.name}}</option>
@@ -53,7 +53,7 @@
           </div>
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="#">Add new +</a></span></label>
+              <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/product-item?new=1">Add new +</a></span></label>
               <select class="form-control" required name="product_name">
                 {% for product_name  in product_names %}
                 <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
@@ -63,7 +63,7 @@
           </div>
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="#">Add new +</a></span></label>
+              <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/production-factory?new=1">Add new +</a></span></label>
               <select class="form-control" required name="production_factory">
                 {% for production_factory  in production_facories %}
                 <option>{{production_factory.name}}</option>
