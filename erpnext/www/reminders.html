@@ -1,0 +1,69 @@
+<h2 class="mt-4 pt-2 mb-3">Reminders</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="form-group mb-4">
+                    <label for="" class="fabric-form-input">
+                        {{_("Confirmation")}}
+                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
+                            name="confirmation_date">
+                    </label>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="" class="fabric-form-input">
+                        {{_("Proforma")}}
+                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
+                            name="proforma_date">
+                    </label>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="" class="fabric-form-input">
+                        {{_("Payment")}}
+                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top"
+                            title="shipment_date" name="payment_date">
+                    </label>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="" class="fabric-form-input">
+                        {{_("Shipment")}}
+                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
+                            name="shipment_date">
+                    </label>
+                </div>
+
+                <div class="form-group mb-0">
+                    <label for="" class="fabric-form-input">
+                        {{_("Reception")}}
+                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
+                            name="reception_date">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-yellow">Add</button>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/frappe/js/lib/jquery/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $(".date-picker").datepicker({ dateFormat: 'yy-mm-dd' });
+
+        $('input.date-picker').on('change', function () {
+            $(this).attr('title', $(this).val())
+            $(this).addClass('active');
+        })
+
+    })
+</script>

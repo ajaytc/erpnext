@@ -24,8 +24,9 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Packaging vendor <span class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal" data-target="#form_modal"
-                    class="add-supplier text-yellow" data-group="trimming">Add new +</a></span></label>
+              <label class="d-flex">Packaging vendor <span class="ml-auto text-nowrap text-12"><a href="#"
+                    data-toggle="modal" data-target="#form_modal" class="add-supplier text-yellow"
+                    data-group="trimming">Add new +</a></span></label>
               <select class="form-control" required name="packaging_vendor">
                 {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
                 <option>{{vendor.name}}</option>
@@ -43,7 +44,8 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/packaging-item?new=1">Add new +</a></span></label>
+              <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a class="text-yellow"
+                    href="/packaging-item?new=1">Add new +</a></span></label>
               <select class="form-control" required name="packaging_item">
                 {% for packaging_item in packaging_items %}
                 <option>{{packaging_item.name}}</option>
@@ -53,7 +55,8 @@
           </div>
           <div class="col-md-3">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Product name <span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/product-item?new=1">Add new +</a></span></label>
+              <label class="d-flex">Product name <span class="ml-auto text-nowrap text-12"><a class="text-yellow"
+                    href="/product-item?new=1">Add new +</a></span></label>
               <select class="form-control" required name="product_name">
                 {% for product_name  in product_names %}
                 <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
@@ -63,7 +66,8 @@
           </div>
           <div class="col-md-3">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a class="text-yellow" href="/production-factory?new=1">Add new +</a></span></label>
+              <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a class="text-yellow"
+                    href="/production-factory?new=1">Add new +</a></span></label>
               <select class="form-control" required name="production_factory">
                 {% for production_factory  in production_facories %}
                 <option>{{production_factory.name}}</option>
@@ -102,66 +106,8 @@
       </div>
     </div>
 
-    <h2 class="mt-4 pt-2 mb-3">Reminders</h2>
+    {% include 'erpnext/www/reminders.html' %}
 
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-
-
-
-            <div class="form-group mb-4">
-              <label for="" class="fabric-form-input">
-                {{_("Confirmation")}}
-                <span class="btn"></span>
-                <!-- <div class="input-group date">
-                <input type="text" class="form-control" value="12-02-2012">
-                <div class="input-group-addon">
-                  <span class="glyphicon glyphicon-th"></span>
-                </div>
-              </div> -->
-              </label>
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="" class="fabric-form-input">
-                {{_("Proforma")}}
-                <span class="btn"></span>
-              </label>
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="" class="fabric-form-input">
-                {{_("Payment")}}
-                <span class="btn"></span>
-              </label>
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="" class="fabric-form-input">
-                {{_("Shipment")}}
-                <span class="btn"></span>
-              </label>
-            </div>
-
-            <div class="form-group mb-0">
-              <label for="" class="fabric-form-input">
-                {{_("Reception")}}
-                <span class="btn"></span>
-              </label>
-            </div>
-
-
-          </div>
-        </div>
-
-        <div class="form-group mt-4">
-          <button type="submit" class="btn btn-yellow">Add</button>
-        </div>
-
-      </div>
-    </div>
   </form>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}

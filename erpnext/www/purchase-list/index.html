@@ -1,36 +1,45 @@
 {% import 'erpnext/templates/macros.html' as macros %}
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'List of Purchase','url':'#'}]) }}
 
+
+
 <h2>{{_("List of purchase")}}</h2>
-<div class="table-wrapper">
-    {% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
-    {% set orders = frappe.get_all('Sales Order', filters={'company': brand, 'docstatus': 0}, fields=['name', 'customer'])%}
-    {% for o in orders %}
-    {% for i in frappe.get_list('Sales Order Item',filters={'parent':o.name},fields=['name','item_code']) %}
-    {# {% set item = frappe.get_doc('Item',o.item_code) %} #}
-    <a
-        href="/product-orders?product={{i.item_code}}">{{frappe.get_all('Item',{'item_code':i.item_code},'item_name')[0].item_name}}</a>
-    <br />
-    {{_("Order")}} - {{i.name}}
-    <table class="table table-bordered">
+
+{% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
+{% set orders = frappe.get_all('Sales Order', filters={'company': brand, 'docstatus': 0}, fields=['name', 'customer'])%}
+{% for o in orders %}
+{% for i in frappe.get_list('Sales Order Item',filters={'parent':o.name},fields=['name','item_code']) %}
+{# {% set item = frappe.get_doc('Item',o.item_code) %} #}
+<h5>
+    <a href="/product-orders?product={{i.item_code}}">
+        {{frappe.get_all('Item',{'item_code':i.item_code},'item_name')[0].item_name}}
+    </a>
+</h5>
+{{_("Order")}} - {{i.name}}
+<div class="table-wrapper table-responsive mt-2 mb-5">
+    <table class="table table-striped">
         <thead>
             <th>Sizing</th>
             {% set sizing =frappe.get_list('Quantity Per Size',filters={'order_id':i.name},fields=['size','quantity']) %}
             {% for s in sizing %}
-            <th>{{s.size}}</th>
+            <th class="text-center">{{s.size}}</th>
             {% endfor %}
         </thead>
         <tbody>
             <tr>
-                <th>Quantity</th>
-                {% for s in sizing %}
-                <td>
+                <td class="text-uppercase">Quantity</th>
+                    {% for s in sizing %}
+                <td class="text-center {% if s.quantity==0 %}text-mute{%endif%}">
                     {{s.quantity}}
                 </td>
                 {% endfor %}
             </tr>
         </tbody>
     </table>
-    {% endfor %}
-    {% endfor %}
+</div>
+{% endfor %}
+{% endfor %}
+
+
+
 </div>

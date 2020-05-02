@@ -112,69 +112,7 @@
     </div>
   </div>
 
-  <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-  <h2 class="mt-4 pt-2 mb-3">Reminders</h2>
-
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-
-
-
-          <div class="form-group mb-4">
-            <label for="" class="fabric-form-input">
-              {{_("Confirmation")}}
-              <span class="btn"></span>
-              <div class="input-group date">
-                <input type="text" class="form-control" value="12-02-2012">
-                <div class="input-group-addon">
-                  <span class="glyphicon glyphicon-th"></span>
-                </div>
-              </div>
-            </label>
-          </div>
-
-          <div class="form-group mb-4">
-            <label for="" class="fabric-form-input">
-              {{_("Proforma")}}
-              <span class="btn"></span>
-            </label>
-          </div>
-
-          <div class="form-group mb-4">
-            <label for="" class="fabric-form-input">
-              {{_("Payment")}}
-              <span class="btn"></span>
-            </label>
-          </div>
-
-          <div class="form-group mb-4">
-            <label for="" class="fabric-form-input">
-              {{_("Shipment")}}
-              <span class="btn"></span>
-            </label>
-          </div>
-
-          <div class="form-group mb-0">
-            <label for="" class="fabric-form-input">
-              {{_("Reception")}}
-              <span class="btn"></span>
-            </label>
-          </div>
-
-
-        </div>
-      </div>
-
-      <div class="form-group mt-4">
-        <button type="submit" class="btn btn-yellow">Add</button>
-      </div>
-
-    </div>
-  </div>
-
-
+  {% include 'erpnext/www/reminders.html' %}
 </form>
 
 </div>

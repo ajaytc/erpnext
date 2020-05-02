@@ -68,9 +68,12 @@ function create_fabric_order(data) {
     })
 }
 
-$(".datepicker").datepicker({
-    autoclose: true
-})
-$(".datepicker").on('changeDate', function () {
-    $(".datepicker .dropdown-menu").css("display", "none");
-});
+// $('#datetimepicker2').datetimepicker();
+
+// $(".datepicker").datepicker({
+//     autoclose: true
+// })
+// $(".datepicker").on('changeDate', function () {
+//     $(".datepicker .dropdown-menu").css("display", "none");
+// });
+

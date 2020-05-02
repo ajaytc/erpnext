@@ -1,20 +1,20 @@
 {# to add red dot to tab, add `notification` class to span sorrounding tab name #}
 
 {% if not isBrand %}
-<h1>Client Dashboard</h1>
+<h1 class="mt-5 pt-4 mb-4">Client Dashboard</h1>
 
 
 <button type="button" class="btn btn-primary" onclick="window.location.href='/new-client-order'">
-    <i class="fas fa-plus"></i>
+    <i class="fa fa-plus"></i>
     Place new order
 </button>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#destination_modal"
     id="destinatonButton">
-    <i class="fas fa-plus"></i>
+    <i class="fa fa-plus"></i>
     {{_("Destinations")}}
 </button>
 <button type="button" class="btn btn-primary" onclick="window.location.href='/garment-label'">
-    <i class="fas fa-plus"></i>
+    <i class="fa fa-plus"></i>
     {{_("Garment Labels")}}
 </button>
 {% endif %}
