@@ -13,12 +13,12 @@
         <tbody>
             {% for o in preprod_onprocess %}
             <tr>
-                <th><input type="checkbox" class="selected" data-order="{{o.name}}" /></th>
-                <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
-                <th>{{frappe.db.get_value('Item',o.product,'item_name')}}</th>
-                <th>{{o.product_category}}</th>
-                <th>{{o.creation}}</th>
-                <th>{{o.expected_work_date}}</th>
+                <td><input type="checkbox" class="selected" data-order="{{o.name}}" /></td>
+                <td><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></td>
+                <td>{{frappe.db.get_value('Item',o.product,'item_name')}}</td>
+                <td>{{o.product_category}}</td>
+                <td>{{o.creation}}</td>
+                <td>{{o.expected_work_date}}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -13,12 +13,12 @@
         <tbody>
             {% for o in prod_finished %}
             <tr>
-                <th><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
-                <th>{{frappe.db.get_value('Item',o.product_name,'item_name')}}</th>
-                <th>{{o.product_category}}</th>
-                <th>{{o.creation}}</th>
-                <th>{{o.expected_work_date}}</th>
-                <th>{{o.tracking_number}}</th>
+                <td><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></td>
+                <td>{{frappe.db.get_value('Item',o.product_name,'item_name')}}</td>
+                <td>{{o.product_category}}</td>
+                <td>{{o.creation}}</td>
+                <td>{{o.expected_work_date}}</td>
+                <td>{{o.tracking_number}}</td>
             </tr>
             {% endfor %}
         </tbody>
