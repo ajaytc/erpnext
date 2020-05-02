@@ -67,3 +67,7 @@ function create_fabric_order(data) {
         }
     })
 }
+
+$(".datepicker").on('changeDate', function(){
+    $(".datepicker .dropdown-menu").css("display","none");
+});
