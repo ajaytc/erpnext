@@ -1,12 +1,6 @@
-{% extends 'erpnext/www/sidemenu-wrapper.html' %}
-
-
 {% import 'erpnext/templates/macros.html' as macros %}
-{%block breadcrumbs%}
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order','url':'#'}]) }}
-{%endblock%}
 
-{% block modecontent %}
 <div class="col-12">
   <ul class="page-links yellow">
     <li><a href="#" class="active">Order</a></li>
@@ -188,4 +182,3 @@
 </div>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
-{% endblock %}
