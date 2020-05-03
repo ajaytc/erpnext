@@ -1,22 +1,28 @@
 {# to add red dot to tab, add `notification` class to span sorrounding tab name #}
 
 {% if not isBrand %}
-<h1 class="mt-5 pt-4 mb-4">Client Dashboard</h1>
+
+<div class="d-flex align-items-center mt-5 pt-4 mb-4">
+    <h1 class="my-0">Client Dashboard</h1>
+
+    <button type="button" class="btn btn-primary ml-auto" onclick="window.location.href='/new-client-order'">
+        <i class="fa fa-plus"></i>
+        Place new order
+    </button>
+    <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#destination_modal"
+        id="destinatonButton">
+        <i class="fa fa-plus"></i>
+        {{_("Destinations")}}
+    </button>
+    <button type="button" class="btn btn-primary" onclick="window.location.href='/garment-label'">
+        <i class="fa fa-plus"></i>
+        {{_("Garment Labels")}}
+    </button>
+</div>
 
 
-<button type="button" class="btn btn-primary" onclick="window.location.href='/new-client-order'">
-    <i class="fa fa-plus"></i>
-    Place new order
-</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#destination_modal"
-    id="destinatonButton">
-    <i class="fa fa-plus"></i>
-    {{_("Destinations")}}
-</button>
-<button type="button" class="btn btn-primary" onclick="window.location.href='/garment-label'">
-    <i class="fa fa-plus"></i>
-    {{_("Garment Labels")}}
-</button>
+
+
 {% endif %}
 <ul class="nav nav-tabs mt-5 nav-fill" id="myTab" role="tablist">
     <li class="nav-item">
@@ -38,15 +44,15 @@
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
+    <div class="tab-pane show active" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
         {% include 'erpnext/www/client-dashboard/waiting.html' %}
     </div>
-    <div class="tab-pane fade" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
+    <div class="tab-pane" id="onprocess" role="onprocess" aria-labelledby="profile-tab">
         {% include 'erpnext/www/client-dashboard/onprocess.html' %}</div>
-    <div class="tab-pane fade" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/client-dashboard/shipped.html' %}
     </div>
-    <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="contact-tab">
+    <div class="tab-pane" id="cancelled" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/client-dashboard/cancelled.html' %}
     </div>
 </div>

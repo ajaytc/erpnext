@@ -12,6 +12,11 @@
             </tr>
         </thead>
         <tbody>
+            {% if waiting|length == 0 %}
+            <tr>
+                <td colspan="7" class="text-center">No records found.</td>
+            </tr>
+            {% endif %}
             {% for o in waiting %}
             <tr>
                 <td>{{o[5]}}</td>

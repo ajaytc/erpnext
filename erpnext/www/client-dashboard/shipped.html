@@ -14,6 +14,11 @@
             </tr>
         </thead>
         <tbody>
+            {% if shipped|length == 0 %}
+            <tr>
+                <td colspan="9" class="text-center">No records found.</td>
+            </tr>
+            {% endif %}
             {% for o in shipped %}
             <tr>
                 <td>{{o[5]}}</td>
