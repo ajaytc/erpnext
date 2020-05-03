@@ -495,7 +495,8 @@ h5 {
   }
 }
 .table-wrapper table .two-icons {
-  min-width: 105px;
+  min-width: 75px;
+  max-width: 100px;
 }
 .table-wrapper table tbody tr {
   background: white !important;
