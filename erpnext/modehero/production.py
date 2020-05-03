@@ -75,19 +75,19 @@ def set_finish(orderslist):
 
 def stockUpdateAfterFinish(order):
     order_quantity = get_total_quantity(order)
-        if (order_quantity == None):
-            continue
-        existing_details = get_product_details_from_order(
-            order, "production")
-        if existing_details == None:
-            continue
+    if (order_quantity == None):
+        continue
+    existing_details = get_product_details_from_order(
+        order, "production")
+    if existing_details == None:
+        continue
 
-        size_order = get_size_order(order)
-        price = calculate_price(size_order)[
-            order.product_name] + existing_details['old_value']
-        total_quantity = int(order_quantity)+existing_details['old_stock']
-        updateStock2(existing_details['stock_name'], total_quantity,
-                     existing_details['old_stock'], "Production", price*1.0/total_quantity)
+    size_order = get_size_order(order)
+    price = calculate_price(size_order)[
+        order.product_name] + existing_details['old_value']
+    total_quantity = int(order_quantity)+existing_details['old_stock']
+    updateStock2(existing_details['stock_name'], total_quantity,
+                    existing_details['old_stock'], "Production", price*1.0/total_quantity)
 
 
 @frappe.whitelist()
