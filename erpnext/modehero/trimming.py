@@ -35,6 +35,7 @@ def submit_payment_proof(data):
 
     return trimOrder
 
+
 @frappe.whitelist()
 def create_trimming_order(data):
     data = json.loads(data)
@@ -42,22 +43,44 @@ def create_trimming_order(data):
     brand = user.brand_name
     order = frappe.get_doc({
         'doctype': 'Trimming Order',
-        'brand' : brand,
-        'trimming_vendor' : data['trimming_vendor'],
-        'internal_ref' : data['internal_ref'],
-        'trimming_item' : data['trimming_item'],
-        'product_name' : data['item_code'],
-        'production_factory' : data['production_factory'],
-        'quantity' : int(data['quantity']),
-        'in_stock' : int(data['in_stock']),
-        'price_per_unit' : data['price_per_unit'],
-        'total_price' : data['total_price'],
-        'profoma_reminder' : data['profoma_reminder'],
-        'confirmation_reminder' : data['confirmation_reminder'],
-        'payment_reminder' : data['payment_reminder'],
-        'reception_reminder' : data['reception_reminder'],
-        'shipment_reminder' : data['shipment_reminder']
+        'brand': brand,
+        'trimming_vendor': data['trimming_vendor'],
+        'internal_ref': data['internal_ref'],
+        'trimming_item': data['trimming_item'],
+        'product_name': data['item_code'],
+        'production_factory': data['production_factory'],
+        'quantity': int(data['quantity']),
+        'in_stock': int(data['in_stock']),
+        'price_per_unit': data['price_per_unit'],
+        'total_price': data['total_price'],
+        'profoma_reminder': data['profoma_reminder'],
+        'confirmation_reminder': data['confirmation_reminder'],
+        'payment_reminder': data['payment_reminder'],
+        'reception_reminder': data['reception_reminder'],
+        'shipment_reminder': data['shipment_reminder']
     })
     order.insert()
     frappe.db.commit()
     return {'status': 'ok', 'order': order}
+
+
+@frappe.whitelist()
+def create_trimming(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    trimming = frappe.get_doc({
+        'doctype': 'Trimming Item',
+        'brand': brand,
+        'trimming_vendor': data['vendor'],
+        'item_category': data['item_category'],
+        'color': data['color'],
+        'material': data['material'],
+        'other_info': data['other_info'],
+        'trimming_size': data['size'],
+        'vendor_ref': data['vendor_ref'],
+        'internal_ref': data['internal_ref'],
+    })
+    trimming.insert()
+    frappe.db.commit()
+    return {'status': 'ok', 'item': trimming}

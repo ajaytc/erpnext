@@ -1,0 +1,152 @@
+<div class="modal fade" id="packaging_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{_("Create a new")}} <span id='form_group_name'></span>
+                    {{_("packaging item")}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="create_packaging">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">{{_("Packaging vendor")}}</label>
+                                    <select class="form-control" required name="vendor">
+                                        {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
+                                        <option>{{vendor.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">{{_("Color")}}</label>
+                                    <a class="" href="/color?new=1">{{_("Add new")}}</a>
+                                    <select class="form-control" required name="color">
+                                        {% for color in frappe.get_all('Color',filters={}) %}
+                                        <option>{{color.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">{{_("Material")}}</label>
+                                    <a class="" href="/packaging-material?new=1">{{_("Add new")}}</a>
+                                    <select class="form-control" required name="material">
+                                        {% for material in frappe.get_all('Packaging Material',filters={}) %}
+                                        <option>{{material.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">{{_("Size")}}</label>
+                                    <a class="" href="/packaging-size?new=1">{{_("Add new")}}</a>
+                                    <select class="form-control" required name="size">
+                                        {% for item in frappe.get_all('Packaging Size',filters={}) %}
+                                        <option>{{item.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>{{_("Other info")}}</label>
+                                    <input class="form-control" required name="other_info">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>{{_("Vendor ref")}}</label>
+                                    <input class="form-control" required name="vendor_ref">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>{{_("Internal ref")}}</label>
+                                    <input class="form-control" required name="internal_ref">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#create_packaging').submit(function (e) {
+        e.preventDefault();
+        var $inputs = $('#create_packaging :input');
+        var values = {};
+        $inputs.each(function () {
+            values[this.name] = $(this).val();
+        });
+
+        create_packaging(values)
+    });
+
+    function create_packaging(data) {
+        frappe.call({
+            method: 'erpnext.modehero.package.create_packaging',
+            args: {
+                data: {
+                    vendor: data.vendor,
+                    color: data.color,
+                    material: data.material,
+                    size: data.size,
+                    other_info: data.other_info,
+                    internal_ref: data.internal_ref,
+                    vendor_ref: data.vendor_ref,
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    let item = r.message.item
+                    if (item && item.name) {
+                        frappe.msgprint({
+                            title: __('Notification'),
+                            indicator: 'green',
+                            message: __('Packaging Item ' + item.name + ' created successfully')
+                        });
+                        $('#packaging_modal').modal('toggle');
+                        $('#packaging_list').append(`<option>${item.name}</option>`)
+                        //window.location.reload();
+                    }
+                }
+            }
+        })
+    }
+
+</script>

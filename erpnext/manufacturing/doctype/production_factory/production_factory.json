@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:{factory_name} - {manufacturer}",
+ "autoname": "format:{factory_name}",
  "creation": "2020-04-07 17:47:45.176755",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -9,8 +9,8 @@
   "section_break_1",
   "factory_name",
   "column_break_1",
-  "manufacturer",
-  "address_and_contact",
+  "contact",
+  "address",
   "address_line_1",
   "address_line_2",
   "city_town",
@@ -34,17 +34,6 @@
   {
    "fieldname": "column_break_1",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "manufacturer",
-   "fieldtype": "Link",
-   "label": "Manufacturer",
-   "options": "Manufacturer"
-  },
-  {
-   "fieldname": "address_and_contact",
-   "fieldtype": "Section Break",
-   "label": "Address and Contact"
   },
   {
    "fieldname": "address_line_1",
@@ -91,10 +80,21 @@
    "fieldname": "zip_code",
    "fieldtype": "Data",
    "label": "Zip Code"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Data",
+   "label": "Contact",
+   "options": "Manufacturer"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Section Break",
+   "label": "Address"
   }
  ],
  "links": [],
- "modified": "2020-04-27 12:08:59.737971",
+ "modified": "2020-05-03 14:05:42.596578",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

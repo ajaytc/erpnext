@@ -1,9 +1,11 @@
-<div class="modal fade" id="form_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+{# not complteted #}
+<div class="modal fade" id="product_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create a new <span id='form_group_name'></span> vendor
+                <h5 class="modal-title" id="exampleModalLabel">{{_("Create a new")}} <span id='form_group_name'></span>
+                    {{_("product")}}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -11,26 +13,24 @@
             </div>
             <div class="modal-body">
                 <div class="container">
-                    <form id="create_vendor">
+                    <form id="create_product">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-12">
                                 <div class="form-group">
-                                    <label class="col-form-label">Vendor name</label>
-                                    <input id="supply_name" class="form-control" required name="supply_name">
+                                    <label>{{_("Product Category")}}</label>
+                                    <select class="form-control" required name="product_category">
+                                        {% for category in frappe.get_all('Item Group',filters={}) %}
+                                        <option>{{category.name}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Contact</label>
-                                    <input id="suply_contact" class="form-control" required name="supply_contact">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label>Phone number</label>
-                                    <input id="suply_phone" class="form-control" required name="supply_phone">
+                                    <label class="col-form-label">{{_("Product name")}}</label>
+                                    <input id="product_name" class="form-control" required name="product_name">
                                 </div>
                             </div>
                         </div>
@@ -87,7 +87,6 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/assets/frappe/js/lib/jquery/jquery.min.js"></script>
 <script>
 
     $('.list-group-item.form-modal').click(function () {
@@ -102,9 +101,9 @@
         $('#form_group_name').text(group)
     })
 
-    $('#create_vendor').submit(function (e) {
+    $('#create_product').submit(function (e) {
         e.preventDefault();
-        var $inputs = $('#create_vendor :input');
+        var $inputs = $('#create_product :input');
         var values = {};
         $inputs.each(function () {
             values[this.name] = $(this).val();
@@ -137,7 +136,7 @@
                     phone_number: data.supply_phone,
                     city: data.supply_city,
                     zip_code: data.supply_zip,
-                    supplier_name: data.supply_name
+                    supplier_name: data.product_name
                 }
             },
             callback: function (r) {
@@ -148,11 +147,10 @@
                         frappe.msgprint({
                             title: __('Notification'),
                             indicator: 'green',
-                            message: __('Supplier ' + supplier.name + ' created successfully')
+                            message: __('Supplier' + supplier.name + ' created successfully')
                         });
                         $('#form_modal').modal('toggle');
-                        $('#vendor_list').append(`<option>${vendor.name}</option>`)
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 }
             }
@@ -166,15 +164,15 @@
             }
         }
         if (!validate_phone(input['supply_phone'])) {
-            return { status: "not", message: "Please enter phone number correctly!" }
+            return { status: "not", message: "Please enter correct inputs!" }
         }
         if (!validate_email(input['supply_email'])) {
-            return { status: "not", message: "Please enter email correctly!" }
+            return { status: "not", message: "Please enter correct inputs!" }
         }
         if (!validate_zipcode(input['supply_zip'])) {
-            return { status: "not", message: "Please enter zip code correctly!" }
+            return { status: "not", message: "Please enter correct inputs!" }
         }
-        return { status: "ok", message: "Succesful!" }
+        return { status: "ok", message: "Succesfull!" }
     }
 
     function validate_email(email) {
@@ -183,7 +181,6 @@
     }
 
     function validate_phone(inputtxt) {
-        return true;
         var phoneno = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
         if (String(inputtxt).match(phoneno)) {
             return true;

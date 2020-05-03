@@ -44,9 +44,10 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Trimming Ref<span class="ml-auto text-nowrap text-12"><a class="text-yellow"
-                    href="/trimming-item?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="trimming_item">
+              <label class="d-flex">Trimming Ref<span class="ml-auto text-nowrap text-12"><a href="#"
+                    data-toggle="modal" data-target="#trimming_modal" class="add-supplier text-yellow">Add new
+                    +</a></span></label>
+              <select id="trimming_list" class="form-control" required name="trimming_item">
                 {% for trimming_item in trimming_items %}
                 <option>{{trimming_item.name}}</option>
                 {% endfor %}
@@ -57,7 +58,7 @@
             <div class="form-group  mb-4 pb-1">
               <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a class="text-yellow"
                     href="/product-item?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="product_name">
+              <select id="product_list" class="form-control" required name="product_name">
                 {% for product_name  in product_names %}
                 <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
                 {% endfor %}
@@ -66,9 +67,10 @@
           </div>
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a class="text-yellow"
-                    href="/production-factory?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="production_factory">
+              <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a href="#"
+                    data-toggle="modal" data-target="#factory_modal" class="add-supplier text-yellow">Add new
+                    +</a></span></label>
+              <select class="form-control" id="factory_list" required name="production_factory">
                 {% for production_factory  in production_facories %}
                 <option>{{production_factory.name}}</option>
                 {% endfor %}
@@ -110,79 +112,5 @@
   </form>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
-
-
-{#
-
-<div class="row">
-      <!-- <img src="/assets/erpnext/images/mesh.png" > -->
-      <h2>{{_("Reminders")}}</h2>
-    </div>
-
-    <div class="row">
-      {{_("Confirmation")}}
-      <span>
-        <div class="input-group date">
-          <input class="form-control" name="confirmation_date" placeholder="Confirmation date" type="date">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </span>
-    </div>
-
-    <div class="row">
-      {{_("Proforma")}}
-      <span>
-        <div class="input-group date">
-          <input class="form-control" name="proforma_date" placeholder="Proforma date" type="date">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </span>
-    </div>
-
-    <div class="row">
-      {{_("Payment")}}
-      <span>
-        <div class="input-group date">
-          <input class="form-control" name="payment_date" placeholder="Payment date" type="date">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </span>
-    </div>
-
-    <div class="row">
-      {{_("Shipment")}}
-      <span>
-        <div class="input-group date">
-          <input class="form-control" name="shipment_date" placeholder="Shipment date" type="date">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </span>
-    </div>
-
-    <div class="row">
-      {{_("Reception")}}
-      <span>
-        <div class="input-group date">
-          <input class="form-control" name="reception_date" placeholder="Reception date" type="date">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </span>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
-        </div>
-      </div>
-    </div>
-#}
+{% include 'erpnext/www/modals/factory_modal.html' %}
+{% include 'erpnext/www/modals/trimming_modal.html' %}

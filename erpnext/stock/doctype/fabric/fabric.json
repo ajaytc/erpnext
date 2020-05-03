@@ -19,7 +19,7 @@
    "fieldname": "fabric_vendor",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Fabri Vendor",
+   "label": "Fabric Vendor",
    "options": "Supplier",
    "reqd": 1
   },
@@ -67,7 +67,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-25 21:50:41.200144",
+ "modified": "2020-05-03 14:10:47.490242",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",

@@ -72,11 +72,6 @@
    "label": "References"
   },
   {
-   "fieldname": "vendor_ref",
-   "fieldtype": "Data",
-   "label": "Vendor Ref"
-  },
-  {
    "fieldname": "internal_ref",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -94,11 +89,15 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "vendor_ref",
+   "fieldtype": "Data",
+   "label": "Vendor Ref"
   }
  ],
- "is_submittable": 1,
  "links": [],
- "modified": "2020-04-25 21:51:13.478993",
+ "modified": "2020-05-03 14:39:22.223605",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

@@ -44,9 +44,10 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a class="text-yellow"
-                    href="/packaging-item?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="packaging_item">
+              <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a href="#"
+                    data-toggle="modal" data-target="#packaging_modal" class="add-supplier text-yellow">Add new
+                    +</a></span></label>
+              <select id="packaging_list" class="form-control" required name="packaging_item">
                 {% for packaging_item in packaging_items %}
                 <option>{{packaging_item.name}}</option>
                 {% endfor %}
@@ -66,9 +67,10 @@
           </div>
           <div class="col-md-3">
             <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a class="text-yellow"
-                    href="/production-factory?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="production_factory">
+              <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a href="#"
+                    data-toggle="modal" data-target="#factory_modal" class="add-supplier text-yellow">Add new
+                    +</a></span></label>
+              <select id="factory_list" class="form-control" required name="production_factory">
                 {% for production_factory  in production_facories %}
                 <option>{{production_factory.name}}</option>
                 {% endfor %}
@@ -111,3 +113,5 @@
   </form>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
+{% include 'erpnext/www/modals/factory_modal.html' %}
+{% include 'erpnext/www/modals/packaging_modal.html' %}
