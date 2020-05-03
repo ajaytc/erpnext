@@ -76,11 +76,11 @@ def set_finish(orderslist):
 def stockUpdateAfterFinish(order):
     order_quantity = get_total_quantity(order)
     if (order_quantity == None):
-        continue
+        return
     existing_details = get_product_details_from_order(
         order, "production")
     if existing_details == None:
-        continue
+        return
 
     size_order = get_size_order(order)
     price = calculate_price(size_order)[
