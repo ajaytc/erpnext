@@ -1,0 +1,78 @@
+<div class="modal fade" id="category_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{_("Create a new")}} <span id='form_group_name'></span>
+                    {{_(" product category")}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form id="create_product_category">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">{{_("Product Category")}}</label>
+                                    <input class="form-control" required name="name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#create_product_category').submit(function (e) {
+        e.preventDefault();
+        var $inputs = $('#create_product_category :input');
+        var values = {};
+        $inputs.each(function () {
+            values[this.name] = $(this).val();
+        });
+
+        create_product_category(values)
+    });
+
+    function create_product_category(data) {
+        frappe.call({
+            method: 'erpnext.modehero.product.create_product_category',
+            args: {
+                data: {
+                    name: data.name
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    let item = r.message.item
+                    if (item && item.name) {
+                        frappe.msgprint({
+                            title: __('Notification'),
+                            indicator: 'green',
+                            message: __('Product category ' + item.name + ' created successfully')
+                        });
+                        $('#category_modal').modal('toggle');
+                        $('#category_list').append(`<option>${item.name}</option>`)
+                        //window.location.reload();
+                    }
+                }
+            }
+        })
+    }
+
+</script>

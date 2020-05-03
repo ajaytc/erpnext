@@ -18,7 +18,7 @@ def get_context(context):
     context.status = 'waiting'
 
     context.roles = frappe.get_roles(frappe.session.user)
-
+    context.isBrand = "Brand User" in context.roles
     context.isManufacture = "Manufacturing User" in context.roles
 
     context.preprod_onprocess = frappe.get_list(

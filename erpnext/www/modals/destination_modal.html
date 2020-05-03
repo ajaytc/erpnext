@@ -1,4 +1,4 @@
-<div class="modal fade" id="factory_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="destination_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -16,7 +16,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label class="col-form-label">{{_("Factory name")}}</label>
+                                    <label class="col-form-label">{{_("Destination name")}}</label>
                                     <input class="form-control" required name="name">
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                         frappe.msgprint({
                             title: __('Notification'),
                             indicator: 'green',
-                            message: __('Factory ' + factory.name + ' created successfully')
+                            message: __('Destination ' + factory.name + ' created successfully')
                         });
                         $('#factory_modal').modal('toggle');
                         $('#factory_list').append(`<option>${factory.name}</option>`)

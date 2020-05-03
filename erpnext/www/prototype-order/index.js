@@ -55,7 +55,7 @@ function priceUpdateCallback(e) {
         $(e.target).css('border', '1px solid #ced4da')
 
         //getting fabric status
-        let item = $('#fabric-ref').find('option:selected').text()
+        let item = $('#fabric_list').find('option:selected').text()
         let consumption = parseInt($('#fabric-consumption').val())
         console.log(totalqty, consumption, item)
 
@@ -64,7 +64,7 @@ function priceUpdateCallback(e) {
         })
 
 
-        item = $('#trimming').find('option:selected').text()
+        item = $('#trimming_list').find('option:selected').text()
         consumption = parseInt($('#trimming-consumption').val())
         getStatus(item, consumption * totalqty).then(status => {
             $('#trimming-status').html(status)
@@ -186,12 +186,12 @@ function createOrder(product, qtys, techpack, pattern, picture) {
                 comment: $('#comment').val(),
                 fabric_consumption: $('#fabric-consumption').val(),
                 trimming_consumption: $('#trimming-consumption').val(),
-                product_category: $('#category>option:selected').text(),
-                fabric_ref: $('#fabric-ref>option:selected').text(),
+                product_category: $('#category_list>option:selected').text(),
+                fabric_ref: $('#fabric_list>option:selected').text(),
                 product,
-                destination: $('#destination').find('option:selected').text(),
-                trimming_item: $('#trimming>option:selected').text(),
-                production_factory: $('#factory>option:selected').text(),
+                destination: $('#destination_list').find('option:selected').text(),
+                trimming_item: $('#trimming_list>option:selected').text(),
+                production_factory: $('#factory_list>option:selected').text(),
                 quantity: qtys,
                 price: $('#price').val()
             }

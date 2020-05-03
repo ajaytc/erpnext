@@ -1,3 +1,12 @@
+<div class="col-12">
+    <ul class="page-links ">
+        <li><a href="#" class="active">Order</a></li>
+        <li><a href="/production-dashboard">List</a></li>
+        <!-- <li><a href="#">Manage</a></li> -->
+    </ul>
+</div>
+
+
 <h2>{{_("Production Order")}}</h2>
 {# this page is used for both new client purchase and client purchase summary page #}
 
@@ -25,7 +34,8 @@
             <div class="col-6">
                 <div class="m-3">
                     {{_("Product Category")}}
-                    {{dropdown(categories,'','category')}}
+                    <a href="#" data-toggle="modal" data-target="#category_modal" class="add-supplier">Add new +</a>
+                    {{dropdown(categories,'','category_list')}}
                 </div>
                 <div class="m-3">
                     {{_("Internal ref")}}
@@ -34,7 +44,9 @@
 
                 <div class="m-3">
                     {{_("Fabric ref")}}
-                    {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric-ref')}}
+                    <a href="#" data-toggle="modal" data-target="#fabric_modal" class="add-supplier">Add new
+                        +</a>
+                    {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'fabric_list','fabric_list')}}
                 </div>
                 <div class="m-3">
                     {{_("Fabric consumption")}}
@@ -45,14 +57,6 @@
                     <br />
                     <span id="fabric-status"></span>
                 </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Garment Label")}}</label>
-                    {{dropdown(garmentlabel,'','garmentlabel')}}
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                    {{dropdown(destinations,'destination')}}
-                </div>
                 <div class="m-3 form-group">
                     {{_("Comments")}}
                     <textarea class="form-control" id="comment" rows="4"></textarea>
@@ -62,11 +66,15 @@
             <div class="col-6">
                 <div class="m-3">
                     {{_("Production Factory Info")}}
-                    {{dropdown(frappe.get_list('Production Factory'),'','factory')}}
+                    <a href="#" data-toggle="modal" data-target="#factory_modal" class="add-supplier">Add
+                        new +</a>
+                    {{dropdown(frappe.get_list('Production Factory'),'factory_list','factory_list')}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming")}}
-                    {{dropdown(frappe.get_list('Trimming Item'),'','trimming')}}
+                    <a href="#" data-toggle="modal" data-target="#trimming_modal" class="add-supplier">Add
+                        new +</a>
+                    {{dropdown(frappe.get_list('Trimming Item'),'trimming_list','trimming_list')}}
                 </div>
                 <div class="m-3">
                     {{_("Trimming consumption")}}
@@ -74,7 +82,9 @@
                 </div>
                 <div class="m-3">
                     {{_("Packaging")}}
-                    {{dropdown(frappe.get_list('Packaging Item'),'','packaging')}}
+                    <a href="#" data-toggle="modal" data-target="#packaging_modal" class="add-supplier">Add
+                        new +</a>
+                    {{dropdown(frappe.get_list('Packaging Item'),'packaging_list','packaging_list')}}
                 </div>
                 <div class="m-3">
                     {{_("Packaging consumption")}}
@@ -100,3 +110,8 @@
     </div>
 
 </div>
+{% include 'erpnext/www/modals/factory_modal.html' %}
+{% include 'erpnext/www/modals/fabric_modal.html' %}
+{% include 'erpnext/www/modals/trimming_modal.html' %}
+{% include 'erpnext/www/modals/packaging_modal.html' %}
+{% include 'erpnext/www/modals/product_category_modal.html' %}
