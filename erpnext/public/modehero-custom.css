@@ -216,25 +216,26 @@ a {
 a:hover {
   text-decoration: none;
 }
-nav.navbar.bg-dark {
+nav.navbar {
   padding: 20px 25px;
+  min-height: 80px;
   background: white !important;
 }
-nav.navbar.bg-dark > .container {
+nav.navbar > .container {
   max-width: none !important;
 }
-nav.navbar.bg-dark .navbar-brand {
+nav.navbar .navbar-brand {
   color: #27282a !important;
 }
-nav.navbar.bg-dark .nav-link {
+nav.navbar .nav-link {
   color: #19273d !important;
   font-weight: 600;
   font-size: 14px;
 }
-nav.navbar.bg-dark .nav-link span {
+nav.navbar .nav-link span {
   font-weight: inherit;
 }
-nav.navbar.bg-dark .nav-link .user-image-wrapper .standard-image {
+nav.navbar .nav-link .user-image-wrapper .standard-image {
   margin-right: 15px;
   border-radius: 0% !important;
   border: none !important;
@@ -243,14 +244,14 @@ nav.navbar.bg-dark .nav-link .user-image-wrapper .standard-image {
   background: url(images/icons/user.svg) center center no-repeat !important;
   background-size: contain;
 }
-nav.navbar.bg-dark .dropdown-menu {
+nav.navbar .dropdown-menu {
   background-color: white !important;
   border-radius: 10px;
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.05);
   border-color: white;
   padding: 10px;
 }
-nav.navbar.bg-dark .dropdown-menu a {
+nav.navbar .dropdown-menu a {
   color: black;
   font-size: 14px;
   line-height: 1.5;
@@ -259,8 +260,8 @@ nav.navbar.bg-dark .dropdown-menu a {
   padding: 8px 12px;
   font-weight: 600;
 }
-nav.navbar.bg-dark .dropdown-menu a:hover,
-nav.navbar.bg-dark .dropdown-menu a:active {
+nav.navbar .dropdown-menu a:hover,
+nav.navbar .dropdown-menu a:active {
   background: #f7f8fa;
   color: #3b3dbf;
 }
