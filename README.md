@@ -93,7 +93,7 @@ We will grant permission to use the ERPNext name and logo for projects that meet
 
 - The primary purpose of your project is to promote the spread and improvement of the ERPNext software.
 - Your project is non-commercial in nature (it can make money to cover its costs or contribute to non-profit entities, but it cannot be run as a for-profit project or business).
-Your project neither promotes nor is associated with entities that currently fail to comply with the GPL license under which ERPNext is distributed.
+  Your project neither promotes nor is associated with entities that currently fail to comply with the GPL license under which ERPNext is distributed.
 - If your project meets these criteria, you will be permitted to use the ERPNext name and logo to promote your project in any way you see fit with one exception: Please do not use ERPNext as part of a domain name.
 
 Use of the ERPNext name and logo is additionally allowed in the following situations:
@@ -109,3 +109,5 @@ Please note that it is not the goal of this policy to limit commercial activity 
 When in doubt about your use of the ERPNext name or logo, please contact Frappe Technologies for clarification.
 
 (inspired by WordPress)
+
+gcloud compute ssh bench@vm1
