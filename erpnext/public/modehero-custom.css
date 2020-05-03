@@ -500,6 +500,11 @@ h5 {
   padding-left: 0;
   padding-right: 0;
 }
+@media (min-width: 1440px) {
+  .table-wrapper table .two-icons {
+    width: 105px;
+  }
+}
 .table-wrapper table tbody tr {
   background: white !important;
 }
