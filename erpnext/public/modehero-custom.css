@@ -489,7 +489,7 @@ h5 {
   padding-left: 10px;
   padding-right: 10px;
 }
-@media (min-width: 1600px) {
+@media (min-width: 1440px) {
   .table-wrapper table th {
     padding-left: 20px;
     padding-right: 20px;
@@ -538,7 +538,7 @@ h5 {
   padding: 15px 10px;
   border: none !important;
 }
-@media (min-width: 1600px) {
+@media (min-width: 1440px) {
   .table-wrapper table td {
     padding: 24px 20px;
   }
