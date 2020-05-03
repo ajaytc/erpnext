@@ -495,8 +495,11 @@ h5 {
   }
 }
 .table-wrapper table .two-icons {
-  min-width: 75px;
+  min-width: 100px;
   max-width: 100px;
+  width: 100px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .table-wrapper table tbody tr {
   background: white !important;
