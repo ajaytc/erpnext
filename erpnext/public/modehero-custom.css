@@ -787,6 +787,7 @@ ul.breadcrumbs li a {
 .card {
   border-radius: 15px;
   box-shadow: 0 5px 15px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f7f7f7;
 }
 .card p.label {
   opacity: 0.5;
@@ -1004,4 +1005,45 @@ label.fabric-form-input .btn.date-picker.active {
 }
 .text-green {
   color: #6bbaa5 !important;
+}
+.custom-download-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f7f7f7;
+  text-align: center;
+  padding: 30px;
+  position: relative;
+  width: 80%;
+  max-width: 200px;
+}
+.custom-download-card p.label {
+  opacity: 0.5;
+  margin: 0;
+  margin: 0 0 15px 0;
+}
+.custom-download-card p.value {
+  margin: 0;
+  font-size: 150% !important;
+}
+.custom-download-card img {
+  display: block;
+  width: 50px;
+  height: auto;
+  margin: 10px auto;
+  cursor: pointer;
+}
+.custom-download-card input {
+  display: none;
+}
+.custom-download-card a {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  height: 30px;
+  width: 30px;
+  display: block;
+  text-indent: -9999999px;
+  background: url(images/icons/print.svg) center center no-repeat;
+  background-size: 30px auto;
 }

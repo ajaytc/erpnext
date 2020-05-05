@@ -39,14 +39,13 @@
                         {% if date %}{{date}}{% endif %}
                         {% if order %}
                         {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
-                        {% else %}
-                        -
                         {% endif %}
                     </p>
                 </div>
             </div>
         </div>
 
+        {% if order %}
         <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
             <div class="card">
                 <div class="card-body">
@@ -54,15 +53,12 @@
                         {{_("Order Number")}}
                     </p>
                     <p class="value">
-                        {% if order %}
                         {{order.name}}
-                        {% else %}
-                        -
-                        {% endif %}
                     </p>
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
             <div class="card mb-4">
@@ -153,6 +149,9 @@
             </div>
         </div>
         <div class="col-lg-4 d-flex flex-column justify-content-end">
+            <div class="custom-input">
+
+            </div>
             <div class="card">
                 <div class="card-body">
                     <div class="input-group">
@@ -172,12 +171,27 @@
                 </div>
             </div>
 
+            <div class="custom-download-card">
+
+                <img src="./images/icons/pdf.svg" alt="" class="show-file-selector" />
+                <input type="file" class="file-input" id="profoma">
+                {% if order and order.profoma is not none and order.profoma!='null' %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <p>#profoma</p>
+                    <a href="{{order.profoma}}">Profoma</a>
+                </div>
+                {% else %}
+                <p>Please click above icon to select a file.</p>
+                {% endif %}
+
+            </div>
+
             <div class="card my-4">
                 <div class="card-body">
-                    <div class="">
+                    <p class="h5 my-3 d-flex">
                         {{_("Total order")}}
-                        <span id="total"></span>
-                    </div>
+                        <span id="total" class="ml-auto">0.00</span>
+                    </p>
                     <div class="d-xl-flex justify-content-between align-items-center mt-5">
                         {% if order and order.docstatus<2 %}
                         <button class="btn btn-primary" id="cancel">{{_("Cancel")}}</button>
