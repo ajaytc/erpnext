@@ -17,6 +17,10 @@ $('#addtable').click((e) => {
     setClose()
 })
 
+$(".show-file-selector").on('click', function () {
+    $(this).siblings('.file-input').click();
+})
+
 $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {
