@@ -1116,7 +1116,7 @@ label.fabric-form-input .btn.date-picker.active {
     padding-right: 50px;
   }
 }
-.page-breadcrumbs + div {
+.page-breadcrumbs + div.d-flex {
   margin-top: 70px;
   margin-bottom: 25px;
 }
