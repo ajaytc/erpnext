@@ -538,26 +538,29 @@ table.table tbody td img.cancel {
   cursor: pointer;
   margin: 0 4px;
 }
-table tbody tr:nth-child(2n + 1),
-table.table tbody tr:nth-child(2n + 1) {
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1),
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) {
   border-radius: 10px;
 }
-table tbody tr:nth-child(2n + 1) td,
-table.table tbody tr:nth-child(2n + 1) td,
-table tbody tr:nth-child(2n + 1) th,
-table.table tbody tr:nth-child(2n + 1) th {
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td,
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td,
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) th,
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) th {
   background-color: #f7f8fa !important;
 }
-table tbody tr:nth-child(2n + 1) td:first-child,
-table.table tbody tr:nth-child(2n + 1) td:first-child,
-table tbody tr:nth-child(2n + 1) th:first-child,
-table.table tbody tr:nth-child(2n + 1) th:first-child {
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td:first-child,
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td:first-child,
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) th:first-child,
+table.table:not(.table-custom-header)
+  tbody
+  tr:nth-child(2n + 1)
+  th:first-child {
   border-radius: 10px 0 0 10px;
 }
-table tbody tr:nth-child(2n + 1) td:last-child,
-table.table tbody tr:nth-child(2n + 1) td:last-child,
-table tbody tr:nth-child(2n + 1) th:last-child,
-table.table tbody tr:nth-child(2n + 1) th:last-child {
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td:last-child,
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) td:last-child,
+table:not(.table-custom-header) tbody tr:nth-child(2n + 1) th:last-child,
+table.table:not(.table-custom-header) tbody tr:nth-child(2n + 1) th:last-child {
   border-radius: 0 10px 10px 0;
 }
 table td,
