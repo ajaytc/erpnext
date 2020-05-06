@@ -60,7 +60,7 @@
 
 <div class="modal fade" id="destination_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Client Destinations</h5>
@@ -73,38 +73,36 @@
                 <div class="form-group">
                     <label for=""></label>
                 </div>
-                <div class="table-wrapper">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
+                <table class="table table-striped mb-4">
+                    <thead>
+                        <tr>
 
-                                <th scope="col">DESTINATION NAME</th>
-                                <th scope="col">CITY NAME</th>
-                                <th scope="col" style="width: 40%;"></th>
+                            <th scope="col">DESTINATION NAME</th>
+                            <th scope="col">CITY NAME</th>
+                            <th scope="col" style="width: 40%;"></th>
 
 
-                            </tr>
-                        </thead>
-                        <tbody>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                            {% for dest in destinations %}
-                            <tr>
-                                <th>{{dest.destination_name}}</th>
-                                <th>{{dest.city_town}}</th>
-                                <th><a href="/client-destinations?name={{dest.name}}">{{_("See more info +")}}</a></th>
+                        {% for dest in destinations %}
+                        <tr>
+                            <th>{{dest.destination_name}}</th>
+                            <th>{{dest.city_town}}</th>
+                            <th><a href="/client-destinations?name={{dest.name}}">{{_("See more info +")}}</a></th>
 
-                            </tr>
-                            {% endfor %}
+                        </tr>
+                        {% endfor %}
 
-                        </tbody>
-                    </table>
-                    <div class="mb-3">
-                        <button id="newDest" type="button" class="btn btn-primary"
-                            onclick="window.location.href='/client-destinations?new=1'">
-                            {{_("Add Destination")}}
-                        </button>
+                    </tbody>
+                </table>
+                <div class="mb-3">
+                    <button id="newDest" type="button" class="btn btn-primary"
+                        onclick="window.location.href='/client-destinations?new=1'">
+                        {{_("Add Destination")}}
+                    </button>
 
-                    </div>
                 </div>
 
 
