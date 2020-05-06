@@ -85,9 +85,9 @@
 
                         {% for dest in destinations %}
                         <tr>
-                            <th>{{dest.destination_name}}</th>
-                            <th>{{dest.city_town}}</th>
-                            <th><a href="/client-destinations?name={{dest.name}}">{{_("See more info +")}}</a></th>
+                            <td>{{dest.destination_name}}</td>
+                            <td>{{dest.city_town}}</td>
+                            <td><a href="/client-destinations?name={{dest.name}}">{{_("See more info +")}}</a></td>
 
                         </tr>
                         {% endfor %}
