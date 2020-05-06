@@ -1,5 +1,11 @@
-
-
+<div class="col-12">
+    <ul class="page-links ">
+        <li><a href="/shipment-order?new=1">Order</a></li>
+        <li><a href="#" class="active">List</a></li>
+        <!-- <li><a href="#">Manage</a></li> -->
+    </ul>
+</div>
+<h1>{{_("Shipping List")}}</h1>
 <button type="button" class="btn btn-primary" onclick="window.location.href='/shipment-order?new=1;'">
     <i class="fa fa-plus"></i>
     New Shipping Order
@@ -23,4 +29,3 @@
         {% include 'erpnext/www/shipping-list/completed.html' %}
     </div>
 </div>
-
