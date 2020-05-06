@@ -1085,10 +1085,20 @@ label.fabric-form-input .btn.date-picker.active {
 .modal-header {
   border: none !important;
 }
+.modal-header .close span {
+  font-family: auto;
+  font-weight: 100;
+}
 @media (min-width: 1200px) {
   .modal-header {
     padding-left: 50px;
     padding-right: 50px;
+    padding-top: 40px;
+  }
+  .modal-header .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
   }
 }
 .modal-header .modal-title {
