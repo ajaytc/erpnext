@@ -478,6 +478,9 @@ h5 {
   border-radius: 15px;
   box-shadow: 0 10px 10px 0 rgba(151, 151, 167, 0.21);
 }
+.table-responsive {
+  padding: 1px;
+}
 table thead,
 table.table thead {
   background: transparent !important;
