@@ -1,6 +1,6 @@
 {
  "accept_payment": 0,
- "allow_comments": 1,
+ "allow_comments": 0,
  "allow_delete": 1,
  "allow_edit": 1,
  "allow_incomplete": 0,
@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-14 23:50:06.874097",
+ "modified": "2020-05-06 10:00:36.656397",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "destinations",
