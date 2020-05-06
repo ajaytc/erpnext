@@ -478,7 +478,14 @@ h5 {
   border-radius: 15px;
   box-shadow: 0 10px 10px 0 rgba(151, 151, 167, 0.21);
 }
-.table-wrapper table th {
+table thead,
+table.table thead {
+  background: transparent !important;
+}
+table th,
+table.table th,
+table thead th,
+table.table thead th {
   color: #828990;
   font-size: 16px;
   font-weight: 600;
@@ -490,51 +497,71 @@ h5 {
   padding-right: 10px;
 }
 @media (min-width: 1440px) {
-  .table-wrapper table th {
+  table th,
+  table.table th,
+  table thead th,
+  table.table thead th {
     padding-left: 20px;
     padding-right: 20px;
   }
 }
-.table-wrapper table .two-icons {
+table .two-icons,
+table.table .two-icons {
   width: 75px;
   padding-left: 0;
   padding-right: 0;
 }
 @media (min-width: 1440px) {
-  .table-wrapper table .two-icons {
+  table .two-icons,
+  table.table .two-icons {
     width: 98px;
   }
 }
-.table-wrapper table tbody tr {
+table tbody tr,
+table.table tbody tr {
   background: white !important;
 }
-.table-wrapper table tbody td {
+table tbody td,
+table.table tbody td {
   vertical-align: middle;
 }
-.table-wrapper table tbody td .fa {
+table tbody td .fa,
+table.table tbody td .fa {
   cursor: pointer;
   display: inline-block;
   margin: 0 4px;
 }
-.table-wrapper table tbody td img.cancel {
+table tbody td img.cancel,
+table.table tbody td img.cancel {
   display: inline-block;
   width: 22px;
   cursor: pointer;
   margin: 0 4px;
 }
-.table-wrapper table.table-striped tbody tr:nth-child(2n + 1) {
+table tbody tr:nth-child(2n + 1),
+table.table tbody tr:nth-child(2n + 1) {
   border-radius: 10px;
 }
-.table-wrapper table.table-striped tbody tr:nth-child(2n + 1) td {
+table tbody tr:nth-child(2n + 1) td,
+table.table tbody tr:nth-child(2n + 1) td,
+table tbody tr:nth-child(2n + 1) th,
+table.table tbody tr:nth-child(2n + 1) th {
   background-color: #f7f8fa !important;
 }
-.table-wrapper table.table-striped tbody tr:nth-child(2n + 1) td:first-child {
+table tbody tr:nth-child(2n + 1) td:first-child,
+table.table tbody tr:nth-child(2n + 1) td:first-child,
+table tbody tr:nth-child(2n + 1) th:first-child,
+table.table tbody tr:nth-child(2n + 1) th:first-child {
   border-radius: 10px 0 0 10px;
 }
-.table-wrapper table.table-striped tbody tr:nth-child(2n + 1) td:last-child {
+table tbody tr:nth-child(2n + 1) td:last-child,
+table.table tbody tr:nth-child(2n + 1) td:last-child,
+table tbody tr:nth-child(2n + 1) th:last-child,
+table.table tbody tr:nth-child(2n + 1) th:last-child {
   border-radius: 0 10px 10px 0;
 }
-.table-wrapper table td {
+table td,
+table.table td {
   color: #19273d;
   font-size: 14px;
   font-weight: 500;
@@ -544,11 +571,13 @@ h5 {
   border: none !important;
 }
 @media (min-width: 1440px) {
-  .table-wrapper table td {
+  table td,
+  table.table td {
     padding: 24px 20px;
   }
 }
-.table-wrapper table td span {
+table td span,
+table.table td span {
   display: block;
   color: #828990;
   font-size: 14px;
@@ -556,7 +585,8 @@ h5 {
   letter-spacing: 0;
   line-height: 21px;
 }
-.table-wrapper table td span.btn-delivery {
+table td span.btn-delivery,
+table.table td span.btn-delivery {
   display: inline-block;
   color: #828990;
   height: 26px;
@@ -565,7 +595,8 @@ h5 {
   border: 1px solid #c8cbcd;
   padding: 0 15px;
 }
-.table-wrapper table td span.btn-delivery.delivered {
+table td span.btn-delivery.delivered,
+table.table td span.btn-delivery.delivered {
   color: #3b3dbf;
   border-color: #3b3dbf;
 }
@@ -1050,4 +1081,36 @@ label.fabric-form-input .btn.date-picker.active {
   text-indent: -9999999px;
   background: url(images/icons/print.svg) center center no-repeat;
   background-size: 30px auto;
+}
+.modal-header {
+  border: none !important;
+}
+.modal-header .close span {
+  font-family: auto;
+  font-weight: 100;
+}
+@media (min-width: 1200px) {
+  .modal-header {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 40px;
+  }
+  .modal-header .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+.modal-header .modal-title {
+  font-size: 20px;
+}
+@media (min-width: 1200px) {
+  .modal-body {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+.page-breadcrumbs + div {
+  margin-top: 70px;
+  margin-bottom: 25px;
 }
