@@ -115,7 +115,7 @@ body[data-path="new-fabric-order"]:before {
     #f7f8fa 100%
   );
 }
-body[data-path="orange"]:before {
+body[data-path="shipment-order"]:before {
   background: linear-gradient(
     134.96deg,
     rgba(248, 141, 96, 0.36) 0%,
@@ -129,7 +129,14 @@ body[data-path="teal"]:before {
     #f7f8fa 100%
   );
 }
-body[data-path="green"]:before {
+body[data-path="production-order"]:before {
+  background: linear-gradient(
+    134.96deg,
+    rgba(128, 197, 220, 0.36) 0%,
+    #f7f8fa 100%
+  );
+}
+body[data-path="new-trimming-order"]:before {
   background: linear-gradient(
     134.96deg,
     rgba(107, 186, 165, 0.36) 0%,
