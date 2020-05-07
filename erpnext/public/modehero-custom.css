@@ -1061,7 +1061,6 @@ label.fabric-form-input:before {
   box-shadow: 0 0 0 6px rgba(248, 195, 49, 0.25);
 }
 label.fabric-form-input .btn.date-picker {
-  margin-left: auto;
   color: transparent !important;
   overflow: hidden;
   outline: none !important;
