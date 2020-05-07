@@ -108,6 +108,13 @@ body:before {
   z-index: 0;
   pointer-events: none;
 }
+body[data-path="new-fabric-order"]:before {
+  background: linear-gradient(
+    134.96deg,
+    rgba(248, 195, 49, 0.36) 0%,
+    #f7f8fa 100%
+  );
+}
 body[data-path="orange"]:before {
   background: linear-gradient(
     134.96deg,
@@ -620,6 +627,8 @@ ul.breadcrumbs li.breadcrumb-item {
   height: 24px;
   line-height: 24px;
   display: inline-block;
+  padding: 0 !important;
+  font-size: 0;
 }
 ol.breadcrumb li:before,
 ul.breadcrumbs li:before,
@@ -647,6 +656,7 @@ ul.breadcrumbs li a,
 ol.breadcrumb li.breadcrumb-item a,
 ul.breadcrumbs li.breadcrumb-item a {
   color: #808389;
+  font-size: 14px;
   text-decoration: none !important;
   line-height: 24px;
   height: 24px;
