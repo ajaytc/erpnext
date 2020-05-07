@@ -103,8 +103,7 @@ body:before {
   top: 0;
   height: 100%;
   width: 100%;
-  background: linear-gradient(134.96deg, #9092ff 0%, #f7f8fa 100%);
-  opacity: 0.08;
+  background: linear-gradient(134.96deg, #9092ff 36%, #f7f8fa 100%);
   z-index: 0;
   pointer-events: none;
 }
