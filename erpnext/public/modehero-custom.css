@@ -989,6 +989,9 @@ label.custom-checkbox input[type="checkbox"]:checked + span.icon {
 .page-links.orange li a:after {
   background: #f88d60 !important;
 }
+.page-links.green li a:after {
+  background: #6bbaa5 !important;
+}
 label.fabric-form-input {
   display: flex;
   width: 100%;
