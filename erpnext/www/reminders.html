@@ -8,40 +8,40 @@
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input">
                         {{_("Confirmation")}}
-                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
-                            name="confirmation_date">
+                        <span class="selected_value"></span>
+                        <input type="text" class="date-picker btn" name="confirmation_date">
                     </label>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input">
                         {{_("Proforma")}}
-                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
-                            name="proforma_date">
+                        <span class="selected_value"></span>
+                        <input type="text" class="date-picker btn" name="proforma_date">
                     </label>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input">
                         {{_("Payment")}}
-                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top"
-                            title="shipment_date" name="payment_date">
+                        <span class="selected_value"></span>
+                        <input type="text" class="date-picker btn" title="shipment_date" name="payment_date">
                     </label>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input">
                         {{_("Shipment")}}
-                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
-                            name="shipment_date">
+                        <span class="selected_value"></span>
+                        <input type="text" class="date-picker btn" name="shipment_date">
                     </label>
                 </div>
 
                 <div class="form-group mb-0">
                     <label for="" class="fabric-form-input">
                         {{_("Reception")}}
-                        <input type="text" class="date-picker btn" data-toggle="tooltip" data-placement="top" title=""
-                            name="reception_date">
+                        <span class="selected_value"></span>
+                        <input type="text" class="date-picker btn" name="reception_date">
                     </label>
                 </div>
             </div>
@@ -57,7 +57,7 @@
         $(".date-picker").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('input.date-picker').on('change', function () {
-            $(this).attr('title', $(this).val())
+            $(this).siblings('span.selected_value').text($(this).val())
             $(this).addClass('active');
         })
 
