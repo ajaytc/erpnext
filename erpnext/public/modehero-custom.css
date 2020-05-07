@@ -849,6 +849,7 @@ select {
   -webkit-appearance: none;
   background: url("images/icons/chev-down.svg") right 12px center no-repeat;
   background-size: 12px auto;
+  padding-right: 35px;
 }
 .table.table-bordered {
   border-collapse: collapse;
