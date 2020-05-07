@@ -314,6 +314,48 @@ main.container {
     min-width: 160px;
   }
 }
+.btn.btn-green {
+  background: #6bbaa5;
+  color: white;
+  box-shadow: 0 8px 14px 0 rgba(107, 186, 165, 0.4);
+  border-radius: 22px;
+  padding: 0px 26px;
+  height: 44px;
+  line-height: 44px;
+}
+@media (min-width: 1440px) {
+  .btn.btn-green {
+    min-width: 160px;
+  }
+}
+.btn.btn-teal {
+  background: #80c5dc;
+  color: white;
+  box-shadow: 0 8px 14px 0 rgba(128, 197, 220, 0.4);
+  border-radius: 22px;
+  padding: 0px 26px;
+  height: 44px;
+  line-height: 44px;
+}
+@media (min-width: 1440px) {
+  .btn.btn-teal {
+    min-width: 160px;
+  }
+}
+.btn.btn-orange {
+  background: #f88d60;
+  color: white;
+  box-shadow: 0 8px 14px 0 rgba(248, 141, 96, 0.4);
+  border-radius: 22px;
+  padding: 0px 26px;
+  height: 44px;
+  line-height: 44px;
+}
+@media (min-width: 1440px) {
+  .btn.btn-orange {
+    min-width: 160px;
+  }
+}
 .btn.btn-link {
   color: #3b3dbf !important;
   font-weight: bold;
@@ -849,7 +891,7 @@ select {
   -webkit-appearance: none;
   background: url("images/icons/chev-down.svg") right 12px center no-repeat;
   background-size: 12px auto;
-  padding-right: 35px;
+  padding-right: 35px !important;
 }
 .table.table-bordered {
   border-collapse: collapse;
