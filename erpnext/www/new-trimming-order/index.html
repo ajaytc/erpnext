@@ -10,7 +10,7 @@
 
 <div class="col-12">
   <div class="title-with-image d-flex align-items-center">
-    <img src="/assets/erpnext/images/icons/title-fabric.svg" alt="" class="mr-3">
+    <img src="/assets/erpnext/images/icons/title-trimming.svg" alt="" class="mr-3">
     <h2 class="my-0">{{_("Trimming order form")}}</h2>
   </div>
 </div>
@@ -25,7 +25,7 @@
           <div class="col-md-6">
             <div class="form-group  mb-4 pb-1">
               <label class="d-flex">Trimming vendor <span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#form_modal" class="add-supplier text-yellow"
+                    data-toggle="modal" data-target="#form_modal" class="add-supplier text-green"
                     data-group="trimming">Add new +</a></span></label>
               <select class="form-control" required name="trimming_vendor">
                 {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming'}) %}
@@ -45,7 +45,7 @@
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
               <label class="d-flex">Trimming Ref<span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#trimming_modal" class="add-supplier text-yellow">Add new
+                    data-toggle="modal" data-target="#trimming_modal" class="add-supplier text-green">Add new
                     +</a></span></label>
               <select id="trimming_list" class="form-control" required name="trimming_item">
                 {% for trimming_item in trimming_items %}
@@ -56,7 +56,7 @@
           </div>
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
-              <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a class="text-yellow"
+              <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a class="text-green"
                     href="/product-item?new=1">Add new +</a></span></label>
               <select id="product_list" class="form-control" required name="product_name">
                 {% for product_name  in product_names %}
@@ -68,7 +68,7 @@
           <div class="col-md-3">
             <div class="form-group  mb-4 pb-1">
               <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#factory_modal" class="add-supplier text-yellow">Add new
+                    data-toggle="modal" data-target="#factory_modal" class="add-supplier text-green">Add new
                     +</a></span></label>
               <select class="form-control" id="factory_list" required name="production_factory">
                 {% for production_factory  in production_facories %}
