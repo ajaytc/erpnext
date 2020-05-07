@@ -11,105 +11,103 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container">
-                    <form id="create_trimming">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">{{_("Trimming vendor")}}</label>
-                                    <select class="form-control" required name="vendor">
-                                        {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming'}) %}
-                                        <option>{{vendor.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                <form id="create_trimming">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Trimming vendor")}}</label>
+                                <select class="form-control" required name="vendor">
+                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming'}) %}
+                                    <option>{{vendor.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">{{_("Item category")}}</label>
-                                    <select class="form-control" required name="item_category">
-                                        {% for category in frappe.get_all('Trimming Category',filters={}) %}
-                                        <option>{{category.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Item category")}}</label>
+                                <select class="form-control" required name="item_category">
+                                    {% for category in frappe.get_all('Trimming Category',filters={}) %}
+                                    <option>{{category.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">{{_("Color")}}</label>
-                                    <a class="" href="/color?new=1">{{_("Add new")}}</a>
-                                    <select class="form-control" required name="color">
-                                        {% for color in frappe.get_all('Color',filters={}) %}
-                                        <option>{{color.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Color")}}</label>
+                                <a class="" href="/color?new=1">{{_("Add new")}}</a>
+                                <select class="form-control" required name="color">
+                                    {% for color in frappe.get_all('Color',filters={}) %}
+                                    <option>{{color.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">{{_("Material")}}</label>
-                                    <a class="" href="/trimming-material?new=1">{{_("Add new")}}</a>
-                                    <select class="form-control" required name="material">
-                                        {% for material in frappe.get_all('Trimming Material',filters={}) %}
-                                        <option>{{material.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Material")}}</label>
+                                <a class="" href="/trimming-material?new=1">{{_("Add new")}}</a>
+                                <select class="form-control" required name="material">
+                                    {% for material in frappe.get_all('Trimming Material',filters={}) %}
+                                    <option>{{material.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-form-label">{{_("Size")}}</label>
-                                    <a class="" href="/trimming-size?new=1">{{_("Add new")}}</a>
-                                    <select class="form-control" required name="size">
-                                        {% for item in frappe.get_all('Trimming Size',filters={}) %}
-                                        <option>{{item.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Size")}}</label>
+                                <a class="" href="/trimming-size?new=1">{{_("Add new")}}</a>
+                                <select class="form-control" required name="size">
+                                    {% for item in frappe.get_all('Trimming Size',filters={}) %}
+                                    <option>{{item.name}}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>{{_("Other info")}}</label>
-                                    <input class="form-control" required name="other_info">
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{_("Other info")}}</label>
+                                <input class="form-control" required name="other_info">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>{{_("Vendor ref")}}</label>
-                                    <input class="form-control" required name="vendor_ref">
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{_("Vendor ref")}}</label>
+                                <input class="form-control" required name="vendor_ref">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>{{_("Internal ref")}}</label>
-                                    <input class="form-control" required name="internal_ref">
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{_("Internal ref")}}</label>
+                                <input class="form-control" required name="internal_ref">
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group text-right">
-                                    <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
