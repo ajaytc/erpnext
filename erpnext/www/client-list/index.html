@@ -12,22 +12,22 @@
                 <th scope="col">{{_("PHONE NUMBER")}}</th>
                 <th scope="col">{{_("CITY")}}</th>
                 <th scope="col">{{_("ZIP CODE")}}</th>
-                <th scope="col">{{_("COUNTRY")}}</th>                
+                <th scope="col">{{_("COUNTRY")}}</th>
             </tr>
         </thead>
         <tbody>
             {% for customer in customers %}
             <tr>
-                <th><a href="/client?name={{customer.name}}">{{customer.customer_name}}</a></th>
-                <th>{{customer.contact}}</th>
-                <th>{{customer.email_address}}</th>
-                <th>{{customer.phone}}</th>
-                <th>{{customer.city}}</th>
-                <th>{{customer.zip_code}}</th>
-                <th>{{customer.country}}</th>
+                <td><a href="/client?name={{customer.name}}">{{customer.customer_name}}</a></td>
+                <td>{{customer.contact}}</td>
+                <td>{{customer.email_address}}</td>
+                <td>{{customer.phone}}</td>
+                <td>{{customer.city}}</td>
+                <td>{{customer.zip_code}}</td>
+                <td>{{customer.country}}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
+
 </div>

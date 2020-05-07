@@ -12,19 +12,19 @@
         <tbody>
             {% for o in neworders %}
             <tr>
-                <th>
+                <td>
                     {% if isFabric %}
                     <a href="/fabric-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isTrimming %}
-                        <a href="/trimming-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    <a href="/trimming-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isPackaging %}
-                        <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
+                    <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% endif %}
-                </th>
-                <th>{{o['product_name']}}</th>
-                <th>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</th>
-                <th>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</th>
-                <th></th>
+                </td>
+                <td>{{o['product_name']}}</td>
+                <td>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</td>
+                <td>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</td>
+                <td></td>
             </tr>
             {% endfor %}
         </tbody>

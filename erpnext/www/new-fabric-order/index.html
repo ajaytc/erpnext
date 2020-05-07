@@ -1,123 +1,126 @@
 {{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order','url':'#'}]) }}
 
-<div class="col-12">
-  <ul class="page-links yellow">
-    <li><a href="#" class="active">Order</a></li>
-    <li><a href="/supply-dashboard?type=fabric">List</a></li>
-    <!-- <li><a href="#">Manage</a></li> -->
-  </ul>
-</div>
-
-<div class="col-12">
-  <div class="title-with-image d-flex align-items-center">
-    <img src="/assets/erpnext/images/icons/title-fabric.svg" alt="" class="mr-3">
-    <h2 class="my-0">Fabric order form</h2>
+<div class="row">
+  <div class="col-12">
+    <ul class="page-links yellow">
+      <li><a href="#" class="active">Order</a></li>
+      <li><a href="/supply-dashboard?type=fabric">List</a></li>
+      <!-- <li><a href="#">Manage</a></li> -->
+    </ul>
   </div>
-</div>
 
-<form id="new_fabric_order">
-
-  <div class="card mt-3">
-    <div class="card-body">
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group mb-4 pb-1">
-            <label class="d-flex">Fabric vendor <span class="ml-auto text-nowrap text-12"><a href="#"
-                  data-toggle="modal" data-target="#form_modal" class="add-supplier text-yellow" data-group="fabric">Add
-                  new
-                  +</a></span></label>
-            <select class="form-control" id="vendor_list" required name="fabric_vendor">
-              {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric'}) %}
-              <option>{{vendor.name}}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group mb-4 pb-1">
-            <label>Internal Ref</label>
-            <input class="form-control" required="" name="internal_ref">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group mb-4 pb-1">
-            <label class="d-flex">Fabric Ref<span class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
-                  data-target="#fabric_modal" class="add-supplier text-yellow">Add
-                  new
-                  +</a></span></label>
-            <select class="form-control" id="ref_list" required name="fabric_ref">
-              {% for fabric in fabric_refs %}
-              <option>{{fabric.fabric_ref}}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group mb-4 pb-1">
-            <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a href="/product-item?new=1"
-                  data-toggle="modal" data-target="" class="add-supplier text-yellow">Add new
-                  +</a></span></label>
-            <select id="product_list" class="form-control" required name="product_name">
-              {% for product_name  in product_names %}
-              <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group mb-4 pb-1">
-            <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a href="#"
-                  data-toggle="modal" data-target="#factory_modal" class="add-supplier text-yellow">Add new
-                  +</a></span></label>
-            <select class="form-control" id="factory_list" required name="production_factory">
-              {% for production_factory  in production_facories %}
-              <option>{{production_factory.name}}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Quantity</label>
-            <input class="form-control" required="" name="quantity">
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Stock</label>
-            <input class="form-control" required="" name="stock">
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Price / Unit</label>
-            <input class="form-control" required="" name="price_per_unit">
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Total price</label>
-            <input class="form-control" required="" name="total_price">
-          </div>
-        </div>
-      </div>
-
-
-
+  <div class="col-12">
+    <div class="title-with-image d-flex align-items-center">
+      <img src="/assets/erpnext/images/icons/title-fabric.svg" alt="" class="mr-3">
+      <h2 class="my-0">Fabric order form</h2>
     </div>
   </div>
 
-  {% include 'erpnext/www/reminders.html' %}
-</form>
+  <div class="col-12">
+    <form id="new_fabric_order">
 
+      <div class="card mt-3">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Fabric vendor <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#form_modal" class="add-supplier text-yellow"
+                      data-group="fabric">Add
+                      new
+                      +</a></span></label>
+                <select class="form-control" id="vendor_list" required name="fabric_vendor">
+                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric'}) %}
+                  <option>{{vendor.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label>Internal Ref</label>
+                <input class="form-control" required="" name="internal_ref">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Fabric Ref<span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#fabric_modal" class="add-supplier text-yellow">Add
+                      new
+                      +</a></span></label>
+                <select class="form-control" id="ref_list" required name="fabric_ref">
+                  {% for fabric in fabric_refs %}
+                  <option>{{fabric.fabric_ref}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Product name<span class="ml-auto text-nowrap text-12"><a
+                      href="/product-item?new=1" data-toggle="modal" data-target="" class="add-supplier text-yellow">Add
+                      new
+                      +</a></span></label>
+                <select id="product_list" class="form-control" required name="product_name">
+                  {% for product_name  in product_names %}
+                  <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Production Factory<span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#factory_modal" class="add-supplier text-yellow">Add new
+                      +</a></span></label>
+                <select class="form-control" id="factory_list" required name="production_factory">
+                  {% for production_factory  in production_facories %}
+                  <option>{{production_factory.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Quantity</label>
+                <input class="form-control" required="" name="quantity">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Stock</label>
+                <input class="form-control" required="" name="stock">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Price / Unit</label>
+                <input class="form-control" required="" name="price_per_unit">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Total price</label>
+                <input class="form-control" required="" name="total_price">
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      {% include 'erpnext/www/reminders.html' %}
+    </form>
+  </div>
 </div>
-</div>
-</div>
+
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
 {% include 'erpnext/www/modals/factory_modal.html' %}
 {% include 'erpnext/www/modals/fabric_modal.html' %}

@@ -613,7 +613,18 @@ table.table td span.btn-delivery.delivered {
   color: #3b3dbf;
   border-color: #3b3dbf;
 }
-ol.breadcrumb li:before {
+ol.breadcrumb li,
+ul.breadcrumbs li,
+ol.breadcrumb li.breadcrumb-item,
+ul.breadcrumbs li.breadcrumb-item {
+  height: 24px;
+  line-height: 24px;
+  display: inline-block;
+}
+ol.breadcrumb li:before,
+ul.breadcrumbs li:before,
+ol.breadcrumb li.breadcrumb-item:before,
+ul.breadcrumbs li.breadcrumb-item:before {
   margin: 0 10px;
   padding: 0 !important;
   -webkit-text-stroke: 1px white;
@@ -623,40 +634,23 @@ ol.breadcrumb li:before {
   font-size: medium;
   opacity: 0.3;
 }
-ol.breadcrumb li:first-child:before {
+ol.breadcrumb li:first-child:before,
+ul.breadcrumbs li:first-child:before,
+ol.breadcrumb li.breadcrumb-item:first-child:before,
+ul.breadcrumbs li.breadcrumb-item:first-child:before {
   content: "" !important;
   display: none;
   visibility: hidden;
 }
-ol.breadcrumb li a {
+ol.breadcrumb li a,
+ul.breadcrumbs li a,
+ol.breadcrumb li.breadcrumb-item a,
+ul.breadcrumbs li.breadcrumb-item a {
   color: #808389;
   text-decoration: none !important;
-}
-ul.breadcrumbs {
-  list-style-type: none;
-  margin: 0 0 30px 0;
-  padding: 0;
-}
-ul.breadcrumbs li {
+  line-height: 24px;
+  height: 24px;
   display: inline-block;
-}
-ul.breadcrumbs li:before {
-  margin: 0 10px;
-  -webkit-text-stroke: 1px white;
-  display: inline-block;
-  content: "\f061" !important;
-  font-family: "FontAwesome";
-  font-size: medium;
-  opacity: 0.3;
-}
-ul.breadcrumbs li:first-child:before {
-  content: "" !important;
-  display: none;
-  visibility: hidden;
-}
-ul.breadcrumbs li a {
-  color: #808389;
-  text-decoration: none !important;
 }
 .page-with-sidebar {
   display: flex;

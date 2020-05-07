@@ -13,23 +13,23 @@
                 <th scope="col">{{_("PHONE NUMBER")}}</th>
                 <th scope="col">{{_("CITY")}}</th>
                 <th scope="col">{{_("ZIP CODE")}}</th>
-                <th scope="col">{{_("COUNTRY")}}</th>                
+                <th scope="col">{{_("COUNTRY")}}</th>
             </tr>
         </thead>
         <tbody>
             {% for supplier in suppliers %}
             <tr>
-                <th><a href="/supply?name={{supplier.name}}">{{supplier.supplier_name}}</a></th>
-                <th>{{supplier.supplier_group}}</th>
-                <th>{{supplier.contact}}</th>
-                <th>{{supplier.email}}</th>
-                <th>{{supplier.phone}}</th>
-                <th>{{supplier.city}}</th>
-                <th>{{supplier.zip_code}}</th>
-                <th>{{supplier.country}}</th>
+                <td><a href="/supply?name={{supplier.name}}">{{supplier.supplier_name}}</a></td>
+                <td>{{supplier.supplier_group}}</td>
+                <td>{{supplier.contact}}</td>
+                <td>{{supplier.email}}</td>
+                <td>{{supplier.phone}}</td>
+                <td>{{supplier.city}}</td>
+                <td>{{supplier.zip_code}}</td>
+                <td>{{supplier.country}}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
+
 </div>
