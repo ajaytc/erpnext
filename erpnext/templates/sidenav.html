@@ -1,6 +1,6 @@
 <div class="list-group main-sidebar-menu" id="accordionMenu">
 
-    <a href="#"><small>{{ path }} {{ frappe.form_dict }}</small></a>
+    <a href="#"><small>{{ path }} {{ app.request.uri }}</small></a>
 
     <a href="/brand-dashboard">
         <i class="custom-icon icon-home"></i> {{_("Home")}}
