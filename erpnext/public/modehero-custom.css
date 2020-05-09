@@ -842,10 +842,10 @@ ul.breadcrumbs li.breadcrumb-item a {
   font-weight: 600;
 }
 .data-box.orange {
-  background: #fdbd59;
+  background: #f88d60;
 }
 .data-box.orange span {
-  border-color: #fdbd59;
+  border-color: #f88d60;
 }
 .data-box.purple {
   background: #6c6ebb;
@@ -870,6 +870,12 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .data-box.green span {
   border-color: #6bbaa5;
+}
+.data-box.yellow {
+  background: #f8c331;
+}
+.data-box.yellow span {
+  border-color: #f8c331;
 }
 .card {
   border-radius: 15px;
