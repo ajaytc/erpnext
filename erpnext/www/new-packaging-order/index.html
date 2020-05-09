@@ -19,105 +19,107 @@
     </div>
   </div>
 
-  <form id="new_packaging_order">
+  <div class="col-12">
+    <form id="new_packaging_order">
 
-    <div class="card mt-3">
-      <div class="card-body">
+      <div class="card mt-3">
+        <div class="card-body">
 
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Packaging vendor <span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#form_modal" class="add-supplier text-orange"
-                    data-group="trimming">Add new +</a></span></label>
-              <select class="form-control" required name="packaging_vendor">
-                {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
-                <option>{{vendor.name}}</option>
-                {% endfor %}
-              </select>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Packaging vendor <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#form_modal" class="add-supplier text-orange"
+                      data-group="trimming">Add new +</a></span></label>
+                <select class="form-control" required name="packaging_vendor">
+                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
+                  <option>{{vendor.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Internal Ref <span class="ml-auto text-nowrap text-12"></span></label>
+                <input class="form-control" required name="internal_ref">
+              </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Internal Ref <span class="ml-auto text-nowrap text-12"></span></label>
-              <input class="form-control" required name="internal_ref">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#packaging_modal" class="add-supplier text-orange">Add new
+                      +</a></span></label>
+                <select id="packaging_list" class="form-control" required name="packaging_item">
+                  {% for packaging_item in packaging_items %}
+                  <option>{{packaging_item.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Product name <span class="ml-auto text-nowrap text-12"><a class="text-orange"
+                      href="/product-item?new=1">Add new +</a></span></label>
+                <select class="form-control" required name="product_name">
+                  {% for product_name  in product_names %}
+                  <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group mb-4 pb-1">
+                <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#factory_modal" class="add-supplier text-orange">Add new
+                      +</a></span></label>
+                <select id="factory_list" class="form-control" required name="production_factory">
+                  {% for production_factory  in production_facories %}
+                  <option>{{production_factory.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#packaging_modal" class="add-supplier text-orange">Add new
-                    +</a></span></label>
-              <select id="packaging_list" class="form-control" required name="packaging_item">
-                {% for packaging_item in packaging_items %}
-                <option>{{packaging_item.name}}</option>
-                {% endfor %}
-              </select>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Quantity</label>
+                <input class="form-control" required name="quantity">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Stock</label>
+                <input class="form-control" required name="stock">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Price / Unit</label>
+                <input class="form-control" required name="price_per_unit">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Total price</label>
+                <input class="form-control" required name="total_price">
+              </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Product name <span class="ml-auto text-nowrap text-12"><a class="text-orange"
-                    href="/product-item?new=1">Add new +</a></span></label>
-              <select class="form-control" required name="product_name">
-                {% for product_name  in product_names %}
-                <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group mb-4 pb-1">
-              <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a href="#"
-                    data-toggle="modal" data-target="#factory_modal" class="add-supplier text-orange">Add new
-                    +</a></span></label>
-              <select id="factory_list" class="form-control" required name="production_factory">
-                {% for production_factory  in production_facories %}
-                <option>{{production_factory.name}}</option>
-                {% endfor %}
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <label>Quantity</label>
-              <input class="form-control" required name="quantity">
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label>Stock</label>
-              <input class="form-control" required name="stock">
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label>Price / Unit</label>
-              <input class="form-control" required name="price_per_unit">
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="form-group">
-              <label>Total price</label>
-              <input class="form-control" required name="total_price">
-            </div>
-          </div>
-        </div>
 
+        </div>
       </div>
-    </div>
 
-    {% include 'erpnext/www/reminders.html' %}
+      {% include 'erpnext/www/reminders.html' %}
 
-    <div class="form-group mt-4">
-      <button type="submit" class="btn btn-primary">Add</button>
-    </div>
+      <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
 
-  </form>
+    </form>
+  </div>
 </div>
 {% include 'erpnext/www/brand-dashboard/vendor_modal.html' %}
 {% include 'erpnext/www/modals/factory_modal.html' %}
