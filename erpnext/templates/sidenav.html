@@ -1,21 +1,15 @@
-{% set client = ['purchase-list', 'client-list', 'client'] %}
-{% set client_manage = ['client-list', 'client'] %}
-
-{% set stock = ['stock-products', 'stock-fabric', 'stock-trimming', 'stock-packaging'] %}
-{% set stock_supply = ['stock-fabric', 'stock-trimming', 'stock-packaging'] %}
-
-
-
 <div class="list-group main-sidebar-menu" id="accordionMenu">
 
-    <a href="#"><small>{{ path }}</small></a>
+    <a href="#"><small>{{ path }} {{ frappe.form_dict }}</small></a>
 
     <a href="/brand-dashboard">
         <i class="custom-icon icon-home"></i> {{_("Home")}}
     </a>
-    <a href="#" class="list-group-item {% if path in client %}active{% endif %}" type="button" data-toggle="collapse"
-        data-target="#collapse3" aria-expanded="{% if path in client %}true{% else %}false{% endif %}"
-        aria-controls="collapse3">
+
+    {% set client_manage = ['client-list', 'client'] %}
+    {% set client = ['purchase-list', 'client-list', 'client'] %}
+    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapse3"
+        aria-expanded="{% if path in client %}true{% else %}false{% endif %}" aria-controls="collapse3">
         <i class="custom-icon icon-client"></i> {{_("Client")}}
     </a>
     <div id="collapse3" class="collapse {% if path in client %}show{% endif %}" data-parent="#accordionMenu">
@@ -45,8 +39,21 @@
             </div>
         </div>
     </div>
+
+
+    {% set supply_fabric_manage = ['cliasdfasdf'] %}
+    {% set supply_fabric = ['cliasdfasdf'] %}
+
+    {% set supply_trimming_manage = ['cliasdfasdf'] %}
+    {% set supply_trimming = ['new-trimming-order', 'supply-dashboard?type=trimming'] %}
+
+    {% set supply_packaging_manage = ['supply', 'packaging-item', 'packaging-material', 'packaging-size'] %}
+    {% set supply_packaging = ['new-packaging-order', 'supply-dashboard?type=packaging'] %}
+
+    {% set supply = ['purchasdf'] %}
+
     <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapseOne"
-        aria-expanded="false" aria-controls="collapseOne">
+        aria-expanded="{% if path in supply %}true{% else %}false{% endif %}" aria-controls="collapseOne">
         <i class="custom-icon icon-document"></i> {{_("Supply")}}
     </a>
     <div id="collapseOne" class="collapse" data-parent="#accordionMenu">
@@ -163,8 +170,13 @@
             </div>
         </div>
     </div>
+
+
+
+    {% set preProduction = ['purchasdf'] %}
+    {% set client_manage = ['cliasdfasdf'] %}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapseOTwo"
-        aria-expanded="false" aria-controls="collapseOTwo">
+        aria-expanded="{% if path in preProduction %}true{% else %}false{% endif %}" aria-controls="collapseOTwo">
         <i class="custom-icon icon-edit"></i> {{_("Pre-production")}}
     </a>
     <div id="collapseOTwo" class="collapse" data-parent="#accordionMenu">
@@ -208,8 +220,13 @@
             </a> #}
         </div>
     </div>
+
+
+
+    {% set production = ['purchasdf'] %}
+    {% set client_manage = ['cliasdfasdf'] %}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse4"
-        aria-expanded="false" aria-controls="collapse4">
+        aria-expanded="{% if path in production %}true{% else %}false{% endif %}" aria-controls="collapse4">
         <i class="custom-icon icon-settings"></i> {{_("Production")}}
     </a>
     <div id="collapse4" class="collapse" data-parent="#accordionMenu">
@@ -242,8 +259,12 @@
             </div>
         </div>
     </div>
+
+
+
+    {% set shipment = ['shipment-orde', 'shipping-list'] %}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse5"
-        aria-expanded="false" aria-controls="collapse5">
+        aria-expanded="{% if path in shipment %}true{% else %}false{% endif %}" aria-controls="collapse5">
         <i class="custom-icon icon-shipment"></i> {{_("Shipment")}}
     </a>
     <div id="collapse5" class="collapse" data-parent="#accordionMenu">
@@ -267,11 +288,16 @@
             </div> #}
         </div>
     </div>
+
+
+
+    {% set stock = ['stock-products', 'stock-fabric', 'stock-trimming', 'stock-packaging'] %}
+    {% set stock_supply = ['stock-fabric', 'stock-trimming', 'stock-packaging'] %}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse6"
         aria-expanded="{% if path in stock %}true{% else %}false{% endif %}" aria-controls="collapse6">
         <i class="custom-icon icon-stock"></i> {{_("Stock")}}
     </a>
-    <div id="collapse6" class="collapse{% if path in stock %}true{% else %}false{% endif %}"
+    <div id="collapse6" class="collapse {% if path in stock %}show{% else %}false{% endif %}"
         data-parent="#accordionMenu">
         <div class="list-group">
             <a href="/stock-products" class="list-group-item {% if path == 'stock-products' %}active{% endif %}">
