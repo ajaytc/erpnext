@@ -1,3 +1,14 @@
+<script src="http://35.192.44.237:8000/assets/frappe/js/lib/jquery/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $(".main-sidebar-menu .list-group-icon").each(function (item) {
+            console.log(item)
+            item.addClass('active')
+        })
+    })
+</script>
+
 <div class="list-group main-sidebar-menu" id="accordionMenu">
 
     <a href="#"><small>{{ path }} {{ frappe.form_dict }}</small></a>
