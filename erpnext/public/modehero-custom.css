@@ -705,10 +705,10 @@ ul.breadcrumbs li.breadcrumb-item a {
   z-index: 2 !important;
   border-right: 1px solid #e6e6e6;
 }
-.page-with-sidebar .sidebar .list-group {
+.page-with-sidebar .sidebar > .list-group {
   border-radius: 0;
 }
-.page-with-sidebar .sidebar .list-group > a {
+.page-with-sidebar .sidebar > .list-group > a {
   color: #19273d;
   border: none;
   border-radius: 0;
@@ -721,36 +721,36 @@ ul.breadcrumbs li.breadcrumb-item a {
   font-size: 14px;
   transition: all 0.2s linear;
 }
-.page-with-sidebar .sidebar .list-group > a:hover {
+.page-with-sidebar .sidebar > .list-group > a:hover {
   background: rgba(0, 0, 0, 0.01);
 }
-.page-with-sidebar .sidebar .list-group > a i {
+.page-with-sidebar .sidebar > .list-group > a i {
   opacity: 0.7;
   width: 30px;
   text-align: left;
   margin-right: 25px;
   background-position: center top;
 }
-.page-with-sidebar .sidebar .list-group > a.active {
+.page-with-sidebar .sidebar > .list-group > a.active {
   color: #27282a;
 }
-.page-with-sidebar .sidebar .list-group > a.active i {
+.page-with-sidebar .sidebar > .list-group > a.active i {
   filter: brightness(0.22) sepia(1) hue-rotate(193deg) saturate(16);
 }
-.page-with-sidebar .sidebar .list-group > a[aria-expanded="true"] {
+.page-with-sidebar .sidebar > .list-group > a[aria-expanded="true"] {
   background: #f5f6f8 !important;
   color: #27282a !important;
 }
-.page-with-sidebar .sidebar .list-group > div > .list-group a {
+.page-with-sidebar .sidebar > .list-group > div > .list-group a {
   padding: 15px 15px 15px 70px !important;
 }
-.page-with-sidebar .sidebar .list-group > div > .list-group a.active,
-.page-with-sidebar .sidebar .list-group > div > .list-group a:hover {
+.page-with-sidebar .sidebar > .list-group > div > .list-group a.active,
+.page-with-sidebar .sidebar > .list-group > div > .list-group a:hover {
   color: #3b3dbf;
 }
 .page-with-sidebar
   .sidebar
-  .list-group
+  > .list-group
   > div
   > .list-group
   > div
@@ -759,7 +759,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar
   .sidebar
-  .list-group
+  > .list-group
   > div
   > .list-group
   > div
@@ -769,7 +769,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar
   .sidebar
-  .list-group
+  > .list-group
   > div
   > .list-group
   > div
