@@ -746,6 +746,16 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar .sidebar .list-group > div > .list-group a.active {
   color: #3b3dbf;
+  background: transparent !important;
+}
+.page-with-sidebar
+  .sidebar
+  .list-group
+  > div
+  > .list-group
+  > div
+  > .list-group {
+  background: rgba(0, 0, 0, 0.05);
 }
 .page-with-sidebar
   .sidebar
@@ -756,7 +766,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   > .list-group
   a {
   padding-left: 90px !important;
-  background: rgba(0, 0, 0, 0.05);
+  background: transparent !important;
 }
 .page-with-sidebar
   .sidebar
