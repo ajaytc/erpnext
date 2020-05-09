@@ -3,8 +3,9 @@
 <script>
     $(function () {
         $(".main-sidebar-menu .list-group-item").each(function (item) {
-            console.log($(this))
-            $(this).addClass('active')
+            if ("/" + window.location.pathname + window.location.search === $(this).attr(href)) {
+                $(this).addClass('active')
+            }
         })
     })
 </script>
