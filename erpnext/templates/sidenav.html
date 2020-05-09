@@ -11,7 +11,13 @@
                 if ($(this).parent('div.list-group') && $(this).parent('div.list-group').parent('div.collapse')) {
                     $(this).parent('div.list-group').parent('div.collapse').prev('a.list-group-item').attr('aria-expanded', 'true')
                     $(this).parent('div.list-group').parent('div.collapse').addClass('show')
+                    var current = $(this).parent('div.list-group').parent('div.collapse')
+                    if (current.parent('div.list-group') && current.parent('div.list-group').parent('div.collapse')) {
+                        current.parent('div.list-group').parent('div.collapse').prev('a.list-group-item').attr('aria-expanded', 'true')
+                        current.parent('div.list-group').parent('div.collapse').addClass('show')
+                    }
                 }
+
             }
         })
     })
