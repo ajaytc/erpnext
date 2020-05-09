@@ -8,8 +8,10 @@
 
 <div class="list-group main-sidebar-menu" id="accordionMenu">
 
+    <a href="#"><small>{{ path }}</small></a>
+
     <a href="/brand-dashboard">
-        <i class="custom-icon icon-home"></i> {{_("Home")}} {{ path }}
+        <i class="custom-icon icon-home"></i> {{_("Home")}}
     </a>
     <a href="#" class="list-group-item {% if path in client %}active{% endif %}" type="button" data-toggle="collapse"
         data-target="#collapse3" aria-expanded="{% if path in client %}true{% else %}false{% endif %}"
