@@ -3,7 +3,8 @@
 <script>
     $(function () {
         var url = window.location.pathname + window.location.search;
-        $(".main-sidebar-menu a").each(function (item) {
+        console.log(url)
+        $(".main-sidebar-menu a").each(function () {
             console.log(url, $(this).attr('href'))
             if (url === $(this).attr('href')) {
                 $(this).addClass('active')
