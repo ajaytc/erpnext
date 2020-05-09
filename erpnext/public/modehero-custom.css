@@ -110,7 +110,8 @@ body:before {
 body[data-path="new-fabric-order"]:before {
   background: linear-gradient(135deg, #f8c331 36%, #f7f8fa 100%);
 }
-body[data-path="shipment-order"]:before {
+body[data-path="shipment-order"]:before,
+body[data-path="new-packaging-order"] {
   background: linear-gradient(135deg, #f88d60 36%, #f7f8fa 100%);
 }
 body[data-path="teal"]:before {
