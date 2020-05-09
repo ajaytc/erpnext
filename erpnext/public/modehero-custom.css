@@ -744,7 +744,8 @@ ul.breadcrumbs li.breadcrumb-item a {
 .page-with-sidebar .sidebar .list-group > div > .list-group a {
   padding: 15px 15px 15px 70px !important;
 }
-.page-with-sidebar .sidebar .list-group > div > .list-group a.active {
+.page-with-sidebar .sidebar .list-group > div > .list-group a.active,
+.page-with-sidebar .sidebar .list-group > div > .list-group a:hover {
   color: #3b3dbf;
   background: transparent !important;
 }
@@ -755,7 +756,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   > .list-group
   > div
   > .list-group {
-  background: rgba(0, 0, 0, 0.05);
+  background: white !important;
 }
 .page-with-sidebar
   .sidebar
@@ -776,7 +777,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   > div
   > .list-group
   a:hover {
-  background: rgba(0, 0, 0, 0.01);
+  color: #3b3dbf;
 }
 .page-with-sidebar .page-body {
   display: block;
