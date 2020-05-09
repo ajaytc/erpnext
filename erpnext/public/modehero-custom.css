@@ -731,15 +731,12 @@ ul.breadcrumbs li.breadcrumb-item a {
   margin-right: 25px;
   background-position: center top;
 }
-.page-with-sidebar .sidebar > .list-group > a.active {
-  color: #27282a;
-}
-.page-with-sidebar .sidebar > .list-group > a.active i {
-  filter: brightness(0.22) sepia(1) hue-rotate(193deg) saturate(16);
-}
 .page-with-sidebar .sidebar > .list-group > a[aria-expanded="true"] {
   background: #f5f6f8 !important;
   color: #27282a !important;
+}
+.page-with-sidebar .sidebar > .list-group > a[aria-expanded="true"] i {
+  filter: brightness(0.22) sepia(1) hue-rotate(193deg) saturate(16) !important;
 }
 .page-with-sidebar .sidebar > .list-group > div > .list-group a {
   padding: 15px 15px 15px 70px !important;
