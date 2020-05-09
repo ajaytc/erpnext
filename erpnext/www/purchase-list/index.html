@@ -2,7 +2,7 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'List of Purchase','url':'#'}]) }}
 
 
-
+{{ path }}
 <h2>{{_("List of purchase")}}</h2>
 
 {% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
