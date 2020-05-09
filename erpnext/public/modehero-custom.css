@@ -747,7 +747,6 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar .sidebar .list-group > div > .list-group a.active {
   color: #3b3dbf;
-  background: white !important;
 }
 .page-with-sidebar
   .sidebar
