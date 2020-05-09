@@ -1,28 +1,22 @@
-{% set clientPaths = ['purchase-list', 'client-list', 'client'] %}
+{% set client = ['purchase-list', 'client-list', 'client'] %}
+{% set client_manage = ['client-list', 'client'] %}
 
-<script>
-    $(function () {
-        /** 
-        
-        */
-        $(".list-group-item").each(function (item) {
-            // actions
-            console.log(item, item.hasClass('hello'))
-        })
-    })
-</script>
+{% set stock = ['stock-products', 'stock-fabric', 'stock-trimming', 'stock-packaging'] %}
+{% set stock_supply = ['stock-fabric', 'stock-trimming', 'stock-packaging'] %}
 
 
-<div class="list-group" id="accordionMenu">
+
+<div class="list-group main-sidebar-menu" id="accordionMenu">
 
     <a href="/brand-dashboard">
-        <i class="custom-icon icon-home"></i> {{_("Home")}}
+        <i class="custom-icon icon-home"></i> {{_("Home")}} {{ path }}
     </a>
-    <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapse3"
-        aria-expanded="{% if path in clientPaths %}true{% else %}false{% endif %}" aria-controls="collapse3">
+    <a href="#" class="list-group-item {% if path in client %}active{% endif %}" type="button" data-toggle="collapse"
+        data-target="#collapse3" aria-expanded="{% if path in client %}true{% else %}false{% endif %}"
+        aria-controls="collapse3">
         <i class="custom-icon icon-client"></i> {{_("Client")}}
     </a>
-    <div id="collapse3" class="collapse {% if path in clientPaths %}show{% endif %}" data-parent="#accordionMenu">
+    <div id="collapse3" class="collapse {% if path in client %}show{% endif %}" data-parent="#accordionMenu">
         <div class="list-group">
             {# <a href="#" class="list-group-item ">
                 {{_("Price List")}}
@@ -31,7 +25,7 @@
                 {{_("List of purchase")}}
             </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c3a"
-                aria-expanded="false" aria-controls="c3a">
+                aria-expanded="{% if path in client_manage %}true{% else %}false{% endif %}" aria-controls="c3a">
                 {{_("Manage")}}
             </a>
             <div id="c3a" class="collapse" data-parent="#collapse3">
@@ -55,7 +49,7 @@
     </a>
     <div id="collapseOne" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="/supply-list" class="list-group-item ">
+            <a href="/supply-list" class="list-group-item {% if path == 'client' %}active{% endif %}">
                 {{_("Supplier List")}}
             </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1a"
@@ -67,7 +61,8 @@
                     <a href="/new-fabric-order" class="list-group-item ">
                         {{_("Order")}}
                     </a>
-                    <a href="/supply-dashboard?type=fabric" class="list-group-item ">
+                    <a href="/supply-dashboard?type=fabric"
+                        class="list-group-item {% if path == 'client' %}active{% endif %}">
                         {{_("List")}}
                     </a>
                     <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
@@ -271,27 +266,30 @@
         </div>
     </div>
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse6"
-        aria-expanded="false" aria-controls="collapse6">
+        aria-expanded="{% if path in stock %}true{% else %}false{% endif %}" aria-controls="collapse6">
         <i class="custom-icon icon-stock"></i> {{_("Stock")}}
     </a>
-    <div id="collapse6" class="collapse" data-parent="#accordionMenu">
+    <div id="collapse6" class="collapse{% if path in stock %}true{% else %}false{% endif %}"
+        data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="/stock-products" class="list-group-item ">
+            <a href="/stock-products" class="list-group-item {% if path == 'stock-products' %}active{% endif %}">
                 {{_("Product Stock")}}
             </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c6a"
-                aria-expanded="false" aria-controls="c6a">
+                aria-expanded="{% if path in stock_supply %}true{% else %}false{% endif %}" aria-controls="c6a">
                 {{_("Supply")}}
             </a>
             <div id="c6a" class="collapse" data-parent="#collapse6">
                 <div class="list-group">
-                    <a href="/stock-fabric" class="list-group-item ">
+                    <a href="/stock-fabric" class="list-group-item {% if path == 'stock-fabric' %}active{% endif %}">
                         {{_("Fabric Stock")}}
                     </a>
-                    <a href="/stock-trimming" class="list-group-item ">
+                    <a href="/stock-trimming"
+                        class="list-group-item {% if path == 'stock-trimming' %}active{% endif %}">
                         {{_("Trimming Stock")}}
                     </a>
-                    <a href="/stock-packaging" class="list-group-item ">
+                    <a href="/stock-packaging"
+                        class="list-group-item {% if path == 'stock-packaging' %}active{% endif %}">
                         {{_("Packaging Stock")}}
                     </a>
                 </div>
