@@ -24,12 +24,11 @@
             <a href="/purchase-list" class="list-group-item {% if path == 'purchase-list' %}active{% endif %}">
                 {{_("List of purchase")}}
             </a>
-            <a href="#" class="list-group-item" type="button"
-                data-toggle="collapse {% if path in client_supply %}show{% endif %}" data-target="#c3a"
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c3a"
                 aria-expanded="{% if path in client_manage %}true{% else %}false{% endif %}" aria-controls="c3a">
                 {{_("Manage")}}
             </a>
-            <div id="c3a" class="collapse" data-parent="#collapse3">
+            <div id="c3a" class="collapse {% if path in client_supply %}show{% endif %}" data-parent="#collapse3">
                 <div class="list-group">
                     <a href="/client?new=1" class="list-group-item {% if path == 'client' %}active{% endif %}">
                         {{_("Create new client")}}
