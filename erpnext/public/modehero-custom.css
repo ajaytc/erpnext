@@ -1090,12 +1090,15 @@ label.fabric-form-input .btn.date-picker.active {
   background: #f8c331 !important;
   box-shadow: 0 8px 14px 0 rgba(248, 195, 49, 0.4) !important;
 }
-[data-path="shipment-order"] .fabric-form-input:before {
+[data-path="shipment-order"] .fabric-form-input:before,
+[data-path="new-packaging-order"] .fabric-form-input:before {
   background: #f88d60;
   box-shadow: 0 0 0 6px rgba(248, 141, 96, 0.25);
 }
 [data-path="shipment-order"] button.btn,
-[data-path="shipment-order"] a.btn {
+[data-path="new-packaging-order"] button.btn,
+[data-path="shipment-order"] a.btn,
+[data-path="new-packaging-order"] a.btn {
   background: #f88d60 !important;
   box-shadow: 0 8px 14px 0 rgba(248, 141, 96, 0.4) !important;
 }
