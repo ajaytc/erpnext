@@ -1096,6 +1096,7 @@ label.fabric-form-input .btn.date-picker.active {
 [data-path="new-fabric-order"] a.btn {
   background: #f8c331 !important;
   box-shadow: 0 8px 14px 0 rgba(248, 195, 49, 0.4) !important;
+  color: white !important;
 }
 [data-path="shipment-order"] .fabric-form-input:before,
 [data-path="new-packaging-order"] .fabric-form-input:before {
@@ -1108,6 +1109,7 @@ label.fabric-form-input .btn.date-picker.active {
 [data-path="new-packaging-order"] a.btn {
   background: #f88d60 !important;
   box-shadow: 0 8px 14px 0 rgba(248, 141, 96, 0.4) !important;
+  color: white !important;
 }
 [data-path="teal"] .fabric-form-input:before {
   background: #80c5dc;
@@ -1117,6 +1119,7 @@ label.fabric-form-input .btn.date-picker.active {
 [data-path="teal"] a.btn {
   background: #80c5dc !important;
   box-shadow: 0 8px 14px 0 rgba(128, 197, 220, 0.4) !important;
+  color: white !important;
 }
 [data-path="production-order"] .fabric-form-input:before {
   background: #80c5dc;
@@ -1126,6 +1129,7 @@ label.fabric-form-input .btn.date-picker.active {
 [data-path="production-order"] a.btn {
   background: #80c5dc !important;
   box-shadow: 0 8px 14px 0 rgba(128, 197, 220, 0.4) !important;
+  color: white !important;
 }
 [data-path="new-trimming-order"] .fabric-form-input:before {
   background: #6bbaa5;
@@ -1135,6 +1139,7 @@ label.fabric-form-input .btn.date-picker.active {
 [data-path="new-trimming-order"] a.btn {
   background: #6bbaa5 !important;
   box-shadow: 0 8px 14px 0 rgba(107, 186, 165, 0.4) !important;
+  color: white !important;
 }
 .text-mute {
   color: #bbb !important;
