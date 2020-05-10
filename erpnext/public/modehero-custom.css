@@ -373,10 +373,11 @@ main.container {
   text-decoration: none;
 }
 .btn.btn-default,
-.btn.btn-light {
+.btn.btn-light,
+.btn.btn-secondary {
   min-width: 100px;
   border: 1px solid #8e949a;
-  background: transparent;
+  background: #ddd;
   border-radius: 22px;
   padding: 0px 26px;
   height: 44px;
@@ -384,21 +385,7 @@ main.container {
 }
 @media (min-width: 1440px) {
   .btn.btn-default,
-  .btn.btn-light {
-    min-width: 160px;
-  }
-}
-.btn.btn-secondary {
-  min-width: 100px;
-  border: 1px solid #8e949a;
-  background: transparent;
-  border-radius: 22px;
-  padding: 0px 26px;
-  height: 44px;
-  line-height: 44px;
-  color: #2e3338 !important;
-}
-@media (min-width: 1440px) {
+  .btn.btn-light,
   .btn.btn-secondary {
     min-width: 160px;
   }
