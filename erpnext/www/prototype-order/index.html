@@ -50,7 +50,9 @@
                                     new
                                     +</a>
                             </label>
-                            {{dropdown(categories,'','category_list')}}
+                            <div class="row">
+                                {{dropdown(categories,'','category_list')}}
+                            </div>
                         </div>
                         <div class="m-3">
                             {{_("Internal ref")}}
@@ -59,9 +61,12 @@
 
                         <div class="m-3">
                             {{_("Fabric ref")}}
-                            <a href="#" data-toggle="modal" data-target="#fabric_modal" class="add-supplier">Add new
+                            <a href="#" data-toggle="modal" data-target="#fabric_modal" class="add-supplier ml-auto">Add
+                                new
                                 +</a>
-                            {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric_list')}}
+                            <div class="row">
+                                {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric_list')}}
+                            </div>
                         </div>
                         <div class="m-3">
                             {{_("Fabric consumption")}}
@@ -80,22 +85,32 @@
                     </div>
                     <div class="col-6">
                         <div class="m-3">
-                            {{_("Production Factory Name")}}
-                            <a href="#" data-toggle="modal" data-target="#factory_modal" class="add-supplier">Add
-                                new +</a>
-                            {{dropdown(frappe.get_list('Production Factory'),'','factory_list')}}
+                            <label class="d-flex">{{_("Production Factory Name")}}
+                                <a href="#" data-toggle="modal" data-target="#factory_modal"
+                                    class="add-supplier ml-auto">Add
+                                    new +</a>
+                            </label>
+                            <div class="row">
+                                {{dropdown(frappe.get_list('Production Factory'),'','factory_list')}}
+                            </div>
                         </div>
                         <div class="m-3">
-                            <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                            <!-- <a href="#" data-toggle="modal" data-target="#destination_modal" class="add-supplier">Add new
+                            <label class="d-flex">{{_("Destination")}}
+                                <!-- <a href="#" data-toggle="modal" data-target="#destination_modal" class="add-supplier ml-auto">Add new
                             +</a> -->
-                            {{dropdown(destinations,'','destination_list')}}
+                            </label>
+                            <div class="row">
+                                {{dropdown(destinations,'','destination_list')}}
+                            </div>
                         </div>
                         <div class="m-3">
-                            {{_("Trimming")}}
-                            <a href="#" data-toggle="modal" data-target="#trimming_modal" class="add-supplier">Add
-                                new +</a>
-                            {{dropdown(frappe.get_list('Trimming Item'),'','trimming_list')}}
+                            <label class="d-flex">{{_("Trimming")}}
+                                <a href="#" data-toggle="modal" data-target="#trimming_modal"
+                                    class="add-supplier ml-auto">Add
+                                    new +</a></label>
+                            <div class="row">
+                                {{dropdown(frappe.get_list('Trimming Item'),'','trimming_list')}}
+                            </div>
                         </div>
                         <div class="m-3">
                             {{_("Trimming consumption")}}
@@ -138,7 +153,9 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
-                                {{dropdown(products,'','product',true)}}
+                                <div class="row">
+                                    {{dropdown(products,'','product',true)}}
+                                </div>
                             </div>
                         </div>
 
