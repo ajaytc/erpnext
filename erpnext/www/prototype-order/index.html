@@ -1,134 +1,154 @@
-<div class="col-12">
-    <ul class="page-links ">
-        <li><a href="#" class="active">Order</a></li>
-        <li><a href="/production-dashboard">List</a></li>
-        <!-- <li><a href="#">Manage</a></li> -->
-    </ul>
-</div>
-<h2>{{_("Prototype Order")}}</h2>
-{# this page is used for both new client purchase and client purchase summary page #}
+<div class="row">
 
-{% macro dropdown(items,class,id,typetwo) %}
-<div class="form-group">
-    <select class="form-control {{class}}" id="{{id}}">
-        {% for i in items %}
-        {% if typetwo %}
-        <option value="{{i.name}}">{{i.item_name}}</option>
-        {% elif i.name %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% elif i.fabric_ref %}
-        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
-        {% else %}
-        <option value="{{i}}">{{i}}</option>
-        {% endif %}
-        {% endfor %}
-    </select>
-</div>
-{% endmacro %}
 
-<div id="container" class="container mt-3">
-    <div class="card" style="">
-        <div class="card-body row">
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Product Category")}}
-                    <a href="#" data-toggle="modal" data-target="#category_modal" class="add-supplier">Add new +</a>
-                    {{dropdown(categories,'','category_list')}}
-                </div>
-                <div class="m-3">
-                    {{_("Internal ref")}}
-                    <input id="internal-ref" type="text" class="form-control mt-2">
-                </div>
+    <div class="col-12">
+        <ul class="page-links ">
+            <li><a href="#" class="active">Order</a></li>
+            <li><a href="/production-dashboard">List</a></li>
+            <!-- <li><a href="#">Manage</a></li> -->
+        </ul>
+    </div>
 
-                <div class="m-3">
-                    {{_("Fabric ref")}}
-                    <a href="#" data-toggle="modal" data-target="#fabric_modal" class="add-supplier">Add new
-                        +</a>
-                    {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric_list')}}
-                </div>
-                <div class="m-3">
-                    {{_("Fabric consumption")}}
-                    <input id="fabric-consumption" type="text" class="form-control mt-2">
-                </div>
-                <div class="m-3">
-                    {{_("Fabric Status")}}
-                    <br />
-                    <span id="fabric-status"></span>
-                </div>
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <textarea class="form-control" id="comment" rows="4"></textarea>
-                </div>
+    <div class="col-12">
+        <div class="title-with-image d-flex align-items-center">
+            <img src="/assets/erpnext/images/icons/title-shipment.svg" alt="" class="mr-3">
+            <h2 class="my-0">{{_("Prototype Order")}}</h2>
+        </div>
+    </div>
 
-            </div>
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Production Factory Name")}}
-                    <a href="#" data-toggle="modal" data-target="#factory_modal" class="add-supplier">Add
-                        new +</a>
-                    {{dropdown(frappe.get_list('Production Factory'),'','factory_list')}}
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                    <!-- <a href="#" data-toggle="modal" data-target="#destination_modal" class="add-supplier">Add new
-                        +</a> -->
-                    {{dropdown(destinations,'','destination_list')}}
-                </div>
-                <div class="m-3">
-                    {{_("Trimming")}}
-                    <a href="#" data-toggle="modal" data-target="#trimming_modal" class="add-supplier">Add
-                        new +</a>
-                    {{dropdown(frappe.get_list('Trimming Item'),'','trimming_list')}}
-                </div>
-                <div class="m-3">
-                    {{_("Trimming consumption")}}
-                    <input id="trimming-consumption" type="text" class="form-control mt-2">
-                </div>
-                <div class="m-3">
-                    {{_("Trimming Status")}}
-                    <br />
-                    <span id="trimming-status"></span>
-                </div>
+    {# this page is used for both new client purchase and client purchase summary page #}
 
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="techpack">
-                        <label id="techpack-label" class="custom-file-label" for="techpack">{{_("Techpack")}}</label>
+    {% macro dropdown(items,class,id,typetwo) %}
+    <div class="col-sm-12">
+        <div class="form-group">
+            <select class="form-control {{class}}" id="{{id}}">
+                {% for i in items %}
+                {% if typetwo %}
+                <option value="{{i.name}}">{{i.item_name}}</option>
+                {% elif i.name %}
+                <option value="{{i.name}}">{{i.name}}</option>
+                {% elif i.fabric_ref %}
+                <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
+                {% else %}
+                <option value="{{i}}">{{i}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    {% endmacro %}
+
+    <div class="col-12">
+        <div id="container" class="">
+            <div class="card mt-3" style="">
+                <div class="card-body row">
+                    <div class="col-6">
+                        <div class="m-3">
+                            {{_("Product Category")}}
+                            <a href="#" data-toggle="modal" data-target="#category_modal" class="add-supplier">Add new
+                                +</a>
+                            {{dropdown(categories,'','category_list')}}
+                        </div>
+                        <div class="m-3">
+                            {{_("Internal ref")}}
+                            <input id="internal-ref" type="text" class="form-control mt-2">
+                        </div>
+
+                        <div class="m-3">
+                            {{_("Fabric ref")}}
+                            <a href="#" data-toggle="modal" data-target="#fabric_modal" class="add-supplier">Add new
+                                +</a>
+                            {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'','fabric_list')}}
+                        </div>
+                        <div class="m-3">
+                            {{_("Fabric consumption")}}
+                            <input id="fabric-consumption" type="text" class="form-control mt-2">
+                        </div>
+                        <div class="m-3">
+                            {{_("Fabric Status")}}
+                            <br />
+                            <span id="fabric-status"></span>
+                        </div>
+                        <div class="m-3">
+                            {{_("Comments")}}
+                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="m-3">
+                            {{_("Production Factory Name")}}
+                            <a href="#" data-toggle="modal" data-target="#factory_modal" class="add-supplier">Add
+                                new +</a>
+                            {{dropdown(frappe.get_list('Production Factory'),'','factory_list')}}
+                        </div>
+                        <div class="m-3">
+                            <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                            <!-- <a href="#" data-toggle="modal" data-target="#destination_modal" class="add-supplier">Add new
+                            +</a> -->
+                            {{dropdown(destinations,'','destination_list')}}
+                        </div>
+                        <div class="m-3">
+                            {{_("Trimming")}}
+                            <a href="#" data-toggle="modal" data-target="#trimming_modal" class="add-supplier">Add
+                                new +</a>
+                            {{dropdown(frappe.get_list('Trimming Item'),'','trimming_list')}}
+                        </div>
+                        <div class="m-3">
+                            {{_("Trimming consumption")}}
+                            <input id="trimming-consumption" type="text" class="form-control mt-2">
+                        </div>
+                        <div class="m-3">
+                            {{_("Trimming Status")}}
+                            <br />
+                            <span id="trimming-status"></span>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="techpack">
+                                <label id="techpack-label" class="custom-file-label"
+                                    for="techpack">{{_("Techpack")}}</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="pattern">
+                                <label id="pattern-label" class="custom-file-label"
+                                    for="pattern">{{_("Pattern")}}</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="picture">
+                                <label id="picture-label" class="custom-file-label"
+                                    for="picture">{{_("Picture")}}</label>
+                            </div>
+                        </div>
+
+                        <div class="m-3">
+                            {{_("Price/unit")}}
+                            <input id="price" type="text" class="form-control mt-2">
+                        </div>
+                    </div>
+                    <div class="col-12 m-3 product-table">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                                {{dropdown(products,'','product',true)}}
+                            </div>
+                        </div>
+
+                        <div class="row mt-3 table-section">
+                        </div>
+
+                    </div>
+                    <div class="ml-5">
+                        <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
                     </div>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="pattern">
-                        <label id="pattern-label" class="custom-file-label" for="pattern">{{_("Pattern")}}</label>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="picture">
-                        <label id="picture-label" class="custom-file-label" for="picture">{{_("Picture")}}</label>
-                    </div>
-                </div>
-
-                <div class="m-3">
-                    {{_("Price/unit")}}
-                    <input id="price" type="text" class="form-control mt-2">
-                </div>
             </div>
-            <div class="col-12 m-3 product-table">
-                <div class="row">
-                    <div class="col-md-4">
-                        <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
-                        {{dropdown(products,'','product',true)}}
-                    </div>
-                </div>
 
-                <div class="row mt-3 table-section">
-                </div>
-
-            </div>
-            <div class="ml-5">
-                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
-            </div>
         </div>
     </div>
 
