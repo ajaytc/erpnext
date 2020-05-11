@@ -13,13 +13,13 @@
    "fieldname": "composition_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Composition Name",
+   "label": "Composition",
    "reqd": 1,
    "unique": 1
   }
  ],
  "links": [],
- "modified": "2020-04-03 18:15:29.501800",
+ "modified": "2020-05-11 17:17:29.042199",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Composition",

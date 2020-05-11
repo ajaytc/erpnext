@@ -482,14 +482,13 @@
   },
   {
    "fieldname": "contact",
-   "fieldtype": "Link",
-   "label": "Contact",
-   "options": "Contact"
+   "fieldtype": "Data",
+   "label": "Contact"
   },
   {
    "fieldname": "address_line_1",
    "fieldtype": "Data",
-   "label": "Address Line1",
+   "label": "Address Line 1",
    "reqd": 1
   },
   {
@@ -534,7 +533,7 @@
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-26 16:42:51.809811",
+ "modified": "2020-05-11 16:58:22.433288",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
