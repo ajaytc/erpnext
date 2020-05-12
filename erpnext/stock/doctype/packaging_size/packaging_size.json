@@ -21,11 +21,12 @@
   {
    "fieldname": "size",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Size"
   }
  ],
  "links": [],
- "modified": "2020-04-03 18:46:34.473279",
+ "modified": "2020-05-12 11:40:55.385524",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Packaging Size",

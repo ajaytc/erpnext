@@ -11,7 +11,8 @@
   "column_break_3",
   "label",
   "section_break_5",
-  "customer"
+  "customer",
+  "brand_name"
  ],
  "fields": [
   {
@@ -47,10 +48,16 @@
    "label": "Customer",
    "options": "Customer",
    "reqd": 1
+  },
+  {
+   "fieldname": "brand_name",
+   "fieldtype": "Data",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-12 16:57:23.666206",
+ "modified": "2020-05-12 14:18:19.770492",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Garment Label",

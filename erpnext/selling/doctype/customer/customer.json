@@ -168,7 +168,6 @@
   {
    "fieldname": "customer_group",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Customer Group",
    "oldfieldname": "customer_group",
@@ -179,7 +178,6 @@
   {
    "fieldname": "territory",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Territory",
    "oldfieldname": "territory",
@@ -525,6 +523,7 @@
   {
    "fieldname": "brand",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Brand",
    "options": "Company"
   }
@@ -533,7 +532,7 @@
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-05-11 16:58:22.433288",
+ "modified": "2020-05-12 11:56:58.340426",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

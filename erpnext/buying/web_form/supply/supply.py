@@ -6,5 +6,6 @@ import json
 
 def get_context(context):
     # do your magic here
-    context.type = frappe.form_dict.type
+    if(frappe.form_dict.type):
+        context.type = frappe.form_dict.type.lower()
     pass

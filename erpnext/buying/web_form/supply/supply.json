@@ -1,6 +1,6 @@
 {
  "accept_payment": 0,
- "allow_comments": 1,
+ "allow_comments": 0,
  "allow_delete": 1,
  "allow_edit": 1,
  "allow_incomplete": 0,
@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-04-27 12:24:48.610125",
+ "modified": "2020-05-12 13:56:12.395385",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "supply",

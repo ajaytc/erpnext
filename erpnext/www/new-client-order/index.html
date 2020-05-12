@@ -1,5 +1,5 @@
 {# this page is used for both new client purchase and client purchase summary page #}
-
+<!-- title: Client Purchase -->
 {% macro dropdown(items,class,id,typetwo) %}
 <div class="form-group">
     <select class="form-control {{class}}" id="{{id}}">
@@ -89,7 +89,7 @@
                     {% if order %}
                     {{order.garment_label}}
                     {% else %}
-                    {{dropdown(garmentlabel,'','garmentlabel')}}
+                    {{dropdown(['With label','No label','Private label'],'','garmentlabel')}}
                     {% endif %}
 
                 </div>

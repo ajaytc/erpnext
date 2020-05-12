@@ -23,13 +23,13 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Contact</label>
-                                <input id="suply_contact" class="form-control" required name="supply_contact">
+                                <input id="suply_contact" class="form-control" name="supply_contact">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Phone number</label>
-                                <input id="suply_phone" class="form-control" required name="supply_phone">
+                                <input id="suply_phone" class="form-control" name="supply_phone">
                             </div>
                         </div>
                     </div>
@@ -61,13 +61,25 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>City</label>
-                                <input id="suply_city" class="form-control" required name="supply_city">
+                                <input id="suply_city" class="form-control" name="supply_city">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Zip code</label>
-                                <input id="suply_zip" class="form-control" required name="supply_zip">
+                                <input id="suply_zip" class="form-control" name="supply_zip">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select id="supply_country" class="form-control" name="supply_country">
+                                    {% for c in frappe.get_all('Country',fields=['country_name'])%}
+                                    <option>{{c.country_name}}</option>
+                                    {%endfor%}
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -135,7 +147,8 @@
                     phone_number: data.supply_phone,
                     city: data.supply_city,
                     zip_code: data.supply_zip,
-                    supplier_name: data.supply_name
+                    supplier_name: data.supply_name,
+                    country: data.supply_country
                 }
             },
             callback: function (r) {
@@ -149,7 +162,7 @@
                             message: __('Supplier ' + supplier.name + ' created successfully')
                         });
                         $('#form_modal').modal('toggle');
-                        $('#vendor_list').append(`<option>${vendor.name}</option>`)
+                        $('#vendor_list').append(`<option>${supplier.name}</option>`)
                         //window.location.reload();
                     }
                 }
