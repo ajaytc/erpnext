@@ -37,7 +37,7 @@
                             <div class="form-group">
                                 <label class="d-flex">
                                     {{_("Color")}}
-                                    <a class="" class="ml-auto text-yellow" href="/color?new=1">{{_("Add new")}}</a>
+                                    <a class="ml-auto text-yellow" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="color">
                                     {% for color in frappe.get_all('Color',filters={}) %}
@@ -52,8 +52,7 @@
                             <div class="form-group">
                                 <label class="d-flex">
                                     {{_("Width")}}">
-                                    <a class="" href="/fabric-width?new=1"
-                                        class="text-yellow ml-auto">{{_("Add new")}}</a>
+                                    <a href="/fabric-width?new=1" class="text-yellow ml-auto">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="width">
                                     {% for color in frappe.get_all('Width',filters={}) %}
@@ -68,8 +67,7 @@
                             <div class="form-group">
                                 <label class="d-flex">
                                     {{_("Composition")}}
-                                    <a class="" href="/composition?new=1"
-                                        class="text-yellow ml-auto">{{_("Add new")}}</a>
+                                    <a href="/composition?new=1" class="text-yellow ml-auto">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="composition">
                                     {% for c in frappe.get_all('Composition',filters={},fields=['name','composition_name']) %}
