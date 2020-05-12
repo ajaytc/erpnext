@@ -64,8 +64,8 @@
                                 <label class="col-form-label">{{_("Composition")}}</label>
                                 <a class="" href="/composition?new=1">{{_("Add new")}}</a>
                                 <select class="form-control" required name="composition">
-                                    {% for color in frappe.get_all('Composition',filters={}) %}
-                                    <option>{{color.name}}</option>
+                                    {% for c in frappe.get_all('Composition',filters={},fields=['name','composition_name']) %}
+                                    <option value={{c.name}}>{{c.composition_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

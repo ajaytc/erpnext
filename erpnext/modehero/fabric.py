@@ -78,6 +78,6 @@ def create_fabric(data):
         'width': data['width'],
         'composition': data['composition'],
     })
-    fabric.insert()
+    fabric.insert(ignore_permissions=True,)
     frappe.db.commit()
     return {'status': 'ok', 'item': fabric}
