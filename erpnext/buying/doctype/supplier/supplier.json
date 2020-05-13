@@ -63,7 +63,8 @@
   "contact",
   "phone",
   "email",
-  "brand"
+  "brand",
+  "user"
  ],
  "fields": [
   {
@@ -414,13 +415,19 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone Number"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-04-27 12:20:49.474465",
+ "modified": "2020-05-13 13:59:03.959272",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",

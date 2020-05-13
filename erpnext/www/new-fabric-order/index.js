@@ -77,3 +77,8 @@ function create_fabric_order(data) {
 //     $(".datepicker .dropdown-menu").css("display", "none");
 // });
 
+$('.price').change(function () {
+    let qty = parseFloat($('#quantity').val())
+    let ppu = parseFloat($('#price_per_unit').val())
+    $('#total_price').val(qty * ppu)
+})

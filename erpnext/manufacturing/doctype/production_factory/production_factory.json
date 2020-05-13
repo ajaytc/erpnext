@@ -19,7 +19,8 @@
   "column_break_12",
   "email_address",
   "phone",
-  "brand"
+  "brand",
+  "user"
  ],
  "fields": [
   {
@@ -91,10 +92,16 @@
    "fieldname": "address",
    "fieldtype": "Section Break",
    "label": "Address"
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User"
   }
  ],
  "links": [],
- "modified": "2020-05-03 14:05:42.596578",
+ "modified": "2020-05-13 14:00:08.712923",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",
