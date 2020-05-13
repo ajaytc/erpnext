@@ -47,6 +47,7 @@ const productUpdateCallback = (e) => {
 }
 
 $('.selected-product').click(productUpdateCallback)
+$('.selected-product').trigger('click')
 
 function generateSizingTable(sizes) {
 

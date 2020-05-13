@@ -18,7 +18,8 @@
   "postal_code",
   "column_break_12",
   "email_address",
-  "phone"
+  "phone",
+  "contact"
  ],
  "fields": [
   {
@@ -89,10 +90,15 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "Data",
+   "label": "Contact Name"
   }
  ],
  "links": [],
- "modified": "2020-04-14 23:49:50.352852",
+ "modified": "2020-05-13 11:14:17.748479",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Destination",

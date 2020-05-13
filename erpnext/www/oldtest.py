@@ -11,6 +11,7 @@ def get_context(context):
             _("You need admin rights"), frappe.PermissionError)
     context.doc = frappe.get_doc("About Us Settings", "About Us Settings")
     context.users = frappe.get_all("User")
+    print(frappe.get_value('User', frappe.session.user, 'brand_name'))
 
     context.parents = [
         {"name": frappe._("Home"), "route": "/"}
