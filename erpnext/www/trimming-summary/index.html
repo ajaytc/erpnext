@@ -2,264 +2,277 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'/supply-dashboard?type=trimming'},{'label':'Trimming Order','url':'#'}]) }}
 <h1>Trimming Order Summary</h1>
 
-
-<div id="container" class="container mt-3">
-    <div class="card" style="">
-        <div class="card-body row">
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Date")}} <br />
-                    <span>{% if date %}{{date}}{% endif %}
-                        {{frappe.format(trimOrder.creation, {'fieldtype': 'Date'})}}
-                    </span>
-                </div>
-
-                <div id="order-no-section" class="m-3">
-                    {{_("Order Number")}}
-                    <br />
-                    <span id="order-no">
-                        {{trimOrder.name}}
-                    </span>
-                </div>
-
-
-                <div class="m-3">
-                    {{_("Internal ref")}}
-                    <br />
-                    <span id="order-internal">
-                        {{trimOrder.internal_ref}}
-                    </span>
-
-                </div>
-
-                <h2>{{_("Order Info")}}</h2>
-
-                <div class="m-3">
-                    {{_("Item")}}
-                    <br />
-                    <span id="order-item">
-                        {{trimOrder.trimming_item}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Color")}}
-                    <br />
-                    <span id="order-color">
-                        {{trimmingItem.color}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Quantity")}}
-                    <br />
-                    <span id="order-quantity">
-                        {{trimOrder.quantity}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Material")}}
-                    <br />
-                    <span id="order-material">
-                        {{trimmingItem.material}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Size")}}
-                    <br />
-                    <span id="order-itemSize">
-                        {{trimmingItem.trimming_size}}
-                    </span>
-
-                </div>
-
-                <div class="m-3">
-                    {{_("Other info")}}
-                    <br />
-                    <span id="order-otherInfo">
-                        {{trimmingItem.other_info}}
-                    </span>
-
-                </div>
-
+<div class="row mt-5">
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Date")}}
+                </p>
+                <p class="value">
+                    {% if date %}{{date}}{% endif %}
+                    {{frappe.format(trimOrder.creation, {'fieldtype': 'Date'})}}
+                </p>
             </div>
+        </div>
+    </div>
 
-            <div class="col-6">
-                <h2>Price Details</h2>
-                <div class="m-3">
-                    {{_("Price Per Unit")}}
-                    <br />
-                    <span id="order-otherInfo">
-                        {{trimOrder.price_per_unit}}
-                    </span>
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Order Number")}}
+                </p>
+                <p class="value">
+                    {{trimOrder.name}}
+                </p>
+            </div>
+        </div>
+    </div>
 
-                </div>
-                <div class="m-3">
-                    {{_("Price")}}
-                    <br />
-                    <span id="order-otherInfo">
-                        {{trimOrder.total_price}}
-                    </span>
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Internal ref")}}
+                </p>
+                <p class="value" id="order-internal">
+                    {{trimOrder.internal_ref}}
+                </p>
+            </div>
+        </div>
+    </div>
 
-                </div>
-
-                <div class="m-3">
-                    {{_("Payment Proof")}}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.payment_proof}}
-                            name="paymentProof" id="paymentProof">
-
-                        <label id="paymentProof-label" class="custom-file-label"
-                            for="paymentProof">{% if trimOrder.payment_proof %}{{trimOrder.payment_proof}}{% endif %}</label>
-
+    <div class="col-sm-12 mt-4 pt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Order Info")}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Price Details")}}</h2>
+                    </div>
+                    <div class="col-md-4">
                     </div>
                 </div>
-                {% if trimOrder.payment_proof %}
-                <div class="m-3">
-                    {{_("Submitted Payment Proof")}}
-                    <br>
-                    <a href="{{trimOrder.payment_proof}}" download>Download Submitted Document</a>
+                <div class="row">
+                    <div class="col-md-4">
+
+
+
+                        <ul class="order-summary">
+
+                            <li>
+                                <span>{{_("Item")}}</span>
+                                <span id="order-item">
+                                    {{trimOrder.trimming_item}}
+                                </span>
+                            </li>
+
+                            <li>
+                                <span>{{_("Color")}}</span>
+                                <span id="order-color">
+                                    {{trimmingItem.color}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Material")}}</span>
+                                <br />
+                                <span id="order-material">
+                                    {{trimmingItem.material}}
+                                </span>
+                            </li>
+
+                            <li>
+                                <span>{{_("Size")}}</span>
+                                <span id="order-itemSize">
+                                    {{trimmingItem.trimming_size}}
+                                </span>
+                            </li>
+
+                            {{_("Other info")}}
+                            <span id="order-otherInfo">
+                                {{trimmingItem.other_info}}
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+
+                        <ul class="order-summary">
+                            <li>
+                                <span>{{_("Price Per Unit")}}</span>
+                                <span id="order-otherInfo">
+                                    {{trimOrder.price_per_unit}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Quantity")}}</span>
+                                <span id="order-quantity">
+                                    {{trimOrder.quantity}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Total Price")}}</span>
+                                <span id="order-otherInfo">
+                                    {{trimOrder.total_price}}
+                                </span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-link display-file-selector float-right btn-sm">
+                            {{_("Payment Proof")}} +
+
+                        </button>
+                        <input type="file" class="form-control d-none" value={{fabricOrder.payment_proof}}
+                            name="paymentProof" id="paymentProof">
+                    </div>
+
+
+                    {% if trimOrder.payment_proof %}
+                    <div class="col-md-4">
+                        <a href="{{trimOrder.payment_proof}}" download class="order-summary-download">
+                            <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                            <span>{{trimOrder.payment_proof}}</span>
+                        </a>
+                    </div>
+                    {% endif %}
+
+
+
+
+                    <div class="col-md-10">
+                        <label for="" class="text-mute">{{_("Comments")}}</label>
+                        <textarea class="form-control" id="proofComment"
+                            rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{# bottom part of summary page should go below #}
+<div class="card" style="">
+    <div class="card-body row">
+        <div class="col-6">
+            <div class="m-3">
+                {{_("Trimming Vendor")}}
+            </div>
+            <div class="m-3">
+                {{_("Expected Work Date")}}
+                <span>
+                    <div class="input-group date">
+                        <input id="exWorkDate" class="form-control"
+                            value={% if trimOrder.ex_work_date %}{{trimOrder.ex_work_date}}{% endif %} name="workDate"
+                            placeholder="Desired date" type="date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </span>
+            </div>
+
+            <div class="m-3">
+                {{_("Confirmation Doc")}}
+                {% if trimOrder.confirmation_doc != None %}
+                <br />
+                <a href="{{trimOrder.confirmation_doc}}">{{trimOrder.confirmation_doc}}</a>
+                {% else %}
                 {% endif %}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}}
+                        name="confirmation_doc" id="confirmation_doc">
+
+                    <label id="confirmation_doc-label" class="custom-file-label"
+                        for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
+
+                </div>
+            </div>
+
+            <div class="m-3">
+                {{_("Proforma")}}
+                {% if trimOrder.profoma != None %}
+                <br />
+                <a href="{{trimOrder.profoma}}">{{trimOrder.profoma}}</a>
+                {% else %}
+                {% endif %}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma"
+                        id="profoma">
+
+                    <label id="profoma-label" class="custom-file-label"
+                        for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
+
+                </div>
+            </div>
+
+            <div class="m-3">
+                {{_("Invoice")}}
+                {% if trimOrder.invoice != None %}
+                <br />
+                <a href="{{trimOrder.invoice}}">{{trimOrder.invoice}}</a>
+                {% else %}
+                {% endif %}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice"
+                        id="invoice">
+
+                    <label id="invoice-label" class="custom-file-label"
+                        for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
 
 
-
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <textarea class="form-control" id="proofComment"
-                        rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
                 </div>
 
+                <div class="m-3">
+                    {{_("Shipment")}}
+                </div>
+
+                <div class="m-3">
+                    {{_("Carrier")}}
+                    <input id="carrier" type="text" value="{% if trimOrder.carrier %}{{trimOrder.carrier}}{% endif %}"
+                        class="form-control mt-2">
+                </div>
+                <div class="m-3">
+                    {{_("Tracking Number")}}
+                    <input id="tracking_number" type="text"
+                        value="{% if trimOrder.tracking_number %}{{trimOrder.tracking_number}}{% endif %}"
+                        class="form-control mt-2">
+                </div>
+
+                <div class="m-3">
+                    {{_("Date of Shipment")}}
+                    <div class="input-group date">
+                        <input id="shipmentDate" class="form-control" value={{trimOrder.shipment_date}}
+                            name="desireddate" placeholder="Desired date" type="date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
 
                 <div class="ml-5">
-
-                    <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
-
+                    {% if isTrimVendor %}
+                    {% if trimOrder.docstatus==0 %}
+                    <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
+                    {% endif %}
+                    {% endif %}
                 </div>
             </div>
-            <div>
+
+        </div>
+        <div class="col-6">
+            <div class="m-3">
+                {{_("Comments")}}
+                <textarea class="form-control" id="comment"
+                    rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
             </div>
         </div>
     </div>
-    {# bottom part of summary page should go below #}
-    <div class="card" style="">
-        <div class="card-body row">
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Trimming Vendor")}}
-                </div>
-                <div class="m-3">
-                    {{_("Expected Work Date")}}
-                    <span>
-                        <div class="input-group date">
-                            <input id="exWorkDate" class="form-control"
-                                value={% if trimOrder.ex_work_date %}{{trimOrder.ex_work_date}}{% endif %}
-                                name="workDate" placeholder="Desired date" type="date">
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </span>
-                </div>
 
-                <div class="m-3">
-                    {{_("Confirmation Doc")}}
-                    {% if trimOrder.confirmation_doc != None %}
-                    <br />
-                    <a href="{{trimOrder.confirmation_doc}}">{{trimOrder.confirmation_doc}}</a>
-                    {% else %}
-                    {% endif %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}}
-                            name="confirmation_doc" id="confirmation_doc">
-
-                        <label id="confirmation_doc-label" class="custom-file-label"
-                            for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
-
-                    </div>
-                </div>
-
-                <div class="m-3">
-                    {{_("Proforma")}}
-                    {% if trimOrder.profoma != None %}
-                    <br />
-                    <a href="{{trimOrder.profoma}}">{{trimOrder.profoma}}</a>
-                    {% else %}
-                    {% endif %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma"
-                            id="profoma">
-
-                        <label id="profoma-label" class="custom-file-label"
-                            for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
-
-                    </div>
-                </div>
-
-                <div class="m-3">
-                    {{_("Invoice")}}
-                    {% if trimOrder.invoice != None %}
-                    <br />
-                    <a href="{{trimOrder.invoice}}">{{trimOrder.invoice}}</a>
-                    {% else %}
-                    {% endif %}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice"
-                            id="invoice">
-
-                        <label id="invoice-label" class="custom-file-label"
-                            for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
-
-
-                    </div>
-
-                    <div class="m-3">
-                        {{_("Shipment")}}
-                    </div>
-
-                    <div class="m-3">
-                        {{_("Carrier")}}
-                        <input id="carrier" type="text"
-                            value="{% if trimOrder.carrier %}{{trimOrder.carrier}}{% endif %}"
-                            class="form-control mt-2">
-                    </div>
-                    <div class="m-3">
-                        {{_("Tracking Number")}}
-                        <input id="tracking_number" type="text"
-                            value="{% if trimOrder.tracking_number %}{{trimOrder.tracking_number}}{% endif %}"
-                            class="form-control mt-2">
-                    </div>
-
-                    <div class="m-3">
-                        {{_("Date of Shipment")}}
-                        <div class="input-group date">
-                            <input id="shipmentDate" class="form-control" value={{trimOrder.shipment_date}}
-                                name="desireddate" placeholder="Desired date" type="date">
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="ml-5">
-                        {% if isTrimVendor %}
-                        {% if trimOrder.docstatus==0 %}
-                        <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
-                        {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <textarea class="form-control" id="comment"
-                        rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
-                </div>
-            </div>
-        </div>
-
-    </div>
+</div>
