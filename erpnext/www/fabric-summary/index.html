@@ -2,126 +2,161 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'/supply-dashboard?type=fabric'},{'label':'Fabric Order','url':'#'}]) }}
 <h1>Fabric Order Summary</h1>
 
-
-<div id="container" class="container mt-3">
-    <div class="card" style="">
-        <div class="card-body row">
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Date")}} <br />
-                    <span>{% if date %}{{date}}{% endif %}
-                        {{frappe.format(fabricOrder.creation, {'fieldtype': 'Date'})}}
-                    </span>
-                </div>
-
-                <div id="order-no-section" class="m-3">
-                    {{_("Order Number")}}
-                    <br />
-                    <span id="order-no">
-                        {{fabricOrder.name}}
-                    </span>
-                </div>
-
-
-                <div class="m-3">
-                    {{_("Internal ref")}}
-                    <br />
-                    <span id="order-internal">
-                        {{fabricOrder.internal_ref}}
-                    </span>
-
-                </div>
-
-                <h2>{{_("Order Info")}}</h2>
-
-                <div class="m-3">
-                    {{_("Fabric Ref")}}
-                    <br />
-                    <span id="order-item">
-                        {{fabricOrder.fabric_ref}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Color")}}
-                    <br />
-                    <span id="order-color">
-                        {{fabric.color}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Quantity")}}
-                    <br />
-                    <span id="order-quantity">
-                        {{fabricOrder.quantity}}
-                    </span>
-
-                </div>
-                <div class="m-3">
-                    {{_("Destination")}}
-                    <br />
-
-
-                </div>
-
+<div class="row">
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Date")}}
+                </p>
+                <p class="value">
+                    {% if date %}{{date}}{% endif %}
+                    {{frappe.format(fabricOrder.creation, {'fieldtype': 'Date'})}}
+                </p>
             </div>
+        </div>
+    </div>
 
-            <div class="col-6">
-                <h2>Price Details</h2>
-                <div class="m-3">
-                    {{_("Price Per Unit")}}
-                    <br />
-                    <span id="order-otherInfo">
-                        {{fabricOrder.price_per_unit}}
-                    </span>
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Order Number")}}
+                </p>
+                <p class="value">
+                    {{fabricOrder.name}}
+                </p>
+            </div>
+        </div>
+    </div>
 
-                </div>
-                <div class="m-3">
-                    {{_("Total Price")}}
-                    <br />
-                    <span id="order-otherInfo">
-                        {{fabricOrder.total_price}}
-                    </span>
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Internal ref")}}
+                </p>
+                <p class="value" id="order-internal">
+                    {{fabricOrder.internal_ref}}
+                </p>
+            </div>
+        </div>
+    </div>
 
-                </div>
-
-                <div class="m-3">
-                    {{_("Payment Proof")}}
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" value={{fabricOrder.payment_proof}}
-                            name="paymentProof" id="paymentProof">
-
-                        <label id="paymentProof-label" class="custom-file-label"
-                            for="paymentProof">{% if fabricOrder.payment_proof %}{{fabricOrder.payment_proof}}{% endif %}</label>
-
+    <div class="col-sm-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Order Info")}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Price Details")}}</h2>
+                    </div>
+                    <div class="col-md-4">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-4">
 
-                {% if fabricOrder.payment_proof %}
-                <div class="m-3">
-                    {{_("Submitted Payment Proof")}}
-                    <br>
-                    <a href="{{fabricOrder.payment_proof}}" download>Download Submitted Document</a>
+                        <ul class="order-summary">
+                            <li>
+                                <span>{{_("Fabric Ref")}}</span>
+                                <span id="order-item">
+                                    {{fabricOrder.fabric_ref}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Color")}}</span>
+                                <span id="order-color">
+                                    {{fabric.color}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Destination")}}</span>
+                                <span id="order-destination">
+                                    {# {{fabricOrder.quantity}} #}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="m-3">
+
+                            <br />
+
+
+                        </div>
+                        <div class="m-3">
+
+                            <br />
+
+
+                        </div>
+
+
+                        <ul class="order-summary">
+                            <li>
+                                <span>{{_("Price Per Unit")}}</span>
+                                <span id="order-otherInfo">
+                                    {{fabricOrder.price_per_unit}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Quantity")}}</span>
+                                <span id="order-quantity">
+                                    {{fabricOrder.quantity}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Total Price")}}</span>
+                                <span id="order-otherInfo">
+                                    {{fabricOrder.total_price}}
+                                </span>
+                            </li>
+                        </ul>
+                        <button class="btn btn-link display-file-selector float-right btn-sm">
+                            {{_("Payment Proof")}} <i class="fas fa-plus"></i>
+
+                        </button>
+                        <input type="file" class="form-control d-none" value={{fabricOrder.payment_proof}}
+                            name="paymentProof" id="paymentProof">
+                    </div>
+
+
+                    {# <div class="m-3">
+
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" value={{fabricOrder.payment_proof}}
+                                name="paymentProof" id="paymentProof">
+
+                            <label id="paymentProof-label" class="custom-file-label"
+                                for="paymentProof">{% if fabricOrder.payment_proof %}{% endif %}</label>
+
+                        </div>
+                    </div> #}
+
+                    {% if fabricOrder.payment_proof %}
+                    <div class="col-md-4">
+                        <a href="{{fabricOrder.payment_proof}}" download class="order-summary-download">
+                            <img src="./images/icons/pdf.svg" alt="" />
+                            <span>{{fabricOrder.payment_proof}}</span>
+                        </a>
+                    </div>
+                    {% endif %}
+
+
+
+
+                    <div class="col-md-10">
+                        <label for="" class="text-mute">{{_("Comments")}}</label>
+                        <textarea class="form-control" id="proofComment"
+                            rows="4">{% if fabricOrder.comment %}{{fabricOrder.comment}}{% endif %}</textarea>
+
+                        <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
+                    </div>
                 </div>
-                {% endif %}
-
-
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <textarea class="form-control" id="proofComment"
-                        rows="4">{% if fabricOrder.comment %}{{fabricOrder.comment}}{% endif %}</textarea>
-                </div>
-
-
-                <div class="ml-5">
-
-                    <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
-
-                </div>
-            </div>
-            <div>
-
             </div>
         </div>
     </div>
