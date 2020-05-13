@@ -1,12 +1,20 @@
 {% extends "templates/web.html" %}
 {% block content %}
+
+
+
+{% set rightMenuPages = ['fabric-summary'] %}
+
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-<div class="page-with-sidebar">
+<div class="page-with-sidebar{% if page == 'fabric-summary' %} right-sidebar{% endif %}">
     <div class="sidebar">
         {% include 'erpnext/www/sidenav.html'%}
     </div>
+    {% if page == 'fabric-summary' %}
+    {% include 'erpnext/www/right-sidenav.html' %}
+    {% endif %}
     <div class="page-body">
         <div class="container-expand">
 
