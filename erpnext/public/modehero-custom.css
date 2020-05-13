@@ -770,11 +770,13 @@ ul.breadcrumbs li.breadcrumb-item a {
   padding: 30px 60px;
 }
 .page-with-sidebar.right-sidebar .sidebar.right {
-  position: absolute;
+  position: fixed;
   top: 80px;
   right: 0;
   height: calc(100% - 80px);
   width: 375px;
+  overflow-x: hidden;
+  overflow-y: auto;
   border-left: 1px solid #e6e6e6;
 }
 .page-with-sidebar.right-sidebar .sidebar.right .sidebar-inner {
