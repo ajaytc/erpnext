@@ -950,9 +950,17 @@ ul.order-summary li {
 }
 ul.order-summary li span {
   color: #898f96;
+  margin-right: 10px;
 }
 ul.order-summary li span:last-child {
+  margin-right: 0;
   color: #19273d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul.order-summary li span:last-child:hover {
+  overflow: visible;
 }
 ul.order-summary li:last-child {
   border-bottom: none;
