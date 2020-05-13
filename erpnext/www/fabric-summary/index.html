@@ -2,7 +2,7 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'/supply-dashboard?type=fabric'},{'label':'Fabric Order','url':'#'}]) }}
 <h1>Fabric Order Summary</h1>
 
-<div class="row">
+<div class="row mt-5">
     <div class="col-sm-6 col-md-4 col-xl-3">
         <div class="card">
             <div class="card-body">
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12 mt-5">
+    <div class="col-sm-12 mt-4 pt-3">
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -111,18 +111,6 @@
                     </div>
 
 
-                    {# <div class="m-3">
-
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" value={{fabricOrder.payment_proof}}
-                                name="paymentProof" id="paymentProof">
-
-                            <label id="paymentProof-label" class="custom-file-label"
-                                for="paymentProof">{% if fabricOrder.payment_proof %}{% endif %}</label>
-
-                        </div>
-                    </div> #}
-
                     {% if fabricOrder.payment_proof %}
                     <div class="col-md-4">
                         <a href="{{fabricOrder.payment_proof}}" download class="order-summary-download">
@@ -140,7 +128,9 @@
                         <textarea class="form-control" id="proofComment"
                             rows="4">{% if fabricOrder.comment %}{{fabricOrder.comment}}{% endif %}</textarea>
 
-                        <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
+                        <div class="form-group">
+                            <button class="btn btn-primary" id="proofSubmit">{{_("Submit")}}</button>
+                        </div>
                     </div>
                 </div>
             </div>
