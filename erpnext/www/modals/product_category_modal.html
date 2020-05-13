@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{_("Create a new")}} <span id='form_group_name'></span>
-                    {{_(" product category")}}
+                    {{_(" Product Category")}}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -62,7 +62,7 @@
                         frappe.msgprint({
                             title: __('Notification'),
                             indicator: 'green',
-                            message: __('Product category ' + item.name + ' created successfully')
+                            message: __('Product Category ' + item.name + ' created successfully')
                         });
                         $('#category_modal').modal('toggle');
                         $('#category_list').append(`<option>${item.name}</option>`)

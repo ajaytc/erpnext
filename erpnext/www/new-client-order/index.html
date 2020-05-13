@@ -105,7 +105,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                            <label for="exampleFormControlSelect1">{{_("Product Name")}}</label>
                             {{dropdown(products,'selected-product','',true)}}
                         </div>
                         <div class="col-md-4">
@@ -227,7 +227,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <label for="exampleFormControlSelect1">{{_("Product name")}}</label>
+                    <label for="exampleFormControlSelect1">{{_("Product Name")}}</label>
                     <br />
                     <span class="product"
                         data-product="{{o.item_code}}">{{frappe.db.get_value('Item',o.item_name,'item_name')}}</span>
