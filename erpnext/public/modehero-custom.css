@@ -1246,8 +1246,12 @@ label.fabric-form-input .btn.date-picker.active {
 .table-text-center td {
   text-align: center !important;
 }
+.custom-file {
+  height: 45px;
+}
 .custom-file-input ~ .custom-file-label {
   transition: all 0.2s linear;
+  height: 45px;
 }
 .custom-file-input ~ .custom-file-label:after {
   content: "\f0c1" !important;
