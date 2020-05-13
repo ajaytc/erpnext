@@ -8,14 +8,14 @@
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
     integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-<div class="page-with-sidebar{% if page == 'fabric-summary' %} right-sidebar{% endif %}">
+<div class="page-with-sidebar{% if path in rightMenuPages %} right-sidebar{% endif %}">
     <div class="sidebar">
         {% include 'erpnext/www/sidenav.html'%}
     </div>
-    {% if page == 'fabric-summary' %}
+    {% if path == 'fabric-summary' %}
     {% include 'erpnext/www/right-sidenav.html' %}
     {% endif %}
-    <div class="page-body">
+    <div class="page-body {{ path }}">
         <div class="container-expand">
 
             {% import 'erpnext/templates/macros.html' as macros %}
