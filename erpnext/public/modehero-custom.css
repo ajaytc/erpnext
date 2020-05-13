@@ -1238,3 +1238,24 @@ label.fabric-form-input .btn.date-picker.active {
 .table-text-center td {
   text-align: center !important;
 }
+.custom-file-input ~ .custom-file-label:after {
+  content: "\f0c1";
+  top: 3px;
+  bottom: 3px;
+  height: calc(100% - 6px);
+  right: 3px;
+  border: none;
+  border-radius: 4px;
+  font-family: "FontAwesome";
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  padding-top: 1px;
+  transition: all 0.2s linear;
+}
+.custom-file-input ~ .custom-file-label:hover:after {
+  color: #3b3dbf;
+  background: rgba(59, 61, 191, 0.2);
+}
