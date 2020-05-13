@@ -1239,7 +1239,7 @@ label.fabric-form-input .btn.date-picker.active {
   text-align: center !important;
 }
 .custom-file-input ~ .custom-file-label:after {
-  content: "\f0c1";
+  content: "\f0c1" !important;
   top: 3px;
   bottom: 3px;
   height: calc(100% - 6px);
@@ -1256,6 +1256,10 @@ label.fabric-form-input .btn.date-picker.active {
   transition: all 0.2s linear;
 }
 .custom-file-input ~ .custom-file-label:hover:after {
+  color: #3b3dbf;
+  background: rgba(59, 61, 191, 0.2);
+}
+.custom-file-input:hover ~ .custom-file-label:after {
   color: #3b3dbf;
   background: rgba(59, 61, 191, 0.2);
 }
