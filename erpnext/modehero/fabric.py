@@ -81,3 +81,8 @@ def create_fabric(data):
     fabric.insert(ignore_permissions=True,)
     frappe.db.commit()
     return {'status': 'ok', 'item': fabric}
+
+
+@frappe.whitelist()
+def get_fabric(vendor):
+    return frappe.get_all('Fabric', filters={'fabric_vendor': vendor}, fields=['name', 'fabric_ref'])

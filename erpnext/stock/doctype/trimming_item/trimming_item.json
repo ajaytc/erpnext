@@ -16,8 +16,8 @@
   "other_info",
   "unit_price",
   "section_break_3",
-  "vendor_ref",
   "internal_ref",
+  "vendor_ref",
   "brand"
  ],
  "fields": [
@@ -29,6 +29,7 @@
   {
    "fieldname": "trimming_vendor",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Trimming Vendor",
    "options": "Supplier"
   },
@@ -97,7 +98,7 @@
   }
  ],
  "links": [],
- "modified": "2020-05-03 14:39:22.223605",
+ "modified": "2020-05-13 16:05:25.920097",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

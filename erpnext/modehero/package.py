@@ -82,3 +82,8 @@ def create_packaging(data):
     packaging.insert()
     frappe.db.commit()
     return {'status': 'ok', 'item': packaging}
+
+
+@frappe.whitelist()
+def get_item(vendor):
+    return frappe.get_all('Packaging Item', filters={'packaging_vendor': vendor}, fields=['name', 'internal_ref'])

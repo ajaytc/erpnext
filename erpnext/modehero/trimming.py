@@ -84,3 +84,8 @@ def create_trimming(data):
     trimming.insert()
     frappe.db.commit()
     return {'status': 'ok', 'item': trimming}
+
+
+@frappe.whitelist()
+def get_item(vendor):
+    return frappe.get_all('Trimming Item', filters={'trimming_vendor': vendor}, fields=['name', 'internal_ref'])

@@ -80,5 +80,45 @@ function create_fabric_order(data) {
 $('.price').change(function () {
     let qty = parseFloat($('#quantity').val())
     let ppu = parseFloat($('#price_per_unit').val())
-    $('#total_price').val(qty * ppu)
+    if (!isNaN(qty * ppu))
+        $('#total_price').val(qty * ppu)
 })
+
+function getOptions(data) {
+    let str = '';
+    data.map(i => {
+        str += `<option value='${i.name}'>${i.fabric_ref}</option>`
+    })
+    return str
+}
+
+$('#vendor_list').click(function () {
+    frappe.call({
+        method: 'erpnext.modehero.fabric.get_fabric',
+        args: {
+            vendor: $(this).val()
+        },
+        callback: function (r) {
+            console.log(r)
+            $('#ref_list').html(getOptions(r.message))
+        }
+    })
+})
+
+$('#ref_list').click(function () {
+    console.log($(this).text())
+    frappe.call({
+        method: 'erpnext.modehero.stock.get_stock',
+        args: {
+            item_type: 'fabric',
+            ref: $(this).text()
+        },
+        callback: function (r) {
+            console.log(r)
+            $('#stock').val(r.message.quantity)
+        }
+    })
+})
+
+$('#vendor_list').trigger('click')
+$('#ref_list').trigger('click')

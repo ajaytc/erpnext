@@ -405,3 +405,11 @@ def updateShipmentorderStocks(doc, method):
             final_quantity = production_stock.quantity-quantity
             updateStock2(production_stock_name[0].name, final_quantity, production_stock.quantity, "Shipment Order", float(
                 total_price)/final_quantity)
+
+
+@frappe.whitelist()
+def get_stock(item_type, ref):
+    try:
+        return frappe.get_all('Stock', filters={'item_type': item_type, 'internal_ref': ref}, fields=['quantity'])[0]
+    except:
+        return {'quantity': 0}

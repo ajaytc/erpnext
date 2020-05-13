@@ -1089,7 +1089,7 @@
   },
   {
    "fieldname": "consumption",
-   "fieldtype": "Int",
+   "fieldtype": "Float",
    "label": "Consumption"
   },
   {
@@ -1117,7 +1117,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-04-27 19:03:32.534885",
+ "modified": "2020-05-13 14:53:20.754641",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",
