@@ -770,7 +770,10 @@ ul.breadcrumbs li.breadcrumb-item a {
   padding: 30px 60px;
 }
 .page-with-sidebar.right-sidebar .sidebar.right {
-  order: 2;
+  position: absolute;
+  top: 80px;
+  right: 0;
+  height: calc(100% - 80px);
   width: 375px;
   border-left: 1px solid #e6e6e6;
 }
@@ -779,7 +782,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar.right-sidebar .page-body {
   order: 1;
-  width: calc(100% - 375px);
+  width: calc(100% - 675px);
 }
 .data-box-ul {
   display: block;
