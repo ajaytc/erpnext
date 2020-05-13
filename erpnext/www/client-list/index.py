@@ -8,6 +8,6 @@ no_cache = 1
 
 
 def get_context(context):    
-    # brand = frappe.get_doc('User',frappe.session.user).brand_name;
-    context.customers = frappe.get_list('Customer',fields=['city','zip_code','country','name','customer_name','contact','phone','email_address']);
+    brand = frappe.get_doc('User',frappe.session.user).brand_name;
+    context.customers = frappe.get_all('Customer',fields=['city','zip_code','country','name','customer_name','contact','phone','email_address'],filters={'brand':brand})
     return context
