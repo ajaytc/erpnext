@@ -1,5 +1,5 @@
 <div class="table-wrapper">
-    <table class="table table-striped">
+    <table class="table table-striped table-text-center">
         <thead>
             <tr>
                 <th scope="col">{{_("INTERNAL REF")}}</th>
@@ -15,7 +15,7 @@
         <tbody>
             {% for o in shipped %}
             <tr>
-                <td>
+                <td class="text-center">
                     {% if isFabric %}
                     <a href="/fabric-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isTrimming %}

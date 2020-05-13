@@ -1229,3 +1229,7 @@ label.fabric-form-input .btn.date-picker.active {
   margin-top: 70px;
   margin-bottom: 25px;
 }
+.table-text-center th,
+.table-text-center td {
+  text-align: center !important;
+}
