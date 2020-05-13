@@ -158,122 +158,111 @@
 </div>
 
 
-{# bottom part of summary page should go below #}
-<div class="card" style="">
-    <div class="card-body row">
-        <div class="col-6">
-            <div class="m-3">
-                {{_("Trimming Vendor")}}
+<div class="sidebar right">
+    <div class="sidebar-inner">
+        <h5 class="mb-4 mt-0">{{_("Trimming Vendor")}}</h5>
+
+        <div class="form-group">
+            {{_("Expected Work Date")}}
+            <span>
+                <div class="input-group date">
+                    <input id="exWorkDate" class="form-control"
+                        value={% if packOrder.ex_work_date %}{{packOrder.ex_work_date}}{% endif %} name="workDate"
+                        placeholder="Desired date" type="date">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </span>
+        </div>
+
+        <div class="form-group">
+            {{_("Confirmation Doc")}}
+            {% if packOrder.confirmation_doc != None %}
+            <br />
+            <a href="{{packOrder.confirmation_doc}}">{{packOrder.confirmation_doc}}</a>
+            {% else %}
+            {% endif %}
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" value={{packOrder.confirmation_doc}}
+                    name="confirmation_doc" id="confirmation_doc">
+
+                <label id="confirmation_doc-label" class="custom-file-label"
+                    for="confirmation_doc">{% if packOrder.confirmation_doc %}{{packOrder.confirmation_doc}}{% endif %}</label>
+
             </div>
-            <div class="m-3">
-                {{_("Expected Work Date")}}
-                <span>
-                    <div class="input-group date">
-                        <input id="exWorkDate" class="form-control"
-                            value={% if packOrder.ex_work_date %}{{packOrder.ex_work_date}}{% endif %} name="workDate"
-                            placeholder="Desired date" type="date">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Proforma")}}
+            {% if packOrder.profoma != None %}
+            <br />
+            <a href="{{packOrder.profoma}}">{{packOrder.profoma}}</a>
+            {% else %}
+            {% endif %}
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" value={{packOrder.profoma}} name="profoma" id="profoma">
+
+                <label id="profoma-label" class="custom-file-label"
+                    for="profoma">{% if packOrder.profoma %}{{packOrder.profoma}}{% endif %}</label>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Invoice")}}
+            {% if packOrder.invoice != None %}
+            <br />
+            <a href="{{packOrder.invoice}}">{{packOrder.invoice}}</a>
+            {% else %}
+            {% endif %}
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" value={{packOrder.invoice}} name="invoice" id="invoice">
+
+                <label id="invoice-label" class="custom-file-label"
+                    for="invoice">{% if packOrder.invoice %}{{packOrder.invoice}}{% endif %}</label>
+
+
+            </div>
+        </div>
+
+        <h5 class="my-4">{{_("Shipment")}}</h5>
+
+        <div class="form-group">
+            {{_("Carrier")}}
+            <input id="carrier" type="text" value="{% if packOrder.carrier %}{{packOrder.carrier}}{% endif %}"
+                class="form-control mt-2">
+        </div>
+        <div class="form-group">
+            {{_("Tracking Number")}}
+            <input id="tracking_number" type="text"
+                value="{% if packOrder.tracking_number %}{{packOrder.tracking_number}}{% endif %}"
+                class="form-control mt-2">
+        </div>
+
+        <div class="form-group">
+            {{_("Date of Shipment")}}
+            <div class="input-group date">
+                <input id="shipmentDate" class="form-control" value={{packOrder.shipment_date}} name="desireddate"
+                    placeholder="Desired date" type="date">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-
-            <div class="m-3">
-                {{_("Confirmation Doc")}}
-                {% if packOrder.confirmation_doc != None %}
-                <br />
-                <a href="{{packOrder.confirmation_doc}}">{{packOrder.confirmation_doc}}</a>
-                {% else %}
-                {% endif %}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{packOrder.confirmation_doc}}
-                        name="confirmation_doc" id="confirmation_doc">
-
-                    <label id="confirmation_doc-label" class="custom-file-label"
-                        for="confirmation_doc">{% if packOrder.confirmation_doc %}{{packOrder.confirmation_doc}}{% endif %}</label>
-
-                </div>
-            </div>
-
-            <div class="m-3">
-                {{_("Proforma")}}
-                {% if packOrder.profoma != None %}
-                <br />
-                <a href="{{packOrder.profoma}}">{{packOrder.profoma}}</a>
-                {% else %}
-                {% endif %}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{packOrder.profoma}} name="profoma"
-                        id="profoma">
-
-                    <label id="profoma-label" class="custom-file-label"
-                        for="profoma">{% if packOrder.profoma %}{{packOrder.profoma}}{% endif %}</label>
-
-                </div>
-            </div>
-
-            <div class="m-3">
-                {{_("Invoice")}}
-                {% if packOrder.invoice != None %}
-                <br />
-                <a href="{{packOrder.invoice}}">{{packOrder.invoice}}</a>
-                {% else %}
-                {% endif %}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{packOrder.invoice}} name="invoice"
-                        id="invoice">
-
-                    <label id="invoice-label" class="custom-file-label"
-                        for="invoice">{% if packOrder.invoice %}{{packOrder.invoice}}{% endif %}</label>
-
-
-                </div>
-
-                <div class="m-3">
-                    {{_("Shipment")}}
-                </div>
-
-                <div class="m-3">
-                    {{_("Carrier")}}
-                    <input id="carrier" type="text" value="{% if packOrder.carrier %}{{packOrder.carrier}}{% endif %}"
-                        class="form-control mt-2">
-                </div>
-                <div class="m-3">
-                    {{_("Tracking Number")}}
-                    <input id="tracking_number" type="text"
-                        value="{% if packOrder.tracking_number %}{{packOrder.tracking_number}}{% endif %}"
-                        class="form-control mt-2">
-                </div>
-
-                <div class="m-3">
-                    {{_("Date of Shipment")}}
-                    <div class="input-group date">
-                        <input id="shipmentDate" class="form-control" value={{packOrder.shipment_date}}
-                            name="desireddate" placeholder="Desired date" type="date">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="ml-5">
-                    {% if isPackVendor %}
-                    {% if packOrder.docstatus==0 %}
-                    <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
-                    {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-
         </div>
-        <div class="col-6">
-            <div class="m-3">
-                {{_("Comments")}}
-                <textarea class="form-control" id="comment"
-                    rows="4">{% if packOrder.production_comment %}{{packOrder.production_comment}}{% endif %}</textarea>
-            </div>
+
+        <div class="form-group">
+            {{_("Comments")}}
+            <textarea class="form-control" id="comment"
+                rows="4">{% if packOrder.production_comment %}{{packOrder.production_comment}}{% endif %}</textarea>
+        </div>
+
+        <div class="form-group">
+            {% if isPackVendor %}
+            {% if packOrder.docstatus==0 %}
+            <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
-
 </div>
