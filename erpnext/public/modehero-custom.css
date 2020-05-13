@@ -780,7 +780,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   border-left: 1px solid #e6e6e6;
 }
 .page-with-sidebar.right-sidebar .sidebar.right .sidebar-inner {
-  padding: 60px;
+  padding: 20px 60px;
 }
 .page-with-sidebar.right-sidebar .page-body {
   order: 1;
