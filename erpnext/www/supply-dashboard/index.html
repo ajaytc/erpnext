@@ -10,13 +10,13 @@
 <div class="col-12">
     <ul class="page-links yellow">
         {% if frappe.form_dict.type=='fabric' %}
-        <li><a href="/new-fabric-order">Order</a></li>
+        <li><a href="/new-fabric-order">{{_("Order")}}</a></li>
         {% elif frappe.form_dict.type=='trimming' %}
-        <li><a href="/new-trimming-order">Order</a></li>
+        <li><a href="/new-trimming-order">{{_("Order")}}</a></li>
         {% else %}
-        <li><a href="/new-packaging-order">Order</a></li>
+        <li><a href="/new-packaging-order">{{_("Order")}}</a></li>
         {% endif %}
-        <li><a class="active" href="/supply-dashboard?type={{frappe.form_dict.type}}">List</a></li>
+        <li><a class="active" href="/supply-dashboard?type={{frappe.form_dict.type}}">{{_("List")}}</a></li>
         <!-- <li><a href="#">Manage</a></li> -->
     </ul>
 </div>

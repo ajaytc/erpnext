@@ -6,8 +6,8 @@
 
   <div class="col-12">
     <ul class="page-links yellow">
-      <li><a href="#" class="active">Order</a></li>
-      <li><a href="/supply-dashboard?type=packaging">List</a></li>
+      <li><a href="#" class="active">{{_("Order")}}</a></li>
+      <li><a href="/supply-dashboard?type=packaging">{{_("List")}}</a></li>
       <!-- <li><a href="#">Manage</a></li> -->
     </ul>
   </div>
@@ -28,9 +28,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-4 pb-1">
-                <label class="d-flex">Packaging vendor <span class="ml-auto text-nowrap text-12"><a href="#"
+                <label class="d-flex">{{_("Packaging vendor")}} <span class="ml-auto text-nowrap text-12"><a href="#"
                       data-toggle="modal" data-target="#form_modal" class="add-supplier text-orange"
-                      data-group="trimming">Add new +</a></span></label>
+                      data-group="trimming">{{_("Add new +")}}</a></span></label>
                 <select class="form-control" id="vendor_list" required name="packaging_vendor">
                   {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
                   <option>{{vendor.name}}</option>
@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-3">
               <div class="form-group mb-4 pb-1">
-                <label class="d-flex">Internal Ref <span class="ml-auto text-nowrap text-12"></span></label>
+                <label class="d-flex">{{_("Internal Ref")}}<span class="ml-auto text-nowrap text-12"></span></label>
                 <input class="form-control" required name="internal_ref">
               </div>
             </div>
@@ -48,8 +48,8 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group mb-4 pb-1">
-                <label class="d-flex">Packaging Ref <span class="ml-auto text-nowrap text-12"><a href="#"
-                      data-toggle="modal" data-target="#packaging_modal" class="add-supplier text-orange">Add new
+                <label class="d-flex">{{_("Packaging Ref")}} <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#packaging_modal" class="add-supplier text-orange">{{_("Add new")}}
                       +</a></span></label>
                 <select id="ref_list" class="form-control" required name="packaging_item">
                   {# {% for packaging_item in packaging_items %}
@@ -60,8 +60,8 @@
             </div>
             <div class="col-md-3">
               <div class="form-group mb-4 pb-1">
-                <label class="d-flex">Product name <span class="ml-auto text-nowrap text-12"><a class="text-orange"
-                      href="/product-item?new=1">Add new +</a></span></label>
+                <label class="d-flex">{{_("Product name")}} <span class="ml-auto text-nowrap text-12"><a class="text-orange"
+                      href="/product-item?new=1">{{_("Add new +")}}</a></span></label>
                 <select class="form-control" required name="product_name">
                   {% for product_name  in product_names %}
                   <option value='{{product_name.item_code}}'>{{product_name.item_name}}</option>
@@ -71,8 +71,8 @@
             </div>
             <div class="col-md-3">
               <div class="form-group mb-4 pb-1">
-                <label class="d-flex">Production Factory <span class="ml-auto text-nowrap text-12"><a href="#"
-                      data-toggle="modal" data-target="#factory_modal" class="add-supplier text-orange">Add new
+                <label class="d-flex">{{_("Production Factory")}} <span class="ml-auto text-nowrap text-12"><a href="#"
+                      data-toggle="modal" data-target="#factory_modal" class="add-supplier text-orange">{{_("Add new")}}
                       +</a></span></label>
                 <select id="factory_list" class="form-control" required name="production_factory">
                   {% for production_factory  in production_facories %}
@@ -85,25 +85,25 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label>Quantity</label>
+                <label>{{_("Quantity")}}</label>
                 <input class="form-control price" required name="quantity" id="quantity">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Stock</label>
+                <label>{{_("Stock")}}</label>
                 <input class="form-control" required name="stock" id="stock">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Price / Unit</label>
+                <label>{{_("Price / Unit")}}</label>
                 <input class="form-control price" required name="price_per_unit" id="price_per_unit">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Total price</label>
+                <label>{{_("Total price")}}</label>
                 <input class="form-control" required name="total_price" id="total_price">
               </div>
             </div>

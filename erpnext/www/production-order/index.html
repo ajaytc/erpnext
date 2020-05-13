@@ -1,7 +1,7 @@
 <div class="col-12">
     <ul class="page-links ">
-        <li><a href="#" class="active">Order</a></li>
-        <li><a href="/production-dashboard">List</a></li>
+        <li><a href="#" class="active">{{_("Order")}}</a></li>
+        <li><a href="/production-dashboard">{{_("List")}}</a></li>
         <!-- <li><a href="#">Manage</a></li> -->
     </ul>
 </div>
@@ -40,7 +40,7 @@
                     <div class="m-3">
                         <label for="" class="d-flex">{{_("Product Category")}}
                             <a href="#" data-toggle="modal" data-target="#category_modal"
-                                class="add-supplier text-teal ml-auto">Add new
+                                class="add-supplier text-teal ml-auto">{{_("Add new")}}
                                 +</a></label>
 
                         {{dropdown(categories,'','category_list')}}
@@ -53,7 +53,7 @@
                     <div class="m-3">
                         <label for="" class="d-flex">{{_("Fabric ref")}}
                             <a href="#" data-toggle="modal" data-target="#fabric_modal"
-                                class="add-supplier text-teal ml-auto">Add new
+                                class="add-supplier text-teal ml-auto">{{_("Add new")}}
                                 +</a></label>
 
                         {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'fabric_list','fabric_list')}}
