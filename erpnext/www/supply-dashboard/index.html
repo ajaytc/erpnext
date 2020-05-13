@@ -1,3 +1,4 @@
+{%if 'Brand User' in roles%}
 {% if frappe.form_dict.type=='fabric' %}
 {{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
 {% elif frappe.form_dict.type=='trimming' %}
@@ -19,14 +20,17 @@
         <!-- <li><a href="#">Manage</a></li> -->
     </ul>
 </div>
-<div class="col-12">
+{% endif%}
+<div class="col-12 mt-3">
     <div class="title-with-image d-flex align-items-center">
         {% if frappe.form_dict.type=='fabric' %}
         <h2 class="my-0">{{_("Fabric Orders")}}</h2>
         {% elif frappe.form_dict.type=='trimming' %}
         <h2 class="my-0">{{_("Trimming Orders")}}</h2>
-        {% else %}
+        {% elif frappe.form_dict.type=='packaging' %}
         <h2 class="my-0">{{_("Packaging Orders")}}</h2>
+        {% else%}
+        <h2 class="my-0">{{_("Supply Dashboard")}}</h2>
         {% endif %}
     </div>
 </div>

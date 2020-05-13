@@ -38,7 +38,8 @@
   "profoma_reminder",
   "payment_reminder",
   "shipment_reminder",
-  "reception_reminder"
+  "reception_reminder",
+  "destination"
  ],
  "fields": [
   {
@@ -217,11 +218,16 @@
    "fieldname": "reception_reminder",
    "fieldtype": "Date",
    "label": "Reception Reminder"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Destination"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-01 21:20:21.633513",
+ "modified": "2020-05-13 16:23:48.779589",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Fabric Order",

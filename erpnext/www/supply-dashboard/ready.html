@@ -2,18 +2,19 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">{{_("INTERNAL REF")}}</th>
+                {# <th scope="col">{{_("INTERNAL REF")}}</th> #}
                 <th scope="col">{{_("ITEM NAME")}}</th>
-                <th scope="col">{{_("ITEM CATEGORY")}}</th>
+                {# <th scope="col">{{_("ITEM CATEGORY")}}</th> #}
                 <th scope="col">{{_("ORDER DATE")}}</th>
                 <th scope="col">{{_("EX WORK DATE")}}</th>
                 <th scope="col">{{_("DESTINATION")}}</th>
+                <th scope="col">{{_("BRAND")}}</th>
             </tr>
         </thead>
         <tbody>
             {% for o in ready %}
             <tr>
-                <td>
+                {# <td>
                     {% if isFabric %}
                     <a href="/fabric-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isTrimming %}
@@ -21,12 +22,13 @@
                     {% elif isPackaging %}
                     <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% endif %}
-                </td>
+                </td> #}
                 <td>{{o['product_name']}}</td>
                 <td>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</td>
                 <td>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</td>
                 <td>{{frappe.format(o['ex_work_date'], {'fieldtype': 'Date'})}}</td>
-                <td></td>
+                <td>{{o.destination}}</td>
+                <td>{{o.brand}}</td>
             </tr>
             {% endfor %}
         </tbody>

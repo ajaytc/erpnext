@@ -30,7 +30,7 @@ def get_context(context):
         context.isTrimming = "Trimming Vendor" in context.roles
 
     fileds = ['internal_ref', 'name', 'product_name', 'brand', 'creation',
-              'tracking_number', 'ex_work_date', 'profoma', 'shipment_date', 'invoice']
+              'tracking_number', 'ex_work_date', 'profoma', 'shipment_date', 'invoice', 'destination']
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
 
