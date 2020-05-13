@@ -47,7 +47,7 @@ def create_packaging_order(data):
         'internal_ref': data['internal_ref'],
         'packaging_item': data['packaging_item'],
         'product_name': data['item_code'],
-        'production_factory': data['production_factory'],
+        'destination': data['production_factory'],
         'quantity': int(data['quantity']),
         'in_stock': int(data['in_stock']),
         'price_per_unit': data['price_per_unit'],
