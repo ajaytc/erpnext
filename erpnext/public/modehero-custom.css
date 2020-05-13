@@ -784,7 +784,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar.right-sidebar .page-body {
   order: 1;
-  width: calc(100% - 675px);
+  width: calc(100% - 375px);
 }
 .data-box-ul {
   display: block;
