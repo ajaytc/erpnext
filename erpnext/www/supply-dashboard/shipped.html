@@ -2,7 +2,7 @@
     <table class="table table-striped table-text-center">
         <thead>
             <tr>
-                <th scope="col">{{_("Internal Ref")}}</th>
+                <!-- <th scope="col">{{_("Internal Ref")}}</th> -->
                 <th scope="col">{{_("Item Name")}}</th>
                 {# <th scope="col">{{_("ITEM CATEGORY")}}</th> #}
                 <th scope="col">{{_("Order Date")}}</th>
@@ -14,8 +14,8 @@
         </thead>
         <tbody>
             {% for o in shipped %}
-            <tr>
-                <td class="text-center">
+            <tr class="item" data-ref="{{o.internal_ref}}">
+                <!-- <td class="text-center">
                     {% if isFabric %}
                     <a href="/fabric-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% elif isTrimming %}
@@ -23,8 +23,8 @@
                     {% elif isPackaging %}
                     <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% endif %}
-                </td>
-                <td>{{o['product_name']}}</td>
+                </td> -->
+                <td>{{o['item_ref']}}</td>
                 {# <td>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</td> #}
                 <td>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</td>
                 <td>{{frappe.format(o['ex_work_date'], {'fieldtype': 'Date'})}}</td>

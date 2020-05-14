@@ -29,43 +29,47 @@ def get_context(context):
         context.isPackaging = "Packaging Vendor" in context.roles
         context.isTrimming = "Trimming Vendor" in context.roles
 
-    fileds = ['internal_ref', 'name', 'product_name', 'brand', 'creation',
+    fields = ['internal_ref', 'name', 'product_name', 'brand', 'creation',
               'tracking_number', 'ex_work_date', 'profoma', 'shipment_date', 'invoice', 'destination']
+    fabric_fields = fields+['fabric_ref as item_ref']
+    trimming_fields = fields+['trimming_item as item_ref']
+    packaging_fields = fields+['packaging_item as item_ref']
+
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
 
     if context.isFabric:
         orderType = 'Fabric Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fabric_fields)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fabric_fields)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fabric_fields)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fabric_fields)
 
     elif context.isPackaging:
         orderType = 'Packaging Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=packaging_fields)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=packaging_fields)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=packaging_fields)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=packaging_fields)
 
     elif context.isTrimming:
         orderType = 'Trimming Order'
         context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 0, 'brand': brand}, fields=trimming_fields)
         context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 1, 'brand': brand}, fields=trimming_fields)
         context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 4, 'brand': brand}, fields=trimming_fields)
         context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fileds)
+            orderType, filters={'docstatus': 3, 'brand': brand}, fields=trimming_fields)
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}

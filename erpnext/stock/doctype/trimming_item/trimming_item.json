@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "format:{internal_ref} - {trimming_vendor}",
+ "autoname": "format:{internal_ref}",
  "creation": "2020-04-03 18:28:31.795501",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -98,7 +98,7 @@
   }
  ],
  "links": [],
- "modified": "2020-05-13 16:05:25.920097",
+ "modified": "2020-05-14 14:23:51.262622",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",
