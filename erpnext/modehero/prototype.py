@@ -29,7 +29,7 @@ def create_prototype_order(data):
         'brand': brand
     })
 
-    order.insert()
+    order.insert(ignore_permissions=True)
 
     reduce_supply_stock(order)
 
