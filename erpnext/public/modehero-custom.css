@@ -894,6 +894,7 @@ select.form-control {
   outline: none !important;
   padding: 12px 15px;
   height: 45px;
+  min-width: 30px;
 }
 select {
   appearance: none !important;
