@@ -5,7 +5,7 @@ var numeric = /^\d+$/;
 $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {
-    // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
+    console.log($(e.target))
     product = $(e.target).find("option:selected").text()
     $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
@@ -17,7 +17,7 @@ const productUpdateCallback = (e) => {
             if (!r.exc) {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
-                $(e.target).parent().parent().parent().parent().find('.table-section').html(table)
+                $('#table-section').html(table)
                 $('.qty>td>input').change(priceUpdateCallback)
             }
         }
