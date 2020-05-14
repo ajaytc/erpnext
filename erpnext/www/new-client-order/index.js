@@ -55,7 +55,7 @@ function generateSizingTable(sizes) {
 
     sizes.map(s => {
         heads += `<th class="sizing" scope="col">${s}</th>`
-        inputs += `<td><input type="text" data-size="${s}" class="form-control"></td>`
+        inputs += `<td><input type="text" data-size="${s}" class="form-control px-0 text-center"></td>`
     })
 
     return `
