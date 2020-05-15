@@ -1,6 +1,6 @@
 <div>
   <h2>
-    List of Fabric in Stock
+    {{_("List of Fabric in Stock")}}
   </h2>
 </div>
 
@@ -34,13 +34,13 @@
 <div>
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipFromExisting"
     id=shipFromExistingButton>
-    Ship From existing Purchase
+    {{_("Ship From existing Purchase")}}
   </button>
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#directShip" id=directShipButton>
-    Direct Ship
+    {{_("Direct Ship")}}
   </button>
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateStock" id=updateStockButton>
-    Update Stock
+    {{_("Update Stock")}}
   </button>
 </div>
 
@@ -64,7 +64,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ship From Existing</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{_("Ship From existing")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -83,8 +83,8 @@
         <div class="form-group" id="input-field"></div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="shipfromExistingbutton">Ship</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
+          <button type="button" class="btn btn-primary" id="shipfromExistingbutton">{{_("Ship")}}</button>
         </div>
       </div>
     </div>
@@ -96,7 +96,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Update Stock</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{_("Update Stock")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -104,18 +104,18 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="in-stock" class="col-form-label">In Stock</label>
+            <label for="in-stock" class="col-form-label">{{_("In Stock")}}</label>
             <input type="number" class="form-control" id="in-stock" readonly>
           </div>
           <div class="form-group">
-            <label for="real-stock" class="col-form-label">Real Stock</label>
+            <label for="real-stock" class="col-form-label">{{_("In Stock")}}</label>
             <input type="number" class="form-control" id="real-stock">
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="validatebutton">Validate</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
+        <button type="button" class="btn btn-primary" id="validatebutton">{{_("Validate")}}</button>
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Direct Ship</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{_("Direct Ship")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -134,7 +134,7 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="quantity" class="col-form-label">Qty</label>
+            <label for="quantity" class="col-form-label">{{_("Qty")}}</label>
             <input type="number" class="form-control" id="quantity">
           </div>
           <div class="form-group">
@@ -144,8 +144,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id=shipbutton>Ship</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
+        <button type="button" class="btn btn-primary" id=shipbutton>{{_("Ship")}}</button>
       </div>
     </div>
   </div>

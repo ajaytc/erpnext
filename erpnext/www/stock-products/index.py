@@ -21,7 +21,7 @@ def get_context(context):
 
     brand = frappe.get_doc("User", frappe.session.user).brand_name
 
-    context.destination = frappe.get_list("Destination")
+    context.destination = frappe.get_all("Destination")
 
     context.clients = frappe.get_list("Customer")
 

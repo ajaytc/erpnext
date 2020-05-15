@@ -71,7 +71,7 @@
                                 </label>
                                 <select class="form-control" required name="composition">
                                     {% for c in frappe.get_all('Composition',filters={},fields=['name','composition_name']) %}
-                                    <option value={{c.name}}>{{c.composition_name}}</option>
+                                    <option value="{{c.name}}">{{c.composition_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
