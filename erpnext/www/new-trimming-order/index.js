@@ -96,7 +96,7 @@ $('#vendor_list').click(function () {
     })
 })
 
-$('#trimming_list').click(function () {
+$('#ref_list').click(function () {
     console.log($(this).text())
     frappe.call({
         method: 'erpnext.modehero.stock.get_stock',
