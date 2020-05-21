@@ -74,6 +74,7 @@ function priceUpdateCallback(e) {
 }
 
 $('#product').click(productUpdateCallback)
+$('#product').trigger('click');
 
 function generateSizingTable(sizes) {
 
