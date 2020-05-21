@@ -27,7 +27,6 @@
   {
    "fieldname": "brand",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Brand",
    "options": "Company",
    "reqd": 1
@@ -55,7 +54,7 @@
  ],
  "links": [],
  "max_attachments": 1,
- "modified": "2020-04-27 21:00:34.708297",
+ "modified": "2020-05-21 17:03:27.742834",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Sizing Scheme",

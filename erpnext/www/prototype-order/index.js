@@ -6,7 +6,7 @@ $('.close').click(e => console.log($(e.target).parent()))
 
 const productUpdateCallback = (e) => {
     console.log($(e.target))
-    product = $(e.target).find("option:selected").text()
+    product = $(e.target).find("option:selected").val()
     $(e.target).closest('.product-table').attr('id', product)
     frappe.call({
         method: 'erpnext.stock.sizing.getSizes',
@@ -35,7 +35,7 @@ function priceUpdateCallback(e) {
 
         //calculate price 
         $('#product-table').map(function () {
-            let product = $(this).find('.selected-product>option:selected').text()
+            let product = $(this).find('.selected-product>option:selected').val()
 
             $(this).find('.qty>td').map(function () {
                 let qty = $(this).find('input').val()
