@@ -5,7 +5,7 @@
         var url = window.location.pathname + window.location.search;
         console.log(url)
         $(".main-sidebar-menu a").each(function () {
-            if (url === $(this).attr('href') || window.location.pathname === $(this).attr('href')) {
+            if (url === $(this).attr('href') || window.location.pathname === $(this).attr('href') || window.location.pathname === $(this).data('url2')) {
                 console.log(url, $(this).attr('href'))
                 $(this).addClass('active')
                 if ($(this).parent('div.list-group') && $(this).parent('div.list-group').parent('div.collapse')) {
@@ -195,7 +195,7 @@
                     <a href="/prototype-order" class="list-group-item ">
                         {{_("Order")}}
                     </a>
-                    <a href="/prototype-dashboard" class="list-group-item ">
+                    <a href="/prototype-dashboard" class="list-group-item " data-url2="/prototype-summary">
                         {{_("List")}}
                     </a>
                     {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
@@ -268,7 +268,7 @@
             <a href="/shipment-order?new=1" class="list-group-item ">
                 {{_("Order")}}
             </a>
-            <a href="/shipping-list" class="list-group-item ">
+            <a href="/shipping-list" data-url2="/shipment-order" class="list-group-item ">
                 {{_("List")}}
             </a>
             {# <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c5a"
