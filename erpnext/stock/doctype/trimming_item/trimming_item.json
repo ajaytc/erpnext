@@ -8,6 +8,7 @@
  "field_order": [
   "section_break_1",
   "trimming_vendor",
+  "trimming_ref",
   "section_break_2",
   "item_category",
   "color",
@@ -95,10 +96,16 @@
    "fieldname": "vendor_ref",
    "fieldtype": "Data",
    "label": "Vendor Ref"
+  },
+  {
+   "fieldname": "trimming_ref",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Trimming Ref"
   }
  ],
  "links": [],
- "modified": "2020-05-14 14:23:51.262622",
+ "modified": "2020-05-22 11:07:40.777166",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

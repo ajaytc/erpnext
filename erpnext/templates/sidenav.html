@@ -5,8 +5,8 @@
         var url = window.location.pathname + window.location.search;
         console.log(url)
         $(".main-sidebar-menu a").each(function () {
-            console.log(url, $(this).attr('href'))
-            if (url === $(this).attr('href')) {
+            if (url === $(this).attr('href') || window.location.pathname === $(this).attr('href')) {
+                console.log(url, $(this).attr('href'))
                 $(this).addClass('active')
                 if ($(this).parent('div.list-group') && $(this).parent('div.list-group').parent('div.collapse')) {
                     $(this).parent('div.list-group').parent('div.collapse').prev('a.list-group-item').attr('aria-expanded', 'true')
@@ -16,8 +16,12 @@
                         current.parent('div.list-group').parent('div.collapse').prev('a.list-group-item').attr('aria-expanded', 'true')
                         current.parent('div.list-group').parent('div.collapse').addClass('show')
                     }
+                    current = $(current).parent('div.list-group').parent('div.collapse')
+                    if (current.parent('div.list-group') && current.parent('div.list-group').parent('div.collapse')) {
+                        current.parent('div.list-group').parent('div.collapse').prev('a.list-group-item').attr('aria-expanded', 'true')
+                        current.parent('div.list-group').parent('div.collapse').addClass('show')
+                    }
                 }
-
             }
         })
     })

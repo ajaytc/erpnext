@@ -1,12 +1,32 @@
+{% macro heading(title,url)%}
+<div class="mb-3">
+    <h1 style="display: inline-block;">{{title}}</h1>
+    <button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3 float-right"
+        onclick="window.location.href='{{url}}'">
+        {{_("New Supplier")}}
+    </button>
+</div>
+{%endmacro%}
+
 {% if 'type' in frappe.form_dict %}
 {% set url = ['/supply?new=1&type=',frappe.form_dict['type']]|join('')%}
+{%if frappe.form_dict['type']=='Fabric'%}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric','url':'/'},{'label':'Manage','url':'/'},{'label':'Fabric Vendor','url':url}]) }}
+{{heading('Fabric Vendor',url)}}
+{%elif frappe.form_dict['type']=='Trimming'%}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming','url':'/'},{'label':'Manage','url':'/'},{'label':'Trimming Vendor','url':url}]) }}
+{{heading('Trimming Vendor',url)}}
+{%elif frappe.form_dict['type']=='Packaging'%}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging','url':'/'},{'label':'Manage','url':'/'},{'label':'Packaging Vendor','url':url}]) }}
+{{heading('Packaging Vendor',url)}}
+{%endif%}
 {%else%}
 {%set url ='/supply?new=1'%}
 {%endif%}
-<button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3"
-    onclick="window.location.href='{{url}}'">
-    {{_("New Supplier")}}
-</button>
+
+{%block title %}
+
+{%endblock%}
 <div class="table-wrapper">
     <table class="table table-striped">
         <thead>
