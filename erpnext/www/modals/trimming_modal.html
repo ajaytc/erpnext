@@ -71,13 +71,8 @@
                             <div class="form-group">
                                 <label class="d-flex">
                                     {{_("Size")}}
-                                    <a class="text-green ml-auto" href="/trimming-size?new=1">{{_("Add new")}}</a>
                                 </label>
-                                <select class="form-control" required name="size">
-                                    {% for item in frappe.get_all('Trimming Size',filters={}) %}
-                                    <option>{{item.name}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input class="form-control" required name="size">
                             </div>
                         </div>
                     </div>
