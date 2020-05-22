@@ -1,11 +1,11 @@
-{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Product List','url':'/products-list'}]) }}
-
-<div class="mb-3" >
+{{ breadcrumb([{'label':'Production','url':'/'},{'label':'Manage','url':'/'},{'label':'Product List','url':'/products-list'}]) }}
+<h2>{{_("Prototype Orders")}}</h2>
+<div class="mb-3">
     <button id="finished" type="button" onclick="location.href='/product-item?new=1'" class="btn btn-primary">
         {{_("Add")}}
     </button>
 </div>
-   
+
 
 <div class="table-wrapper">
     <table class="table table-striped">
@@ -13,8 +13,8 @@
             <tr>
                 <th scope="col">{{_("Product Name")}}</th>
                 <th scope="col">{{_("PRODUCT CATAGERY")}}</th>
-                
-                
+
+
             </tr>
         </thead>
         <tbody>
@@ -26,5 +26,5 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
 </div>

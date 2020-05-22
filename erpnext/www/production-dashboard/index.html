@@ -1,4 +1,6 @@
 {% if isBrand%}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Porudction Order List','url':'/production-dashboard'}]) }}
+<h2>{{_("Porudction Orders")}}</h2>
 <div class="col-12">
     <ul class="page-links">
         <li><a href="/production-order" class="">{{_("Order")}}</a></li>

@@ -1,6 +1,6 @@
 {% macro heading(title,url)%}
 <div class="mb-3">
-    <h1 style="display: inline-block;">{{title}}</h1>
+    <h2 style="display: inline-block;">{{title}}</h2>
     <button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3 float-right"
         onclick="window.location.href='{{url}}'">
         {{_("New Supplier")}}
@@ -22,11 +22,9 @@
 {%endif%}
 {%else%}
 {%set url ='/supply?new=1'%}
+{{heading('Supplier List',url)}}
 {%endif%}
 
-{%block title %}
-
-{%endblock%}
 <div class="table-wrapper">
     <table class="table table-striped">
         <thead>

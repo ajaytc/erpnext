@@ -1,7 +1,11 @@
-<button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3"
-    onclick="window.location.href='/client?new=1'">
-    {{_("New Client")}}
-</button>
+{{ breadcrumb([{'label':'Client','url':'/'},{'label':'Manage','url':'/'},{'label':'Client List','url':'/client-list'}]) }}
+<div>
+    <h2 style="display: inline-block;">{{_("Client List")}}</h2>
+    <button id="finished" data-btntype="pre-finish" type="button" class="btn btn-primary mb-3 float-right"
+        onclick="window.location.href='/client?new=1'" style="margin-top: 50px;">
+        {{_("New Client")}}
+    </button>
+</div>
 <div class="table-wrapper">
     <table class="table table-striped">
         <thead>

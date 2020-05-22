@@ -8,7 +8,7 @@
  "allow_print": 0,
  "amount": 0.0,
  "amount_based_on_field": 0,
- "breadcrumbs": "[{\"label\": _(\"Home\"), \"route\":\"/\"}]",
+ "breadcrumbs": "[{\"label\": _(\"Home\"), \"route\":\"/\"},\n{\"label\": _(\"Fabric\"), \"route\":\"/\"},\n{\"label\": _(\"Manage\"), \"route\":\"/\"},\n{\"label\": _(\"Fabric Item\"), \"route\":\"/\"}]",
  "button_label": "Save",
  "creation": "2020-04-03 21:02:22.169738",
  "currency": "INR",
@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-05-13 12:31:15.865507",
+ "modified": "2020-05-22 13:30:51.080709",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "fabric-item",
@@ -58,6 +58,18 @@
    "max_value": 0,
    "read_only": 0,
    "reqd": 1,
+   "show_in_filter": 0
+  },
+  {
+   "allow_read_on_all_link_options": 0,
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "hidden": 0,
+   "label": "Internal Ref",
+   "max_length": 0,
+   "max_value": 0,
+   "read_only": 0,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {

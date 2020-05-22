@@ -8,6 +8,7 @@
  "field_order": [
   "fabric_vendor",
   "fabric_ref",
+  "internal_ref",
   "color",
   "composition",
   "width",
@@ -42,7 +43,6 @@
   {
    "fieldname": "composition",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Composition",
    "options": "Composition",
    "reqd": 1
@@ -64,10 +64,16 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "internal_ref",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Internal Ref"
   }
  ],
  "links": [],
- "modified": "2020-05-03 14:10:47.490242",
+ "modified": "2020-05-22 13:30:26.770000",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",
