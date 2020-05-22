@@ -1,10 +1,10 @@
 {%if 'Brand User' in roles%}
 {% if frappe.form_dict.type=='fabric' %}
-{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Fabric','url':'/'},{'label':'Fabric Order List','url':'#'}]) }}
 {% elif frappe.form_dict.type=='trimming' %}
-{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'#'}]) }}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming','url':'/'},{'label':'Trimming Order List','url':'#'}]) }}
 {% else %}
-{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging Order List','url':'#'}]) }}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging','url':'/'},{'label':'Packaging Order List','url':'#'}]) }}
 {% endif %}
 
 <div class="col-12">

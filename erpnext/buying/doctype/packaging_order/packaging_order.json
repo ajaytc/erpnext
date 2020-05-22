@@ -17,7 +17,7 @@
   "in_stock",
   "section_break_3",
   "product_name",
-  "destionation",
+  "destination",
   "section_break_4",
   "price_per_unit",
   "total_price",
@@ -90,11 +90,6 @@
    "fieldtype": "Link",
    "label": "Product Name",
    "options": "Item"
-  },
-  {
-   "fieldname": "destionation",
-   "fieldtype": "Data",
-   "label": "Destination"
   },
   {
    "fieldname": "section_break_4",
@@ -222,11 +217,16 @@
    "fieldname": "reception_reminder",
    "fieldtype": "Data",
    "label": "Reception Reminder"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Destination"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-22 13:58:25.658822",
+ "modified": "2020-05-22 16:06:23.195235",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Packaging Order",
