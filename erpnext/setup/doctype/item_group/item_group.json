@@ -41,7 +41,7 @@
    "fieldname": "item_group_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Item Group Name",
+   "label": "Product Category",
    "oldfieldname": "item_group_name",
    "oldfieldtype": "Data",
    "reqd": 1
@@ -51,7 +51,6 @@
    "fieldname": "parent_item_group",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
-   "in_list_view": 1,
    "label": "Parent Item Group",
    "oldfieldname": "parent_item_group",
    "oldfieldtype": "Link",
@@ -63,7 +62,6 @@
    "description": "Only leaf nodes are allowed in transaction",
    "fieldname": "is_group",
    "fieldtype": "Check",
-   "in_list_view": 1,
    "label": "Is Group",
    "oldfieldname": "is_group",
    "oldfieldtype": "Select"
@@ -193,7 +191,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 3,
- "modified": "2020-05-14 17:01:37.349729",
+ "modified": "2020-05-22 14:15:35.104357",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Item Group",

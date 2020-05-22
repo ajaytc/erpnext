@@ -1,6 +1,5 @@
 {
  "actions": [],
- "autoname": "field:internal_ref",
  "creation": "2020-04-03 19:07:03.218394",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -227,7 +226,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-27 21:27:56.209846",
+ "modified": "2020-05-22 13:58:25.658822",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Packaging Order",
