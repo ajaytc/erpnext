@@ -17,7 +17,7 @@ from six.moves.urllib.parse import quote
 class ItemGroup(NestedSet, WebsiteGenerator):
 	nsm_parent_field = 'parent_item_group'
 	website = frappe._dict(
-		condition_field = "show_in_website",
+		# condition_field = "show_in_website",
 		template = "templates/generators/item_group.html",
 		no_cache = 1
 	)

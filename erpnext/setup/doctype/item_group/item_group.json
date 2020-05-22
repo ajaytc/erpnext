@@ -21,7 +21,6 @@
   "sec_break_taxes",
   "taxes",
   "sb9",
-  "show_in_website",
   "route",
   "weightage",
   "slideshow",
@@ -104,13 +103,6 @@
    "label": "Website Settings"
   },
   {
-   "default": "0",
-   "description": "Check this if you want to show in website",
-   "fieldname": "show_in_website",
-   "fieldtype": "Check",
-   "label": "Show in Website"
-  },
-  {
    "depends_on": "show_in_website",
    "fieldname": "route",
    "fieldtype": "Data",
@@ -191,7 +183,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 3,
- "modified": "2020-05-22 14:15:35.104357",
+ "modified": "2020-05-22 15:01:30.098067",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Item Group",
