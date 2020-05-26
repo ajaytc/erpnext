@@ -134,14 +134,15 @@ $('#submit').click(() => {
 $('#validate').click(function () {
     let order = $('#order-no').text().trim()
     frappe.call({
-        method: 'erpnext.modehero.sales_order.validate_order',
+        method: 'erpnext.modehero.production.validate',
         args: {
-            order
+            order,
+            isvalidate: true
         },
         callback: function (r) {
             if (!r.exc) {
                 console.log(r)
-
+                frappe.msgprint(__('Order Validated'))
             }
         }
     })
@@ -263,21 +264,21 @@ setTimeout(() => {
 
 
 $('#prodSubmit').click(function () {
-let files = ['confirmation_doc', 'profoma', 'invoice']
+    let files = ['confirmation_doc', 'profoma', 'invoice']
 
     Promise.all(files.map(f => {
-        
+
         return checkFileUpload(f)
-        
+
     })).then(files => {
         console.log(files);
         submitProductionSummary(files);
 
     }).catch(e => {
-        
+
         frappe.throw(e)
     })
-    
+
 });
 
 function checkFileUpload(componentId) {
@@ -285,59 +286,59 @@ function checkFileUpload(componentId) {
         let file = $(`#${componentId}`).prop('files')[0]
         switch (componentId) {
             case "confirmation_doc":
-                
+
                 if (!file) {
                     if ("{{order.confirmation_doc}}" == null) {
                         console.error('confirmation doc must upload');
-        
+
                     } else {
                         filename = "{{order.confirmation_doc}}";
                         resolve(filename);
                     }
-        
+
                 } else {
                     uploadFile(componentId).then(res => resolve(res));
-        
+
                 }
                 break;
             case "profoma":
-                
+
                 if (!file) {
                     if ("{{order.profoma}}" == null) {
                         console.error('profoma must upload');
-        
+
                     } else {
                         filename = "{{order.profoma}}";
                         resolve(filename);
                     }
-        
+
                 } else {
                     uploadFile(componentId).then(res => resolve(res));
-        
+
                 }
-                
+
                 break;
             case "invoice":
-                
+
                 if (!file) {
                     if ("{{order.invoice}}" == null) {
                         console.error('invoice must upload');
-        
+
                     } else {
                         filename = "{{order.invoice}}";
                         resolve(filename);
                     }
-        
+
                 } else {
                     uploadFile(componentId).then(res => resolve(res));
-        
+
                 }
-                
+
                 break;
-        
-            
+
+
         }
-        
+
     })
 
 }
@@ -349,8 +350,8 @@ function submitProductionSummary(files) {
             data: {
                 order: "{{frappe.form_dict.order}}",
                 ex_work_date: $('#exWorkDate').val(),
-                confirmation_doc:files[0],
-                profoma:files[1],
+                confirmation_doc: files[0],
+                profoma: files[1],
                 invoice: files[2],
                 carrier: $('#carrier').val(),
                 tracking_number: $('#tracking_number').val(),
@@ -367,7 +368,7 @@ function submitProductionSummary(files) {
                     message: __('Production order ' + "{{order.name}}" + ' summary created successfully')
                 });
 
-            }else{
+            } else {
                 frappe.msgprint({
                     title: __('Notification'),
                     indicator: 'red',
@@ -376,7 +377,7 @@ function submitProductionSummary(files) {
             }
         }
     })
-    
+
 }
 
 function uploadFile(componentId) {

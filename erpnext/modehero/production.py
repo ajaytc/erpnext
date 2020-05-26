@@ -25,7 +25,7 @@ def create_production_order(data):
         'comment': data['comment'],
         'brand': brand
     })
-    order.insert()
+    order.insert(ignore_permissions=True)
 
     order_quantities = get_order_quantities(order)
     # If there is a missvalue in any fabric/trimming/packaging consumption values, then no stock of all of three will not be reduced
@@ -52,7 +52,7 @@ def validate(order, isvalidate):
         order.docstatus = 1
         order.save()
         order.docstatus = 2
-    order.save()
+    order.save(ignore_permissions=True)
     frappe.db.commit()
     return order
 
