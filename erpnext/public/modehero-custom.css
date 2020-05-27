@@ -784,7 +784,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 .page-with-sidebar.right-sidebar .page-body {
   order: 1;
-  width: calc(100% - 375px);
+  width: calc(100% - 675px);
 }
 .data-box-ul {
   display: block;
@@ -874,6 +874,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   border-radius: 15px;
   box-shadow: 0 5px 15px 4px rgba(0, 0, 0, 0.05);
   border: 1px solid #f7f7f7;
+  width: 100%;
 }
 .card p.label {
   opacity: 0.5;
@@ -1162,6 +1163,7 @@ label.fabric-form-input .btn.date-picker.active {
   border-radius: 15px;
   box-shadow: 0 5px 15px 4px rgba(0, 0, 0, 0.05);
   border: 1px solid #f7f7f7;
+  width: 100%;
   text-align: center;
   padding: 30px;
   position: relative;
