@@ -11,7 +11,7 @@ var numeric = /^\d+$/;
 
 $('#addtable').click((e) => {
     e.preventDefault();
-    $('#box0').clone().addClass('class', 'product-table').appendTo('#table_container')
+    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#table_container')
     tablecount++
     $('.selected-product').click(productUpdateCallback)
     setClose()
@@ -200,7 +200,7 @@ function priceUpdateCallback(e) {
     } else {
 
         let products = {}
-
+        let totalqty = 0
         //calculate price 
         $('.product-table').map(function () {
             let product = $(this).find('.selected-product>option:selected').val()
@@ -214,6 +214,7 @@ function priceUpdateCallback(e) {
                 }
                 if (qty != '') {
                     products[product][size] = qty
+                    totalqty += parseInt(qty);
                 }
             })
 
@@ -221,11 +222,11 @@ function priceUpdateCallback(e) {
         console.log(products)
 
         $(e.target).css('border', '1px solid #ced4da')
-        calculatePrice(products)
+        calculatePrice(products, totalqty)
     }
 }
 
-function calculatePrice(products) {
+function calculatePrice(products, totalqty) {
     frappe.call({
         method: 'erpnext.modehero.sales_order.calculate_price',
         args: {
@@ -237,9 +238,9 @@ function calculatePrice(products) {
                 $('#total').html(r.message.total)
                 let prices = r.message
                 for (let p in prices) {
-                    $(`#${p}`).find('.pricing-table .total-price').html(prices[p])
-                    $(`#${p}`).find('.pricing-table .price-pp').html(prices.perpiece[p])
-                    $(`#${p}`).find('.pricing-table .total-order').html(prices.total)
+                    $(`#${p}`).find('.total-price').html(prices[p])
+                    $(`#${p}`).find('.price-pp').html(prices.perpiece[p])
+                    $(`#${p}`).find('.total-order').html(totalqty)
                 }
             }
         }
