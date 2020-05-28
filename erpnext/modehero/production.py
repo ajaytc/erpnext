@@ -87,7 +87,7 @@ def stockUpdateAfterFinish(order):
         order.product_name] + existing_details['old_value']
     total_quantity = int(order_quantity)+existing_details['old_stock']
     updateStock2(existing_details['stock_name'], total_quantity,
-                    existing_details['old_stock'], "Production", price*1.0/total_quantity)
+                 existing_details['old_stock'], "Production", price*1.0/total_quantity)
 
 
 @frappe.whitelist()
@@ -102,10 +102,11 @@ def submit_production_summary_info(data):
     order.tracking_number = data['tracking_number']
     order.shipment_date = data['shipment_date']
     order.production_comment = data['production_comment']
-    if(order.invoice != 'None' or order.confirmation_doc != 'None' or order.profoma != 'None' or order.expected_work_date or order.tracking_number or order.carrier or order.shipment_date):
+    if(order.profoma != 'None'):
         order.docstatus = 1
     order.save()
-    stockUpdateAfterFinish(order)
+    if(order.invoice != 'None'):
+        stockUpdateAfterFinish(order)
     return order
 
 
