@@ -162,84 +162,83 @@
             {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="sidebar right">
-        <div class="sidebar-inner">
-            <h5 class="mb-4 mt-0">
-                {{_("Production")}}
-            </h5>
+<div class="sidebar right">
+    <div class="sidebar-inner">
+        <h5 class="mb-4 mt-0">
+            {{_("Production")}}
+        </h5>
 
-            <div class="form-group">
-                {{_("Date")}}
-                <span>
-                    <div class="input-group date">
-                        <input id="exWorkDate" class="form-control"
-                            value={% if order.ex_work_date %}{{order.ex_work_date}}{% endif %} name="workDate"
-                            placeholder="Desired date" type="date">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </span>
-            </div>
-
-            <div class="form-group">
-                {{_("Invoice")}}
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" value={{order.invoice}} id="invoice">
-                    {% if order.invoice==null %}
-                    <label id="invoice-label" class="custom-file-label" for="invoice">{{_("Invoice")}}</label>
-                    {% elif order.docstatus!=null %}
-                    <label id="invoice-label" class="custom-file-label"
-                        for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="m-3">
-                {{_("Shipment")}}
-            </div>
-
-            <div class="form-group">
-                {{_("Career")}}
-                <input id="career" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}"
-                    class="form-control mt-2">
-            </div>
-            <div class="form-group">
-                {{_("Tracking Number")}}
-                <input id="tracking_number" type="text"
-                    value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}"
-                    class="form-control mt-2">
-            </div>
-
-            <div class="form-group">
-                {{_("Date of Shipment")}}
+        <div class="form-group">
+            {{_("Date")}}
+            <span>
                 <div class="input-group date">
-                    <input id="shipmentDate" class="form-control" value={{order.shipment_date}} name="desireddate"
+                    <input id="exWorkDate" class="form-control"
+                        value={% if order.ex_work_date %}{{order.ex_work_date}}{% endif %} name="workDate"
                         placeholder="Desired date" type="date">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-            </div>
+            </span>
+        </div>
 
-            <div class="form-group">
-                {{_("Price")}}
-                <input id="price" type="text" value="{% if order.shipment_price %}{{order.shipment_price}}{% endif %}"
-                    class="form-control mt-2">
-            </div>
-
-            <div class="mform-group">
-                {% if order.docstatus==0 %}
-                <button class="btn btn-primary" id="prodSubmit">{{_("Submit")}}</button>
+        <div class="form-group">
+            {{_("Invoice")}}
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" value={{order.invoice}} id="invoice">
+                {% if order.invoice==null %}
+                <label id="invoice-label" class="custom-file-label" for="invoice">{{_("Invoice")}}</label>
+                {% elif order.docstatus!=null %}
+                <label id="invoice-label" class="custom-file-label"
+                    for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
                 {% endif %}
             </div>
+        </div>
+
+        <h5 class="my-4">
+            {{_("Shipment")}}
+        </h5>
+
+        <div class="form-group">
+            {{_("Career")}}
+            <input id="career" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}"
+                class="form-control mt-2">
+        </div>
+        <div class="form-group">
+            {{_("Tracking Number")}}
+            <input id="tracking_number" type="text"
+                value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
+        </div>
+
+        <div class="form-group">
+            {{_("Date of Shipment")}}
+            <div class="input-group date">
+                <input id="shipmentDate" class="form-control" value={{order.shipment_date}} name="desireddate"
+                    placeholder="Desired date" type="date">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Price")}}
+            <input id="price" type="text" value="{% if order.shipment_price %}{{order.shipment_price}}{% endif %}"
+                class="form-control mt-2">
         </div>
 
         <div class="form-group">
             {{_("Comments")}}
             <textarea class="form-control" id="comment"
                 rows="4">{% if order.production_comment %}{{order.production_comment}}{% endif %}</textarea>
+        </div>
+
+        <div class="form-group">
+            {% if order.docstatus==0 %}
+            <button class="btn btn-primary" id="prodSubmit">{{_("Submit")}}</button>
+            {% endif %}
         </div>
 
 
