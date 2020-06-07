@@ -91,7 +91,6 @@
                                 <span id="order-item">
                                     {{order.fabric_ref}}
                                 </span>
-
                             </li>
 
                             <li>
@@ -99,7 +98,6 @@
                                 <span id="order-color">
                                     {{order.fabric_consumption}}
                                 </span>
-
                             </li>
 
                             <li>
@@ -161,9 +159,9 @@
 
                     </div>
 
-                    <div class="col-sm-12">
+                    <div class="col-xl-10 mb-4">
                         {% if order %}
-                        <div id="{{order.product}}" class="mt-3 product-table" style="width:90%">
+                        <div id="{{order.product}}" class="product-table">
 
                             <div>
                                 <table class="table table-bordered product-table">
@@ -209,7 +207,7 @@
                     </div>
 
 
-                    <div class="col-md-10">
+                    <div class="col-xl-10">
                         <div class="form-group">
                             <label for="" class="text-mute">{{_("Comments")}}</label>
                             <textarea class="form-control" id="proofComment"
