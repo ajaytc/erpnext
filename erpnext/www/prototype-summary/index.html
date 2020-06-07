@@ -126,22 +126,40 @@
 
                         <ul class="order-summary">
 
-                            {% if order.techpack %}
+
                             <li>
-                                <span>File</span>
-                                <span><a href="{{order.techpack}}">Tech pack</a></span>
+                                <span>Tech pack</span>
+                                <span>
+                                    {% if order.techpack %}
+                                    <a href="{{order.techpack}}">Tech pack</a>
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </span>
                             </li>
                             {% endif %}
-                            {% if order.picture %}
+
                             <li>
-                                <span>File</span>
-                                <span><a href="{{order.picture}}">Picture</a></span>
+                                <span>Picture</span>
+                                <span>
+                                    {% if order.picture %}
+                                    <a href="{{order.picture}}">Picture</a>
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </span>
                             </li>
                             {% endif %}
-                            {% if order.pattern %}
+
                             <li>
-                                <span>File</span>
-                                <span><a href="{{order.pattern}}">Pattern</a></span>
+                                <span>Pattern</span>
+                                <span>
+                                    {% if order.pattern %}
+                                    <a href="{{order.pattern}}">Pattern</a>
+                                    {% else %}
+                                    N/A
+                                    {% endif %}
+                                </span>
                             </li>
                             {% endif %}
                         </ul>
@@ -151,7 +169,6 @@
                     <div class="col-sm-12">
                         {% if order %}
                         <div id="{{order.product}}" class="mt-3 product-table" style="width:90%">
-
 
                             <div>
                                 <table class="table table-bordered product-table">
