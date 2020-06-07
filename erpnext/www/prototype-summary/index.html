@@ -1,6 +1,6 @@
 {{ breadcrumb([{'label':'Home','url':'/'},{'label':'Prototype','url':'/'},{'label':'Prototype Order','url':'/prototype-dashboard'}]) }}
 
-<h1>{{_("Prototype Order Summary")}}</h1>
+<h2>{{_("Prototype Order Summary")}}</h2>
 
 {% macro dropdown(items,class,id) %}
 <div class="form-group">
@@ -20,201 +20,149 @@
 </div>
 {% endmacro %}
 
+<div id="container" class="container mt-3">
+    <div class="card" style="">
+        <div class="card-body row">
+            {% if order %}
+            <div id="{{order.product}}" class="mt-3 product-table" style="width:90%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="exampleFormControlSelect1">{{_("Product Name")}}</label>
+                            <br />
+                            <span class="product"
+                                data-product="{{order.product}}">{{frappe.db.get_value('Item',order.product,'item_name')}}</span>
+                        </div>
+                    </div>
 
-<div class="row mt-5">
-    <div class="col-sm-6 col-md-4 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <p class="label">
-                    {{_("Date")}}
-                </p>
-                <p class="value">
-                    {% if date %}{{date}}{% endif %}
-                    {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
-                </p>
+                    <div class="row mt-3 table-section">
+                        <table class="table table-bordered product-table">
+                            <thead>
+                                <tr class="sizing">
+                                    <th scope="col">{{_("Sizing")}}</th>
+                                    {% for s in order.quantity_per_size %}
+                                    <th scope="col">{{s.size}}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="qty">
+                                    <th scope="row">{{_("Quantity")}}</th>
+                                    {% for s in order.quantity_per_size %}
+                                    <td scope="col" data-size="{{s.size}}">
+                                        {{s.quantity}}</td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <table class="table table-bordered pricing-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">{{_("Price/Pcs")}}</th>
+                                    <th scope="col">{{_("Total Price")}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="price-pp"></td>
+                                    <td class="total-price"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-sm-6 col-md-4 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <p class="label">
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Date")}} <br />
+                    <span>{% if date %}{{date}}{% endif %}
+                        {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
+                    </span>
+                </div>
+                <div id="order-no-section" class="m-3">
                     {{_("Order Number")}}
-                </p>
-                <p class="value">
-                    {{order.name}}
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-md-4 col-xl-3">
-        <div class="card">
-            <div class="card-body">
-                <p class="label">
+                    <br />
+                    <span id="order-no">
+                        {{order.name}}
+                    </span>
+                </div>
+                <div class="m-3">
                     {{_("Internal ref")}}
-                </p>
-                <p class="value" id="order-internal">
+                    <br />
                     {{order.internal_ref}}
-                </p>
+                </div>
+
+                <div class="m-3">
+                    {{_("Fabric ref")}}
+                    <br />
+                    {{order.fabric_ref}}
+                </div>
+                <div class="m-3">
+                    {{_("Fabric consumption")}}
+                    <br />
+                    {{order.fabric_consumption}}
+                </div>
+                <div class="m-3">
+                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
+                </div>
+                <div class="m-3">
+                    {{_("Comments")}}
+                    <br />
+                    {{order.comment}}
+                </div>
+
             </div>
+            <div class="col-6">
+                <div class="m-3">
+                    {{_("Production Factory Name")}}
+                    <br />
+                    {{order.production_factory}}
+                </div>
+                <div class="m-3">
+                    {{_("Final Destination")}}
+                    <br />
+                    {{order.final_destination}}
+                </div>
+                <div class="m-3">
+                    {{_("Trimming")}}
+                    <br />
+                    {{order.trimming_item}}
+                </div>
+                <div class="m-3">
+                    {{_("Trimming consumption")}}
+                    <br />
+                    {{order.trimming_consumption}}
+                </div>
+                {% if order.techpack %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="{{order.techpack}}">Tech pack</a>
+                </div>
+                {% endif %}
+                {% if order.picture %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="{{order.picture}}">Picture</a>
+                </div>
+                {% endif %}
+                {% if order.pattern %}
+                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
+                    <a href="{{order.pattern}}">Pattern</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="ml-5">
+                {% if order.docstatus==0 %}
+                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-sm-12 mt-4 pt-3">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h2 class="mt-2">{{_("Order Info")}}</h2>
-                    </div>
-                    <div class="col-md-4">
-                        <h2 class="mt-2">{{_("Price Details")}}</h2>
-                    </div>
-                    <div class="col-md-4">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-
-                        <ul class="order-summary">
-                            <li>
-                                <span>{{_("Product Name")}}</span>
-                                <span class="product"
-                                    data-product="{{order.product}}">{{frappe.db.get_value('Item',order.product,'item_name')}}</span>
-                            </li>
-                            <li>
-                                <span>{{_("Fabric ref")}}</span>
-                                <span id="order-item">
-                                    {{order.fabric_ref}}
-                                </span>
-
-                            </li>
-
-                            <li>
-                                <span>{{_("Fabric consumption")}}</span>
-                                <span id="order-color">
-                                    {{order.fabric_consumption}}
-                                </span>
-
-                            </li>
-
-                            <li>
-                                <span>{{_("Production Factory Name")}}</span>
-                                <span>{{order.production_factory}}</span>
-                            </li>
-                            <li>
-                                <span>{{_("Final Destination")}}</span>
-                                <span>{{order.final_destination}}</span>
-                            </li>
-                            <li>
-                                <span>{{_("Trimming")}}</span>
-                                <span>{{order.trimming_item}}</span>
-                            </li>
-                            <li>
-                                <span>{{_("Trimming consumption")}}</span>
-                                <span>{{order.trimming_consumption}}</span>
-                            </li>
-
-
-                        </ul>
-                    </div>
-                    <div class="col-md-4 mb-5">
-
-                        <ul class="order-summary">
-
-                            {% if order.techpack %}
-                            <li>
-                                <span>File</span>
-                                <span><a href="{{order.techpack}}">Tech pack</a></span>
-                            </li>
-                            {% endif %}
-                            {% if order.picture %}
-                            <li>
-                                <span>File</span>
-                                <span><a href="{{order.picture}}">Picture</a></span>
-                            </li>
-                            {% endif %}
-                            {% if order.pattern %}
-                            <li>
-                                <span>File</span>
-                                <span><a href="{{order.pattern}}">Pattern</a></span>
-                            </li>
-                            {% endif %}
-                        </ul>
-
-                    </div>
-
-                    <div class="col-sm-12">
-                        {% if order %}
-                        <div id="{{order.product}}" class="mt-3 product-table" style="width:90%">
-
-
-                            <div>
-                                <table class="table table-bordered product-table">
-                                    <thead>
-                                        <tr class="sizing">
-                                            <th scope="col">{{_("Sizing")}}</th>
-                                            {% for s in order.quantity_per_size %}
-                                            <th scope="col">{{s.size}}</th>
-                                            {% endfor %}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="qty">
-                                            <td scope="row">{{_("Quantity")}}</td>
-                                            {% for s in order.quantity_per_size %}
-                                            <td scope="col" data-size="{{s.size}}">
-                                                {{s.quantity}}</td>
-                                            {% endfor %}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div>
-                                <table class="table table-bordered pricing-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">{{_("Price/Pcs")}}</th>
-                                            <th scope="col">{{_("Total Price")}}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="price-pp"></td>
-                                            <td class="total-price"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        {% endif %}
-                    </div>
-
-
-                    <div class="col-md-10">
-                        <div class="form-group">
-                            <label for="" class="text-mute">{{_("Comments")}}</label>
-                            <textarea class="form-control" id="proofComment"
-                                rows="4">{% if order.comment %}{{order.comment}}{% endif %}</textarea>
-
-                        </div>
-                        {% if order.docstatus==0 %}
-                        <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
-                        {% endif %}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <div class="sidebar right">
     <div class="sidebar-inner">
