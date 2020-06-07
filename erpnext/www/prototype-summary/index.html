@@ -165,7 +165,7 @@
                                     </thead>
                                     <tbody>
                                         <tr class="qty">
-                                            <th scope="row">{{_("Quantity")}}</th>
+                                            <td scope="row">{{_("Quantity")}}</td>
                                             {% for s in order.quantity_per_size %}
                                             <td scope="col" data-size="{{s.size}}">
                                                 {{s.quantity}}</td>
@@ -177,7 +177,7 @@
 
                             <div>
                                 <table class="table table-bordered pricing-table">
-                                    <thead class="thead-light">
+                                    <thead>
                                         <tr>
                                             <th scope="col">{{_("Price/Pcs")}}</th>
                                             <th scope="col">{{_("Total Price")}}</th>
