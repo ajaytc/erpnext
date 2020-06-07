@@ -144,15 +144,6 @@
                     </div>
 
 
-                    {% if packOrder.payment_proof %}
-                    <div class="col-md-4">
-                        <a href="{{packOrder.payment_proof}}" download class="order-summary-download">
-                            <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
-                            <span>{{packOrder.payment_proof}}</span>
-                        </a>
-                    </div>
-                    {% endif %}
-
                     <div class="col-md-10">
                         <label for="" class="text-mute">{{_("Comments")}}</label>
                         <textarea class="form-control" id="proofComment"
