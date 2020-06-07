@@ -1,6 +1,178 @@
 {{ breadcrumb([{'label':'Home','url':'/'},{'label':'Prototype','url':'/'},{'label':'Prototype Order','url':'/prototype-dashboard'}]) }}
 
-<h2>{{_("Prototype Order Summary")}}</h2>
+<h1>{{_("Prototype Order Summary")}}</h1>
+
+
+<div class="row mt-5">
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Date")}}
+                </p>
+                <p class="value">
+                    {% if date %}{{date}}{% endif %}
+                    {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Order Number")}}
+                </p>
+                <p class="value">
+                    {{order.name}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Internal ref")}}
+                </p>
+                <p class="value" id="order-internal">
+                    {{order.internal_ref}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 mt-4 pt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Order Info")}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <h2 class="mt-2">{{_("Price Details")}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+
+                        <ul class="order-summary">
+                            <li>
+                                <span>{{_("Fabric ref")}}</span>
+                                <span id="order-item">
+                                    {{order.fabric_ref}}
+                                </span>
+
+                            </li>
+
+                            <li>
+                                <span>{{_("Fabric consumption")}}</span>
+                                <span id="order-color">
+                                    {{order.fabric_consumption}}
+                                </span>
+
+                            </li>
+
+                            <li>
+                                <span>{{_("Production Factory Name")}}</span>
+                                <span>{{order.production_factory}}</span>
+                            </li>
+                            <li>
+                                <span>{{_("Final Destination")}}</span>
+                                <span>{{order.final_destination}}</span>
+                            </li>
+                            <li>
+                                <span>{{_("Trimming")}}</span>
+                                <span>{{order.trimming_item}}</span>
+                            </li>
+                            <li>
+                                <span>{{_("Trimming consumption")}}</span>
+                                <span>{{order.trimming_consumption}}</span>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                    <div class="col-md-4 mb-5">
+
+                        <ul class="order-summary">
+                            <li>
+                                <span>{{_("Price Per Unit")}}</span>
+                                <span id="order-otherInfo">
+                                    {{packOrder.price_per_unit}}
+                                </span>
+                            </li>
+                            <li>
+                                <span>{{_("Quantity")}}</span>
+                                <span id="order-quantity">
+                                    {{packOrder.quantity}}
+                                </span>
+
+                            </li>
+                            <li>
+                                <span>{{_("Total Price")}}</span>
+                                <span id="order-total">
+                                    {{packOrder.total_price}}
+                                </span>
+                            </li>
+
+                            {% if order.techpack %}
+                            <li>
+                                <span>File</span>
+                                <span><a href="{{order.techpack}}">Tech pack</a></span>
+                            </li>
+                            {% endif %}
+                            {% if order.picture %}
+                            <li>
+                                <span>File</span>
+                                <span><a href="{{order.picture}}">Picture</a></span>
+                            </li>
+                            {% endif %}
+                            {% if order.pattern %}
+                            <li>
+                                <span>File</span>
+                                <span><a href="{{order.pattern}}">Pattern</a></span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        <button class="btn btn-link display-file-selector float-right btn-sm">
+                            {{_("Payment Proof")}} +
+
+                        </button>
+                        <input type="file" class="form-control d-none" value={{packOrder.payment_proof}}
+                            name="paymentProof" id="paymentProof">
+                    </div>
+
+
+                    {% if packOrder.payment_proof %}
+                    <div class="col-md-4">
+                        <a href="{{packOrder.payment_proof}}" download class="order-summary-download">
+                            <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                            <span>{{packOrder.payment_proof}}</span>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-md-10">
+                        <label for="" class="text-mute">{{_("Comments")}}</label>
+                        <textarea class="form-control" id="proofComment"
+                            rows="4">{% if order.comment %}{{order.comment}}{% endif %}</textarea>
+
+                        <div class="form-group">
+                            <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% macro dropdown(items,class,id) %}
 <div class="form-group">
@@ -76,83 +248,7 @@
                 </div>
             </div>
 
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Date")}} <br />
-                    <span>{% if date %}{{date}}{% endif %}
-                        {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
-                    </span>
-                </div>
-                <div id="order-no-section" class="m-3">
-                    {{_("Order Number")}}
-                    <br />
-                    <span id="order-no">
-                        {{order.name}}
-                    </span>
-                </div>
-                <div class="m-3">
-                    {{_("Internal ref")}}
-                    <br />
-                    {{order.internal_ref}}
-                </div>
 
-                <div class="m-3">
-                    {{_("Fabric ref")}}
-                    <br />
-                    {{order.fabric_ref}}
-                </div>
-                <div class="m-3">
-                    {{_("Fabric consumption")}}
-                    <br />
-                    {{order.fabric_consumption}}
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                </div>
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <br />
-                    {{order.comment}}
-                </div>
-
-            </div>
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Production Factory Name")}}
-                    <br />
-                    {{order.production_factory}}
-                </div>
-                <div class="m-3">
-                    {{_("Final Destination")}}
-                    <br />
-                    {{order.final_destination}}
-                </div>
-                <div class="m-3">
-                    {{_("Trimming")}}
-                    <br />
-                    {{order.trimming_item}}
-                </div>
-                <div class="m-3">
-                    {{_("Trimming consumption")}}
-                    <br />
-                    {{order.trimming_consumption}}
-                </div>
-                {% if order.techpack %}
-                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
-                    <a href="{{order.techpack}}">Tech pack</a>
-                </div>
-                {% endif %}
-                {% if order.picture %}
-                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
-                    <a href="{{order.picture}}">Picture</a>
-                </div>
-                {% endif %}
-                {% if order.pattern %}
-                <div class="card mt-3 ml-3" style="width: 20rem;padding:1rem">
-                    <a href="{{order.pattern}}">Pattern</a>
-                </div>
-                {% endif %}
-            </div>
 
             <div class="ml-5">
                 {% if order.docstatus==0 %}
