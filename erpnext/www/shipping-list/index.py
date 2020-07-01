@@ -19,13 +19,20 @@ def get_context(context):
 
     brand = frappe.get_doc("User", frappe.session.user).brand_name
 
-    query = """select so.internal_ref, i.item_name, so.shipping_date, so.expected_delivery_date, i.item_destination,so.name
-                from `tabSales Order Item` i
-                left join `tabShipment Order` so on i.name = so.product_order_id
-                right join `tabSales Order` s on s.name = i.parent
-                where i.docstatus=%s and s.company=%s"""
-    context.active = frappe.db.sql(query,(1,brand))
-    context.completed = frappe.db.sql(query,(0,brand))
+    # query = """select so.internal_ref, i.item_name, so.shipping_date, so.expected_delivery_date, i.item_destination,so.name
+    #             from `tabSales Order Item` i
+    #             left join `tabShipment Order` so on i.name = so.product_order_id
+    #             right join `tabSales Order` s on s.name = i.parent
+    #             where i.docstatus=%s and s.company=%s"""
+
+    # context.active = frappe.db.sql(query,(1,brand))
+    # context.completed = frappe.db.sql(query,(0,brand))
+
+    context.active=frappe.get_all('Shipment Order',filters={'docstatus':0,'brand':brand},fields=[
+                                                'internal_ref', 'product_order_id','fabric_order_id','trimming_order_id','packaging_order_id','shipping_document','html_tracking_link','shipping_date','carrier_company','tracking_number','expected_delivery_date','name', 'docstatus'])
+    
+    context.completed=frappe.get_all('Shipment Order',filters={'docstatus':1,'brand':brand},fields=[
+                                                'internal_ref', 'product_order_id','fabric_order_id','trimming_order_id','packaging_order_id','shipping_document','html_tracking_link','shipping_date','carrier_company','tracking_number','expected_delivery_date','name', 'docstatus'])
     
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}

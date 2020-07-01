@@ -12,12 +12,24 @@
         <tbody>
             {% for o in active %}
             <tr>
-                
-                <th><a href="/shipment-order?name={{o[5]}}">{{o[0]}}</a></th>
-                <th>{{o[1]}}</th>
-                <th>{{frappe.format(o[2], {'fieldtype': 'Date'})}}</th>
-                <th>{{frappe.format(o[3], {'fieldtype': 'Date'})}}</th>
-                <th>{{o[4]}}</th>
+
+                <th><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></th>
+                <th>
+                    {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_ref}}
+                    {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_item}}
+                    {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_item}}
+                    {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_name}}
+                    {% endif %}
+                </th>
+                <th>{{frappe.format(o.shipping_date, {'fieldtype': 'Date'})}}</th>
+                <th>{{frappe.format(o.expected_delivery_date, {'fieldtype': 'Date'})}}</th>
+                <th>
+                    {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).destination}}
+                    {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).destination}}
+                    {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).destination}}
+                    {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}
+                    {% endif %}
+                </th>
             </tr>
             {% endfor %}
         </tbody>

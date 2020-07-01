@@ -18,10 +18,28 @@ def submit_pack_vendor_summary_info(data):
         packOrder.docstatus = 4
     if(packOrder.carrier or packOrder.tracking_number or packOrder.shipment_date):
         packOrder.docstatus = 3
+        createShipmentOrderForPackage(data)
     packOrder.save()
 
     return packOrder
 
+def createShipmentOrderForPackage(data):
+    
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    shipmentOrder=frappe.get_doc({
+        'doctype': 'Shipment Order',
+        'tracking_number':data['tracking_number'],
+        'carrier_company':data['carrier'],
+        'shipping_date':data['shipment_date'],
+        'expected_delivery_date':data['expected_date'],
+        'shipping_price':data['shipping_price'],
+        'html_tracking_link':data['html_tracking_link'],
+        'packaging_order_id':data['order'],
+        'brand':brand
+    })
+    shipmentOrder.insert()
+    frappe.db.commit()
 
 @frappe.whitelist()
 def submit_payment_proof(data):

@@ -81,13 +81,13 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th scope="col">{{_("Internal Ref")}}</th>
-                        <th scope="col">{{_("Order Number")}}</th>
-                        <th scope="col">{{_("Product Name")}}</th>
-                        <th scope="col">{{_("Product Category")}}</th>
-                        <th scope="col">{{_("Order Date")}}</th>
-                        <th scope="col">{{_("Destination</")}}th>
-                        <th scope="col">{{_("Delivery Status")}}</th>
+                        <th scope="col">{{_("Product")}}</th>
+                        <th scope="col">{{_("Sender")}}</th>
+                        <th scope="col">{{_("Recipient")}}</th>
+                        <th scope="col">{{_("Carrier")}}</th>
+                        <th scope="col">{{_("Tracking number")}}</th>
+                        <th scope="col">{{_("Sent on</")}}th>
+                        <th scope="col">{{_("Expected on")}}</th>
 
                     </tr>
                 </thead>
@@ -100,20 +100,49 @@
                                     onchange="validateButton()" data-name="{{o.name}}">
                                 <span class="icon"></span>
                             </label></td>
-                        <td><a href="/shipment-order?name={{o.name}}">{{o.internal_ref}}</a></td>
-                        <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).parent}}</td>
-                        <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_code}}</td>
-                        <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_group}}</td>
-                        <td>{{frappe.format(frappe.get_doc('Sales Order',(frappe.get_doc('Sales Order Item',o.product_order_id).parent)).creation, {'fieldtype': 'Date'})}}
+                        <td><a href="/shipment-order?name={{o.name}}">
+                                {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_ref}}
+                                {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_item}}
+                                {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_item}}
+                                {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_name}}
+                                {% endif %}
+                            </a>
                         </td>
-                        <td>{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}</td>
 
                         <td>
-                            <span class="btn-delivery {%if o.docstatus==1%}delivered{%endif%}">
-                                Delivered
-                            </span>
+                            {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_vendor}}
+                            {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_vendor}}
+                            {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_vendor}}
+                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_name}}
+                            {% endif %}
+
 
                         </td>
+                        <td>
+                            {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).destination}}
+                            {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).destination}}
+                            {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).destination}}
+                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}
+                            {% endif %}
+                        </td>
+
+                        <td>{{o.carrier_company}}</td>
+                        <td>
+                            {%if o.html_tracking_link != None%}
+                            <a href="{{o.html_tracking_link}}">{{o.tracking_number}}</a></td>
+                        {%else%}
+                        {{o.tracking_number}}</td>
+                        {%endif%}
+
+
+
+                        <td>{{o.shipping_date}}</td>
+                        <td>{{o.expected_delivery_date}}</td>
+
+
+
+
+
                     </tr>
                     {% endfor %}
 

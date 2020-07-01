@@ -18,11 +18,29 @@ def submit_trim_vendor_summary_info(data):
         trimOrder.docstatus = 4
     if(trimOrder.carrier or trimOrder.tracking_number or trimOrder.shipment_date):
         trimOrder.docstatus = 3
+        createShipmentOrderForTrimming(data)
 
     trimOrder.save()
 
     return trimOrder
 
+def createShipmentOrderForTrimming(data):
+    
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    shipmentOrder=frappe.get_doc({
+        'doctype': 'Shipment Order',
+        'tracking_number':data['tracking_number'],
+        'carrier_company':data['carrier'],
+        'shipping_date':data['shipment_date'],
+        'expected_delivery_date':data['expected_date'],
+        'shipping_price':data['shipping_price'],
+        'html_tracking_link':data['html_tracking_link'],
+        'trimming_order_id':data['order'],
+        'brand':brand
+    })
+    shipmentOrder.insert()
+    frappe.db.commit()
 
 @frappe.whitelist()
 def submit_payment_proof(data):

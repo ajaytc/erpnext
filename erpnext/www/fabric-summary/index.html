@@ -207,25 +207,50 @@
         <h5 class="my-4">{{_("Shipment")}}</h5>
         <div class="form-group">
             {{_("Carrier")}}
-            <input id="carrier" type="text" value="{% if fabricOrder.carrier %}{{fabricOrder.carrier}}{% endif %}"
+            <input id="carrier" type="text" value="{% if fabricOrderShipment.carrier_company %}{{fabricOrderShipment.carrier_company}}{% endif %}"
                 class="form-control mt-2">
         </div>
         <div class="form-group">
             {{_("Tracking Number")}}
             <input id="tracking_number" type="text"
-                value="{% if fabricOrder.tracking_number %}{{fabricOrder.tracking_number}}{% endif %}"
+                value="{% if fabricOrderShipment.tracking_number %}{{fabricOrderShipment.tracking_number}}{% endif %}"
                 class="form-control mt-2">
         </div>
 
         <div class="form-group">
             {{_("Date of Shipment")}}
             <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{fabricOrder.shipment_date}} name="desireddate"
+                <input id="shipmentDate" class="form-control" value={{fabricOrderShipment.shipping_date}} name="desireddate"
                     placeholder="Desired date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Expected Delivery Date")}}
+            <div class="input-group date">
+                <input id="expectedDate" class="form-control" value={{fabricOrderShipment.expected_delivery_date}} name="expecteddate"
+                    placeholder="Expected Delivery date" type="date">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Shipping Price")}}
+            <input id="shipping_price" type="text"
+                value="{% if fabricOrderShipment.shipping_price %}{{fabricOrderShipment.shipping_price}}{% endif %}"
+                class="form-control mt-2">
+        </div>
+
+        <div class="form-group">
+            {{_("HTML Tracking Link")}}
+            <input id="html_tracking_link" type="text"
+                value="{% if fabricOrderShipment.html_tracking_link %}{{fabricOrderShipment.html_tracking_link}}{% endif %}"
+                class="form-control mt-2">
         </div>
 
         <div class="form-group">

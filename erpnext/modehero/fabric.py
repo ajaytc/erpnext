@@ -18,11 +18,30 @@ def submit_fabric_vendor_summary_info(data):
         fabricOrder.docstatus = 4
     if(fabricOrder.carrier or fabricOrder.tracking_number or fabricOrder.shipment_date):
         fabricOrder.docstatus = 3
+        createShipmentOrderForFabric(data)
 
     fabricOrder.save()
 
     return fabricOrder
 
+
+def createShipmentOrderForFabric(data):
+    
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    shipmentOrder=frappe.get_doc({
+        'doctype': 'Shipment Order',
+        'tracking_number':data['tracking_number'],
+        'carrier_company':data['carrier'],
+        'shipping_date':data['shipment_date'],
+        'expected_delivery_date':data['expected_date'],
+        'shipping_price':data['shipping_price'],
+        'html_tracking_link':data['html_tracking_link'],
+        'fabric_order_id':data['order'],
+        'brand':brand
+    })
+    shipmentOrder.insert()
+    frappe.db.commit()
 
 @frappe.whitelist()
 def submit_payment_proof(data):

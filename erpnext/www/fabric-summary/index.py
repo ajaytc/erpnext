@@ -15,6 +15,8 @@ def get_context(context):
     if('order' in params):
         context.fabricOrder = frappe.get_doc('Fabric Order', params.order)
         context.fabric=frappe.get_doc('Fabric',context.fabricOrder.fabric_ref);
+        context.fabricOrderShipment=frappe.get_all('Shipment Order',fields=['tracking_number','carrier_company','shipping_date','expected_delivery_date','shipping_price','html_tracking_link'],filters={'fabric_order_id':params.order})
+    
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isFabricVendor = "Fabric Vendor" in context.roles

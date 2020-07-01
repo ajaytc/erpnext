@@ -871,7 +871,7 @@ ul.breadcrumbs li.breadcrumb-item a {
   border-color: #f8c331;
 }
 .card {
-  border-radius: 15px;
+  border-radius: 5px;
   box-shadow: 0 5px 15px 4px rgba(0, 0, 0, 0.05);
   border: 1px solid #f7f7f7;
   width: 100%;
@@ -887,7 +887,7 @@ ul.breadcrumbs li.breadcrumb-item a {
 }
 input.form-control,
 select.form-control {
-  border-color: #dadada !important;
+  border-color: #dadada;
   font-size: 15px;
   border-radius: 5px;
   line-height: 15px;

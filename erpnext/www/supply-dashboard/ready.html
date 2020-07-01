@@ -22,7 +22,7 @@
                     <a href="/packaging-summary?order={{o['internal_ref']}}">{{o['internal_ref']}}</a>
                     {% endif %}
                 </td> -->
-                <td>{{o['item_ref']}}</td>
+                <!-- <td>{{o['item_ref']}}</td> -->
                 <td>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</td>
                 <td>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</td>
                 <td>{{frappe.format(o['ex_work_date'], {'fieldtype': 'Date'})}}</td>

@@ -13,7 +13,11 @@
   "expected_delivery_date",
   "shipping_price",
   "shipping_document",
-  "brand"
+  "brand",
+  "html_tracking_link",
+  "fabric_order_id",
+  "trimming_order_id",
+  "packaging_order_id"
  ],
  "fields": [
   {
@@ -21,8 +25,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Product Order Id",
-   "options": "Sales Order Item",
-   "reqd": 1
+   "options": "Sales Order Item"
   },
   {
    "fieldname": "tracking_number",
@@ -59,10 +62,33 @@
    "fieldtype": "Link",
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "fieldname": "html_tracking_link",
+   "fieldtype": "Data",
+   "label": "Html Tracking Link"
+  },
+  {
+   "fieldname": "fabric_order_id",
+   "fieldtype": "Link",
+   "label": "Fabric Order Id",
+   "options": "Fabric Order"
+  },
+  {
+   "fieldname": "trimming_order_id",
+   "fieldtype": "Link",
+   "label": "Trimming Order Id",
+   "options": "Trimming Order"
+  },
+  {
+   "fieldname": "packaging_order_id",
+   "fieldtype": "Link",
+   "label": "Packaging Order Id",
+   "options": "Packaging Order"
   }
  ],
  "links": [],
- "modified": "2020-04-29 17:25:58.365043",
+ "modified": "2020-06-30 21:13:09.539161",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",

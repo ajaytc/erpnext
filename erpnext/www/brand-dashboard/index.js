@@ -3,8 +3,16 @@ var fabSeen = 0
 var trimSeen = 0
 var packSeen = 0
 
+var checked;
+
 $('.selectedShipOrder').change(function () {
-    $('#delivered').prop('disabled', false)
+    // $('#delivered').prop('disabled', false)
+    checked=$('.selectedShipOrder').is(':checked'); 
+    if(checked){
+        $('#delivered').prop('disabled', false)
+    }else{
+        $('#delivered').prop('disabled', true)
+    }
 })
 
 
