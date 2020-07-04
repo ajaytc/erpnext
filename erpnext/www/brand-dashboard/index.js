@@ -135,3 +135,53 @@ $('#test').click(function () {
 
 
 })
+
+$('.delete_reminder').click(function () {
+    if ($(this).attr('data-remtype') == "fabric") {
+        delete_reminder("fabric")
+    }
+    else if ($(this).attr('data-remtype') == "trimming") {
+        delete_reminder("trimming")
+    }
+    else if ($(this).attr('data-remtype') == "packaging") {
+        delete_reminder("packaging")
+    }
+})
+
+function delete_reminder(type){
+    let temp_reminder_list = []
+    let check_box_class = "reminder_selected_" + type
+    $("."+check_box_class).map(function () {
+        if ($(this).prop('checked')) {
+            temp_reminder_list.push($(this).attr('data-reminder'));
+        }
+    })
+    if (temp_reminder_list.length > 0) {
+        frappe.call({
+            method: 'erpnext.modehero.reminder.deleteReminder',
+            args: {
+                reminderslist: temp_reminder_list,
+            },
+            callback: function (r) {
+                if (r) {
+                    if (r.message['status'] == "ok") {
+                        response_message('Successfull', 'Reminders deleted successfully', 'green')
+                        window.location.reload()
+                        return null;
+                    }
+                    response_message('Unsuccessfull', 'Reminders deleted unsuccessfully', 'red')
+                    window.location.reload()
+                    return null
+                }
+                response_message('Unsuccessfull', 'Reminders deleted unsuccessfully', 'red')
+            }
+        })
+    }
+}
+function response_message(title, message, color) {
+    frappe.msgprint({
+        title: __(title),
+        indicator: color,
+        message: __(message)
+    });
+}

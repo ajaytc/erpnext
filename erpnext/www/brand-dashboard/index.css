@@ -1,0 +1,9 @@
+.reminder-dialog {
+    max-width: 50% !important;
+}
+.rem-table-wrapper {
+    overflow-x: auto;
+}
+.delete_reminder_button{
+    margin-top: 10px
+}

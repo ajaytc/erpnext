@@ -154,7 +154,7 @@
 
         <div class="modal fade" id="fabric_reminder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered reminder-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">{{_("Reminders of Fabric Orders")}}</h5>
@@ -163,15 +163,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-wrapper">
+                        <div class="table-wrapper rem-table-wrapper">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
 
+                                        <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
+                                        <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
-
+                                        <th scope="col">{{("DELETE")}}</th>
 
                                     </tr>
                                 </thead>
@@ -179,7 +181,7 @@
 
                                     {% for r in fabricReminders %}
                                     <tr>
-
+                                        <th>{{r[7]}}</th>
                                         {%if r[7]=='confirmation'%}
                                         <th>
                                             {%if r[8]=='0'%}
@@ -222,21 +224,27 @@
 
                                         {%endif%}
                                         <th><a href="/fabric-summary?order={{r[0]}}">{{r[0]}}</a></th>
+                                        <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
+                                        <th><input type="checkbox" class="reminder_selected_fabric" data-reminder="{{r[10]}}" /></th>
                                     </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
                         </div>
+                        <div class="mb-3 delete_reminder_button" >
+                            <button  data-remtype="fabric"  type="button" class="btn btn-primary delete_reminder">
+                                {{_("Delete")}}
+                            </button>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
         <div class="modal fade" id="trimming_reminder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered reminder-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">{{_("Reminders of Trimming Orders")}}</h5>
@@ -245,14 +253,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-wrapper">
+                        <div class="table-wrapper rem-table-wrapper">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
 
+                                        <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
+                                        <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
+                                        <th scope="col">{{("DELETE")}}</th>
 
 
                                     </tr>
@@ -261,7 +272,7 @@
 
                                     {% for r in trimmingReminders %}
                                     <tr>
-
+                                        <th>{{r[7]}}</th>
                                         {%if r[7]=='confirmation'%}
                                         <th>
                                             {%if r[8]=='0'%}
@@ -294,12 +305,18 @@
                                             {{frappe.format(r[6], {'fieldtype': 'Date'})}}</th>
                                         {%endif%}
                                         <th><a href="/trimming-summary?order={{r[0]}}">{{r[0]}}</a> </th>
+                                        <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                    </tr>
+                                        <th><input type="checkbox" class="reminder_selected_trimming" data-reminder="{{r[10]}}" /></th>                                    </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="mb-3 delete_reminder_button" >
+                            <button  data-remtype="trimming" type="button" class="btn btn-primary delete_reminder">
+                                {{_("Delete")}}
+                            </button>
                         </div>
                     </div>
 
@@ -308,7 +325,7 @@
         </div>
         <div class="modal fade" id="pack_reminder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered reminder-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">{{_("Reminders of Packaging Orders")}}</h5>
@@ -317,14 +334,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-wrapper">
+                        <div class="table-wrapper rem-table-wrapper">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
 
+                                        <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
+                                        <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
+                                        <th scope="col">{{("DELETE")}}</th>
 
 
                                     </tr>
@@ -333,6 +353,7 @@
 
                                     {% for r in packReminders %}
                                     <tr>
+                                        <th>{{r[7]}}</th>
 
                                         {%if r[7]=='confirmation'%}
                                         <th>
@@ -366,12 +387,18 @@
                                             {{frappe.format(r[6], {'fieldtype': 'Date'})}}</th>
                                         {%endif%}
                                         <th><a href="/packaging-summary?order={{r[0]}}">{{r[0]}}</a> </th>
+                                        <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                    </tr>
+                                        <th><input type="checkbox" class="reminder_selected_packaging" data-reminder="{{r[10]}}" /></th>                                      </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="mb-3 delete_reminder_button" >
+                            <button  data-remtype="packaging"  type="button" class="btn btn-primary delete_reminder">
+                                {{_("Delete")}}
+                            </button>
                         </div>
                     </div>
 

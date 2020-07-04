@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import frappe
+import ast
 import erpnext
 from datetime import datetime
 from frappe.utils import flt, nowdate, add_days, cint
@@ -224,3 +225,14 @@ def markSeen(data):
 
 
     return unseenReminders
+
+@frappe.whitelist()
+def deleteReminder(reminderslist):
+    reminderslist = ast.literal_eval(reminderslist)
+    temp_reminders = []
+    for rem_name in reminderslist:
+        temp_reminders.append(frappe.get_doc('Reminder',rem_name))
+    for reminder in temp_reminders:
+        reminder.delete()
+    frappe.db.commit()
+    return {'status': 'ok', 'item': temp_reminders}
