@@ -42,7 +42,7 @@ def get_context(context):
 
     context = frappe._dict({
         "post_login": [
-            {"label": _("Information"), "url": "/me"},
+            {"label": _("Account"), "url": "/update-profile"},
             {"label": _("Destination"), "url": "/client-destinations"},
             {"label": _("Logout"), "url": "/?cmd=web_logout"}
         ]
