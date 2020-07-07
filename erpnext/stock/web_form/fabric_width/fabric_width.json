@@ -19,7 +19,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-05-13 12:33:05.605067",
+ "modified": "2020-07-07 12:58:39.067679",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "fabric-width",
@@ -37,20 +37,8 @@
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "width_name",
-   "fieldtype": "Data",
-   "hidden": 0,
-   "label": "Width Name",
-   "max_length": 0,
-   "max_value": 0,
-   "read_only": 0,
-   "reqd": 1,
-   "show_in_filter": 0
-  },
-  {
-   "allow_read_on_all_link_options": 0,
    "fieldname": "width",
-   "fieldtype": "Int",
+   "fieldtype": "Data",
    "hidden": 0,
    "label": "Width",
    "max_length": 0,

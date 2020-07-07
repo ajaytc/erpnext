@@ -1,26 +1,26 @@
 {
  "actions": [],
- "creation": "2020-04-03 17:02:42.865234",
+ "creation": "2020-07-07 07:47:13.808783",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "width"
+  "fabric_way_type"
  ],
  "fields": [
   {
-   "fieldname": "width",
+   "fieldname": "fabric_way_type",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Width",
+   "label": "Fabric Way Type",
    "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-07-07 12:58:13.860423",
+ "modified": "2020-07-07 07:56:00.695351",
  "modified_by": "Administrator",
- "module": "Stock",
- "name": "Width",
+ "module": "Setup",
+ "name": "Fabric Way",
  "owner": "Administrator",
  "permissions": [
   {
