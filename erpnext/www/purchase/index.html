@@ -6,36 +6,65 @@
 
 {% for item in unique_items_orders %}
 
-<h5>
+<h4>
     <a href="/product-orders?product={{item.item_code}}">
         {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
     </a>
-</h5>
+</h4>
 <div class="table-wrapper table-responsive mt-2">
     <table class="table table-sm table-striped">
+        {% set sizing = frappe.get_list('Item', filters={'name': item}, fields=['sizing'])[0].sizing %}
+        {% set sizing_list = frappe.get_list('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
         <thead>
-            <th><input type="checkbox" onclick="select_all_chekbox({{item}})" class="select-all-sales-orders" /></th>
-            <th>Order Date</th>
-            <th>Order Detail</th>
-            <th>
-                <div>Sizing</div>
-                <div>
-
-                </div>
-            </th>
+            <th colspan='1' scope='colgroup' ><input type="checkbox" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders-{{item}}" /></th>
+            <th colspan='1' scope='colgroup' >Order Date</th>
+            <th colspan='1' scope='colgroup' >Order Detail</th>
+            <th colspan='1' scope='colgroup' ></th>
+            <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+        </thead>
+        <thead>
+            <th scope="col"></th>
+            <th  scope="col"></th>
+            <th  scope="col"></th>
+            <th  scope="col"></th>
+            {% for temp_size  in sizing_list%}
+            <th  scope="col">{{temp_size.size}}</th>
+            {% endfor %}
         </thead>
         <tbody>
             {% for order in unique_items_orders[item] %}
-            {% set temp_order_details = frappe.get_list('Sales Order', filters={'name': order, 'docstatus': 0}, fields=['name', 'customer','creation','modified'])[0] %}
-            {% set sales_order_name = frappe.get_list('Sales Order Item', filters={'parent': order, 'docstatus': 0, 'item_code':item}, fields=['name'])[0] %}
-            {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':sales_order_name.name,'product_id':item},fields=['size','quantity']) %}
+            {% set temp_order_details = frappe.get_list('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified'])[0] %}
+            {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity']) %}
             <tr>
                 <td><input type="checkbox"  class="sales-order-checkbox-{{item}}" /></td>
                 <td>{{temp_order_details.creation.strftime('%Y-%m-%d')}}</td>
-                <td>{{order}}<br>{{temp_order_details.customer}}</td>
+                <td>{{order.name}}<br>{{temp_order_details.customer}}</td>
                 <td></td>
+                {% for size_col in sizing_list %}
+                    {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                        <td class = '{{item}}-{{item_qnty.size}}' >{{item_qnty.quantity}}</td>
+                        {% else %}
+                        <td>0</td>
+                    {% endfor %}
+                {% endfor %}
             </tr>
             {% endfor %}
+        </tbody>
+    </table>
+    <div class="border-top my-3"></div>
+    <table>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td onload="ss()"></td>
+                {% for size_col in sizing_list %}
+                <td>
+                    <div onclick="set_sum('{{item}}','{{size_col.size}}');" class = '{{item}}-{{size_col.size}}-sum'></div>
+                </td>
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 </div>
