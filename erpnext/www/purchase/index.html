@@ -1,0 +1,42 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Purchase','url':'#'}]) }}
+
+
+<h2>{{_("Purchase")}}</h2>
+
+{% for item in unique_items_orders %}
+
+<h5>
+    <a href="/product-orders?product={{item.item_code}}">
+        {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
+    </a>
+</h5>
+<div class="table-wrapper table-responsive mt-2">
+    <table class="table table-sm table-striped">
+        <thead>
+            <th><input type="checkbox" onclick="select_all_chekbox({{item}})" class="select-all-sales-orders" /></th>
+            <th>Order Date</th>
+            <th>Order Detail</th>
+            <th>
+                <div>Sizing</div>
+                <div>
+
+                </div>
+            </th>
+        </thead>
+        <tbody>
+            {% for order in unique_items_orders[item] %}
+            {% set temp_order_details = frappe.get_list('Sales Order', filters={'name': order, 'docstatus': 0}, fields=['name', 'customer','creation','modified'])[0] %}
+            {% set sales_order_name = frappe.get_list('Sales Order Item', filters={'parent': order, 'docstatus': 0, 'item_code':item}, fields=['name'])[0] %}
+            {% set quantities =frappe.get_all('Quantity Per Size',filters={'order_id':sales_order_name.name,'product_id':item},fields=['size','quantity']) %}
+            <tr>
+                <td><input type="checkbox"  class="sales-order-checkbox-{{item}}" /></td>
+                <td>{{temp_order_details.creation.strftime('%Y-%m-%d')}}</td>
+                <td>{{order}}<br>{{temp_order_details.customer}}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
