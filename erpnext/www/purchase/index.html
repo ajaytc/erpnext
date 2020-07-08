@@ -2,15 +2,15 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Purchase','url':'#'}]) }}
 
 
-<h2>{{_("Purchase")}}</h2>
+<h2  onload="ss()">{{_("Purchase")}}</h2>
 
 {% for item in unique_items_orders %}
 
-<h4>
-    <a href="/product-orders?product={{item.item_code}}">
+<h3>
+    <a class="font-weight-bold" href="/product-orders?product={{item.item_code}}">
         {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
     </a>
-</h4>
+</h3>
 <div class="table-wrapper table-responsive mt-2">
     <table class="table table-sm table-striped">
         {% set sizing = frappe.get_list('Item', filters={'name': item}, fields=['sizing'])[0].sizing %}
@@ -49,23 +49,23 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    <div class="border-top my-3"></div>
-    <table>
-        <tbody>
-            <tr>
+            <tr style="border-top:1px solid rgb(219, 210, 210)">
                 <td></td>
                 <td></td>
                 <td></td>
-                <td onload="ss()"></td>
+                <td></td>
                 {% for size_col in sizing_list %}
                 <td>
-                    <div onclick="set_sum('{{item}}','{{size_col.size}}');" class = '{{item}}-{{size_col.size}}-sum'></div>
+                    <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
                 </td>
                 {% endfor %}
             </tr>
         </tbody>
     </table>
+    <div>
+        <button type="button" class="btn btn-light" style="display: inline-block;">Validate</button>
+        <button type="button" class="btn btn-light" style="display: inline-block;">Modify</button>
+        <button  type="button" class="btn btn-light" style="display: inline-block;">Cancel</button>
+    </div>
 </div>
 {% endfor %}
