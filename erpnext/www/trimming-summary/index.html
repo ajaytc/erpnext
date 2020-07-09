@@ -146,6 +146,11 @@
                         <textarea class="form-control" id="proofComment"
                             rows="4">{% if trimOrder.comment %}{{trimOrder.comment}}{% endif %}</textarea>
 
+                        {% if "Brand User" in roles %}
+
+                        {% include 'erpnext/www/reminders.html' %}
+                        {% endif %}
+
                         <div class="form-group">
                             <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
                         </div>
@@ -229,7 +234,8 @@
 
         <div class="form-group">
             {{_("Carrier")}}
-            <input id="carrier" type="text" value="{% if trimmingOrderShipment.carrier %}{{trimmingOrderShipment.carrier}}{% endif %}"
+            <input id="carrier" type="text"
+                value="{% if trimmingOrderShipment.carrier %}{{trimmingOrderShipment.carrier}}{% endif %}"
                 class="form-control mt-2">
         </div>
         <div class="form-group">
@@ -242,8 +248,8 @@
         <div class="form-group">
             {{_("Date of Shipment")}}
             <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{trimmingOrderShipment.shipment_date}} name="desireddate"
-                    placeholder="Desired date" type="date">
+                <input id="shipmentDate" class="form-control" value={{trimmingOrderShipment.shipment_date}}
+                    name="desireddate" placeholder="Desired date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -253,8 +259,8 @@
         <div class="form-group">
             {{_("Expected Delivery Date")}}
             <div class="input-group date">
-                <input id="expectedDate" class="form-control" value={{trimmingOrderShipment.expected_delivery_date}} name="expecteddate"
-                    placeholder="Expected Delivery date" type="date">
+                <input id="expectedDate" class="form-control" value={{trimmingOrderShipment.expected_delivery_date}}
+                    name="expecteddate" placeholder="Expected Delivery date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -280,7 +286,6 @@
             <textarea class="form-control" id="comment"
                 rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
         </div>
-
         <div class="form-group">
             {% if isTrimVendor %}
             {% if trimOrder.docstatus==0 %}

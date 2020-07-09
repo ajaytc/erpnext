@@ -147,6 +147,12 @@
                         <textarea class="form-control" id="proofComment"
                             rows="4">{% if packOrder.comment %}{{packOrder.comment}}{% endif %}</textarea>
 
+
+                        {% if "Brand User" in roles %}
+
+                        {% include 'erpnext/www/reminders.html' %}
+                        {% endif %}
+
                         <div class="form-group">
                             <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
                         </div>
@@ -230,7 +236,8 @@
 
         <div class="form-group">
             {{_("Carrier")}}
-            <input id="carrier" type="text" value="{% if packagingOrderShipment.carrier_company %}{{packagingOrderShipment.carrier_company}}{% endif %}"
+            <input id="carrier" type="text"
+                value="{% if packagingOrderShipment.carrier_company %}{{packagingOrderShipment.carrier_company}}{% endif %}"
                 class="form-control mt-2">
         </div>
         <div class="form-group">
@@ -243,8 +250,8 @@
         <div class="form-group">
             {{_("Date of Shipment")}}
             <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{packagingOrderShipment.shipping_date}} name="desireddate"
-                    placeholder="Desired date" type="date">
+                <input id="shipmentDate" class="form-control" value={{packagingOrderShipment.shipping_date}}
+                    name="desireddate" placeholder="Desired date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -254,8 +261,8 @@
         <div class="form-group">
             {{_("Expected Delivery Date")}}
             <div class="input-group date">
-                <input id="expectedDate" class="form-control" value={{packagingOrderShipment.expected_delivery_date}} name="expecteddate"
-                    placeholder="Expected Delivery date" type="date">
+                <input id="expectedDate" class="form-control" value={{packagingOrderShipment.expected_delivery_date}}
+                    name="expecteddate" placeholder="Expected Delivery date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>

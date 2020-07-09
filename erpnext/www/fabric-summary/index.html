@@ -54,6 +54,7 @@
                         <h2 class="mt-2">{{_("Price Details")}}</h2>
                     </div>
                     <div class="col-md-4">
+
                     </div>
                 </div>
                 <div class="row">
@@ -109,24 +110,27 @@
                         <input type="file" class="form-control d-none" value={{fabricOrder.payment_proof}}
                             name="paymentProof" id="paymentProof">
                     </div>
+                    <div class="col-md-4 mb-5">
 
+                        {% if fabricOrder.payment_proof %}
 
-                    {% if fabricOrder.payment_proof %}
-                    <div class="col-md-4">
                         <a href="{{fabricOrder.payment_proof}}" download class="order-summary-download">
                             <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
                             <span>{{fabricOrder.payment_proof}}</span>
                         </a>
+
+                        {% endif %}
                     </div>
-                    {% endif %}
-
-
-
 
                     <div class="col-md-10">
                         <label for="" class="text-mute">{{_("Comments")}}</label>
                         <textarea class="form-control" id="proofComment"
-                            rows="4">{% if fabricOrder.comment %}{{fabricOrder.comment}}{% endif %}</textarea>
+                            rows="3">{% if fabricOrder.comment %}{{fabricOrder.comment}}{% endif %}</textarea>
+
+                        {% if "Brand User" in roles %}
+
+                        {% include 'erpnext/www/reminders.html' %}
+                        {% endif %}
 
                         <div class="form-group">
                             <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
@@ -143,7 +147,7 @@
         <h5 class="mb-4 mt-0">Fabric Vendor</h5>
 
         <div class="form-group">
-            {{_("Expected Work Date")}}
+            {{_("Expected end of production")}}
             <div class="input-group date">
                 <input id="exWorkDate" class="form-control"
                     value={% if fabricOrder.ex_work_date %}{{fabricOrder.ex_work_date}}{% endif %} name="workDate"
@@ -207,7 +211,8 @@
         <h5 class="my-4">{{_("Shipment")}}</h5>
         <div class="form-group">
             {{_("Carrier")}}
-            <input id="carrier" type="text" value="{% if fabricOrderShipment.carrier_company %}{{fabricOrderShipment.carrier_company}}{% endif %}"
+            <input id="carrier" type="text"
+                value="{% if fabricOrderShipment.carrier_company %}{{fabricOrderShipment.carrier_company}}{% endif %}"
                 class="form-control mt-2">
         </div>
         <div class="form-group">
@@ -220,8 +225,8 @@
         <div class="form-group">
             {{_("Date of Shipment")}}
             <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{fabricOrderShipment.shipping_date}} name="desireddate"
-                    placeholder="Desired date" type="date">
+                <input id="shipmentDate" class="form-control" value={{fabricOrderShipment.shipping_date}}
+                    name="desireddate" placeholder="Desired date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -231,8 +236,8 @@
         <div class="form-group">
             {{_("Expected Delivery Date")}}
             <div class="input-group date">
-                <input id="expectedDate" class="form-control" value={{fabricOrderShipment.expected_delivery_date}} name="expecteddate"
-                    placeholder="Expected Delivery date" type="date">
+                <input id="expectedDate" class="form-control" value={{fabricOrderShipment.expected_delivery_date}}
+                    name="expecteddate" placeholder="Expected Delivery date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
