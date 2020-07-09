@@ -1,0 +1,71 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Purchase','url':'#'}]) }}
+
+
+<h2  onload="ss()">{{_("Purchase")}}</h2>
+
+{% for item in unique_items_orders %}
+
+<h3>
+    <a class="font-weight-bold" href="/product-orders?product={{item.item_code}}">
+        {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
+    </a>
+</h3>
+<div class="table-wrapper table-responsive mt-2">
+    <table class="table table-sm table-striped">
+        {% set sizing = frappe.get_list('Item', filters={'name': item}, fields=['sizing'])[0].sizing %}
+        {% set sizing_list = frappe.get_list('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
+        <thead>
+            <th colspan='1' scope='colgroup' ><input type="checkbox" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders-{{item}}" /></th>
+            <th colspan='1' scope='colgroup' >Order Date</th>
+            <th colspan='1' scope='colgroup' >Order Detail</th>
+            <th colspan='1' scope='colgroup' ></th>
+            <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+        </thead>
+        <thead>
+            <th scope="col"></th>
+            <th  scope="col"></th>
+            <th  scope="col"></th>
+            <th  scope="col"></th>
+            {% for temp_size  in sizing_list%}
+            <th  scope="col">{{temp_size.size}}</th>
+            {% endfor %}
+        </thead>
+        <tbody>
+            {% for order in unique_items_orders[item] %}
+            {% set temp_order_details = frappe.get_list('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified'])[0] %}
+            {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity']) %}
+            <tr>
+                <td><input type="checkbox"  class="sales-order-checkbox-{{item}}" /></td>
+                <td>{{temp_order_details.creation.strftime('%Y-%m-%d')}}</td>
+                <td>{{order.name}}<br>{{temp_order_details.customer}}</td>
+                <td></td>
+                {% for size_col in sizing_list %}
+                    {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                        <td class = '{{item}}-{{item_qnty.size}}' >{{item_qnty.quantity}}</td>
+                        {% else %}
+                        <td>0</td>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+            <tr style="border-top:1px solid rgb(219, 210, 210)">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                {% for size_col in sizing_list %}
+                <td>
+                    <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
+                </td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <button type="button" class="btn btn-light" style="display: inline-block;">Validate</button>
+        <button type="button" class="btn btn-light" style="display: inline-block;">Modify</button>
+        <button  type="button" class="btn btn-light" style="display: inline-block;">Cancel</button>
+    </div>
+</div>
+{% endfor %}
