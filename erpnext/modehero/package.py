@@ -47,6 +47,11 @@ def submit_payment_proof(data):
     packOrder = frappe.get_doc('Packaging Order', data['order'])
     packOrder.payment_proof = data['payment_proof']
     packOrder.comment = data['comment']
+    packOrder.confirmation_reminder=data['confirmation_reminder']
+    packOrder.profoma_reminder=data['proforma_reminder']
+    packOrder.payment_reminder=data['payment_reminder']
+    packOrder.shipment_reminder=data['shipment_reminder']
+    packOrder.reception_reminder=data['reception_reminder']
     packOrder.save()
     frappe.db.commit()
 

@@ -49,6 +49,11 @@ def submit_payment_proof(data):
     fabricOrder = frappe.get_doc('Fabric Order', data['order'])
     fabricOrder.payment_proof = data['payment_proof']
     fabricOrder.comment = data['comment']
+    fabricOrder.confirmation_reminder=data['confirmation_reminder']
+    fabricOrder.profoma_reminder=data['proforma_reminder']
+    fabricOrder.payment_reminder=data['payment_reminder']
+    fabricOrder.shipment_reminder=data['shipment_reminder']
+    fabricOrder.reception_reminder=data['reception_reminder']
     fabricOrder.save()
     frappe.db.commit()
 

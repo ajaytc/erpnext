@@ -11,6 +11,11 @@ $("#proofSubmit").click(function () {
           order: "{{frappe.form_dict.order}}",
           payment_proof: res,
           comment: $("#proofComment").val(),
+          confirmation_reminder:$.trim($("#conf_reminder").text()),
+          proforma_reminder:$.trim($("#prof_reminder").text()),
+          payment_reminder:$.trim($("#paym_reminder").text()),
+          shipment_reminder:$.trim($("#shipment_reminder").text()),
+          reception_reminder:$.trim($("#recep_reminder").text())
         },
       },
       callback: function (r) {

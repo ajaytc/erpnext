@@ -2,13 +2,23 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card">
+        <div class="card" style="width: 120%;">
             <div class="card-body">
 
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Confirmation")}}
-                        <span class="selected_value ml-auto mr-2"></span>
+                        <span class="selected_value ml-auto mr-2" id="conf_reminder">
+                            {% if fabricOrder %}{% if fabricOrder.confirmation_reminder %}
+                            {{fabricOrder.confirmation_reminder}}
+                            {% endif %}{% endif %}
+                            {% if packOrder %}{% if packOrder.confirmation_reminder %}
+                            {{packOrder.payment_reminder}}
+                            {% endif %}{% endif %}
+                            {% if trimOrder %}{% if trimOrder.confirmation_reminder %}
+                            {{trimOrder.payment_reminder}}
+                            {% endif %}{% endif %}
+                        </span>
                         <input type="text" class="date-picker btn" name="confirmation_date">
                     </label>
                 </div>
@@ -16,7 +26,25 @@
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Proforma")}}
-                        <span class="selected_value ml-auto mr-2"></span>
+                        <span class="selected_value ml-auto mr-2"  id="prof_reminder">
+                            {% if fabricOrder %}
+                            {% if fabricOrder.profoma_reminder%}
+                            {{fabricOrder.profoma_reminder}}
+                            {% endif %}
+                            {% endif %}
+
+                            {% if packOrder %}
+                            {% if packOrder.profoma_reminder %}
+                            {{packOrder.profoma_reminder}}
+                            {% endif %}
+                            {% endif %}
+
+                            {% if trimOrder %}
+                            {% if trimOrder.profoma_reminder %}
+                            {{trimOrder.profoma_reminder}}
+                            {% endif %}
+                            {% endif %}
+                        </span>
                         <input type="text" class="date-picker btn" name="proforma_date">
                     </label>
                 </div>
@@ -24,7 +52,17 @@
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Payment")}}
-                        <span class="selected_value ml-auto mr-2"></span>
+                        <span class="selected_value ml-auto mr-2" id="paym_reminder">
+                            {% if fabricOrder %}{% if fabricOrder.payment_reminder %}
+                            {{fabricOrder.payment_reminder}}
+                            {% endif %}{% endif %}
+                            {% if packOrder %}{% if packOrder.payment_reminder %}
+                            {{packOrder.payment_reminder}}
+                            {% endif %}{% endif %}
+                            {% if trimOrder %}{% if trimOrder.payment_reminder %}
+                            {{trimOrder.payment_reminder}}
+                            {% endif %}{% endif %}
+                        </span>
                         <input type="text" class="date-picker btn" title="shipment_date" name="payment_date">
                     </label>
                 </div>
@@ -32,7 +70,17 @@
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Shipment")}}
-                        <span class="selected_value ml-auto mr-2"></span>
+                        <span class="selected_value ml-auto mr-2" id="shipment_reminder">
+                            {% if fabricOrder %}{% if fabricOrder.shipment_reminder %}
+                            {{fabricOrder.shipment_reminder}}
+                            {% endif %}{% endif %}
+                            {% if packOrder %}{% if packOrder.shipment_reminder %}
+                            {{packOrder.shipment_reminder}}
+                            {% endif %}{% endif %}
+                            {% if trimOrder %}{% if trimOrder.shipment_reminder %}
+                            {{trimOrder.shipment_reminder}}
+                            {% endif %}{% endif %}
+                        </span>
                         <input type="text" class="date-picker btn" name="shipment_date">
                     </label>
                 </div>
@@ -40,7 +88,17 @@
                 <div class="form-group mb-0">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Reception")}}
-                        <span class="selected_value ml-auto mr-2"></span>
+                        <span class="selected_value ml-auto mr-2" id="recep_reminder">
+                            {% if fabricOrder %}{% if fabricOrder.reception_reminder %}
+                            {{fabricOrder.reception_reminder}}
+                            {% endif %}{% endif %}
+                            {% if packOrder %}{% if packOrder.reception_reminder %}
+                            {{packOrder.reception_reminder}}
+                            {% endif %}{% endif %}
+                            {% if trimOrder %}{% if trimOrder.reception_reminder %}
+                            {{trimOrder.reception_reminder}}
+                            {% endif %}{% endif %}
+                        </span>
                         <input type="text" class="date-picker btn" name="reception_date">
                     </label>
                 </div>
