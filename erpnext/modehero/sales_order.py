@@ -52,6 +52,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
                     "size": s,
                     "quantity": qty,
                     "order_id": i.name,
+                    "first_quantity":qty,
                     "product_id": i.item_code,
                     "brand": brand
                 })
@@ -218,3 +219,12 @@ def validate_multiple_orders(orders):
         order.save()
     frappe.db.commit()
     return {'status': 'ok'}
+
+
+@frappe.whitelist()
+def update_sales_order(order):
+    # order = frappe.get_doc("Sales Order",order)
+    frappe.db.set_value('Sales Order', order, {
+        'docstatus': 0
+    })
+    frappe.db.commit()

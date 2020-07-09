@@ -10,7 +10,8 @@
   "size",
   "quantity",
   "modified_quantity",
-  "amended_from"
+  "amended_from",
+  "first_quantity"
  ],
  "fields": [
   {
@@ -46,11 +47,16 @@
    "options": "Quantity Per Size",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "first_quantity",
+   "fieldtype": "Data",
+   "label": "First Quantity"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-04-12 09:27:43.595427",
+ "modified": "2020-07-09 08:55:45.413428",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Quantity Per Size",
