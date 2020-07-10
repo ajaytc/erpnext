@@ -112,22 +112,23 @@ $('#submit').click(() => {
         $(this).find('.sizing').map(function () {
             sizes.push($(this).text())
         })
-
+        
         $(this).find('.qty>td>input').map(function () {
-            if ($(this).val() != "") {
+            if (($(this).val() != "") && (!isNaN($(this).val()))) {
+                qtys[sizes[counter++]] = $(this).val()
                 allnull = false
             }
+            else{
+                qtys[sizes[counter++]] = 0
+            }
             // qtys.push($(this).val())
-            qtys[sizes[counter++]] = $(this).val()
         })
-
         products[product] = {
             item: product,
             destination,
             quantities: qtys
         }
     })
-
     console.log(products, garmentlabel)
     if (allnull) {
         frappe.throw(frappe._("Please fill quantities"))
