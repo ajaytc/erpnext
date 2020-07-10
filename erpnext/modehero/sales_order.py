@@ -1,5 +1,6 @@
 import frappe
 import json
+import ast
 
 
 @frappe.whitelist()
@@ -201,6 +202,19 @@ def update_sales_order(order, products):
 
     frappe.db.commit()
 
+def update_item_quantities(sales_order_item_name,item_dic):
+    any_change_db = False
+    item_quantites = frappe.get_all('Quantity Per Size',filters={'order_id':sales_order_item_name},fields=['name','size','quantity'])
+    for size in item_dic:
+        for item_quantity in item_quantites:
+            if ((item_quantity['size']==size) and (item_quantity['quantity']!=item_dic[size])):
+                any_change_db = True
+                frappe.set_value('Quantity Per Size',item_quantity['name'],{
+                    'quantity':item_dic[size]
+                })
+    if (any_change_db):
+        frappe.db.commit()
+
 
 @frappe.whitelist()
 def validate_multiple_orders(orders):
@@ -222,9 +236,55 @@ def validate_multiple_orders(orders):
 
 
 @frappe.whitelist()
-def update_sales_order(order):
-    # order = frappe.get_doc("Sales Order",order)
-    frappe.db.set_value('Sales Order', order, {
-        'docstatus': 0
-    })
-    frappe.db.commit()
+def modify_sales_item_orders(orders_object):
+    # order_object is in following format
+    # {
+    #     "sales_item_order":
+    #         {
+    #             "M":2,
+    #             "XL":3
+    #         }
+        
+    # }
+    order_dic = json.loads(orders_object)
+    for order in order_dic:
+        frappe.db.set_value('Sales Order Item', order, {
+            'docstatus': 0
+        })
+        update_item_quantities(order,order_dic[order])
+
+    return {'status': 'ok'}
+
+@frappe.whitelist()
+def cancel_sales_item_orders(item_order_list):
+    item_order_list = ast.literal_eval(item_order_list)
+    for item_order in item_order_list:
+        order = frappe.get_doc('Sales Order Item', item_order)
+        order.docstatus = 1
+        order.save()
+        order.docstatus = 2
+        order.save()
+        frappe.db.commit()
+    return {'status': 'ok'}
+
+
+@frappe.whitelist()
+def validate_sales_item_orders(orders_object):
+    # order_object is in following format
+    # {
+    #     "sales_item_order":
+    #         {
+    #             "M":2,
+    #             "XL":3
+    #         }
+        
+    # }
+    order_dic = json.loads(orders_object)
+    for order in order_dic:
+        update_item_quantities(order,order_dic[order])
+        frappe.db.set_value('Sales Order Item', order, {
+            'docstatus': 1
+        })
+        frappe.db.commit()
+
+    return {'status': 'ok'}

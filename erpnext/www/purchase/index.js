@@ -29,23 +29,134 @@ $("input[type='checkbox']").change(function(){
 })
 
 function modify(item){
+    let order = collect_data(item,false);
+    if (order==null){
+        return null
+    }
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.modify_sales_item_orders',
+        args: {
+            orders_object:order
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Orders updated successfully', 'green')
+                    window.location.reload()
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+        }
+    });
+}
+
+function validate(item){
+    let order = collect_data(item,true);
+    if (order==null){
+        return null
+    }
+    console.log(order)
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.validate_sales_item_orders',
+        args: {
+            orders_object:order
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Orders validated successfully', 'green')
+                    window.location.reload()
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+        }
+    });
+}
+
+function cancel(item){
+    let is_any_checked = false;
+    $(".sales-order-checkbox-"+item).each(function(){
+        if ($(this).is(':checked')){
+            is_any_checked = true;
+        }
+    })
+    if (!is_any_checked){
+        return null
+    }
+    let orders = []
+    $(".sales-order-checkbox-"+item).each(function(){
+        if ($(this).is(':checked')){
+            let order_name = $(this).attr('data-order');
+            orders.push(order_name);
+        }
+    })
+    if (orders.length==0){
+        return null
+    }
+    $('input:checkbox').prop('checked', false);
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.cancel_sales_item_orders',
+        args: {
+            item_order_list:orders
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Orders canceled successfully', 'green')
+                    window.location.reload()
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
+        }
+    });
+}
+
+function collect_data(item,for_validations){
+    let is_any_checked = false;
+    $(".sales-order-checkbox-"+item).each(function(){
+        if ($(this).is(':checked')){
+            is_any_checked = true;
+        }
+    })
+    if (!is_any_checked){
+        return null
+    }
     let order = {}
     $(".sales-order-checkbox-"+item).each(function(){
-        let order_name = $(this).attr('data-order');
-        $("."+ order_name +"-qnty-content-class").each(function(){
-            let size_type = $(this).attr('data-size');
-            if ($(this).attr("data-current_qty") ==  $(this).text()){
-                
+        if ($(this).is(':checked')){
+            let order_name = $(this).attr('data-order');
+            if (for_validations){
+                order[order_name]={}
             }
-            else{
-                if ( order[order_name]==undefined){
-                    order[order_name]={}
+            $("."+ order_name +"-qnty-content-class").each(function(){
+                let size_type = $(this).attr('data-size');
+                if (!(isNaN($(this).text()))&&($(this).attr("data-current_qty") !=  $(this).text())){
+                    if ( order[order_name]==undefined){
+                        order[order_name]={}
+                    }
+                    order[order_name][size_type]= parseInt($(this).text());
                 }
-                order[order_name][size_type]= $(this).text();
-            }
-        })
+            })
+        }        
     })
-    console.log(order)
+    $('input:checkbox').prop('checked', false);
+    if(Object.keys(order).length==0){
+        return null
+    }
+    
+    return order
 }
 
 function select_all_chekbox(item) {
@@ -64,18 +175,10 @@ function get_sum(itm_code,size){
     return sum
 }
 
-function update_sales_order(order){
-    console.log(order)
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.update_sales_order',
-        args: {
-            order:order
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r.message)
-                window.location.reload()
-            }
-        }
+function response_message(title, message, color) {
+    frappe.msgprint({
+        title: __(title),
+        indicator: color,
+        message: __(message)
     });
 }

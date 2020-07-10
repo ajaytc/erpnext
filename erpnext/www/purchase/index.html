@@ -37,11 +37,11 @@
             {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
             <tr>
                 <td><input type="checkbox"  data-order = "{{order.name}}"  class="sales-order-checkbox-{{item}}" /></td>
-                <td>{{temp_order_details.creation.strftime('%Y-%m-%d')}}</td>
+                <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
                 <td>{{temp_order_details.name}}<br>{{temp_order_details.customer}}</td>
-                {% if (temp_order_details.creation-temp_order_details.modified).seconds!=0 %}
+                {% if (order.creation-order.modified).seconds!=0 %}
                 {% set ns.is_modified = true %}
-                <td>Modified<br>{{temp_order_details.modified.strftime('%Y-%m-%d')}}</td>
+                <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
                 {% else %}
                 <td></td>
                 {% endif %}

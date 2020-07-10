@@ -14,7 +14,7 @@ def get_context(context):
     
     context.order_items = {}
     for o in orders:
-        context.order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':0},fields=['name','item_code','parent'])
+        context.order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':0},fields=['name','item_code','parent','creation','modified'])
     
     context.unique_items_orders = get_unique_items_orders(context.order_items)
     return context
