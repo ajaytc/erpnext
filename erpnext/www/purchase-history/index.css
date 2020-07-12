@@ -1,0 +1,25 @@
+.modified-qty{
+    color: rgb(185, 157, 157);
+}
+.sumation-row{
+    border-top:1px solid rgb(219, 210, 210);
+}
+.order-status{
+    text-align: center;
+}
+.cancel{
+    border-radius: 5px;
+    background-color: darkgoldenrod;
+}
+.validated{
+    border-radius: 5px;
+    background-color: rgb(50, 201, 37);
+}
+.pending{
+    border-radius: 5px;
+    background-color: rgb(225, 236, 16);
+}
+.production{
+    border-radius: 5px;
+    background-color: rgb(50, 201, 37);
+}

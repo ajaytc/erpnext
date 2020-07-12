@@ -10,15 +10,22 @@ no_cache = 1
 def get_context(context):
     roles = frappe.get_roles(frappe.session.user)
 
-    if ("Administrator" not in roles) and ("Brand User" not in roles):
+    if ("Brand User" in roles):
+        context.user_type = "Brand"
+    elif ("Customer" in roles):
+        context.user_type = "Customer"
+    else:
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
-    
+    if (context.user_type == "Brand"):
+        orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
+    else:
+        orders = frappe.get_list('Sales Order', filters={'company': brand, 'owner':frappe.session.user}, fields=['name', 'customer'])
+
     context.order_items = {}
     for o in orders:
-        context.order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':0},fields=['name','item_code','parent','creation','modified'])
+        context.order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','docstatus'])
     
     context.unique_items_orders = get_unique_items_orders(context.order_items)
     return context

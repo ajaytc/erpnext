@@ -17,15 +17,15 @@ def get_context(context):
     context.show_sidebar = False
     context.status = 'waiting'
 
-    query = """select so.name, i.creation, i.item_name, i.item_group, i.item_destination, so.internal_ref, so.profoma from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name"""
+    query = """select so.name, i.creation, i.item_name, i.item_group, i.item_destination, so.internal_ref, so.profoma from `tabSales Order` so left join `tabSales Order Item` i on i.parent = so.name where so.owner=(%s) AND """
     context.waiting = frappe.db.sql(
-        query+" where i.docstatus=0 order by so.creation desc")
+        query+" i.docstatus=0 order by so.creation desc",(frappe.session.user))
     context.onprocess = frappe.db.sql(
-        query+" where i.docstatus=1  order by so.creation desc")
+        query+" i.docstatus=1  order by so.creation desc",(frappe.session.user))
     context.shipped = frappe.db.sql(
-        query+" where i.docstatus=3  order by so.creation desc")
+        query+" i.docstatus=3  order by so.creation desc",(frappe.session.user))
     context.cancelled = frappe.db.sql(
-        query+" where i.docstatus=2  order by so.creation desc")
+        query+" i.docstatus=2  order by so.creation desc",(frappe.session.user))
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}
