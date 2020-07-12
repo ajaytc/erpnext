@@ -147,7 +147,9 @@
   "publish_in_hub",
   "hub_category_to_publish",
   "hub_warehouse",
-  "synced_with_hub"
+  "synced_with_hub",
+  "supplier",
+  "barcode"
  ],
  "fields": [
   {
@@ -1107,8 +1109,18 @@
    "fieldname": "avg_price",
    "fieldtype": "Float",
    "label": "Average Wholesale Price",
-   "precision": "2",
-   "reqd": 1
+   "precision": "2"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Table",
+   "label": "Supplier",
+   "options": "Item Supplier"
+  },
+  {
+   "fieldname": "barcode",
+   "fieldtype": "Attach",
+   "label": "Barcode"
   }
  ],
  "has_web_view": 1,
@@ -1117,7 +1129,7 @@
  "image_field": "image",
  "links": [],
  "max_attachments": 1,
- "modified": "2020-05-22 15:16:10.896611",
+ "modified": "2020-07-11 11:24:38.859393",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Item",

@@ -1,13 +1,14 @@
-
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Product Item','url':'#'}]) }}
 
 <div class="col-sm-12 mt-4 pt-3">
-    <div class="card">
+    <label><h2>New Product</h2></label>
+    <div class="card" style="width: 108%;">
         <div class="card-body">
-            <div class="row">
+            <div class="row" style="padding-bottom: 8%;">
                 <div class="col-md-2">
                     <div class="form-group mb-1 pb-1">
                         <label>Product Name *</label>
-                        <input class="form-control" required name="internal_ref">
+                        <input class="form-control" id="product_name" required name="internal_ref">
                     </div>
 
                     <div class="form-group mb-1 pb-1">
@@ -29,11 +30,20 @@
                         </select>
                     </div>
 
-                    <input type="checkbox" id="prod_witout_size">Product without size
+                    <div class="form-group mb-1 pb-1">
+                        <label>Average Wholesale Price</label>
+
+                        <input class="form-control" id="avg_price" required name="average_price">
+                    </div>
+                    <div class="form-group mb-1 pb-1">
+                        <input type="checkbox" id="prod_witout_size">Product without size
+                    </div>
+                    
                 </div>
 
 
-                <div class="col-md-6">
+                <div class="col-md-8" id="price_div">
+                    <label>Production Price</label>
                     <table>
                         <thead>
                             <tr>
@@ -44,33 +54,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr class="price_row">
                                 <td><input type='checkbox' class='checkRec'></td>
-                                <td><input type='text' class='input-with-feedback form-control bold in  put-sm'
+                                <td><input name="from" type='text' class='input-with-feedback form-control bold in  put-sm'
                                         placeholder='From'></td>
-                                <td><input type='text' class='input-with-feedback form-control bold in  put-sm'
+                                <td><input name="to" type='text' class='input-with-feedback form-control bold in  put-sm'
                                         placeholder='To'></td>
-                                <td><input type='text' class='input-with-feedback form-control bold in  put-sm'
+                                <td><input name="price" type='text' class='input-with-feedback form-control bold in  put-sm'
                                         placeholder='Price'></td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="row">
-                        <button type="button" id="del_row" style="display: block;"
+                    <div class="row" style="padding-left:3%;">
+                        <button type="button" id="del_row" style="display: none;"
                             class="btn btn-xs btn-danger grid-remove-rows">Delete Row</button>
                         <button type="button" id="add_row" class="btn btn-xs btn-default grid-add-row">Add Row</button>
                     </div>
 
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
 
                     <div class="form-group">
                         {{_("Tech Pack")}}
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="confirmation_doc" id="confirmation_doc">
+                            
+                            <input type="file" class="custom-file-input" name="tech_pack" id="tech_pack">
 
-                            <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">
+                            <label id="tech_pack-label" class="custom-file-label" for="tech_pack">
 
                             </label>
 
@@ -80,9 +91,9 @@
                     <div class="form-group">
                         {{_("Picture")}}
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="confirmation_doc" id="confirmation_doc">
+                            <input type="file" class="custom-file-input" name="picture" id="picture">
 
-                            <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">
+                            <label id="picture-label" class="custom-file-label" for="picture">
 
                             </label>
 
@@ -92,9 +103,9 @@
                     <div class="form-group">
                         {{_("Pattern")}}
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="confirmation_doc" id="confirmation_doc">
+                            <input type="file" class="custom-file-input" name="pattern" id="pattern">
 
-                            <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">
+                            <label id="pattern-label" class="custom-file-label" for="pattern">
 
                             </label>
 
@@ -104,9 +115,9 @@
                     <div class="form-group">
                         {{_("Bar codes")}}
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="confirmation_doc" id="confirmation_doc">
+                            <input type="file" class="custom-file-input" name="bar_codes" id="barcode">
 
-                            <label id="confirmation_doc-label" class="custom-file-label" for="confirmation_doc">
+                            <label id="bar_codes-label" class="custom-file-label" for="barcode">
 
                             </label>
 
@@ -115,13 +126,14 @@
                 </div>
             </div>
 
-            <div class="row service" style='background-color: #dddddd;'>
+            <div class="row service" style='background-color: #dddddd;padding-top:3%'>
                 <div class="col-md-4 fab">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3 pb-1">
                                 <label>{{_("Fabric supplier")}}</label>
                                 <select class="form-control fab_sup" required name="fabric_sup">
+                                    <option value=""></option>
                                     {% for fab_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Fabric'}) %}
                                     <option value="{{fab_sup.name}}">{{fab_sup.name}}</option>
                                     {% endfor %}
@@ -132,7 +144,7 @@
                             <div class="form-group mb-4 pb-1">
                                 <label class="d-flex">{{_("Fabric ref")}} <span class="ml-auto text-nowrap text-12"><a
                                             href="#" data-toggle="modal" data-target="#fabric_modal"
-                                            class="add-supplier text-yellow"
+                                            class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
                                 <select class="form-control" id="fab_ref_list" required name="fabric_ref"></select>
 
@@ -144,7 +156,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
                                 <label>{{_("Fabric consumption")}}</label>
-                                <input class="form-control" required="" name="internal_ref">
+                                <input class="form-control" required="" name="fabric_con">
                             </div>
                         </div>
                     </div>
@@ -157,6 +169,7 @@
                             <div class="form-group mb-3 pb-1">
                                 <label>{{_("Trimming Supplier")}}</label>
                                 <select class="form-control trim_sup" required name="trimming_sup">
+                                    <option value=""></option>
                                     {% for trim_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Trimming'}) %}
                                     <option value="{{trim_sup.name}}">{{trim_sup.name}}</option>
                                     {% endfor %}
@@ -167,7 +180,7 @@
                             <div class="form-group mb-4 pb-1">
                                 <label class="d-flex">{{_("Trimming ref")}} <span class="ml-auto text-nowrap text-12"><a
                                             href="#" data-toggle="modal" data-target="#trimming_modal"
-                                            class="add-supplier text-yellow"
+                                            class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
                                 <select class="form-control" id="trim_ref_list" required name="trimming_ref"></select>
                             </div>
@@ -178,7 +191,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
                                 <label>{{_("Trimming consumption")}}</label>
-                                <input class="form-control" required="" name="internal_ref">
+                                <input class="form-control" required="" name="trimming_con">
                             </div>
                         </div>
                     </div>
@@ -193,6 +206,7 @@
                             <div class="form-group mb-3 pb-1">
                                 <label>{{_("Packaging Supplier")}}</label>
                                 <select class="form-control pack_sup" required name="packaging_sup">
+                                    <option value=""></option>
                                     {% for pack_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Packaging'}) %}
                                     <option value="{{pack_sup.name}}">{{pack_sup.name}}</option>
                                     {% endfor %}
@@ -203,7 +217,7 @@
                             <div class="form-group mb-4 pb-1">
                                 <label class="d-flex">{{_("Packaging ref")}} <span
                                         class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
-                                            data-target="#packaging_modal" class="add-supplier text-yellow"
+                                            data-target="#packaging_modal" class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
                                 <select class="form-control" id="pack_ref_list" required name="packaging_ref"></select>
                             </div>
@@ -214,7 +228,7 @@
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
                                 <label>{{_("Packaging consumption")}}</label>
-                                <input class="form-control" required="" name="internal_ref">
+                                <input class="form-control" required="" name="packaging_con">
                             </div>
                         </div>
                     </div>
@@ -230,6 +244,10 @@
 
 
 
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary mt-4" id="productSubmit">{{_("Submit")}}</button>
         </div>
     </div>
 </div>
