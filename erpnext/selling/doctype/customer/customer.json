@@ -76,7 +76,8 @@
   "sales_team_section",
   "sales_team",
   "customer_pos_id",
-  "brand"
+  "brand",
+  "package_only"
  ],
  "fields": [
   {
@@ -526,13 +527,19 @@
    "in_list_view": 1,
    "label": "Brand",
    "options": "Company"
+  },
+  {
+   "default": "0",
+   "fieldname": "package_only",
+   "fieldtype": "Check",
+   "label": "Package only"
   }
  ],
  "icon": "fa fa-user",
  "idx": 363,
  "image_field": "image",
  "links": [],
- "modified": "2020-05-12 11:56:58.340426",
+ "modified": "2020-07-13 13:12:03.649604",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
