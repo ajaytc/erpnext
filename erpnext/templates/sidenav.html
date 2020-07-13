@@ -243,9 +243,21 @@
             </a>
             <div id="c4a" class="collapse" data-parent="#collapse4">
                 <div class="list-group">
-                    <a href="/product-item" class="list-group-item ">
-                        {{_("Products List")}}
+                    <a href="#" class="list-group-item"  data-toggle="collapse" aria-expanded="false" data-target="#new_product" aria-controls="new_product">
+                        {{_("Products")}}
                     </a>
+
+                    <div id="new_product"  class="collapse" data-parent="#c4a">
+                        <div class="list-group" style="padding-left: 20px !important;">
+                            
+                            <a href="/product-items" class="list-group-item ">
+                                {{_("New Product")}}
+                            </a>
+                            <a href="/product-item" class="list-group-item ">
+                                {{_("Products List")}}
+                            </a>
+                        </div>
+                    </div>
                     <a href="/production-factory" class="list-group-item ">
                         {{_("Factory List")}}
                     </a>
