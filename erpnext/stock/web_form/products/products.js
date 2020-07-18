@@ -27,4 +27,10 @@ frappe.ready(function () {
 			}
 		});
 	}, 500);
+
+
+
+	setTimeout(() => {
+		$('.col-lg-6').addClass('col-lg-10')
+	}, 500);
 })

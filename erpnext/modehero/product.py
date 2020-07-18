@@ -90,8 +90,8 @@ def create_product_item(data):
                 item_suppliers.append({
                     'supplier': json_pack_suppliers[key]['pack_supplier'],
                     'supplier_group': 'Packaging',
-                    'trimming_consumption': json_pack_suppliers[key]['pack_con'],
-                    'trimming_ref': json_pack_suppliers[key]['pack_ref']
+                    'packaging_consumption': json_pack_suppliers[key]['pack_con'],
+                    'packaging_ref': json_pack_suppliers[key]['pack_ref']
                 })
 
     tech_pack = ""
@@ -152,3 +152,9 @@ def create_product_item(data):
         frappe.db.commit()
         return {'message': 'Product Created Successfully', 'product': product}
     print(data)
+
+
+@frappe.whitelist()
+def get_product_item(product):
+    product=frappe.get_doc('Item',product)
+    return product

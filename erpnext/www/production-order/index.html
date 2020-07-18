@@ -17,7 +17,9 @@
 
 {% macro dropdown(items,class,id,typetwo) %}
 <div class="form-group">
+
     <select class="form-control {{class}}" id="{{id}}">
+        <option value=""></option>
         {% for i in items %}
         {% if typetwo %}
         <option value="{{i.name}}">{{i.item_name}}</option>
@@ -37,96 +39,209 @@
 
     <div class="card" style="">
         <div class="card-body">
-            <div class="row">
-                <div class="col-6">
-                    <div class="m-3">
-                        <label for="" class="d-flex">{{_("Product Category")}}
-                            <a href="#" data-toggle="modal" data-target="#category_modal"
-                                class="add-supplier text-teal ml-auto">{{_("Add new")}}
-                                +</a></label>
+            <div class="upper">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="m-3">
+                            <label for="" class="d-flex">{{_("Product Category")}}
+                            </label>
 
-                        {{dropdown(categories,'','category_list')}}
-                    </div>
-                    <div class="m-3">
-                        {{_("Internal ref")}}
-                        <input id="internal-ref" type="text" class="form-control mt-2">
-                    </div>
-
-                    <div class="m-3">
-                        <label for="" class="d-flex">{{_("Fabric ref")}}
-                            <a href="#" data-toggle="modal" data-target="#fabric_modal"
-                                class="add-supplier text-teal ml-auto">{{_("Add new")}}
-                                +</a></label>
-
-                        {{dropdown(frappe.get_list('Fabric',fields=['fabric_ref']),'fabric_list','fabric_list')}}
-                    </div>
-                    <div class="m-3">
-                        {{_("Fabric consumption")}}
-                        <input id="fabric-consumption" type="text" class="form-control mt-2">
-                    </div>
-                    <div class="m-3">
-                        {{_("Fabric Status")}}
-                        <br />
-                        <span id="fabric-status"></span>
-                    </div>
-                    <div class="m-3 form-group">
-                        {{_("Comments")}}
-                        <textarea class="form-control" id="comment" rows="4"></textarea>
-                    </div>
-
-                </div>
-                <div class="col-6">
-                    <div class="m-3">
-                        <label for="" class="d-flex">
-                            {{_("Production Factory Info")}}
-                            <a href="#" data-toggle="modal" data-target="#factory_modal"
-                                class="add-supplier text-teal ml-auto">Add
-                                new +</a></label>
-                        {{dropdown(frappe.get_list('Production Factory'),'factory_list','factory_list')}}
-                    </div>
-                    <div class="m-3">
-                        <label for="" class="d-flex">
-                            {{_("Trimming")}}
-                            <a href="#" data-toggle="modal" data-target="#trimming_modal"
-                                class="add-supplier text-teal ml-auto">Add
-                                new +</a></label>
-                        {{dropdown(frappe.get_list('Trimming Item'),'trimming_list','trimming_list')}}
-                    </div>
-                    <div class="m-3">
-                        {{_("Trimming consumption")}}
-                        <input id="trimming-consumption" type="text" class="form-control mt-2">
-                    </div>
-                    <div class="m-3">
-                        <label for="" class="d-flex">
-                            {{_("Packaging")}}
-                            <a href="#" data-toggle="modal" data-target="#packaging_modal"
-                                class="add-supplier text-teal ml-auto">Add
-                                new +</a></label>
-                        {{dropdown(frappe.get_list('Packaging Item'),'packaging_list','packaging_list')}}
-                    </div>
-                    <div class="m-3">
-                        {{_("Packaging consumption")}}
-                        <input id="packaging-consumption" type="text" class="form-control mt-2">
-                    </div>
-                </div>
-                <div class="col-12 m-3 product-table">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="exampleFormControlSelect1">{{_("Product Name")}}</label>
-                            {{dropdown(products,'','product',true)}}
+                            {{dropdown(categories,'','category_list')}}
                         </div>
-                    </div>
+                        <div class="m-3">
+                            <label for="product">{{_("Product Name")}}</label>
+                            <div class="form-group">
+                                <select class="form-control" id="product"></select>
+                                <option value=""></option>
+                            </div>
 
-                    <div class="row mt-3 table-section">
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="m-3">
+                            <label for="" class="d-flex">
+                                {{_("Factory")}}
+                                <a href="#" data-toggle="modal" data-target="#factory_modal"
+                                    class="add-supplier text-teal ml-auto">Add
+                                    new +</a></label>
+                            {{dropdown(frappe.get_list('Production Factory'),'factory_list','factory_list')}}
+                        </div>
+                        <div class="m-3">
+                            {{_("Internal ref")}}
+                            <input id="internal-ref" type="text" class="form-control mt-2">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class='row service' style='padding-top:3%'>
+                    <div class='col-4 fab'>
+                        <div class='row'>
+                            <div class='col-6'>
+                                <div class='m-3'>
+                                    <label for=''>{{_('Fabric Supplier')}}</label>
+                                    <input type="text" class="form-control" id="fab_supplier_list" disabled="disabled">
+                                    <!-- {{dropdown(frappe.get_list('Supplier',filters={'supplier_group':'Fabric','brand':brand},fields=['name']),'fab_sup','fab_supplier_list')}} -->
+                                </div>
+                            </div>
+                            <div class='col-6'>
+                                <div class='m-3'>
+                                    <label for='' class='d-flex'>{{_('Fabric ref')}}
+                                    </label>
+                                    <input type="text" class="form-control" id="fab_ref_list" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class='col-6'>
+                                <div class='m-3'>
+                                    {{_('Fabric consumption')}}
+                                    <input type="text" class="form-control" id="fabric-consumption" disabled="disabled">
+                                </div>
+
+                            </div>
+                            <div class='col-6'>
+                                <div class='m-3'>
+                                    {{_('Fabric status')}}
+                                    <select id='fabric-status' type='text' class='form-control'>
+                                        <option value=''></option>
+                                        <option value='On stock at factory'>On stock at factory</option>
+                                        <option value='To be sent later'>To be sent later</option>
+                                        <option value='Shipped - see comments'>Shipped - see comments</option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <a href="#" id="addFab">Add fab+</a>
+
+                    </div>
+                    <div class='col-4 trim'>
+                        <div class='row'>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    <label for=''>{{_('Trimming Supplier')}}</label>
+                                    <input type="text" class="form-control" id="trim_supplier_list" disabled="disabled">
+                                </div>
+
+                            </div>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    <label for='' class='d-flex'>
+                                        {{_('Trimming Ref')}}
+                                    </label>
+                                    <input type="text" class="form-control" id="trim_ref_list" disabled="disabled">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class='row'>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    {{_('Trimming consumption')}}
+                                    <input id='trimming-consumption' disabled="disabled" type='text'
+                                        class='form-control'>
+                                </div>
+
+                            </div>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    {{_('Trimming status')}}
+                                    <select id='trimming-status' type='text' class='form-control'>
+                                        <option value=''></option>
+                                        <option value='On stock at factory'>On stock at factory</option>
+                                        <option value='To be sent later'>To be sent later</option>
+                                        <option value='Shipped - see comments'>Shipped - see comments</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <a href="#" id="addTrim">Add Trim+</a>
+
+                    </div>
+                    <div class='col-4 pack'>
+                        <div class='row'>
+                            <div class='col-6' style='padding-right: 0%;padding-left:0%'>
+                                <div class='m-3'>
+                                    <label for=''>{{_('Packaging Supplier')}}</label>
+
+
+                                    <input type="text" class="form-control" id="pack_supplier_list" disabled="disabled">
+                                </div>
+
+                            </div>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    <label for='' class='d-flex'>
+                                        {{_('Packaging ref')}}
+                                    </label>
+                                    <input type="text" class="form-control" id="pack_ref_list" disabled="disabled">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class='row'>
+                            <div class='col-6' style='padding-right: 0%;padding-left:0%'>
+                                <div class='m-3'>
+                                    {{_('Packaging consumption')}}
+                                    <input type="text" class="form-control" id="packaging-consumption"
+                                        disabled="disabled">
+                                </div>
+
+                            </div>
+                            <div class='col-6' style='padding-right: 0%;'>
+                                <div class='m-3'>
+                                    {{_('Packaging status')}}
+                                    <select id='packaging-status' type='text' class='form-control'>
+                                        <option value=''></option>
+                                        <option value='On stock at factory'>On stock at factory</option>
+                                        <option value='To be sent later'>To be sent later</option>
+                                        <option value='Shipped - see comments'>Shipped - see comments</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" id="addPack">Add Pack+</a>
+
                     </div>
 
                 </div>
-                <div class="col-12 text-right">
-                    <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
+
+            </div>
+
+            <div class='row' style="padding: 2%;" id="">
+
+                <div class="row mt-3 table-section">
                 </div>
+
+
+
+            </div>
+            <div class="row">
+                <div class="m-3">
+                    <label for="">{{_("Comments")}}</label>
+                    <br>
+
+                    <textarea name="" id="comment" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+
+            <div class="col-12 text-right">
+                <button class="btn btn-primary" id="submit">{{_("Submit")}}</button>
             </div>
         </div>
     </div>
+</div>
+</div>
 
 </div>
 {% include 'erpnext/www/modals/factory_modal.html' %}
