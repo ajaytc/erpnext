@@ -1,0 +1,84 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Product attribution and pricing','url':'#'}]) }}
+
+<h2  onload="ss()">{{_("Product attribution and pricing")}}</h2>
+
+<div id="container" class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <label>{{_("Client")}}</label>
+                    <select class="form-control {{class}}" id="{{id}}">
+                        {% for i in items %}
+                        <option value="{{i.name}}">{{i.item_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>{{_("Product Category")}}</label>
+                    <select class="form-control {{class}}" id="{{id}}">
+                        {% for i in items %}
+                        <option value="{{i.name}}">{{i.item_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>{{_("Product Name")}}</label>
+                    <div class="form-group">
+                        <select class="form-control {{class}}" id="{{id}}">
+                            {% for i in items %}
+                            <option value="{{i.name}}">{{i.item_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <label>{{_("Season")}}</label>
+                    <input id="" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="top-buffer"></div>
+            <div class="row">
+                <div class="col-9">
+                    <label>{{_("Wholesale Price")}}</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th style="width: 15%;"><input type="checkbox" value="option1"></th>
+                            <th style="width: 25%;">From</th>
+                            <th style="width: 25%;">To</th>
+                            <th style="width: 25%;">Price</th>
+                            <th style="width: 10%;"></th>
+                        </thead>
+                        <tbody class="table-body" data-row_cont="0">
+
+                        </tbody>
+                    </table>
+                    <button  onclick="add_row()" type="button" class="btn btn-light" style="display: inline-block;">Add Row</button>
+                    <div style="border-bottom:1px solid rgb(219, 210, 210); padding-top: 12px;"></div>
+                </div>
+                <div class="col-3">
+                    <div class="minimum-order">
+                        <label >{{_("Minimum Order")}}</label>
+                        <input id="" type="text" class="form-control mt-2">
+                    </div>
+                    <div class="check-box col-12">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> 
+                        <label >{{_("Show Price in Client Order Form")}}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row option-block" data-option_count="0">
+                <div class="col-12">
+                    <div id="options" class="row">
+                    </div>
+                    <a id="" onclick="add_option()"  style="font-weight: bold;color: #3B3DBF;" href="#">{{_("Add option +")}} </a>
+                </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary submit-btn" id="submit">{{_("Submit")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

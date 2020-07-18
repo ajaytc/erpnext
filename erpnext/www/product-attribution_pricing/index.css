@@ -1,0 +1,33 @@
+.caret{
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.table.table-bordered{
+    overflow: visible;
+}
+
+.minimum-order{
+    margin-bottom: 30px;
+}
+
+.check-box{
+    text-align: center;
+}
+
+.card{
+    width:80%
+}
+
+.submit-btn{
+    left: 58%;
+    position: relative;
+}
+
+.top-buffer { 
+    margin-top:4%; 
+}
+
+.price-block{
+    padding: 0;
+}
