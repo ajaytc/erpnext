@@ -231,9 +231,19 @@
     </a>
     <div id="collapse4" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="/production-order" class="list-group-item ">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="ords" data-target="#ords">
                 {{_("Order")}}
             </a>
+            <div id="ords" class="collapse" data-parent="#collapse4">
+                <div class="list-group">
+                    <a href="/production-order" class="list-group-item ">
+                        {{_("Bulk")}}
+                    </a>
+                    <a href="#" class="list-group-item ">
+                        {{_("Uniform")}}
+                    </a>
+                </div>
+            </div>
             <a href="/production-dashboard" class="list-group-item ">
                 {{_("List")}}
             </a>
