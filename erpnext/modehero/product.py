@@ -90,8 +90,8 @@ def create_product_item(data):
                 item_suppliers.append({
                     'supplier': json_pack_suppliers[key]['pack_supplier'],
                     'supplier_group': 'Packaging',
-                    'trimming_consumption': json_pack_suppliers[key]['pack_con'],
-                    'trimming_ref': json_pack_suppliers[key]['pack_ref']
+                    'packaging_consumption': json_pack_suppliers[key]['pack_con'],
+                    'packaging_ref': json_pack_suppliers[key]['pack_ref']
                 })
 
     tech_pack = ""
@@ -158,3 +158,8 @@ def get_priducts_of_category(category):
     brand = frappe.get_doc('User', frappe.session.user).brand_name
     result = frappe.get_all('Item',filters={'item_group':category,'brand':brand},fields=['item_name','name'])
     return result
+
+@frappe.whitelist()
+def get_product_item(product):
+    product=frappe.get_doc('Item',product)
+    return product

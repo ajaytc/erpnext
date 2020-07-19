@@ -11,9 +11,9 @@ def get_context(context):
     params = frappe.form_dict
     # context.sizes = frappe.get_list(
     #     "Sizing", fields=["size"], order_by='idx')
-    brand = frappe.get_doc("User", frappe.session.user).brand_name
+    context.brand = frappe.get_doc("User", frappe.session.user).brand_name
     context.products = frappe.get_list(
-        "Item", filters={'brand': brand}, fields=['name', 'item_name'])
+        "Item", filters={'brand': context.brand}, fields=['name', 'item_name'])
 
     context.garmentlabel = frappe.get_list("Garment Label")
 
@@ -29,7 +29,7 @@ def get_context(context):
         context.destinations = []
 
     context.categories = frappe.get_list(
-        'Item Group', filters={'brand_name': brand})
+        'Item Group', filters={'brand_name': context.brand})
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles

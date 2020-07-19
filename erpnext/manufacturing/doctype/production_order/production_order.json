@@ -30,7 +30,8 @@
   "carrier",
   "tracking_number",
   "shipment_date",
-  "production_comment"
+  "production_comment",
+  "suppliers"
  ],
  "fields": [
   {
@@ -168,10 +169,16 @@
    "fieldname": "packaging_consumption",
    "fieldtype": "Data",
    "label": "Packaging Consumption"
+  },
+  {
+   "fieldname": "suppliers",
+   "fieldtype": "Table",
+   "label": "Suppliers",
+   "options": "Production Order Supplier"
   }
  ],
  "links": [],
- "modified": "2020-05-26 19:17:35.781452",
+ "modified": "2020-07-18 08:23:50.564526",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

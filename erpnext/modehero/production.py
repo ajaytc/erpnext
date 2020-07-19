@@ -9,19 +9,62 @@ def create_production_order(data):
     data = json.loads(data)
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
+
+    json_fab_suppliers = data['fab_suppliers']
+    json_trim_suppliers = data['trim_suppliers']
+    json_pack_suppliers = data['pack_suppliers']
+
+    fab_refs = []
+    trim_refs = []
+    pack_refs = []
+
+    order_suppliers = []
+
+    for key in json_fab_suppliers:
+        if(json_fab_suppliers[key] != {}):
+            if(json_fab_suppliers[key]['fabric_ref'] != None):
+                fab_refs.append(json_fab_suppliers[key]['fabric_ref'])
+                order_suppliers.append({
+                    'supplier': json_fab_suppliers[key]['fabric_supplier'],
+                    'supplier_group': 'Fabric',
+                    'fabric_consumption': json_fab_suppliers[key]['fabric_con'],
+                    'fabric_ref': json_fab_suppliers[key]['fabric_ref'],
+                    'fabric_status': json_fab_suppliers[key]['fabric_status']
+                })
+
+    for key in json_trim_suppliers:
+        if(json_trim_suppliers[key] != {}):
+            if(json_trim_suppliers[key]['trim_ref'] != None):
+                trim_refs.append(json_trim_suppliers[key]['trim_ref'])
+                order_suppliers.append({
+                    'supplier': json_trim_suppliers[key]['trim_supplier'],
+                    'supplier_group': 'Trimming',
+                    'trimming_consumption': json_trim_suppliers[key]['trim_con'],
+                    'trimming_ref': json_trim_suppliers[key]['trim_ref'],
+                    'trimming_status': json_trim_suppliers[key]['trim_status']
+
+                })
+
+    for key in json_pack_suppliers:
+        if(json_pack_suppliers[key] != {}):
+            if(json_pack_suppliers[key]['pack_ref'] != None):
+                pack_refs.append(json_pack_suppliers[key]['pack_ref'])
+                order_suppliers.append({
+                    'supplier': json_pack_suppliers[key]['pack_supplier'],
+                    'supplier_group': 'Packaging',
+                    'packaging_consumption': json_pack_suppliers[key]['pack_con'],
+                    'packaging_ref': json_pack_suppliers[key]['pack_ref'],
+                    'packaging_status': json_pack_suppliers[key]['pack_status']
+                })
+
     order = frappe.get_doc({
         'doctype': 'Production Order',
         'product_category': data['product_category'],
         'internal_ref': data['internal_ref'],
         'product_name': data['product_name'],
-        'fabric_ref': data['fabric_ref'],
-        'fabric_consumption': data['fabric_consumption'],
-        'trimming': data['trimming_item'],
-        'trimming_consumption': data['trimming_consumption'],
-        'packaging': data['packaging_item'],
-        'packaging_consumption': data['packaging_consumption'],
         'production_factory': data['production_factory'],
         'quantity_per_size': data['quantity'],
+        'suppliers': order_suppliers,
         'comment': data['comment'],
         'brand': brand
     })
@@ -30,16 +73,27 @@ def create_production_order(data):
     order_quantities = get_order_quantities(order)
     # If there is a missvalue in any fabric/trimming/packaging consumption values, then no stock of all of three will not be reduced
     if order_quantities != None:
-        existing_details = get_old_quantities_unitprice(order)
-        if existing_details['fabric_details']:
-            updateStock2(existing_details['fabric_details']['stock_name'],   existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
-                         existing_details['fabric_details']['old_stock'], "Production Fabric", existing_details['fabric_details']['unit_price'])
-        if existing_details['trimming_details']:
-            updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock']-order_quantities['trimming_quantity'],
-                         existing_details['trimming_details']['old_stock'], "Production Trimming", existing_details['trimming_details']['unit_price'])
-        if existing_details['packaging_details']:
-            updateStock2(existing_details['packaging_details']['stock_name'], existing_details['packaging_details']['old_stock']-order_quantities['packaging_quantity'],
-                         existing_details['packaging_details']['old_stock'], "Production Packaging", existing_details['packaging_details']['unit_price'])
+        try:
+            existing_details = get_old_quantities_unitprice(
+            order_quantities['fabric_quantities'], order_quantities['trimming_quantities'], order_quantities['packaging_quantities'])
+            if existing_details['fabric_details']:
+                for fabric_detail in existing_details['fabric_details']:
+                    updateStock2(fabric_detail['stock_name'], fabric_detail['old_stock']-fabric_detail['fab_quantity'],
+                                fabric_detail['old_stock'], "Production Fabric", fabric_detail['unit_price'])
+
+            if existing_details['trimming_details']:
+                for trimming_detail in existing_details['trimming_details']:
+                        updateStock2(trimming_detail['stock_name'], trimming_detail['old_stock']-trimming_detail['trim_quantity'],
+                                    trimming_detail['old_stock'], "Production Trimming", trimming_detail['unit_price'])
+            if existing_details['packaging_details']:
+                for packaging_detail in existing_details['packaging_details']:
+                    updateStock2(packaging_detail['stock_name'], packaging_detail['old_stock']-packaging_detail['pack_quantity'],
+                                packaging_detail['old_stock'], "Production Packaging", packaging_detail['unit_price'])
+
+        except :
+            print("Stocks not updated")
+       
+
     return {'status': 'ok', 'order': order}
 
 
@@ -122,23 +176,75 @@ def get_total_quantity(order):
 def get_order_quantities(order):
     # this function returns quantity details under fabric/trimming/packaging
     total_quantity = get_total_quantity(order)
+    fabric_quantities = []
+    trimming_quantities = []
+    packaging_quantities = []
     if (total_quantity == 0):
         return None
     try:
-        fabric_quantity = total_quantity*int(order.fabric_consumption)
-        trimming_quantity = total_quantity*int(order.trimming_consumption)
-        packaging_quantity = total_quantity*int(order.packaging_consumption)
-        return {'total_quantity': total_quantity, 'fabric_quantity': fabric_quantity, 'trimming_quantity': trimming_quantity, 'packaging_quantity': packaging_quantity}
+        for supplier in order.suppliers:
+            if(supplier.supplier_group == 'Fabric'):
+                fabric_quantity={}
+                fabric_quantity['supplier'] = supplier.supplier
+                fabric_quantity['fabric_ref'] = supplier.fabric_ref
+                fabric_quantity['quantity'] = total_quantity*int(supplier.fabric_consumption)
+
+                fabric_quantities.append(fabric_quantity)
+            elif(supplier.supplier_group == 'Trimming'):
+                trimming_quantity={}
+                trimming_quantity['supplier'] = supplier.supplier
+                trimming_quantity['trimming_ref'] = supplier.trimming_ref
+                trimming_quantity['quantity'] =total_quantity*int(supplier.trimming_consumption)
+                trimming_quantities.append(trimming_quantity)
+            elif(supplier.supplier_group == 'Packaging'):
+                packaging_quantity={}
+                packaging_quantity['supplier'] = supplier.supplier
+                packaging_quantity['packaging_ref'] = supplier.packaging_ref
+                packaging_quantity['quantity'] = total_quantity*int(supplier.packaging_consumption)
+                packaging_quantities.append(packaging_quantity)
+              
+
+        return {'total_quantity': total_quantity, 'fabric_quantities': fabric_quantities, 'trimming_quantities': trimming_quantities, 'packaging_quantities': packaging_quantities}
     except:
         return None
 
 
-def get_old_quantities_unitprice(order):
+def get_old_quantities_unitprice(fabric_quantities, trimming_quantities,packaging_quantities):
     # this function returns a dictionary of old quantity values and other details of fabric/trimming/packaging
     # data is gathered by functions in stock.py
-    fabric_details = get_details_fabric_from_order(order)
-    trimming_details = get_details_trimming_from_order(order, "production")
-    packaging_details = get_details_packaging_from_order(order, "production")
+    fabric_details = []
+    trimming_details = []
+    packaging_details = []
+
+    for fab_quantity in fabric_quantities:
+        order =frappe.get_doc({
+            'doctype':'Item Supplier',
+            'fabric_ref': fab_quantity['fabric_ref']
+        })
+        fabric_detail = get_details_fabric_from_order(order)
+        fabric_detail['fab_quantity']=fab_quantity['quantity']
+        fabric_details.append(fabric_detail)
+
+    for trim_quantity in trimming_quantities:
+        order =frappe.get_doc({
+            'doctype':'Item Supplier',
+            'trimming_ref': trim_quantity['trimming_ref']
+        })
+       
+        trimming_detail = get_details_trimming_from_order(order, "production")
+        trimming_detail['trim_quantity']=trim_quantity['quantity']
+        trimming_details.append(trimming_detail)
+
+    for pack_quantity in packaging_quantities:
+        order =frappe.get_doc({
+            'doctype':'Item Supplier',
+            'packaging_ref': pack_quantity['packaging_ref']
+        })
+        packaging_detail = get_details_packaging_from_order(order, "production")
+        if(packaging_detail== None):
+            return None
+        packaging_detail['pack_quantity']=pack_quantity['quantity']
+        packaging_details.append(packaging_detail)
 
     return {'fabric_details': fabric_details, 'trimming_details': trimming_details, 'packaging_details': packaging_details}
 

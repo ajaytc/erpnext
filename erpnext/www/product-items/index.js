@@ -52,7 +52,7 @@ $('.fab_sup').click(function () {
             // $('#fab_ref_list option').remove()
             $.each(r.message, function (key, value) {
 
-                el.closest('.row').find('#fab_ref_list').append((`<option value="${value.fabric_ref}"> 
+                el.closest('.row').find('#fab_ref_list').append((`<option value="${value.name}"> 
                                        ${value.name} 
                                   </option>`));
             });
@@ -75,7 +75,7 @@ $('.trim_sup').click(function () {
             // $('#trim_ref_list option').remove()
             $.each(r.message, function (key, value) {
 
-                el.closest('.row').find('#trim_ref_list').append((`<option value="${value.internal_ref}"> 
+                el.closest('.row').find('#trim_ref_list').append((`<option value="${value.name}"> 
                                        ${value.name} 
                                   </option>`));
             });
@@ -97,7 +97,7 @@ $('.pack_sup').click(function () {
             // $('#pack_ref_list option').remove()
             $.each(r.message, function (key, value) {
 
-                el.closest('.row').find('#pack_ref_list').append((`<option value="${value.internal_ref}"> 
+                el.closest('.row').find('#pack_ref_list').append((`<option value="${value.name}"> 
                                        ${value.name} 
                                   </option>`));
             });
@@ -118,7 +118,7 @@ var packRowCount = 1;
 
 
 $('#addFab').click(function () {
-    if (fabRowCount < trimRowCount || fabRowCount < packRowCount) {
+    if ((fabRowCount + trimRowCount + packRowCount)%3!=0) {
         $('.fab').first().clone(true).appendTo($(".service").last())
     } else {
         if (fabRowCount % 2 == 0) {
@@ -137,7 +137,7 @@ $('#addFab').click(function () {
 })
 
 $('#addTrim').click(function () {
-    if (trimRowCount < fabRowCount || trimRowCount < packRowCount) {
+    if ((fabRowCount + trimRowCount + packRowCount)%3!=0) {
         $('.trim').first().clone(true).appendTo($(".service").last())
     } else {
         if (trimRowCount % 2 == 0) {
@@ -155,7 +155,7 @@ $('#addTrim').click(function () {
 })
 
 $('#addPack').click(function () {
-    if (packRowCount < fabRowCount || packRowCount < trimRowCount) {
+    if ((fabRowCount + trimRowCount + packRowCount)%3!=0) {
         $('.pack').first().clone(true).appendTo($(".service").last())
     } else {
 
@@ -244,6 +244,7 @@ function submitProdItem(files) {
     trim_suppliers = {}
     pack_suppliers = {}
     avg_price=0
+    noConsumption=0
 
     // production price 
 

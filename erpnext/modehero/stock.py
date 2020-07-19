@@ -167,7 +167,7 @@ def get_details_trimming_from_order(order, order_type):
     if order_type == "prototype":
         trimming_item = order.trimming_item
     elif order_type == "production":
-        trimming_item = order.trimming
+        trimming_item = order.trimming_ref
     # returns trimmng details of the stock from any kind of order from prototype and production
 
     if trimming_item == None:
@@ -189,16 +189,16 @@ def get_details_packaging_from_order(order, order_type):
     # returns packaging details of the stock from any kind of order from prototype and production
     packaging_item = None
     if order_type == "production":
-        packaging_item = order.packaging
+        packaging_item_name = order.packaging_ref
 
-    if packaging_item == None:
+    if packaging_item_name == None:
         return None
 
     packaging_item = frappe.get_all('Packaging Item', filters={
-                                    'name': packaging_item}, fields=['internal_ref', 'unit_price'])
+                                    'name': packaging_item_name}, fields=['internal_ref', 'unit_price'])
 
     packaging_stock_name = frappe.get_all('Stock', filters={
-        'item_type': 'packaging', 'internal_ref': packaging_item[0].internal_ref}, fields=['name'])
+        'item_type': 'packaging', 'internal_ref': packaging_item_name}, fields=['name'])
     if packaging_stock_name == None or len(packaging_stock_name) == 0:
         return None
     packaging_stock = frappe.get_doc('Stock', packaging_stock_name[0].name)
