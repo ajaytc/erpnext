@@ -152,3 +152,9 @@ def create_product_item(data):
         frappe.db.commit()
         return {'message': 'Product Created Successfully', 'product': product}
     print(data)
+
+@frappe.whitelist()
+def get_priducts_of_category(category):
+    brand = frappe.get_doc('User', frappe.session.user).brand_name
+    result = frappe.get_all('Item',filters={'item_group':category,'brand':brand},fields=['item_name','name'])
+    return result

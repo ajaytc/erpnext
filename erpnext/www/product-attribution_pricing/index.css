@@ -31,3 +31,19 @@
 .price-block{
     padding: 0;
 }
+
+select option[disabled]:first-child {
+	display: none;
+} 
+
+.editable{
+    background-color: gainsboro;
+}
+
+th{
+    text-align: center;
+}
+td {
+    text-align: center;
+}
+

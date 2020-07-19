@@ -9,24 +9,24 @@
             <div class="row">
                 <div class="col-3">
                     <label>{{_("Client")}}</label>
-                    <select class="form-control {{class}}" id="{{id}}">
-                        {% for i in items %}
-                        <option value="{{i.name}}">{{i.item_name}}</option>
+                    <select class="form-control">
+                        {% for c in clients %}
+                        <option value="{{c.name}}">{{c.name}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col-3">
                     <label>{{_("Product Category")}}</label>
-                    <select class="form-control {{class}}" id="{{id}}">
-                        {% for i in items %}
-                        <option value="{{i.name}}">{{i.item_name}}</option>
+                    <select class="form-control" id="product-category-select">
+                        {% for pc in product_cats %}
+                        <option value="{{pc.name}}">{{pc.name}}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col-3">
                     <label>{{_("Product Name")}}</label>
                     <div class="form-group">
-                        <select class="form-control {{class}}" id="{{id}}">
+                        <select class="form-control" id="product-select" >
                             {% for i in items %}
                             <option value="{{i.name}}">{{i.item_name}}</option>
                             {% endfor %}
@@ -44,7 +44,7 @@
                     <label>{{_("Wholesale Price")}}</label>
                     <table class="table table-bordered">
                         <thead>
-                            <th style="width: 15%;"><input type="checkbox" value="option1"></th>
+                            <th style="width: 15%;"><input id="select-all-check" type="checkbox" value="option1"></th>
                             <th style="width: 25%;">From</th>
                             <th style="width: 25%;">To</th>
                             <th style="width: 25%;">Price</th>
@@ -60,7 +60,7 @@
                 <div class="col-3">
                     <div class="minimum-order">
                         <label >{{_("Minimum Order")}}</label>
-                        <input id="" type="text" class="form-control mt-2">
+                        <input id="minimum-order" type="text" class="form-control mt-2">
                     </div>
                     <div class="check-box col-12">
                         <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> 
