@@ -244,9 +244,19 @@
                     </a>
                 </div>
             </div>
-            <a href="/production-dashboard" class="list-group-item ">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="ordLst" data-target="#ordLst">
                 {{_("List")}}
             </a>
+            <div id="ordLst" class="collapse" data-parent="#collapse4">
+                <div class="list-group">
+                    <a href="/production-dashboard" class="list-group-item ">
+                        {{_("Bulk")}}
+                    </a>
+                    <a href="#" class="list-group-item ">
+                        {{_("Uniform")}}
+                    </a>
+                </div>
+            </div>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c4a"
                 aria-expanded="false" aria-controls="c4a">
                 {{_("Manage")}}
