@@ -33,11 +33,11 @@ $("#submit").click(function(){
             if (r) {
                 if (r.message['status'] == "ok") {
                     response_message('Successfull', 'Pricing Attribution updated successfully', 'green')
-                    window.location.reload()
+                    window.location.reload(true)
                     return null;
                 }
                 response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red')
-                window.location.reload()
+                window.location.reload(true)
                 return null
             }
             response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red')
