@@ -10,17 +10,25 @@
                 <div class="col-3">
                     <label>{{_("Client")}}</label>
                     <select class="form-control clientname-select" id="client-name-select">
+                        {% if  clients|length == 0 %}
+                        <option  value="" disabled selected>No Client Available</option>
+                        {% else %}
                         {% for c in clients %}
                         <option value="{{c.name}}">{{c.customer_name}}</option>
                         {% endfor %}
+                        {%endif%}
                     </select>
                 </div>
                 <div class="col-3">
                     <label>{{_("Product Category")}}</label>
                     <select class="form-control" id="product-category-select">
+                        {% if  product_cats|length == 0 %}
+                        <option  value="" disabled selected>No Product Category Available</option>
+                        {% else %}
                         {% for pc in product_cats %}
                         <option value="{{pc.name}}">{{pc.name}}</option>
                         {% endfor %}
+                        {%endif%}
                     </select>
                 </div>
                 <div class="col-3">

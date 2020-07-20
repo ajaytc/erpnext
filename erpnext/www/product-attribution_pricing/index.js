@@ -51,6 +51,9 @@ function set_products_at_select_change(){
     if (!category){
         return null
     }
+    if (!client){
+        return null
+    }
     $("#product-select").find("option").remove();
     let prices_items = get_priced_items(client,category);
     if (prices_items==null){
