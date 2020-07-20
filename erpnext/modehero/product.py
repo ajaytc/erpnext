@@ -1,6 +1,11 @@
 import frappe
 import json
 
+@frappe.whitelist()
+def get_priced_products(client,category):
+    brand = frappe.get_doc('User', frappe.session.user).brand_name
+    result = frappe.get_all('Client Pricing',filters={'item_group':category,'brand':brand,'client':client},fields=['item_code'])
+    return result
 
 @frappe.whitelist()
 def get_products_of_category(category):
@@ -165,3 +170,5 @@ def get_priducts_of_category(category):
 def get_product_item(product):
     product=frappe.get_doc('Item',product)
     return product
+
+

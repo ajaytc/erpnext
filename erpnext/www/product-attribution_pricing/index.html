@@ -9,33 +9,45 @@
             <div class="row">
                 <div class="col-3">
                     <label>{{_("Client")}}</label>
-                    <select class="form-control">
+                    <select class="form-control clientname-select" id="client-name-select">
+                        {% if  clients|length == 0 %}
+                        <option  value="" disabled selected>No Client Available</option>
+                        {% else %}
                         {% for c in clients %}
-                        <option value="{{c.name}}">{{c.name}}</option>
+                        <option value="{{c.name}}">{{c.customer_name}}</option>
                         {% endfor %}
+                        {%endif%}
                     </select>
                 </div>
                 <div class="col-3">
                     <label>{{_("Product Category")}}</label>
                     <select class="form-control" id="product-category-select">
+                        {% if  product_cats|length == 0 %}
+                        <option  value="" disabled selected>No Product Category Available</option>
+                        {% else %}
                         {% for pc in product_cats %}
                         <option value="{{pc.name}}">{{pc.name}}</option>
                         {% endfor %}
+                        {%endif%}
                     </select>
                 </div>
                 <div class="col-3">
                     <label>{{_("Product Name")}}</label>
                     <div class="form-group">
                         <select class="form-control" id="product-select" >
+                            {% if  items|length == 0 %}
+                            <option  value="" disabled selected>No Product Available</option>
+                            {% else %}
                             {% for i in items %}
                             <option value="{{i.name}}">{{i.item_name}}</option>
                             {% endfor %}
+                            {%endif%}
                         </select>
                     </div>
                 </div>
                 <div class="col-3">
                     <label>{{_("Season")}}</label>
-                    <input id="" type="text" class="form-control">
+                    <input id="season-input" type="text" class="form-control">
                 </div>
             </div>
             <div class="top-buffer"></div>
@@ -50,8 +62,8 @@
                             <th style="width: 25%;">Price</th>
                             <th style="width: 10%;"></th>
                         </thead>
-                        <tbody class="table-body" data-row_cont="0">
-
+                        <tbody class="table-body" data-row_cont="1">
+                            <tr class='row-data' id='tablerow-1'><td class='row-checkbox'><input class='checkbox-table-row' data-row_num='1' type='checkbox'/></td><td class='row-from'><div contenteditable='true' class='from editable table-input-1'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-1'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-1'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("1")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>
                         </tbody>
                     </table>
                     <button  onclick="add_row()" type="button" class="btn btn-light" style="display: inline-block;">Add Row</button>
@@ -63,7 +75,7 @@
                         <input id="minimum-order" type="text" class="form-control mt-2">
                     </div>
                     <div class="check-box col-12">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> 
+                        <input class="form-check-input" type="checkbox" id="show-price" value="option1"> 
                         <label >{{_("Show Price in Client Order Form")}}</label>
                     </div>
                 </div>
