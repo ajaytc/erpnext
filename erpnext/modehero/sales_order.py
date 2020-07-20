@@ -1,6 +1,8 @@
 import frappe
 import json
 import ast
+import random
+from erpnext.modehero.production import create_production_order
 
 
 @frappe.whitelist()
@@ -286,5 +288,60 @@ def validate_sales_item_orders(orders_object):
             'docstatus': 1
         })
         frappe.db.commit()
+        sales_order_item=frappe.get_doc('Sales Order Item',order)
+        item=sales_order_item.item_code
+        
+        makeProductionOrder(item,order)
 
     return {'status': 'ok'}
+
+def makeProductionOrder(item_name,sales_order_item_name):
+
+    item=frappe.get_doc("Item",item_name)
+    fabSuppliers={}
+    trimSuppliers={}
+    packSuppliers={}
+    
+    for supplier in item.supplier:
+        if(supplier.supplier_group=='Fabric'):
+           
+            fabSuppliers[random.random()]={
+                'fabric_supplier': supplier.supplier,
+                'fabric_ref': supplier.fabric_ref,
+                'fabric_con': supplier.fabric_consumption,
+                'fabric_status':''
+                
+            }
+        elif(supplier.supplier_group=='Trimming'):
+            trimSuppliers[random.random()]={
+                'trim_supplier': supplier.supplier,
+                'trim_ref': supplier.trimming_ref,
+                'trim_con': supplier.trimming_consumption,
+                'trim_status':''
+                
+            }
+        elif(supplier.supplier_group=='Packaging'):
+            packSuppliers[random.random()]={
+                'pack_supplier': supplier.supplier,
+                'pack_ref': supplier.packaging_ref,
+                'pack_con': supplier.packaging_consumption,
+                'pack_status':''
+                
+            }
+            
+    quantities=frappe.get_all('Quantity Per Size',filters={'order_id':sales_order_item_name,'product_id':item_name},fields=['size','quantity'])
+    production_order={
+        'product_category':item.item_group,
+        'internal_ref':'SOI-'+sales_order_item_name,
+        'product_name':item.name,
+        'production_factory':'facto 2',     #need to set factory from sales order validation page
+        'quantity':quantities,
+        'fab_suppliers':fabSuppliers,
+        'trim_suppliers':trimSuppliers,
+        'pack_suppliers':packSuppliers,
+        'comment':''
+    }
+
+    create_production_order(json.dumps(production_order))
+
+

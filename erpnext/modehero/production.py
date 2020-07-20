@@ -6,6 +6,19 @@ from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, 
 
 @frappe.whitelist()
 def create_production_order(data):
+
+# data:{
+# 'product_category':'proto - Moynat'
+# 'internal_ref':'xsc'
+# 'product_name':'29'
+# 'production_factory':'facto 2'
+# 'quantity':[{'quantity': '4', 'size': 'A'}]
+# 'fab_suppliers':{'0.485899247691032': {'fabric_con': '23', 'fabric_ref': '464864', 'fabric_status': 'To be sent later', 'fabric_supplier': 'Loro Piana'}, '0.8194292281842649': {'fabric_con': '23', 'fabric_ref': '223311', 'fabric_status': None, 'fabric_supplier': 'TEST RED'}}
+# 'trim_suppliers':{'0.15179674763375983': {'trim_con': '22', 'trim_ref': 'wed', 'trim_status': 'On stock at factory', 'trim_supplier': 'dtrim'}}
+# 'pack_suppliers':{'0.4848414809400162': {'pack_con': '34', 'pack_ref': 'PB 20', 'pack_status': 'To be sent later', 'pack_supplier': 'Packager1'}, '0.6865090500983441': {'pack_con': '31', 'pack_ref': 'adsf', 'pack_status': 'To be sent later', 'pack_supplier': 'Packager1'}, '0.9813391020556028': {'pack_con': '34', 'pack_ref': 'qqq', 'pack_status': 'To be sent later', 'pack_supplier': 'Packager1'}}
+# 'comment':''
+# }
+
     data = json.loads(data)
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name

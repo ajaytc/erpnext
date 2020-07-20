@@ -145,7 +145,9 @@ def create_product_item(data):
             'tech_pack': tech_pack,
             'picture': picture,
             'pattern': pattern,
-            'barcode': barcode
+            'barcode': barcode,
+            'brand':brand
+
 
         })
         product.insert()
