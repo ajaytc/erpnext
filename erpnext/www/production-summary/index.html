@@ -14,19 +14,212 @@
 </div>
 {% endmacro %}
 
-<div id="container" class="container mt-3">
+<div id="container" class="container mt-3" style="max-width: 1040px;">
     <div class="card" style="">
         <div class="card-body row">
             {% if order %}
             <div id="{{order.product_name}}" class="mt-3 product-table" style="width:90%">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <label for="exampleFormControlSelect1">{{_("Product Name")}}</label>
-                            <br />
-                            <span class="product"
-                                data-product="{{order.product_name}}">{{frappe.db.get_value('Item',order.product_name,'item_name')}}</span>
+                        <div class="col-md-4 mb-5">
+
+                            <p class="label">
+                                <h3>{{_("Order Info")}}</h3>
+                            </p>
+
+                            <ul class="order-summary">
+
+                                <li>
+                                    <span>{{_("Product Name")}}</span>
+                                    <span id="product_name">
+                                        {{order.product_name}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>{{_("Production Factory")}}</span>
+                                    <span id="production_factore">
+                                        {{order.production_factory}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>{{_("Destination")}}</span>
+                                    <span id="destination">
+                                        {# {{fabricOrder.quantity}} #}
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
+
+                        <div class="col-md-4 mb-5">
+
+                            <p class="label">
+                                <h3>{{_("Attachments")}}</h3>
+                            </p>
+                            <ul class="order-summary">
+                                <li>
+                                    <span>{{_("Tech Pack")}}</span>
+                                    <span id="tech_pack">
+                                        {{product.tech_pack}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>{{_("Picture")}}</span>
+                                    <span id="picture">
+                                        {{product.picture}}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span>{{_("Pattern")}}</span>
+                                    <span id="pattern">
+                                        {{product.pattern}}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-4 mb-5">
+
+                            <div class="row">
+
+                                <!-- to put document -->
+
+
+
+                            </div>
+
+                            <div class="row" >
+
+                                <h3>{{_("Payment Proof")}}</h3>
+
+                                <div id="payment_doc" style="width: 90%;">
+                                    {% if order.payment_proof %}
+
+                                    <a href="{{order.payment_proof}}" download class="order-summary-download">
+                                        <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                                        <span>{{order.payment_proof}}</span>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    
+                                    <div class="custom-file" style="margin-top: 5%;">
+                                        <input type="file" class="custom-file-input" value={{order.payment_proof}}
+                                            name="paymentProof" id="payment_proof">
+
+                                        <label id="payment_proof-label" class="custom-file-label"
+                                            for="payment_proof"></label>
+
+                                    </div>
+                                </div>
+                                
+
+                                
+                                
+                                
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-5 ">
+
+                            {% for fabsupplier in fabricSuppliers %}
+                            <div class="row fabsuppliers btn" style="padding-bottom: 3%;"
+                                data-ref="{{fabsupplier.fabric_ref}}">
+                                <ul class="order-summary">
+
+                                    <li>
+                                        <span>{{_("Fabric ref")}}</span>
+                                        <span id="fabric_ref">
+                                            {{fabsupplier.fabric_ref}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Fabric Consumption")}}</span>
+                                        <span id="fabric_consumption">
+                                            {{fabsupplier.fabric_consumption}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Fabric Status")}}</span>
+                                        <span id="fabric_status">
+                                            {{fabsupplier.fabric_status}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="col-md-4 mb-5 ">
+
+                            {% for trimsupplier in trimmingSuppliers %}
+                            <div class="row trimsuppliers btn" style="padding-bottom: 3%;"
+                                data-ref="{{trimsupplier.trimming_ref}}">
+                                <ul class="order-summary">
+
+                                    <li>
+                                        <span>{{_("Trimming ref")}}</span>
+                                        <span id="trimming_ref">
+                                            {{trimsupplier.trimming_ref}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Trimming Consumption")}}</span>
+                                        <span id="trimming_consumption">
+                                            {{trimsupplier.trimming_consumption}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Trimming Status")}}</span>
+                                        <span id="trimming_status">
+                                            {{trimsupplier.trimming_consumption}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="col-md-4 mb-5 ">
+                            {% for packsupplier in packagingSuppliers %}
+                            <div class="row packsuppliers btn" style="padding-bottom: 3%;"
+                                data-ref="{{packsupplier.packaging_ref}}">
+                                <ul class="order-summary">
+
+                                    <li>
+                                        <span>{{_("Packaging ref")}}</span>
+                                        <span id="packaging_ref">
+                                            {{packsupplier.packaging_ref}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Packaging Consumption")}}</span>
+                                        <span id="packaging_consumption">
+                                            {{packsupplier.packaging_consumption}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Packaging Status")}}</span>
+                                        <span id="packaging_status">
+                                            {{packsupplier.packaging_status}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+
+
                     </div>
 
                     <div class="row mt-3 table-section">
@@ -51,7 +244,7 @@
                         </table>
                     </div>
 
-                    <div>
+                    <div class="row">
                         <table class="table table-bordered pricing-table">
                             <thead class="thead-light">
                                 <tr>
@@ -67,65 +260,25 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div>
+                       
+                        <p class="label">
+                            {{_("Comments")}}
+                        </p>
+              
+                        <div>
+                            <textarea name="" id="comments" style="width: 100%;" cols="30" rows="10">{{order.comment}}</textarea>
+                        </div>
+
+                    </div>
+
+
+
                 </div>
             </div>
 
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Date")}} <br />
-                    <span>{% if date %}{{date}}{% endif %}
-                        {{frappe.format(order.creation, {'fieldtype': 'Date'})}}
-                    </span>
-                </div>
-                <div id="order-no-section" class="m-3">
-                    {{_("Order Number")}}
-                    <br />
-                    <span id="order-no">
-                        {{order.name}}
-                    </span>
-                </div>
-                <div class="m-3">
-                    {{_("Internal ref")}}
-                    <br />
-                    {{order.internal_ref}}
-                </div>
 
-                <div class="m-3">
-                    {{_("Fabric ref")}}
-                    <br />
-                    {{order.fabric_ref}}
-                </div>
-                <div class="m-3">
-                    <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-                </div>
-                <div class="m-3">
-                    {{_("Comments")}}
-                    <br />
-                    {{order.comment}}
-                </div>
-
-            </div>
-            <div class="col-6">
-                <div class="m-3">
-                    {{_("Production Factory Name")}}
-                    <br />
-                    {{order.production_factory}}
-                </div>
-                <div class="m-3">
-                    {{_("Trimming")}}
-                    <br />
-                    {{order.trimming}}
-                </div>
-                <div class="m-3">
-                    {{_("Packaging")}}
-                    <br />
-                    {{order.packaging}}
-                </div>
-            </div>
-
-            <div class="ml-5">
-                <button class="btn btn-primary" id="validate">{{_("Validate")}}</button>
-            </div>
             {% endif %}
         </div>
     </div>
@@ -133,7 +286,7 @@
 </div>
 
 {% if isProd %}
-<div class="sidebar right">
+<div class="sidebar right summaryside">
     <div class="sidebar-inner">
         <h5 class="mb-4 mt-0">
             {{_("Production")}}
@@ -211,6 +364,12 @@
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
+        </div>
+
+        <div class="form-group">
+            {{_("Price")}}
+            <input id="price" type="text"
+                value="{% if order.price %}{{order.price}}{% endif %}" class="form-control mt-2">
         </div>
 
         <div class="form-group">

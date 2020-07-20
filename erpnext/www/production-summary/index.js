@@ -336,6 +336,24 @@ function checkFileUpload(componentId) {
 
                 break;
 
+            case "payment_proof":
+
+                if (!file) {
+                    if ("{{order.payment_proof}}" == null) {
+                        console.error('invoice must upload');
+
+                    } else {
+                        filename = "{{order.payment_proof}}";
+                        resolve(filename);
+                    }
+
+                } else {
+                    uploadFile(componentId).then(res => resolve(res));
+
+                }
+
+                break;
+
 
         }
 
@@ -356,6 +374,7 @@ function submitProductionSummary(files) {
                 carrier: $('#carrier').val(),
                 tracking_number: $('#tracking_number').val(),
                 shipment_date: $('#shipmentDate').val(),
+                price:$('price').val(),
                 production_comment: $('#comment').val(),
             }
         },
@@ -427,3 +446,75 @@ $('#invoice').change(function () {
     $('#invoice-label').html($(this).prop('files')[0].name)
 })
 
+$('.fabsuppliers').click(function () {
+    window.location.href = `/fabric-item?name=` + $(this).data('ref')
+})
+
+$('.trimsuppliers').click(function () {
+    window.location.href = `/trimming-item?name=` + $(this).data('ref')
+})
+
+$('.packsuppliers').click(function () {
+    window.location.href = `/packaging-item?name=` + $(this).data('ref')
+})
+
+$('#payment_proof').change(function () {
+    $('#payment_proof-label').html($(this).prop('files')[0].name)
+    uploadPaymentProofFile()
+})
+
+function uploadPaymentProofFile(){
+    let files = ['payment_proof']
+
+    Promise.all(files.map(f => {
+
+        return checkFileUpload(f)
+
+    })).then(files => {
+        console.log(files);
+        submitPaymentProof(files)
+
+    }).catch(e => {
+
+        frappe.throw(e)
+    })
+}
+
+
+
+function submitPaymentProof(files) {
+    frappe.call({
+        method: 'erpnext.modehero.production.submitPaymentProof',
+        args: {
+            data: {
+                order: "{{frappe.form_dict.order}}",
+                payment_proof: files[0]
+
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                element = `<a href="`+r.message.payment_proof+`" download class="order-summary-download">
+                <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                <span>`+r.message.payment_proof+`</span>
+                </a>`
+
+                $('#payment_doc').html(element)
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'green',
+                    message: __('Payment Proof Submitted Successfully')
+                });
+
+            } else {
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'red',
+                    message: __('Payment Proof Submission Failed')
+                });
+            }
+        }
+    })
+
+}

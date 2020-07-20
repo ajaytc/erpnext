@@ -31,7 +31,9 @@
   "tracking_number",
   "shipment_date",
   "production_comment",
-  "suppliers"
+  "suppliers",
+  "payment_proof",
+  "price"
  ],
  "fields": [
   {
@@ -175,10 +177,20 @@
    "fieldtype": "Table",
    "label": "Suppliers",
    "options": "Production Order Supplier"
+  },
+  {
+   "fieldname": "payment_proof",
+   "fieldtype": "Attach",
+   "label": "Payment Proof"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "label": "Price"
   }
  ],
  "links": [],
- "modified": "2020-07-18 08:23:50.564526",
+ "modified": "2020-07-20 04:38:32.686287",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

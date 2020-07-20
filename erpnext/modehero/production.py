@@ -285,3 +285,14 @@ def get_size_order(order):
         size_order[order.product_name].update(
             [(size.size, int(size.quantity))])
     return size_order
+
+
+@frappe.whitelist()
+def submitPaymentProof(data):
+    data = json.loads(data)
+    orderName=data['order']
+    order=frappe.get_doc("Production Order",orderName)
+
+    order.payment_proof=data['payment_proof']
+    order.save()
+    return order

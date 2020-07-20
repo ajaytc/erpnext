@@ -779,6 +779,22 @@ ul.breadcrumbs li.breadcrumb-item a {
   overflow-y: auto;
   border-left: 1px solid #e6e6e6;
 }
+
+.sidebar.right.summaryside {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  height: calc(100% - 80px);
+  width: 375px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 1px solid #e6e6e6;
+  background-color: white;
+}
+
+.sidebar.right.summaryside .sidebar-inner {
+  padding: 20px 60px;
+}
 .page-with-sidebar.right-sidebar .sidebar.right .sidebar-inner {
   padding: 20px 60px;
 }
