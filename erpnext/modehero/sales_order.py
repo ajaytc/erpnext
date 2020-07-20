@@ -290,12 +290,13 @@ def validate_sales_item_orders(orders_object):
         frappe.db.commit()
         sales_order_item=frappe.get_doc('Sales Order Item',order)
         item=sales_order_item.item_code
+        destination=sales_order_item.item_destination
         
-        makeProductionOrder(item,order)
+        makeProductionOrder(item,order,destination)
 
     return {'status': 'ok'}
 
-def makeProductionOrder(item_name,sales_order_item_name):
+def makeProductionOrder(item_name,sales_order_item_name,destination):
 
     item=frappe.get_doc("Item",item_name)
     fabSuppliers={}
@@ -335,6 +336,7 @@ def makeProductionOrder(item_name,sales_order_item_name):
         'internal_ref':'SOI-'+sales_order_item_name,
         'product_name':item.name,
         'production_factory':'facto 2',     #need to set factory from sales order validation page
+        'final_destination':destination,
         'quantity':quantities,
         'fab_suppliers':fabSuppliers,
         'trim_suppliers':trimSuppliers,

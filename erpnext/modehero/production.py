@@ -76,6 +76,7 @@ def create_production_order(data):
         'internal_ref': data['internal_ref'],
         'product_name': data['product_name'],
         'production_factory': data['production_factory'],
+        'final_destination':data['final_destination'],
         'quantity_per_size': data['quantity'],
         'suppliers': order_suppliers,
         'comment': data['comment'],

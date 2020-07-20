@@ -33,7 +33,8 @@
   "production_comment",
   "suppliers",
   "payment_proof",
-  "price"
+  "price",
+  "final_destination"
  ],
  "fields": [
   {
@@ -187,10 +188,15 @@
    "fieldname": "price",
    "fieldtype": "Data",
    "label": "Price"
+  },
+  {
+   "fieldname": "final_destination",
+   "fieldtype": "Data",
+   "label": "Final Destination"
   }
  ],
  "links": [],
- "modified": "2020-07-20 04:38:32.686287",
+ "modified": "2020-07-20 18:57:32.656353",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

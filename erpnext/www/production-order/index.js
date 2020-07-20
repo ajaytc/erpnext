@@ -365,6 +365,7 @@ function createOrder(product, qtys) {
                 internal_ref: $('#internal-ref').val(),
                 product_name: product,
                 production_factory: $('#factory_list>option:selected').text(),
+                final_destination:$('#destination_list>option:selected').val(),
                 quantity: qtys,
                 fab_suppliers: fab_suppliers,
                 trim_suppliers: trim_suppliers,
@@ -444,7 +445,7 @@ function addFab() {
             var serviceRow = "<div class='row service extra' style='padding-top:3%'></div>"
         }
 
-        $(".upper").append(serviceRow)
+        $(".card-body").append(serviceRow)
         $('.fab').first().clone(true).appendTo($(".service").last())
     }
 
@@ -467,7 +468,7 @@ function addTrim() {
             var serviceRow = "<div class='row service extra' style='padding-top:3%'></div>"
         }
 
-        $(".upper").append(serviceRow)
+        $(".card-body").append(serviceRow)
         $('.trim').first().clone(true).appendTo($(".service").last())
     }
 
@@ -489,7 +490,7 @@ function addPack() {
             var serviceRow = "<div class='row service extra' style='padding-top:3%'></div>"
         }
 
-        $(".upper").append(serviceRow)
+        $(".card-body").append(serviceRow)
         $('.pack').first().clone(true).appendTo($(".service").last())
     }
 
