@@ -169,6 +169,7 @@ def submit_production_summary_info(data):
     order.carrier = data['carrier']
     order.tracking_number = data['tracking_number']
     order.shipment_date = data['shipment_date']
+    order.price=data['price']
     order.production_comment = data['production_comment']
     if(order.profoma != 'None'):
         order.docstatus = 1

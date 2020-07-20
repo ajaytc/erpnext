@@ -374,7 +374,7 @@ function submitProductionSummary(files) {
                 carrier: $('#carrier').val(),
                 tracking_number: $('#tracking_number').val(),
                 shipment_date: $('#shipmentDate').val(),
-                price:$('price').val(),
+                price:$('#price').val(),
                 production_comment: $('#comment').val(),
             }
         },
