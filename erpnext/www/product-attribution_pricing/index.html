@@ -9,9 +9,9 @@
             <div class="row">
                 <div class="col-3">
                     <label>{{_("Client")}}</label>
-                    <select class="form-control">
+                    <select class="form-control clientname-select" id="client-name-select">
                         {% for c in clients %}
-                        <option value="{{c.name}}">{{c.name}}</option>
+                        <option value="{{c.name}}">{{c.customer_name}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-3">
                     <label>{{_("Season")}}</label>
-                    <input id="" type="text" class="form-control">
+                    <input id="season-input" type="text" class="form-control">
                 </div>
             </div>
             <div class="top-buffer"></div>
@@ -63,7 +63,7 @@
                         <input id="minimum-order" type="text" class="form-control mt-2">
                     </div>
                     <div class="check-box col-12">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"> 
+                        <input class="form-check-input" type="checkbox" id="show-price" value="option1"> 
                         <label >{{_("Show Price in Client Order Form")}}</label>
                     </div>
                 </div>
