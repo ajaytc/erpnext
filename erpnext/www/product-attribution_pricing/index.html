@@ -75,15 +75,51 @@
                         <input id="minimum-order" type="text" class="form-control mt-2">
                     </div>
                     <div class="check-box col-12">
-                        <input class="form-check-input" type="checkbox" id="show-price" value="option1"> 
+                        <input class="form-check-input" type="checkbox" id="show-price" value="option1" checked> 
                         <label >{{_("Show Price in Client Order Form")}}</label>
                     </div>
                 </div>
             </div>
 
-            <div class="row option-block" data-option_count="0">
+            <div class="row option-block" data-option_count="3">
                 <div class="col-12">
                     <div id="options" class="row">
+                        <div class="col-4">
+                            <div class="row option-inputs">
+                                <div class="col-9 option-block">
+                                    <label >{{_("Option 1")}}</label>
+                                    <input  type="text" class="form-control mt-2 option-option">
+                                </div>
+                                <div class="col-2 price-block">
+                                    <label >{{_("Price")}}</label>
+                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="row option-inputs">
+                                <div class="col-9 option-block">
+                                    <label >{{_("Option 2")}}</label>
+                                    <input  type="text" class="form-control mt-2 option-option">
+                                </div>
+                                <div class="col-2 price-block">
+                                    <label >{{_("Price")}}</label>
+                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="row option-inputs">
+                                <div class="col-9 option-block">
+                                    <label >{{_("Option 3")}}</label>
+                                    <input  type="text" class="form-control mt-2 option-option">
+                                </div>
+                                <div class="col-2 price-block">
+                                    <label >{{_("Price")}}</label>
+                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <a id="" onclick="add_option()"  style="font-weight: bold;color: #3B3DBF;" href="#">{{_("Add option +")}} </a>
                 </div>
