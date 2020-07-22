@@ -70,6 +70,8 @@ def create_production_order(data):
                     'packaging_status': json_pack_suppliers[key]['pack_status']
                 })
 
+    production_factory=frappe.get_doc("Production Factory",data['production_factory'])
+
     order = frappe.get_doc({
         'doctype': 'Production Order',
         'product_category': data['product_category'],
@@ -79,6 +81,7 @@ def create_production_order(data):
         'final_destination':data['final_destination'],
         'quantity_per_size': data['quantity'],
         'suppliers': order_suppliers,
+        'factory_email':production_factory.email_address,
         'comment': data['comment'],
         'brand': brand
     })

@@ -335,7 +335,7 @@ def makeProductionOrder(item_name,sales_order_item_name,destination):
         'product_category':item.item_group,
         'internal_ref':'SOI-'+sales_order_item_name,
         'product_name':item.name,
-        'production_factory':'facto 2',     #need to set factory from sales order validation page
+        'production_factory':'Test Factory',     #need to set factory from sales order validation page
         'final_destination':destination,
         'quantity':quantities,
         'fab_suppliers':fabSuppliers,

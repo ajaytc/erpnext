@@ -34,7 +34,8 @@
   "suppliers",
   "payment_proof",
   "price",
-  "final_destination"
+  "final_destination",
+  "factory_email"
  ],
  "fields": [
   {
@@ -193,10 +194,16 @@
    "fieldname": "final_destination",
    "fieldtype": "Data",
    "label": "Final Destination"
+  },
+  {
+   "fieldname": "factory_email",
+   "fieldtype": "Data",
+   "label": "Production Factory Email",
+   "options": "Email"
   }
  ],
  "links": [],
- "modified": "2020-07-20 18:57:32.656353",
+ "modified": "2020-07-21 14:21:45.027326",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",
