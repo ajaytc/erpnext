@@ -1,3 +1,15 @@
+window.onload= (event)=>{
+    $(".default-option-price").keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+    });
+    $(".modifiable-row").keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+    });
+    $(".table-input-1").keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+    });
+}
+
 $("#product-category-select").change(function(){
     set_products_at_select_change();
 })
@@ -17,7 +29,35 @@ $("#select-all-check").change(function(){
 
 $("#minimum-order").keypress(function(e) {
     if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
-});
+})
+
+$("#modify").click(function(){
+    let form_data = collect_all_data();
+    if (form_data==null){
+        return null
+    }
+    let active_product_name = $(this).attr("ap-name")
+    frappe.call({
+        method: 'erpnext.modehero.customer.modify_pricing',
+        args: {
+            form_data:form_data,
+            name : active_product_name
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Pricing Attribution updated successfully', 'green');
+                    window.location.href = "/active-products";
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red');
+                window.location.href = "/active-products";                
+                return null;
+            }
+            response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red');
+        }
+    });
+})
 
 $("#submit").click(function(){
     let form_data = collect_all_data();
@@ -32,15 +72,15 @@ $("#submit").click(function(){
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Pricing Attribution updated successfully', 'green')
+                    response_message('Successfull', 'Pricing Attribution created successfully', 'green')
                     window.location.reload(true)
                     return null;
                 }
-                response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red')
+                response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
                 window.location.reload(true)
                 return null
             }
-            response_message('Unsuccessfull', 'Pricing Attribution updated unsuccessfully', 'red')
+            response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
         }
     });
 })
@@ -230,11 +270,12 @@ function collect_wholesale_prices(){
             return false;
         }
     });
-    if (wholesale_prices.length==0){
+    if (is_partial_input){
         return "false"
     }
-    else if (is_partial_input){
-        return "false"
+    else if (wholesale_prices.length==0){
+        response_message('Unsuccessfull', 'Inputs Incompleted!', 'red');
+        return "false";
     }
     return wholesale_prices
 }

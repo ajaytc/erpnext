@@ -1,8 +1,20 @@
 {% import 'erpnext/templates/macros.html' as macros %}
+{% if modifiable %}
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Product attribution and pricing','url':'#'}]) }}
+{% elif newable %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active Products','url':'/active-products'},{'label':'Product attribution and pricing','url':'#'}]) }}
+{% else %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active Products','url':'/active-products'},{'label':'Product attribution and pricing','url':'#'}]) }}
+{% endif %}
 
-<h2  onload="ss()">{{_("Product attribution and pricing")}}</h2>
-
+{% if newable or modifiable%}
+<div class="d-flex flex-row-reverse head-buttons">
+    <button type="button" class="btn btn-primary form-buttons" id="new-button" onclick="window.location.href='/active-products'">
+        {{_("Back")}}
+    </button>
+</div>
+{% endif %}
+<h2 >{{_("Product attribution and pricing")}}</h2>
 <div id="container" class="container">
     <div class="card">
         <div class="card-body">
@@ -35,10 +47,10 @@
                     <label>{{_("Product Name")}}</label>
                     <div class="form-group">
                         <select class="form-control" id="product-select" >
-                            {% if  items|length == 0 %}
+                            {% if  item_list|length == 0 %}
                             <option  value="" disabled selected>No Product Available</option>
                             {% else %}
-                            {% for i in items %}
+                            {% for i in item_list %}
                             <option value="{{i.name}}">{{i.item_name}}</option>
                             {% endfor %}
                             {%endif%}
@@ -47,7 +59,11 @@
                 </div>
                 <div class="col-3">
                     <label>{{_("Season")}}</label>
+                    {% if modifiable %}
+                    <input id="season-input" type="text" class="form-control" value="{{attribution_pricing.season}}" > 
+                    {% else %}
                     <input id="season-input" type="text" class="form-control">
+                    {% endif %}
                 </div>
             </div>
             <div class="top-buffer"></div>
@@ -62,14 +78,78 @@
                             <th style="width: 25%;">Price</th>
                             <th style="width: 10%;"></th>
                         </thead>
-                        <tbody class="table-body" data-row_cont="1">
-                            <tr class='row-data' id='tablerow-1'><td class='row-checkbox'><input class='checkbox-table-row' data-row_num='1' type='checkbox'/></td><td class='row-from'><div contenteditable='true' class='from editable table-input-1'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-1'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-1'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("1")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>
+                        {% if modifiable %}
+                        <tbody class="table-body" data-row_cont="{{attribution_pricing.wholesale_price|length}}">
+                            {% for n in range(attribution_pricing.wholesale_price|length) %}
+                            <tr class='row-data' id='tablerow-{{n+1}}'>
+                                <td class='row-checkbox'>
+                                    <input class='checkbox-table-row' data-row_num='{{n+1}}' type='checkbox' checked/>
+                                </td>
+                                <td class='row-from'>
+                                    <div contenteditable='true'  class='from editable modifiable-row table-input-{{n+1}}'>{{attribution_pricing.wholesale_price[n].from_quantity}}</div>
+                                </td>
+                                <td class='row-to'>
+                                    <div contenteditable='true' class='to editable modifiable-row table-input-{{n+1}}'>{{attribution_pricing.wholesale_price[n].to_quantity}}</div>
+                                </td>
+                                <td class='row-price'>
+                                    <div contenteditable='true' class='price editable modifiable-row table-input-{{n+1}}'>{{attribution_pricing.wholesale_price[n].price}}</div>
+                                </td>
+                                <td class='dropdown'>
+                                    <a class='caret dropdown-toggle' data-toggle='dropdown'></a>
+                                    <ul class='dropdown-menu'>
+                                        <li>
+                                            <button  onclick='delete_row("{{n+1}}")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
+                        {% else %}
+                        <tbody class="table-body" data-row_cont="1">
+                            <tr class='row-data' id='tablerow-1'>
+                                <td class='row-checkbox'>
+                                    <input class='checkbox-table-row' data-row_num='1' type='checkbox'/>
+                                </td>
+                                <td class='row-from'>
+                                    <div contenteditable='true' class='from editable table-input-1'></div>
+                                </td>
+                                <td class='row-to'>
+                                    <div contenteditable='true' class='to editable table-input-1'></div>
+                                </td>
+                                <td class='row-price'>
+                                    <div contenteditable='true' class='price editable table-input-1'></div>
+                                </td>
+                                <td class='dropdown'>
+                                    <a class='caret dropdown-toggle' data-toggle='dropdown'></a>
+                                    <ul class='dropdown-menu'>
+                                        <li>
+                                            <button  onclick='delete_row("1")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% endif %}
                     </table>
                     <button  onclick="add_row()" type="button" class="btn btn-light" style="display: inline-block;">Add Row</button>
                     <div style="border-bottom:1px solid rgb(219, 210, 210); padding-top: 12px;"></div>
                 </div>
                 <div class="col-3">
+                    {% if modifiable %}
+                    <div class="minimum-order">
+                        <label >{{_("Minimum Order")}}</label>
+                        <input id="minimum-order" type="text" class="form-control mt-2" value="{{attribution_pricing.minimum_order}}">
+                    </div>
+                    <div class="check-box col-12">
+                        {% if attribution_pricing.show_price==1 %}
+                        <input class="form-check-input" type="checkbox" id="show-price" value="option1" checked> 
+                        {% else %}
+                        <input class="form-check-input" type="checkbox" id="show-price" value="option1" > 
+                        {% endif %}
+                        <label >{{_("Show Price in Client Order Form")}}</label>
+                    </div>
+                    {% else %}
                     <div class="minimum-order">
                         <label >{{_("Minimum Order")}}</label>
                         <input id="minimum-order" type="text" class="form-control mt-2">
@@ -78,54 +158,61 @@
                         <input class="form-check-input" type="checkbox" id="show-price" value="option1" checked> 
                         <label >{{_("Show Price in Client Order Form")}}</label>
                     </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="row option-block" data-option_count="3">
+            {%if modifiable and attribution_pricing.pricing_options|length!=0 %}
+            <div class="row option-block" data-option_count="{{attribution_pricing.pricing_options|length}}">
                 <div class="col-12">
                     <div id="options" class="row">
-                        <div class="col-4">
-                            <div class="row option-inputs">
-                                <div class="col-9 option-block">
-                                    <label >{{_("Option 1")}}</label>
-                                    <input  type="text" class="form-control mt-2 option-option">
-                                </div>
-                                <div class="col-2 price-block">
-                                    <label >{{_("Price")}}</label>
-                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="row option-inputs">
-                                <div class="col-9 option-block">
-                                    <label >{{_("Option 2")}}</label>
-                                    <input  type="text" class="form-control mt-2 option-option">
-                                </div>
-                                <div class="col-2 price-block">
-                                    <label >{{_("Price")}}</label>
-                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
+                        {% for k in range(attribution_pricing.pricing_options|length) %}
+                            <div class="col-4">
+                                <div class="row option-inputs">
+                                    <div class="col-9 option-block">
+                                        <label >Option {{k+1}}</label>
+                                        <input value='{{attribution_pricing.pricing_options[k].option}}'  type="text" class="form-control mt-2 option-option">
+                                    </div>
+                                    <div class="col-2 price-block">
+                                        <label >{{_("Price")}}</label>
+                                        <input value='{{attribution_pricing.pricing_options[k].price}}' id='option{{k+1}}-price' type="text" class="default-option-price form-control mt-2 option-price">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="row option-inputs">
-                                <div class="col-9 option-block">
-                                    <label >{{_("Option 3")}}</label>
-                                    <input  type="text" class="form-control mt-2 option-option">
-                                </div>
-                                <div class="col-2 price-block">
-                                    <label >{{_("Price")}}</label>
-                                    <input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price">
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                     <a id="" onclick="add_option()"  style="font-weight: bold;color: #3B3DBF;" href="#">{{_("Add option +")}} </a>
                 </div>
             </div>
+            {% else %}
+            <div class="row option-block" data-option_count="3">
+                <div class="col-12">
+                    <div id="options" class="row">
+                        {% for k in range(3) %}
+                            <div class="col-4">
+                                <div class="row option-inputs">
+                                    <div class="col-9 option-block">
+                                        <label >Option {{k+1}}</label>
+                                        <input  type="text" class="form-control mt-2 option-option">
+                                    </div>
+                                    <div class="col-2 price-block">
+                                        <label >{{_("Price")}}</label>
+                                        <input id='option{{k+1}}-price' type="text" class="default-option-price form-control mt-2 option-price">
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a id="" onclick="add_option()"  style="font-weight: bold;color: #3B3DBF;" href="#">{{_("Add option +")}} </a>
+                </div>
+            </div>
+            {% endif %}
             <div class="row">
-                <button class="btn btn-primary submit-btn" id="submit">{{_("Submit")}}</button>
+                {% if modifiable %}
+                <button class="btn btn-primary submit-btn" ap-name='{{attribution_pricing.name}}' id="modify">{{_("Modify")}}</button>
+                {% else %}
+                <button class="btn btn-primary submit-btn" id="submit">{{_("Save")}}</button>
+                {% endif %}
             </div>
         </div>
     </div>

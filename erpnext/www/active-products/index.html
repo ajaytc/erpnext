@@ -1,0 +1,50 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active products','url':'#'}]) }}
+
+<h2 class="mr-auto" >{{_("Active products")}}</h2>
+<div class="d-flex flex-row-reverse head-buttons">
+    <button type="button" class="btn btn-primary form-buttons" id="new-button" onclick="window.location.href='/product-attribution_pricing?new=1'">
+        {{_("New")}}
+    </button>
+    <button type="button" class="btn btn-primary form-buttons" id="history-button" onclick="window.location.href='/active-products-history?child=1'" >
+        {{_("History")}}
+    </button>
+</div>
+
+
+<div class="card">
+    <div class="card-body">      
+        <div class="table-wrapper">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">{{_("Client")}}</th>
+                        <th scope="col">{{_("Season")}}</th>
+                        <th scope="col">{{_("Product Category")}}</th>
+                        <th scope="col">{{_("Product Name")}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ap in active_products %}
+                    <tr>
+                        <td><input type="checkbox" class="selected-active-product" data-active-product="{{ap.name}}" /></td>
+                        <td>{{ap.client}}</td>
+                        <td>{{ap.season}}</td>
+                        <td data-itemgroup='{{ap.item_group}}'>{{ap.item_group_name}}</td>
+                        <td data-item_code='{{ap.item_code}}'>{{ap.item_name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>      
+        <div class="d-flex flex-row-reverse">
+            <button type="button" class="btn btn-primary form-bottom-buttons" id="modify-button">
+                {{_("Modify")}}
+            </button>
+            <button type="button" class="btn btn-primary form-bottom-buttons" id="deactivate-button">
+                {{_("Deactivate")}}
+            </button>
+        </div>
+    </div>
+</div>

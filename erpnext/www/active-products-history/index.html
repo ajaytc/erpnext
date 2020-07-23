@@ -1,0 +1,39 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active products','url':'/active-products'},{'label':'History','url':'#'}]) }}
+
+<h2 class="mr-auto" >{{_("Product History")}}</h2>
+
+{% if backable %}
+<div class="d-flex flex-row-reverse head-buttons">
+    <button type="button" class="btn btn-primary form-buttons" id="new-button" onclick="window.location.href='/active-products'">
+        {{_("Back")}}
+    </button>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">      
+        <div class="table-wrapper">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">{{_("Client")}}</th>
+                        <th scope="col">{{_("Season")}}</th>
+                        <th scope="col">{{_("Product Category")}}</th>
+                        <th scope="col">{{_("Product Name")}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ap in active_products %}
+                    <tr>
+                        <td>{{ap.client}}</td>
+                        <td>{{ap.season}}</td>
+                        <td data-itemgroup='{{ap.item_group}}'>{{ap.item_group_name}}</td>
+                        <td data-item_code='{{ap.item_code}}'>{{ap.item_name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>      
+    </div>
+</div>

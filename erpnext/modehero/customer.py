@@ -21,6 +21,26 @@ def get_branded_companies():
             'value':x.name
         })
     return result
+@frappe.whitelist()
+def modify_pricing(form_data,name):
+    form_data = json.loads(form_data)
+    # here the consisency of the from to values are checked.
+    # wholesale_prices = check_wholesale_correct(form_data["wholesale_price"])
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    pricing = form_data["client"] + " " + form_data["season"]
+    pricing = {
+            "season": form_data["season"],
+            "minimum_order": form_data["minimum_order"],
+            "show_price": form_data["show_price"],
+            "wholesale_price":form_data["wholesale_price"],
+            "pricing_options":form_data["pricing_options"],
+            "pricing_name":pricing
+         }
+
+    frappe.set_value('Client Pricing',name,pricing)
+    frappe.db.commit()
+    return {'status': 'ok'}
 
 @frappe.whitelist()
 def set_pricing(form_data):
@@ -69,4 +89,13 @@ def set_pricing(form_data):
 
 # def get_from(wholesale_dict):
 #     return wholesale_dict['from']
-    
+
+@frappe.whitelist()
+def deactivate_pricing(name_list):
+    name_list = ast.literal_eval(name_list)
+    for name in name_list:
+        ap = frappe.get_doc('Client Pricing',name)
+        ap.docstatus = 1
+        ap.save(ignore_permissions=True)
+    frappe.db.commit()
+    return {'status': 'ok'}
