@@ -33,14 +33,60 @@ def modify_pricing(form_data,name):
             "season": form_data["season"],
             "minimum_order": form_data["minimum_order"],
             "show_price": form_data["show_price"],
-            "wholesale_price":form_data["wholesale_price"],
-            "pricing_options":form_data["pricing_options"],
             "pricing_name":pricing
          }
-
-    frappe.set_value('Client Pricing',name,pricing)
+    ap = frappe.get_doc('Client Pricing', name)
+    ap.wholesale_price = []
+    ap.pricing_options = []
+    ap = update_wholesales(ap,form_data["wholesale_price"])
+    ap = modify_options(ap,form_data["pricing_options"])
+    for field in pricing:
+        setattr(ap, field, pricing[field])
+    ap.save(ignore_permissions=True)
     frappe.db.commit()
     return {'status': 'ok'}
+
+def update_wholesales(doc,new_wp_dic):
+
+    doc_list = []
+    for wp in new_wp_dic:
+        wh_price = {
+            "parentfield":"wholesale_price",
+            "from_quantity": wp["from_quantity"],
+            "to_quantity": wp["to_quantity"],
+            "price": wp["price"]
+         }
+        doc.append("wholesale_price",wh_price)
+    return doc
+
+def modify_options(doc,new_opt_dic):
+
+    for op in new_opt_dic:
+        op_price ={
+            "parentfield":"pricing_options",
+            "option": op["option"],
+            "price": op["price"]
+        }
+        doc.append("pricing_options",op_price)
+    return doc
+
+    
+def make_delete_option_query(options):
+    option_query = '''DELETE FROM `tabPricing Options` WHERE name IN ("'''
+    for option in range(len(options)):
+        if (option==len(options)-1):
+            option_query = option_query + options[option].name+'")'
+        else:
+            option_query = option_query + options[option].name+'","'
+    return option_query
+def make_delete_wp_query(wps):
+    wp_query = '''DELETE FROM `tabWholesale Price` WHERE name IN ("'''
+    for wp in range(len(wps)):
+        if (wp==len(wps)-1):
+            wp_query = wp_query + wps[wp].name+'")'
+        else:
+            wp_query = wp_query + wps[wp].name+'","'
+    return wp_query
 
 @frappe.whitelist()
 def set_pricing(form_data):

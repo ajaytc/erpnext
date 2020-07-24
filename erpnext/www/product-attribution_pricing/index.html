@@ -1,10 +1,11 @@
 {% import 'erpnext/templates/macros.html' as macros %}
 {% if modifiable %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Product attribution and pricing','url':'#'}]) }}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active Products','url':'/active-products'},{'label':'Product attribution and pricing','url':'#'}]) }}
+
 {% elif newable %}
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active Products','url':'/active-products'},{'label':'Product attribution and pricing','url':'#'}]) }}
 {% else %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Active Products','url':'/active-products'},{'label':'Product attribution and pricing','url':'#'}]) }}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Product attribution and pricing','url':'#'}]) }}
 {% endif %}
 
 {% if newable or modifiable%}
