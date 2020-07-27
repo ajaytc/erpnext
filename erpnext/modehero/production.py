@@ -3,7 +3,6 @@ import json
 import ast
 from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order, get_details_packaging_from_order
 
-
 @frappe.whitelist()
 def create_production_order(data):
 
@@ -314,3 +313,5 @@ def submitPaymentProof(data):
     order.payment_proof=data['payment_proof']
     order.save()
     return order
+
+

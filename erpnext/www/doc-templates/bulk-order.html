@@ -1,0 +1,103 @@
+<div id="order_document" style="border: 4px solid black;">
+    <style>
+        .table.table-bordered {
+            border-collapse: collapse;
+            border-radius: 1em;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 1px 1px #dadada;
+            width: 100%;
+
+        }
+
+        .table.table-bordered th {
+            white-space: nowrap;
+        }
+
+        .table.table-bordered td,
+        .table.table-bordered th {
+            border: 1px solid #dadada;
+            vertical-align: middle;
+        }
+
+        .table.table-bordered thead th:first-child {
+            border-top-left-radius: 15px;
+        }
+
+        .rowd {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .cold-md-9 {
+            flex: 0 0 66.66666%;
+            max-width: 66.66666%;
+        }
+
+        .cold-md-3 {
+            flex: 0 0 33.33333%;
+            max-width: 33.33333%;
+        }
+    </style>
+    <div>
+
+        <div style="text-align: center;">
+            <h2>Bulk Production Order</h2>
+            <img src='https://blog.modehero.com/wp-content/uploads/2020/04/logo-mode-hero-moyen.png' alt="Logo"
+                style='max-width: 150px;'>
+                <br>
+            <h3>[[brand_address]]</h3>
+        </div>
+
+
+
+    </div>
+
+
+    <div style="text-align: right;padding-right:2%">
+        <div>
+
+            <ul style="list-style-type:none;">
+                <li>
+
+                    <span id="date">
+                        [[order.date]]
+                    </span>
+                </li>
+                <li>
+                    {{_("Factory")}}
+                    <p id="factory">
+                        [[order.factory_name]]
+                        <br>
+                        [[order.factory_address]]
+                    </p>
+                </li>
+                <li>
+                    {{_("Deliver to")}}
+                    <p id="destination">
+                        [[order.final_destination]]
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="sizes" style="padding-top: 5%;">
+
+    </div>
+
+    
+
+</div>
+
+
+<script>
+    function makeSizeTable() {
+        var sizes = $('#sizeTable').html()
+        $('#sizes').html(sizes)
+    }
+
+</script>

@@ -21,10 +21,10 @@
             <div id="{{order.product_name}}" class="mt-3 product-table" style="width:90%">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-4 mb-5">
+                        <div class="col-md-4 mb-5" id="order_info">
 
                             <p class="label">
-                                <h3>{{_("Order Info")}}</h3>
+                            <h3>{{_("Order Info")}}</h3>
                             </p>
 
                             <ul class="order-summary">
@@ -53,8 +53,9 @@
                         <div class="col-md-4 mb-5">
 
                             <p class="label">
-                                <h3>{{_("Attachments")}}</h3>
+                            <h3>{{_("Attachments")}}</h3>
                             </p>
+                            <a href=""></a>
                             <ul class="order-summary">
                                 <li>
                                     <span>{{_("Tech Pack")}}</span>
@@ -62,7 +63,7 @@
                                         {{product.tech_pack}}
                                     </span>
                                 </li>
-                                <li>
+                                <li style="padding-bottom: 18%;">
                                     <span>{{_("Picture")}}</span>
                                     <span id="picture">
                                         {{product.picture}}
@@ -79,30 +80,38 @@
 
                         <div class="col-md-4 mb-5">
 
-                            <div class="row">
+                            <div class="row" id="order_doc" style="margin-top: 7%;">
 
+                                <h3 style="margin-top: 7%;">{{_("Order Document")}}</h3>
                                 <!-- to put document -->
+                                <a href="" download class="order-summary-download" id="pdf_doc"
+                                    style="padding-bottom: 0%;">
+                                    <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
+                                    <span>{{_('Order Document')}}</span>
+                                </a>
 
 
 
                             </div>
 
-                            <div class="row" >
+                            <div class="row">
 
-                                <h3>{{_("Payment Proof")}}</h3>
+                                <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
 
                                 <div id="payment_doc" style="width: 90%;">
                                     {% if order.payment_proof %}
 
-                                    <a href="{{order.payment_proof}}" download class="order-summary-download">
-                                        <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                                    <a href="{{order.payment_proof}}" download class="order-summary-download"
+                                        style="padding-bottom: 0%;width:112%">
+                                        <img src="/assets/erpnext/images/icons/pdf.svg" alt=""
+                                            style="margin-top: 0%;" />
                                         <span>{{order.payment_proof}}</span>
                                     </a>
                                     {% endif %}
                                 </div>
-                                
+
                                 <div class="form-group">
-                                    
+
                                     <div class="custom-file" style="margin-top: 5%;">
                                         <input type="file" class="custom-file-input" value={{order.payment_proof}}
                                             name="paymentProof" id="payment_proof">
@@ -112,12 +121,6 @@
 
                                     </div>
                                 </div>
-                                
-
-                                
-                                
-                                
-
                             </div>
 
 
@@ -125,7 +128,7 @@
 
                     </div>
 
-                    <div class="row">
+                    <div class="row supps">
                         <div class="col-md-4 mb-5 ">
 
                             {% for fabsupplier in fabricSuppliers %}
@@ -222,7 +225,7 @@
 
                     </div>
 
-                    <div class="row mt-3 table-section">
+                    <div class="row mt-3 table-section" id="sizeTable">
                         <table class="table table-bordered">
                             <thead>
                                 <tr class="sizing">
@@ -262,13 +265,14 @@
                     </div>
 
                     <div>
-                       
+
                         <p class="label">
                             {{_("Comments")}}
                         </p>
-              
+
                         <div>
-                            <textarea name="" id="comments" style="width: 100%;" cols="30" rows="10">{{order.comment}}</textarea>
+                            <textarea name="" id="comments" style="width: 100%;" cols="30"
+                                rows="10">{{order.comment}}</textarea>
                         </div>
 
                     </div>
@@ -368,8 +372,8 @@
 
         <div class="form-group">
             {{_("Price")}}
-            <input id="price" type="text"
-                value="{% if order.price %}{{order.price}}{% endif %}" class="form-control mt-2">
+            <input id="price" type="text" value="{% if order.price %}{{order.price}}{% endif %}"
+                class="form-control mt-2">
         </div>
 
         <div class="form-group">
@@ -387,3 +391,11 @@
     </div>
 </div>
 {% endif %}
+<div id="full" style="display: none;">
+    <div id="doc">
+        {{template}}
+    </div>
+</div>
+
+
+
