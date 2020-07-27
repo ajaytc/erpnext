@@ -1,12 +1,12 @@
 window.onload= (event)=>{
     $(".default-option-price").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
     $(".modifiable-row").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
     $(".table-input-1").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
 }
 
@@ -319,7 +319,7 @@ function add_row(){
     $(".table-body").append(markup_rows);
     $(".table-body").attr("data-row_count",row_num.toString());
     $(".table-input-"+row_num.toString()).keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
 }
 
@@ -333,7 +333,7 @@ function add_option(){
     $("#options").append(markup_options);
     $(".option-block").attr("data-option_count",option_num.toString());
     $("#option"+option_num.toString()+"-price").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
 }
 

@@ -1,0 +1,64 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Package','url':'#'}]) }}
+
+
+<h2 >{{_("Package Creation")}}</h2>
+<div id="container" class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <label>{{_("Client")}}</label>
+                    <select class="form-control clientname-select" id="client-name-select">
+                        <option  value="" disabled selected>Select a client</option>
+                        {% for key,value in clients.items() %}
+                        <option value="{{value}}">{{value.client_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>{{_("Package Name")}}</label>
+                    <input id="package-name" type="text" class="form-control">
+                </div>
+            </div>
+            <div data-count="6" class = "product-details">
+                {% for count_row in range(2) %}
+                {% set ns = namespace(pro_row=count_row*3) %}
+                <div class="row pro-row">
+                    {% for count in range(3) %}
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-5 group">
+                                <label>Product Category</label>
+                                <select data-number="{{ns.pro_row+count+1}}" class="form-control  form-font item-group item-group-select-{{ns.pro_row+count+1}}">
+                                    <option value="" >---:---</option>
+                                </select>
+                            </div>
+                            <div class="col-5 item">
+                                <label>Product</label>
+                                <select data-number="{{ns.pro_row+count+1}}" class="form-font form-control product  item-select-{{ns.pro_row+count+1}}">
+                                    <option value="" selected>---:---</option>
+                                </select>
+                            </div>
+                            <div class="col-2 quantity">
+                                <label>Quantity</label>
+                                <input data-number="{{ns.pro_row+count+1}}" type="text" class="form-font form-control quantity-{{ns.pro_row+count+1}}">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class = "row add-button">
+                <div class="col-12">
+                    <a  onclick="add_products()"  style="font-weight: bold;color: #3B3DBF;cursor: pointer;">{{_("Add Products +")}} </a>
+                </div>
+            </div>
+            <div class="row submit-btn d-flex flex-row-reverse">
+                <button class="btn btn-primary" onclick="save_products()" >{{_("Save")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
