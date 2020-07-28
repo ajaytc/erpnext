@@ -100,9 +100,8 @@
    "reqd": 1
   }
  ],
- "is_submittable": 1,
  "links": [],
- "modified": "2020-07-20 11:47:58.636187",
+ "modified": "2020-07-28 08:48:38.974834",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Client Pricing",

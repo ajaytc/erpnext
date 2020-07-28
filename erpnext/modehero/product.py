@@ -2,6 +2,29 @@ import frappe
 import json
 
 @frappe.whitelist()
+def create_package(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    package_quantity = []
+    for key in data["product_data"]:
+        data["product_data"][key]["item_code"] = key
+        package_quantity.append(data["product_data"][key])
+
+    package = frappe.get_doc(
+        {
+            "doctype": "Package",
+            "brand": brand,
+            "client": data["client"],
+            "package_name": data["package_name"],
+            "package_quantity":package_quantity
+         })
+
+    package.insert(ignore_permissions=True)
+    frappe.db.commit()
+    return {'status': 'ok'}
+
+@frappe.whitelist()
 def get_priced_products(client,category):
     brand = frappe.get_doc('User', frappe.session.user).brand_name
     result = frappe.get_all('Client Pricing',filters={'item_group':category,'brand':brand,'client':client},fields=['item_code'])

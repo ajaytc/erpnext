@@ -1,0 +1,25 @@
+.item{
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.quantity{
+    padding-left: 0%;
+}
+.group{
+    padding-right: 0%;
+}
+.product-details{
+    margin-top: 3%;
+}
+.form-control.form-font{
+    font-size: 12px;
+}
+.pro-row{
+    margin-top: 1%;
+}
+.submit-btn{
+    margin-top: 2%;
+}
+.add-button{
+    margin-top: 2%;
+}
