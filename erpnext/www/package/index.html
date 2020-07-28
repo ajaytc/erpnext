@@ -22,12 +22,12 @@
                     <input id="package-name" type="text" class="form-control">
                 </div>
             </div>
-            <div data-count="6" class = "product-details">
+            <div data-count="4" class = "product-details">
                 {% for count_row in range(2) %}
-                {% set ns = namespace(pro_row=count_row*3) %}
+                {% set ns = namespace(pro_row=count_row*2) %}
                 <div class="row pro-row">
-                    {% for count in range(3) %}
-                    <div class="col-4">
+                    {% for count in range(2) %}
+                    <div class="col-6">
                         <div class="row">
                             <div class="col-5 group">
                                 <label>Product Category</label>

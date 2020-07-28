@@ -130,11 +130,12 @@ function set_category_options(number){
 }
 
 function add_products(){
+    let items_per_row = 2;
     var markup = '<div class="row pro-row">';
     let current_count = parseInt($(".product-details").attr("data-count"));
-    for (let k=1;k<4;k++){
+    for (let k=1;k<items_per_row+1;k++){
         let p = (current_count+k).toString()
-        let temp_markup = '<div class="col-4">\
+        let temp_markup = '<div class="col-6">\
         <div class="row">\
         <div class="col-5 group">\
                     <label>Product Category</label>\
@@ -157,22 +158,22 @@ function add_products(){
             markup = markup + temp_markup
     }
     markup = markup+'</div>'
-    $(".product-details").attr("data-count",(3+current_count).toString());
+    $(".product-details").attr("data-count",(items_per_row+current_count).toString());
     $(".product-details").append(markup);
     if (CLIENT!=null){
-        for (let k=1;k<4;k++){
+        for (let k=1;k<items_per_row+1;k++){
             set_category_options(current_count+k);
         }
     }
-    bind_group_select_events(current_count);
-    bind_item_select_events(current_count);
+    bind_group_select_events(current_count,items_per_row);
+    bind_item_select_events(current_count,items_per_row);
     $(".quantity").keypress(function(e) {
         if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
 }
 
-function bind_group_select_events(current_count){
-    for (let k=1;k<4;k++){
+function bind_group_select_events(current_count,items_per_row){
+    for (let k=1;k<items_per_row+1;k++){
         let l = current_count+k;
         $(".item-group-select-"+l.toString()).change(function(){
             trigger_item_group_select($(this));
@@ -180,8 +181,8 @@ function bind_group_select_events(current_count){
     };
 };
 
-function bind_item_select_events(current_count){
-    for (let k=1;k<4;k++){
+function bind_item_select_events(current_count,items_per_row){
+    for (let k=1;k<items_per_row+1;k++){
         let l = current_count+k;
         $(".item-select-"+l.toString()).change(function(){
             trigger_item_change($(this));
@@ -196,8 +197,26 @@ function save_products(){
         response_message('Unsuccessfull',data_result.message, 'green');
         return null;
     };
-    console.log(data_result.data);
-    // store_data(data_all);
+
+    frappe.call({
+        method: 'erpnext.modehero.product.create_package',
+        args: {
+            data:data_result.data
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Package created successfully', 'green')
+                    window.location.reload(true)
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Package created unsuccessfully', 'red')
+                window.location.reload(true)
+                return null
+            }
+            response_message('Unsuccessfull', 'Package created unsuccessfully', 'red')
+        }
+    });
 }
 
 function collect_all_data(){
@@ -389,26 +408,26 @@ function response_message(title, message, color) {
 //     let form_data = collect_all_data();
 //     if (form_data==null){
 //         return null
-//     }
-//     frappe.call({
-//         method: 'erpnext.modehero.customer.set_pricing',
-//         args: {
-//             form_data:form_data
-//         },
-//         callback: function (r) {
-//             if (r) {
-//                 if (r.message['status'] == "ok") {
-//                     response_message('Successfull', 'Pricing Attribution created successfully', 'green')
-//                     window.location.reload(true)
-//                     return null;
-//                 }
-//                 response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
-//                 window.location.reload(true)
-//                 return null
-//             }
-//             response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
-//         }
-//     });
+    // }
+    // frappe.call({
+    //     method: 'erpnext.modehero.customer.set_pricing',
+    //     args: {
+    //         form_data:form_data
+    //     },
+    //     callback: function (r) {
+    //         if (r) {
+    //             if (r.message['status'] == "ok") {
+    //                 response_message('Successfull', 'Pricing Attribution created successfully', 'green')
+    //                 window.location.reload(true)
+    //                 return null;
+    //             }
+    //             response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
+    //             window.location.reload(true)
+    //             return null
+    //         }
+    //         response_message('Unsuccessfull', 'Pricing Attribution created unsuccessfully', 'red')
+    //     }
+    // });
 // })
 
 // function set_products_at_select_change(){

@@ -34,7 +34,8 @@ def get_context(context):
     return context
 
 def fill_suport_dics(pricing_details):
-    item_groups,item_codes = {}
+    item_groups ={}
+    item_codes = {}
     for pricing in pricing_details:
         if pricing.item_code not in item_codes:
             temp_itemname = frappe.get_all('Item', filters={'name':pricing.item_code}, fields=['item_name'])
@@ -62,11 +63,11 @@ def set_cats_prods(prod_list,client,brand):
         if prods.item_code not in temp_prods[prods.item_group]["products"]:
             temp_prods[prods.item_group]["products"][prods.item_code] = prods.item_name
     c_data = frappe.get_all('Customer', filters={'brand': brand,'name':client}, fields=['customer_name'])
-    if (len(c_data)==0){
+    if (len(c_data)==0):
         temp_client["client_name"] = client
-    }else{
+    else:
         temp_client["client_name"] = c_data[0].customer_name
-    }
+
     temp_client["client"] = client
     temp_client["prod_cats"] = temp_prods
     return temp_client
