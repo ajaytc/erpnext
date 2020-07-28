@@ -204,7 +204,7 @@ function save_products(){
             data:data_result.data
         },
         callback: function (r) {
-            if (r) {
+            if (r.hasOwnProperty("message")) {
                 if (r.message['status'] == "ok") {
                     response_message('Successfull', 'Package created successfully', 'green')
                     window.location.reload(true)
@@ -283,14 +283,3 @@ function response_message(title, message, color) {
         message: __(message)
     });
 }
-
-
-
-
-
-
-
-
-
-
-
