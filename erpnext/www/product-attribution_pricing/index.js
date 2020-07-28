@@ -44,7 +44,7 @@ $("#modify").click(function(){
             name : active_product_name
         },
         callback: function (r) {
-            if (r) {
+            if (r.hasOwnProperty("message") && !r.exc) {
                 if (r.message['status'] == "ok") {
                     response_message('Successfull', 'Pricing Attribution updated successfully', 'green');
                     window.location.href = "/active-products";
@@ -70,7 +70,7 @@ $("#submit").click(function(){
             form_data:form_data
         },
         callback: function (r) {
-            if (r) {
+            if (r.hasOwnProperty("message") && !r.exc) {
                 if (r.message['status'] == "ok") {
                     response_message('Successfull', 'Pricing Attribution created successfully', 'green')
                     window.location.reload(true)
