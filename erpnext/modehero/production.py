@@ -77,6 +77,7 @@ def create_production_order(data):
         'internal_ref': data['internal_ref'],
         'product_name': data['product_name'],
         'production_factory': data['production_factory'],
+        'fac_country':production_factory.country,
         'final_destination':data['final_destination'],
         'quantity_per_size': data['quantity'],
         'suppliers': order_suppliers,
@@ -108,6 +109,12 @@ def create_production_order(data):
 
         except :
             print("Stocks not updated")
+
+    # recipients=['sdhananjana14@gmail.com']
+    # sender="Support <modetesth@gmail.com>" 
+    # subject="Test Prod order"
+    # message="This Ok"
+    # frappe.sendmail(recipients,sender,subject,message)
        
 
     return {'status': 'ok', 'order': order}

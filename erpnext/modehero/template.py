@@ -3,14 +3,12 @@ import json
 from datetime import date, datetime
 
 
-
-@frappe.whitelist()
 def createTemplate(data):
     data = json.loads(data)
-    template=frappe.get_doc({
-        "doctype":"Pdf Document",
-        "content":data['template'],
-        "type":data['type']
+    template = frappe.get_doc({
+        "doctype": "Pdf Document",
+        "content": data['template'],
+        "type": data['type']
 
     })
 
@@ -23,30 +21,50 @@ def createTemplate(data):
 @frappe.whitelist()
 def updateTemplate(data):
     data = json.loads(data)
-    template=frappe.get_all("Pdf Document",filters={"type":data['type']},fields=["content","type","name"])
-
-    frappe.db.set_value('Pdf Document',template[0]["name"], 'content',data["template"])
-    # template[0]["content"]=data["template"]
-
-    # template[0].save()
+    if(data['case'] == 'email'):
+        updateNotificationTemplate(data)
+    elif (data['case'] == 'pdf'):
+        updatePdfTemplate(data)
 
 
-    # template.insert()
+
+
+
+
+def updatePdfTemplate(data):
+    template = frappe.get_all("Pdf Document", filters={
+                              "type": data['type']}, fields=["content", "type", "name"])
+
+    frappe.db.set_value(
+        'Pdf Document', template[0]["name"], 'content', data["template"])
     frappe.db.commit()
-
     return {'status': 'ok', 'template': template}
+
+
+def updateNotificationTemplate(data):
+    notification = frappe.get_doc('Notification', data['type'])
+
+    frappe.db.set_value('Notification', notification.name,
+                        'message', data['template'])
+    updateSubject(data,notification)
+    frappe.db.commit()
+    return {'status': 'ok', 'template': notification}
+
+def updateSubject(data,notification):
+    frappe.db.set_value('Notification', notification.name,
+                        'subject', data['subject'])
 
 
 @frappe.whitelist()
 def getTemplate(data):
     data = json.loads(data)
-    template=frappe.get_all("Pdf Document",filters={"type":data['type']},fields=["content","type","name"])
+    template = frappe.get_all("Pdf Document", filters={
+                              "type": data['type']}, fields=["content", "type", "name"])
 
     # frappe.db.set_value('Pdf Document',template[0]["name"], 'content',data["template"])
     # template[0]["content"]=data["template"]
 
     # template[0].save()
-
 
     # template.insert()
     # frappe.db.commit()
