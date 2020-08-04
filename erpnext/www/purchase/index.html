@@ -12,71 +12,77 @@
 </h3>
 <div class="table-wrapper table-responsive mt-2">
     <table class="table table-sm table-striped">
-        {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing'])[0].sizing %}
-        {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
-        <thead>
-            <th colspan='1' scope='colgroup' ><input type="checkbox" data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders-{{item}}" /></th>
-            <th colspan='1' scope='colgroup' >Order Date</th>
-            <th colspan='1' scope='colgroup' >Order Detail</th>
-            <th colspan='1' scope='colgroup' ></th>
-            <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
-        </thead>
-        <thead>
-            <th  scope="col"></th>
-            <th  scope="col"></th>
-            <th  scope="col"></th>
-            <th  scope="col"></th>
-            {% for temp_size  in sizing_list%}
-            <th  scope="col">{{temp_size.size}}</th>
-            {% endfor %}
-        </thead>
-        <tbody>
-            {% for order in unique_items_orders[item] %}
-            {% set ns = namespace(is_modified=false) %}
-            {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified'])[0] %}
-            {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
-            <tr>
-                <td><input type="checkbox"  data-order = "{{order.name}}"  class="sales-order-checkbox-{{item}}" /></td>
-                <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                <td>{{temp_order_details.name}}<br>{{temp_order_details.customer}}</td>
-                {% if (order.creation-order.modified).seconds!=0 %}
-                {% set ns.is_modified = true %}
-                <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
-                {% else %}
-                <td></td>
-                {% endif %}
-
-                {% for size_col in sizing_list %}
-                    {% for item_qnty in quantities if item_qnty.size==size_col.size%}
-                        <td>
-                            {% if ns.is_modified %}
-                                <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
+        {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
+        {% if sizing|length!=0 %}
+            {% set sizing = sizing[0].sizing %}
+            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
+            <thead>
+                <th colspan='1' scope='colgroup' ><input type="checkbox" data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders-{{item}}" /></th>
+                <th colspan='1' scope='colgroup' >Order Date</th>
+                <th colspan='1' scope='colgroup' >Order Detail</th>
+                <th colspan='1' scope='colgroup' ></th>
+                <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+            </thead>
+            <thead>
+                <th  scope="col"></th>
+                <th  scope="col"></th>
+                <th  scope="col"></th>
+                <th  scope="col"></th>
+                {% for temp_size  in sizing_list%}
+                <th  scope="col" >{{temp_size.size}}</th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for order in unique_items_orders[item] %}
+                    {% set ns = namespace(is_modified=false) %}
+                    {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
+                    {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
+                    {% if  temp_order_details|length != 0 %}
+                        {% set temp_order_details = temp_order_details[0] %}
+                        <tr>
+                            <td><input type="checkbox"  data-order = "{{order.name}}"  class="sales-order-checkbox-{{item}}" /></td>
+                            <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
+                            <td>{{temp_order_details.name}}<br><div data-custom_name="{{temp_order_details.customer}}">{{frappe.get_all('Customer',{'name':temp_order_details.customer},'customer_name')[0].customer_name}}</div></td>
+                            {% if (order.creation-order.modified).seconds!=0 %}
+                                {% set ns.is_modified = true %}
+                                <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
+                            {% else %}
+                                <td></td>
                             {% endif %}
-                            <div class = '{{item}}-{{item_qnty.size}} {{order.name}}-qnty-content-class' data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
-                        </td>
-                        {% else %}
+                            
+                            {% for size_col in sizing_list %}
+                                {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                                    <td>
+                                        {% if ns.is_modified %}
+                                        <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
+                                        {% endif %}
+                                        <div class = '{{item}}-{{item_qnty.size}} {{order.name}}-qnty-content-class' data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        {% if ns.is_modified %}
+                                        <sub class = "modified-qty">0</sub><br>
+                                        {% endif %}
+                                        <div data-current_qty ='0'>0</div>
+                                    </td>
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                <tr class="sumation-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {% for size_col in sizing_list %}
                         <td>
-                            {% if ns.is_modified %}
-                            <sub class = "modified-qty">0</sub><br>
-                            {% endif %}
-                            <div data-current_qty ='0'>0</div>
+                            <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
                         </td>
                     {% endfor %}
-                {% endfor %}
-            </tr>
-            {% endfor %}
-            <tr class="sumation-row">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                {% for size_col in sizing_list %}
-                <td>
-                    <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
-                </td>
-                {% endfor %}
-            </tr>
-        </tbody>
+                </tr>
+            </tbody>
+        {% endif %} 
     </table>
     <div>
         <button  onclick="validate('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Validate</button>

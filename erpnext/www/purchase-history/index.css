@@ -23,3 +23,9 @@
     border-radius: 5px;
     background-color: rgb(50, 201, 37);
 }
+td{
+    text-align: center;
+}
+th{
+    text-align: center;
+}
