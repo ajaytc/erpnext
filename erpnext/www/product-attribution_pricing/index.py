@@ -37,12 +37,9 @@ def get_context(context):
             context.item_list=[]
     else:
         context.modifiable = True
-        try:
-            context.attribution_pricing = frappe.get_doc('Client Pricing', params.attribution_pricing)
-            context.clients = frappe.get_all('Customer', filters={'brand': brand,'name':context.attribution_pricing.client}, fields=['name','customer_name'])
-            context.product_cats = frappe.get_all('Item Group', filters={'brand_name': brand,'name':context.attribution_pricing.item_group}, fields=['name','item_group_name'])
-            context.item_list = frappe.get_all('Item', filters={'brand': brand,'name':context.attribution_pricing.item_code}, fields=['name','item_name'])
-        except:
-            frappe.throw(_("Not Found!"), frappe.DoesNotExistError)
+        context.attribution_pricing = frappe.get_doc('Client Pricing', params.attribution_pricing)
+        context.clients = frappe.get_all('Customer', filters={'brand': brand,'name':context.attribution_pricing.client}, fields=['name','customer_name'])
+        context.product_cats = frappe.get_all('Item Group', filters={'brand_name': brand,'name':context.attribution_pricing.item_group}, fields=['name','item_group_name'])
+        context.item_list = frappe.get_all('Item', filters={'brand': brand,'name':context.attribution_pricing.item_code}, fields=['name','item_name'])
         
     return context
