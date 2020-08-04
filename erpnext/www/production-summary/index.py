@@ -5,6 +5,7 @@ import frappe.www.list
 import datetime
 import base64
 import os
+from frappe.utils.pdf import getBase64Img
 
 no_cache = 1
 path_prefix = "/home/dhananjana/python_project/modehero/sites/modehero.com/public"
@@ -76,7 +77,7 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
                     with open(fp, "rb") as img_file:
                         my_string = base64.b64encode(img_file.read())
                         my_string = my_string.decode('utf-8')
-                        fabSupplierOb["fabric_pic"] = "data:image/png;base64,"+my_string
+                        fabSupplierOb["fabric_pic"] = getBase64Img(fabric.fabric_image)
 
                         # my_string=my_string.split("'")[1]
                 else:

@@ -495,8 +495,8 @@ function submitPaymentProof(files) {
         callback: function (r) {
             if (!r.exc) {
                 console.log(r)
-                element = `<a href="`+r.message.payment_proof+`" download class="order-summary-download">
-                <img src="/assets/erpnext/images/icons/pdf.svg" alt="" />
+                element = `<a href="`+r.message.payment_proof+`" download class="order-summary-download" style="padding-bottom: 0%;width:112%">
+                <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top:0%;"/>
                 <span>`+r.message.payment_proof+`</span>
                 </a>`
 

@@ -15,13 +15,63 @@ $(document).ready(function () {
 
     }, 200);
 
-    setTimeout(() => {
-        body = `{{template}}`
-        tinymce.get("emailBody").setContent(body);
-        subject=`{{subject}}`
-        tinymce.get("emailSubject").setContent(subject)
 
-    }, 600);
+})
+
+$('#pdfTempNames').change(function () {
+    let tempName = $(this).find('option:selected').val()
+
+    frappe.call({
+        method: 'erpnext.modehero.template.getPdfTemplate',
+        args: {
+            data: {
+                name: tempName
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                tinymce.get("emailBody").setContent('rwerwerwrwewwrwqwrqwrqwrwe');
+                tinymce.get("emailBody").setContent(r.message.template.content);
+
+
+            } else {
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'red',
+                    message: __('Template Retrieval Failed')
+                });
+            }
+        }
+    })
+
+})
+
+$('#emailTempNames').change(function () {
+    let tempName = $(this).find('option:selected').val()
+
+    frappe.call({
+        method: 'erpnext.modehero.template.getEmailTemplate',
+        args: {
+            data: {
+                name: tempName
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r)
+                tinymce.get("emailBody").setContent(r.message.template.message);
+                tinymce.get("emailSubject").setContent(r.message.template.subject);
+
+            } else {
+                frappe.msgprint({
+                    title: __('Notification'),
+                    indicator: 'red',
+                    message: __('Template Retrieval Failed')
+                });
+            }
+        }
+    })
 
 })
 

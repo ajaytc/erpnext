@@ -1,6 +1,37 @@
 <script src="https://cdn.tiny.cloud/1/2kd7tdne6hio2xyprgxqmxvanxc07j7t4s1msidjcs4r4p84/tinymce/5/tinymce.min.js"
   referrerpolicy="origin"></script>
 
+{% macro dropdown(items,class,id,typetwo) %}
+<div class="form-group">
+
+  <select class="form-control {{class}}" id="{{id}}">
+    <option value=""></option>
+    {% for i in items %}
+    {% if i.type %}
+    <option value="{{i.name}}">{{i.type}}</option>
+    {% elif i.name %}
+    <option value="{{i.name}}">{{i.name}}</option>
+    {% else %}
+    <option value="{{i}}">{{i}}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
+<div class="row">
+  <div class="col-4">
+    <div class="m-3">
+      <label for="" class="d-flex">{{_("Template Tyoe")}}
+      </label>
+      {%if pdf_template_names%}
+      {{dropdown(pdf_template_names,'','pdfTempNames')}}
+      {%elif email_template_names %}
+      {{dropdown(email_template_names,'','emailTempNames')}}
+      {%endif%}
+    </div>
+  </div>
+</div>
 <div id="subjectBlock">
   <p>Subject</p>
   <textarea id="emailSubject" class="edit">

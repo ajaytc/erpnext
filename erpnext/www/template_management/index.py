@@ -27,12 +27,12 @@ def get_context(context):
     
     #business logic 
     if(context.case=='pdf'):
-        temp=frappe.get_all("Pdf Document",filters={"type":context.type},fields=["content","type","name"])
-        context.template=temp[0]['content']
+        temp=frappe.get_all("Pdf Document",fields=["content","type","name"])
+        context.pdf_template_names=temp
     elif (context.case=='email'):
-        temp=frappe.get_doc("Notification",context.type)
-        context.template=temp.message
-        context.subject=temp.subject
+        temp=frappe.get_all("Notification")
+        context.email_template_names=temp[0:1]
+        # context.subject=temp.subject
     
     
 
