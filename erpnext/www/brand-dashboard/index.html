@@ -113,7 +113,7 @@
                             {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_vendor}}
                             {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_vendor}}
                             {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_vendor}}
-                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_name}}
+                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order',frappe.get_doc('Sales Order Item',o.product_order_id).parent).company}}
                             {% endif %}
 
 
