@@ -14,3 +14,7 @@ th{
 td{
     text-align: center;
 }
+.client-modal-link{
+    cursor: pointer;
+    font-weight: bold;
+}

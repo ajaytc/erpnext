@@ -29,3 +29,8 @@ td{
 th{
     text-align: center;
 }
+
+.client-modal-link{
+    cursor: pointer;
+    font-weight: bold;
+}
