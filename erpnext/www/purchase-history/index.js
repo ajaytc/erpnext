@@ -10,7 +10,7 @@ window.onload = function(){
 
 function get_sum(itm_code,size){
     let sum = 0
-    $("."+itm_code+"-"+size).each(function() {
+    $(".qnty-content-class[data-item_code|='"+itm_code+"'][data-size|='"+size+"']").each(function() {
         sum = sum + Number($( this ).attr('data-current_qty'));
     });
     return sum

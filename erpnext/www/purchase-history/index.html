@@ -1,6 +1,8 @@
 {% import 'erpnext/templates/macros.html' as macros %}
-{% if user_type=="Brand" %}
-{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Client','url':'/'},{'label':'Purchase History','url':'#'}]) }}
+{% if user_type=="System" %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Brand-Dashboard','url':'/brand-dashboard'},{'label':'Purchase History','url':'#'}]) }}
+{% elif user_type=="Brand" %}
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Purchase History','url':'#'}]) }}
 {% elif user_type=="Customer" %}
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Purchase History','url':'#'}]) }}
 {% endif %}
@@ -72,7 +74,7 @@
                                         {% if ns.is_modified %}
                                             <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
                                         {% endif %}
-                                        <div class = '{{item}}-{{item_qnty.size}} {{order.name}}-qnty-content-class' data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                                        <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
                                     </td>
                                 {% else %}
                                     <td>

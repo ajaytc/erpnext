@@ -21,15 +21,15 @@ $("input[type='checkbox']").change(function(){
         return null
     }
     if ($(this).is(':checked')){
-        $("."+ $(this).attr('data-order')+"-qnty-content-class").each(function(){
+        $("."+ $(this).attr('data-order_count')+"-qnty-content-class").each(function(){
             $(this).attr('contenteditable','true').keypress(function(e) {
-                if (isNaN(String.fromCharCode(e.which))) e.preventDefault();
+                if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
             });
             $(this).addClass("background-ash");
         })
     }
     else{
-        $("."+ $(this).attr('data-order')+"-qnty-content-class").each(function(){
+        $("."+ $(this).attr('data-order_count')+"-qnty-content-class").each(function(){
             $(this).attr('contenteditable','false');
             $(this).html($(this).attr("data-current_qty"));
             $(this).removeClass("background-ash");
@@ -40,6 +40,7 @@ $("input[type='checkbox']").change(function(){
 function modify(item){
     let order = collect_data(item,false);
     if (order==null){
+        response_message('Unsuccessfull', 'Incomplete data !', 'red')
         return null
     }
     frappe.call({
@@ -66,9 +67,9 @@ function modify(item){
 function validate(item){
     let order = collect_data(item,true);
     if (order==null){
+        response_message('Unsuccessfull', 'Incomplete data !', 'red')
         return null
     }
-    console.log(order)
     frappe.call({
         method: 'erpnext.modehero.sales_order.validate_sales_item_orders',
         args: {
@@ -92,7 +93,7 @@ function validate(item){
 
 function cancel(item){
     let is_any_checked = false;
-    $(".sales-order-checkbox-"+item).each(function(){
+    $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             is_any_checked = true;
         }
@@ -101,7 +102,7 @@ function cancel(item){
         return null
     }
     let orders = []
-    $(".sales-order-checkbox-"+item).each(function(){
+    $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             let order_name = $(this).attr('data-order');
             orders.push(order_name);
@@ -134,23 +135,30 @@ function cancel(item){
 
 function collect_data(item,for_validations){
     let is_any_checked = false;
-    $(".sales-order-checkbox-"+item).each(function(){
+    let is_any_empty = false;
+    $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             is_any_checked = true;
         }
-    })
+    });
     if (!is_any_checked){
         return null
     }
     let order = {}
-    $(".sales-order-checkbox-"+item).each(function(){
+    $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             let order_name = $(this).attr('data-order');
+            let order_count = $(this).attr('data-order_count');
+
             if (for_validations){
                 order[order_name]={}
             }
-            $("."+ order_name +"-qnty-content-class").each(function(){
+            $("."+ order_count +"-qnty-content-class").each(function(){
                 let size_type = $(this).attr('data-size');
+                if ($(this).text().trim().length==0){
+                    is_any_empty = true;
+                    return false;
+                }
                 if (!(isNaN($(this).text()))&&($(this).attr("data-current_qty") !=  $(this).text())){
                     if ( order[order_name]==undefined){
                         order[order_name]={}
@@ -160,25 +168,27 @@ function collect_data(item,for_validations){
             })
         }        
     })
-    $('input:checkbox').prop('checked', false);
+    $('input:checkbox').prop('checked', false).change();
+    if (is_any_empty){
+        return null
+    }
     if(Object.keys(order).length==0){
         return null
     }
-    
     return order
 }
 
 function select_all_chekbox(item) {
-    if ($('.select-all-sales-orders-'+item).is(':checked')) {
-        $('.sales-order-checkbox-'+item).prop('checked', true).change();
+    if ($(".select-all-sales-orders[data-item_code|='"+item+"']").is(':checked')) {
+        $(".sales-order-checkbox[data-item_code|='"+item+"']").prop('checked', true).change();
     } else {
-        $('.sales-order-checkbox-'+item).prop('checked', false).change();
+        $(".sales-order-checkbox[data-item_code|='"+item+"']").prop('checked', false).change();
     }
 }
 
 function get_sum(itm_code,size){
     let sum = 0
-    $("."+itm_code+"-"+size).each(function() {
+    $(".qnty-content-class[data-item_code|='"+itm_code+"'][data-size|='"+size+"']").each(function() {
         sum = sum + Number($( this ).attr('data-current_qty'));
     });
     return sum

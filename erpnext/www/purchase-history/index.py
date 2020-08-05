@@ -13,7 +13,9 @@ def get_context(context):
             _("You need to be logged in to access this page"), frappe.PermissionError)
     roles = frappe.get_roles(frappe.session.user)
 
-    if ("Brand User" in roles):
+    if ("System Manager" in roles):
+        context.user_type = "System"
+    elif ("Brand User" in roles):
         context.user_type = "Brand"
     elif ("Customer" in roles):
         context.user_type = "Customer"
