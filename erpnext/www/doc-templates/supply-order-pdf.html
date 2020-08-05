@@ -16,7 +16,9 @@
     <li><strong>Supplier</strong>
     <p id="factory">{{supplier_name}}</p>
     </li>
+    {%if supplier_address%}
     <li>{{supplier_address}}</li>
+    {%endif%}
     <li>&nbsp;</li>
     <li><strong>Deliver to</strong>
     <p id="destination">{{destination}}</p>

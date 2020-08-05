@@ -20,7 +20,9 @@
   "internal_ref",
   "vendor_ref",
   "brand",
-  "trimming_image"
+  "trimming_image",
+  "minimum_order_qty",
+  "price"
  ],
  "fields": [
   {
@@ -107,10 +109,20 @@
    "fieldname": "trimming_image",
    "fieldtype": "Attach Image",
    "label": "Trimming Image"
+  },
+  {
+   "fieldname": "minimum_order_qty",
+   "fieldtype": "Int",
+   "label": "Minimum Order Quantity"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "label": "Price"
   }
  ],
  "links": [],
- "modified": "2020-07-07 05:15:08.512646",
+ "modified": "2020-08-05 06:09:32.342628",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Item",

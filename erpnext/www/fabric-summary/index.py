@@ -37,6 +37,7 @@ def get_context(context):
     context.item_ref=context.fabricOrder.fabric_ref
     context.color=context.fabric.color
     context.size=None
+    context.order_type='Fabric'
     context.quantity=context.fabricOrder.quantity
     context.template=getPdfDoc(context)
 

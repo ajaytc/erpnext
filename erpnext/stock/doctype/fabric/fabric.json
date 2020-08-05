@@ -17,7 +17,9 @@
   "fabric_way",
   "fabric_image",
   "supplier_ref",
-  "other_info"
+  "other_info",
+  "minimum_order_qty",
+  "price"
  ],
  "fields": [
   {
@@ -95,10 +97,20 @@
    "fieldname": "other_info",
    "fieldtype": "Data",
    "label": "Other Info"
+  },
+  {
+   "fieldname": "minimum_order_qty",
+   "fieldtype": "Int",
+   "label": "Minimum Order Quanity"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "label": "Price"
   }
  ],
  "links": [],
- "modified": "2020-07-07 08:51:46.300626",
+ "modified": "2020-08-05 06:19:54.447156",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",

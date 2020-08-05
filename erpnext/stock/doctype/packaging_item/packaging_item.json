@@ -18,7 +18,9 @@
   "vendor_ref",
   "brand",
   "amended_from",
-  "packaging_image"
+  "packaging_image",
+  "miminum_order_qty",
+  "price"
  ],
  "fields": [
   {
@@ -97,11 +99,21 @@
    "fieldname": "packaging_image",
    "fieldtype": "Attach Image",
    "label": "Packaging Image"
+  },
+  {
+   "fieldname": "miminum_order_qty",
+   "fieldtype": "Int",
+   "label": "Minimum Order Quantity"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "label": "Price"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-07-07 11:36:32.563872",
+ "modified": "2020-08-05 06:21:03.709946",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Packaging Item",

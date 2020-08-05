@@ -3,7 +3,7 @@ $(".display-file-selector").click(function () {
 });
 
 $("#proofSubmit").click(function () {
-  checkFileUpload("paymentProof").then((res) =>
+  checkFileUpload("payment_proof").then((res) =>
     frappe.call({
       method: "erpnext.modehero.fabric.submit_payment_proof",
       args: {
@@ -57,7 +57,7 @@ function checkFileUpload(componentId) {
   return new Promise((resolve, reject) => {
     let file = $(`#${componentId}`).prop("files")[0];
     switch (componentId) {
-      case "paymentProof":
+      case "payment_proof":
         if (!file) {
           if ("{{fabricOrder.payment_proof}}" == null) {
             console.error("payment proof must upload");
@@ -189,8 +189,8 @@ function uploadFile(componentId) {
   });
 }
 
-$("#paymentProof").change(function () {
-  $("#paymentProof-label").html($(this).prop("files")[0].name);
+$("#payment_proof").change(function () {
+  $("#payment_proof-label").html($(this).prop("files")[0].name);
 });
 
 $("#confirmation_doc").change(function () {

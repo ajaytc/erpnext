@@ -103,19 +103,15 @@
                                 </span>
                             </li>
                         </ul>
-                        <button class="btn btn-link display-file-selector float-right btn-sm">
-                            {{_("Payment Proof")}} +
-
-                        </button>
-                        <input type="file" class="form-control d-none" value={{fabricOrder.payment_proof}}
-                            name="paymentProof" id="paymentProof">
+                       
+                       
                     </div>
                     <div class="col-md-4 mb-5">
 
                         <div class="row" id="order_doc">
 
                             <!-- to put document -->
-                            <a href="" download class="order-summary-download" id="pdf_doc"
+                            <a href="#"  class="order-summary-download" id="pdf_doc"
                                 style="padding-bottom: 0%;">
                                 <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
                                 <span>{{_('Order Document')}}</span>
@@ -311,7 +307,7 @@
 </div>
 
 <div id="full">
-    <div id="doc">
+    <div id="doc" style="display: none;">
         {{template}}
     </div>
 </div>

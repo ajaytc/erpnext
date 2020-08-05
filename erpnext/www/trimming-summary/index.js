@@ -190,7 +190,7 @@ function uploadFile(componentId) {
 }
 
 $("#paymentProof").change(function () {
-  $("#confirmation_doc-label").html($(this).prop("files")[0].name);
+  $("#payment_proof-label").html($(this).prop("files")[0].name);
 });
 
 $("#confirmation_doc").change(function () {
@@ -204,3 +204,43 @@ $("#profoma").change(function () {
 $("#invoice").change(function () {
   $("#invoice-label").html($(this).prop("files")[0].name);
 });
+
+
+$('#pdf_doc').click(function () {
+    
+  let page=$('#doc').html()
+  render_pdf(page)
+})
+
+function render_pdf(html) {
+  var formData = new FormData();
+
+//Push the HTML content into an element
+  formData.append("html",html);
+  // if (opts.orientation) {
+// 	formData.append("orientation", opts.orientation);
+// }
+var blob = new Blob([], { type: "text/xml"});
+formData.append("blob", blob);
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
+xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
+xhr.responseType = "arraybuffer";
+
+xhr.onload = function(success) {
+  if (this.status === 200) {
+    var blob = new Blob([success.currentTarget.response], {type: "application/pdf"});
+          var objectUrl = URL.createObjectURL(blob);
+          window.open(objectUrl);
+          // target=`<a href="${objectUrl}">${objectUrl}</a>`
+          // $('#order_doc').html(target)
+
+    
+    //Open report in a new window
+    // window.open(objectUrl);
+  }
+  };
+  
+  xhr.send(formData);
+}
