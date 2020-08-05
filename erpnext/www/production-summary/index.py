@@ -25,8 +25,7 @@ def get_context(context):
 
     context.product = frappe.get_doc('Item', context.order.product_name)
 
-    getSuppliers(context.order, fabSuppliers,
-                 trimSuppliers, packSuppliers)
+    getSuppliers(context.order, fabSuppliers,trimSuppliers, packSuppliers)
     brand_name = frappe.get_doc('User', frappe.session.user).brand_name
 
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[

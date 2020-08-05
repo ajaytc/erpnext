@@ -31,7 +31,7 @@ def get_context(context):
         context.pdf_template_names=temp
     elif (context.case=='email'):
         temp=frappe.get_all("Notification")
-        context.email_template_names=temp[0:1]
+        context.email_template_names=temp[0:2]
         # context.subject=temp.subject
     
     
