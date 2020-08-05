@@ -7,6 +7,8 @@
 
 <h2  onload="ss()">{{_("Purchase History")}}</h2>
 
+{% set ns = namespace(universal_order_item_count=0) %}
+
 {% for item in unique_items_orders %}
 
 <h3>
@@ -37,15 +39,26 @@
                 <th  scope="col"></th>
             </thead>
             <tbody>
+
                 {% for order in unique_items_orders[item] %}
-                    {% set ns = namespace(is_modified=false) %}
+                    {% set ns.is_modified=false %}
                     {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
                     {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
                     {% if  temp_order_details|length != 0 %}
                         {% set temp_order_details = temp_order_details[0] %}
+                        {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                         <tr>
                             <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                            <td>{{temp_order_details.name}}<br>{{temp_order_details.customer}}</td>
+                            {% set client_details = frappe.get_all('Customer',{'name':temp_order_details.customer},['customer_name','name','city','country','email_address','phone']) %}
+                            <td>
+                                {{temp_order_details.name}}<br>
+                                {% if client_details|length !=0 %}
+                                    {% set client_details = client_details[0]%}
+                                    <a class="client-modal-link"  data-country ="{{client_details.country}}" data-city="{{client_details.city}}" data-phone="{{client_details.phon}}" data-email="{{client_details.email_address}}" data-cusname="{{client_details.customer_name}}">{{client_details.customer_name}}</a>
+                            </td>
+                            {% else %}
+                            </td>
+                            {% endif %}
                             {% if (order.creation-order.modified).seconds!=0 %}
                                 {% set ns.is_modified = true %}
                                 <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
@@ -99,3 +112,25 @@
     </table>
 </div>
 {% endfor %}
+
+<div class="modal fade" id="client-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Country :<p id="modal-country"></p> </h5>
+                <h5>City : <p id="modal-city"></p></h5>
+                <h5>Email :<p id="modal-email"></p></h5>
+                <h5>Phone : <p id="modal-phone"></p></h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
