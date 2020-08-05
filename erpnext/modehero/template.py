@@ -32,17 +32,16 @@ def updateTemplate(data):
 
 
 def updatePdfTemplate(data):
-    template = frappe.get_all("Pdf Document", filters={
-                              "type": data['type']}, fields=["content", "type", "name"])
+    template = frappe.get_doc("Pdf Document",data['name'])
 
     frappe.db.set_value(
-        'Pdf Document', template[0]["name"], 'content', data["template"])
+        'Pdf Document', template.name, 'content', data["template"])
     frappe.db.commit()
     return {'status': 'ok', 'template': template}
 
 
 def updateNotificationTemplate(data):
-    notification = frappe.get_doc('Notification', data['type'])
+    notification = frappe.get_doc('Notification', data['name'])
 
     frappe.db.set_value('Notification', notification.name,
                         'message', data['template'])

@@ -364,6 +364,70 @@
             </div> #}
         </div>
     </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
+        aria-expanded="false" aria-controls="collapse7">
+        <i class="custom-icon icon-settings"></i> {{_("BackOffice Modehero")}}
+    </a>
+    <div id="collapse7" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="ords" data-target="#ords">
+                {{_("Service Plan")}}
+            </a>
+            <div id="ords" class="collapse" data-parent="#collapse7">
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">
+                        {{_("Manager")}}
+                    </a>
+                    <a href="#" class="list-group-item ">
+                        {{_("Brand List")}}
+                    </a>
+                </div>
+            </div>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="ordLst" data-target="#ordLst">
+                {{_("S&F")}}
+            </a>
+            <div id="ordLst" class="collapse" data-parent="#collapse7">
+                <div class="list-group">
+                    <a href="#" class="list-group-item ">
+                        {{_("List")}}
+                    </a>
+                    
+                </div>
+            </div>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c5a"
+                aria-expanded="false" aria-controls="c5a">
+                {{_("Templates")}}
+            </a>
+            <div id="c5a" class="collapse" data-parent="#collapse7">
+                <div class="list-group">
+                    <a href="/template_management?case=email" class="list-group-item">
+                        {{_("Emails")}}
+                    </a>
+
+                    <!-- <div id="new_product"  class="collapse" data-parent="#c5a">
+                        <div class="list-group" style="padding-left: 20px !important;">
+                            
+                            <a href="/product-items" class="list-group-item ">
+                                {{_("New Product")}}
+                            </a>
+                            <a href="/product-item" class="list-group-item ">
+                                {{_("Products List")}}
+                            </a>
+                        </div>
+                    </div> -->
+                    <a href="/template_management?case=pdf" class="list-group-item ">
+                        {{_("Documents")}}
+                    </a>
+                    <!-- <a href="/product-category" class="list-group-item ">
+                        {{_("Create new Product Category")}}
+                    </a>
+                    <a href="/sizing-scheme" class="list-group-item ">
+                        {{_("Create new sizing scheme")}}
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </div>
     {# <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
         aria-expanded="false" aria-controls="collapse7">
         <i class="custom-icon icon-list"></i> {{_("Invoice Packing List")}}

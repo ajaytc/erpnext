@@ -104,19 +104,24 @@ $('#submit').click(function () {
     deltaSubject=deltaSubject.replaceAll('</p>','');
     deltaSubject=deltaSubject.replaceAll('&nbsp;','');
     var tempCase = ''
-    var tempType = ''
+    var tempName = ''
     // console.log(temp)
     var searchParams = new URLSearchParams(window.location.search)
 
     tempCase = getCase(searchParams)
-    tempType = getType(searchParams)
+    // tempType = getType(searchParams)
 
+    if(tempCase=='pdf'){
+        tempName=$('#pdfTempNames').find('option:selected').val()
+    }else if(tempCase=='email'){
+        tempName=$('#emailTempNames').find('option:selected').val()
+    }
 
     frappe.call({
         method: 'erpnext.modehero.template.updateTemplate',
         args: {
             data: {
-                type: tempType,
+                name: tempName,
                 case: tempCase,
                 template: deltaBody,
                 subject:deltaSubject
