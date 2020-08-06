@@ -1,5 +1,6 @@
 import frappe
 import json
+from frappe.email.doctype.notification.notification import sendCustomEmail
 
 
 @frappe.whitelist()
@@ -84,7 +85,23 @@ def create_trimming_order(data):
     })
     order.insert()
     frappe.db.commit()
+    sendNotificationEmail(order)
     return {'status': 'ok', 'order': order}
+
+def sendNotificationEmail(order):
+    notification=frappe.get_doc("Notification","Order Recieved")
+    vendor=frappe.get_doc("Supplier",order.trimming_vendor)
+    templateData={}
+    templateData['SNF']=vendor.supplier_name
+    templateData['order_name']=order.name
+    templateData['brand']=order.brand
+    templateData['order_type']='trimming'
+    templateData['recipient']=vendor.email
+    templateData['country']=vendor.country
+    templateData['notification']=notification
+
+    if(vendor.email != None):
+        sendCustomEmail(templateData)
 
 
 @frappe.whitelist()
