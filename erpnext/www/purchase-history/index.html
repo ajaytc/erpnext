@@ -51,16 +51,10 @@
                         {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                         <tr>
                             <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                            {% set client_details = frappe.get_all('Customer',{'name':temp_order_details.customer},['customer_name','name','city','country','email_address','phone']) %}
                             <td>
                                 {{temp_order_details.name}}<br>
-                                {% if client_details|length !=0 %}
-                                    {% set client_details = client_details[0]%}
-                                    <a class="client-modal-link"  data-country ="{{client_details.country}}" data-city="{{client_details.city}}" data-phone="{{client_details.phon}}" data-email="{{client_details.email_address}}" data-cusname="{{client_details.customer_name}}">{{client_details.customer_name}}</a>
+                                <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
                             </td>
-                            {% else %}
-                            </td>
-                            {% endif %}
                             {% if (order.creation-order.modified).seconds!=0 %}
                                 {% set ns.is_modified = true %}
                                 <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
