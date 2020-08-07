@@ -251,7 +251,7 @@ def modify_sales_item_orders(orders_object):
     order_dic = json.loads(orders_object)
     for order in order_dic:
         frappe.db.set_value('Sales Order Item', order, {
-            'docstatus': 0
+            'is_modified': 1
         })
         update_item_quantities(order,order_dic[order])
 

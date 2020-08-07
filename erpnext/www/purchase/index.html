@@ -48,7 +48,7 @@
                                 <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
                             </td>
 
-                            {% if (order.creation-order.modified).seconds!=0 %}
+                            {% if order.is_modified=="1" %}
                                 {% set ns.is_modified = true %}
                                 <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
                             {% else %}
