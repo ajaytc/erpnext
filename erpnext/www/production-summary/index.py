@@ -17,8 +17,7 @@ def get_context(context):
     packSuppliers = []
     params = frappe.form_dict
 
-    url =  os.environ.get('USERNAME')
-    print('-------------------------------'+url)
+    
     if('order' in params):
         context.order = frappe.get_doc('Production Order', params.order)
 
