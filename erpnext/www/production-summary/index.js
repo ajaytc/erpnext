@@ -550,13 +550,15 @@ function render_pdf(html) {
 	var blob = new Blob([], { type: "text/xml"});
 	formData.append("blob", blob);
 
-	var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
+    $("#container").css("opacity",0.5);
 	xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
 	xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
-	xhr.responseType = "arraybuffer";
-
+    xhr.responseType = "arraybuffer";
+    
 	xhr.onload = function(success) {
 		if (this.status === 200) {
+            $("#container").css("opacity",1);
 			var blob = new Blob([success.currentTarget.response], {type: "application/pdf"});
             var objectUrl = URL.createObjectURL(blob);
             window.open(objectUrl);
