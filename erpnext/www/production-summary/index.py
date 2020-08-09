@@ -32,8 +32,8 @@ def get_context(context):
         "user_image", "address1", "name"])
 
     context.brand_logo = getBrandLogo(brand[0].user_image)
-    url =  os.environ.get('USERNAME')
-    print('-------------------------------'+url)
+    # url =  os.environ.get('USERNAME')
+    # print('-------------------------------'+url)
     context.address = brand[0].address1
 
     temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order"}, fields=[
