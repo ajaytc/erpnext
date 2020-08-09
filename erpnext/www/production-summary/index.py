@@ -8,7 +8,7 @@ import os
 from frappe.utils.pdf import getBase64Img
 
 no_cache = 1
-path_prefix = "/home/dhananjana/python_project/modehero/sites/modehero.com/public"
+path_prefix = "/opt/bench/mode-hero-erp/sites/modehero.com/public"
 
 
 def get_context(context):
@@ -16,6 +16,9 @@ def get_context(context):
     trimSuppliers = []
     packSuppliers = []
     params = frappe.form_dict
+
+    url =  os.environ.get('USERNAME')
+    print('-------------------------------'+url)
     if('order' in params):
         context.order = frappe.get_doc('Production Order', params.order)
 
