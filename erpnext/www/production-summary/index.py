@@ -5,10 +5,9 @@ import frappe.www.list
 import datetime
 import base64
 import os
-from frappe.utils.pdf import getBase64Img
+from frappe.utils.pdf import getBase64Img,getImagePath
 
 no_cache = 1
-path_prefix = "/opt/bench/mode-hero-erp/sites/modehero.com/public"
 
 
 def get_context(context):
@@ -132,6 +131,7 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
 
 
 def getBrandLogo(file):
+    path_prefix=getImagePath()
     fp = path_prefix+str(file)
     with open(fp, "rb") as img_file:
         my_string = base64.b64encode(img_file.read())
