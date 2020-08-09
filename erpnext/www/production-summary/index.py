@@ -19,25 +19,23 @@ def get_context(context):
     if('order' in params):
         context.order = frappe.get_doc('Production Order', params.order)
 
-    
-
     user = frappe.get_doc('User', frappe.session.user)
 
     context.product = frappe.get_doc('Item', context.order.product_name)
 
-    getSuppliers(context.order, fabSuppliers,trimSuppliers, packSuppliers)
+    getSuppliers(context.order, fabSuppliers, trimSuppliers, packSuppliers)
     brand_name = frappe.get_doc('User', frappe.session.user).brand_name
 
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
         "user_image", "address1", "name"])
 
     context.brand_logo = getBrandLogo(brand[0].user_image)
-    context.address=brand[0].address1
-
+    url =  os.environ.get('USERNAME')
+    print('-------------------------------'+url)
+    context.address = brand[0].address1
 
     temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order"}, fields=[
-                          "content", "type", "name"])
-  
+        "content", "type", "name"])
 
     context.order_name = params.order
 
@@ -53,9 +51,9 @@ def get_context(context):
     context.isBrand = "Brand User" in context.roles
     context.isProd = "Manufacturing User" in context.roles
 
-    # context.parents = [
-    #     {"name": frappe._("Home"), "route": "/"}
-    # ]
+# context.parents = [
+#     {"name": frappe._("Home"), "route": "/"}
+# ]
 
     return context
 
@@ -72,13 +70,10 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
 
                 fabSupplierOb = {}
                 if(fabric.fabric_image != None):
-                    fp = path_prefix+str(fabric.fabric_image)
-                    with open(fp, "rb") as img_file:
-                        my_string = base64.b64encode(img_file.read())
-                        my_string = my_string.decode('utf-8')
-                        fabSupplierOb["fabric_pic"] = getBase64Img(fabric.fabric_image)
+                    fabSupplierOb["fabric_pic"] = getBase64Img(
+                        fabric.fabric_image)
 
-                        # my_string=my_string.split("'")[1]
+                    # my_string=my_string.split("'")[1]
                 else:
                     fabSupplierOb["fabric_pic"] = ''
 
@@ -97,13 +92,9 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
 
                 trimOb = {}
                 if(trim.trimming_image != None):
-                    fp = path_prefix+str(trim.trimming_image)
-                    with open(fp, "rb") as img_file:
-                        my_string = base64.b64encode(img_file.read())
-                        my_string = my_string.decode('utf-8')
-                        trimOb["trim_pic"] = "data:image/png;base64,"+my_string
+                    trimOb["trim_pic"] = getBase64Img(trim.trimming_image)
 
-                        # my_string=my_string.split("'")[1]
+                    # my_string=my_string.split("'")[1]
                 else:
                     trimOb["trim_pic"] = ''
 
@@ -123,13 +114,10 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
                 packOb = {}
 
                 if(pack.packaging_image != None):
-                    fp = path_prefix+str(pack.packaging_image)
-                    with open(fp, "rb") as img_file:
-                        my_string = base64.b64encode(img_file.read())
-                        my_string = my_string.decode('utf-8')
-                        packOb["pack_pic"] = "data:image/png;base64,"+my_string
 
-                        # my_string=my_string.split("'")[1]
+                    packOb["pack_pic"] = getBase64Img(pack.packaging_image)
+
+                    # my_string=my_string.split("'")[1]
                 else:
                     packOb["pack_pic"] = ''
 
@@ -146,5 +134,5 @@ def getBrandLogo(file):
     with open(fp, "rb") as img_file:
         my_string = base64.b64encode(img_file.read())
         my_string = "data:image/png;base64,"+my_string.decode('utf-8')
-    
+
     return my_string
