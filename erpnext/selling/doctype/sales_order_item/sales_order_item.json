@@ -88,7 +88,8 @@
   "additional_notes",
   "section_break_63",
   "page_break",
-  "item_tax_rate"
+  "item_tax_rate",
+  "is_modified"
  ],
  "fields": [
   {
@@ -766,12 +767,18 @@
    "fieldname": "section_qps",
    "fieldtype": "Section Break",
    "label": "QUANTITY PER SIZE"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_modified",
+   "fieldtype": "Check",
+   "label": "Is modified"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-04-08 00:06:37.678418",
+ "modified": "2020-08-07 16:53:10.351250",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",
