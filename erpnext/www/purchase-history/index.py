@@ -23,7 +23,7 @@ def get_context(context):
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    if (context.user_type == "Brand"):
+    if (context.user_type == "Brand" or context.user_type == "System"):
         orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
     else:
         orders = frappe.get_list('Sales Order', filters={'company': brand, 'owner':frappe.session.user}, fields=['name', 'customer'])
@@ -32,12 +32,14 @@ def get_context(context):
 
     order_items = {}
     for o in orders:
-        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus'])
+        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus','prod_order_ref'])
 
         for sales_order_item_index in range(len(order_items[o.name])):
             order_items[o.name][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
+    item_orders = get_unique_items_orders(order_items)
 
-    context.unique_items_orders = get_unique_items_orders(order_items)
+    context.unique_items_orders = seperate_item_orders_by_production_orders(item_orders)
+
     return context
 
 ## returns unique item objects
@@ -67,3 +69,15 @@ def collect_client_data(orders):
             continue
         client_object[order.customer] = cus_db_data[0]
     return client_object
+
+def seperate_item_orders_by_production_orders(item_orders):
+    temp_result_dic = {}
+    for item in item_orders:
+        if item not in temp_result_dic:
+            temp_result_dic[item] = {}
+        for order in item_orders[item]:
+            if order.prod_order_ref not in temp_result_dic[item]:
+                temp_result_dic[item][order.prod_order_ref] = []
+            temp_result_dic[item][order.prod_order_ref].append(order)
+    return temp_result_dic
+            

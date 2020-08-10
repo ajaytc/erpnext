@@ -12,103 +12,105 @@
 {% set ns = namespace(universal_order_item_count=0) %}
 
 {% for item in unique_items_orders %}
+    <h3>
+        <a class="font-weight-bold">
+            {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
+        </a>
+    </h3>
+    {% for prod_order in unique_items_orders[item] %}
+        <div class="table-wrapper table-responsive mt-2">
+            <table class="table table-sm table-striped">
+                {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
+                {% if sizing|length!=0 %}
+                    {% set sizing = sizing[0].sizing %}
+                    {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
+                    <thead>
+                        <th colspan='1' scope='colgroup' >Order Date</th>
+                        <th colspan='1' scope='colgroup' >Order Detail</th>
+                        <th colspan='1' scope='colgroup' ></th>
+                        <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+                        <th colspan='1' scope='colgroup'>Status</th>
+                    </thead>
+                    <thead>
+                        <th  scope="col"></th>
+                        <th  scope="col"></th>
+                        <th  scope="col"></th>
+                        {% for temp_size  in sizing_list%}
+                        <th  scope="col">{{temp_size.size}}</th>
+                        {% endfor %}
+                        <th  scope="col"></th>
+                    </thead>
+                    <tbody>
+                        
+                        {% for order in unique_items_orders[item][prod_order] %}
+                            {% set ns.is_modified=false %}
+                            {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
+                            {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
+                            {% if  temp_order_details|length != 0 %}
+                                {% set temp_order_details = temp_order_details[0] %}
+                                {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
+                                <tr>
+                                    <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
+                                    <td>
+                                        {{temp_order_details.name}}<br>
+                                        <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
+                                    </td>
+                                    {% if order.is_modified|string() == "1" %}
+                                        {% set ns.is_modified = true %}
+                                        <td>Modified</td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
 
-<h3>
-    <a class="font-weight-bold">
-        {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
-    </a>
-</h3>
-<div class="table-wrapper table-responsive mt-2">
-    <table class="table table-sm table-striped">
-        {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
-        {% if sizing|length!=0 %}
-            {% set sizing = sizing[0].sizing %}
-            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
-            <thead>
-                <th colspan='1' scope='colgroup' >Order Date</th>
-                <th colspan='1' scope='colgroup' >Order Detail</th>
-                <th colspan='1' scope='colgroup' ></th>
-                <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
-                <th colspan='1' scope='colgroup'>Status</th>
-            </thead>
-            <thead>
-                <th  scope="col"></th>
-                <th  scope="col"></th>
-                <th  scope="col"></th>
-                {% for temp_size  in sizing_list%}
-                <th  scope="col">{{temp_size.size}}</th>
-                {% endfor %}
-                <th  scope="col"></th>
-            </thead>
-            <tbody>
+                                    {% for size_col in sizing_list %}
+                                        {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                                            <td>
+                                                {% if ns.is_modified %}
+                                                    <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
+                                                {% endif %}
+                                                <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-prod_order="{{prod_order}}" data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                {% if ns.is_modified %}
+                                                <sub class = "modified-qty">0</sub><br>
+                                                {% endif %}
+                                                <div data-current_qty ='0'>0</div>
+                                            </td>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% if order.docstatus==2 %}
+                                    <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
+                                    {% elif order.docstatus==1 %}
+                                    <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
+                                    {% elif order.docstatus==2 %}
+                                    <td class="order-status"><sub class="cancel">Production</sub></td>
+                                    {% elif order.docstatus==3 %}
+                                    <td class="order-status"><sub  class="cancel">Pending</sub></td>
+                                    {% endif %}
 
-                {% for order in unique_items_orders[item] %}
-                    {% set ns.is_modified=false %}
-                    {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
-                    {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
-                    {% if  temp_order_details|length != 0 %}
-                        {% set temp_order_details = temp_order_details[0] %}
-                        {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
-                        <tr>
-                            <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                            <td>
-                                {{temp_order_details.name}}<br>
-                                <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
-                            </td>
-                            {% if order.is_modified=="1" %}
-                                {% set ns.is_modified = true %}
-                                <td>Modified</td>
-                            {% else %}
-                                <td></td>
+                                </tr>
                             {% endif %}
-
+                        {% endfor %}
+                        <tr class="sumation-row">
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             {% for size_col in sizing_list %}
-                                {% for item_qnty in quantities if item_qnty.size==size_col.size%}
-                                    <td>
-                                        {% if ns.is_modified %}
-                                            <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
-                                        {% endif %}
-                                        <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
-                                    </td>
-                                {% else %}
-                                    <td>
-                                        {% if ns.is_modified %}
-                                        <sub class = "modified-qty">0</sub><br>
-                                        {% endif %}
-                                        <div data-current_qty ='0'>0</div>
-                                    </td>
-                                {% endfor %}
+                            <td>
+                                <div data-size ='{{size_col.size}}' data-item = '{{item}}' data-prod_order="{{prod_order}}" class ='sum-quantity'></div>
+                            </td>
                             {% endfor %}
-                            {% if order.docstatus==2 %}
-                            <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                            {% elif order.docstatus==1 %}
-                            <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                            {% elif order.docstatus==2 %}
-                            <td class="order-status"><sub class="cancel">Production</sub></td>
-                            {% elif order.docstatus==3 %}
-                            <td class="order-status"><sub  class="cancel">Pending</sub></td>
-                            {% endif %}
-
+                            <td>
+                                <div data-item = '{{item}}' data-prod_order="{{prod_order}}" class ='total-sum'></div>
+                            </td>
                         </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr class="sumation-row">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    {% for size_col in sizing_list %}
-                    <td>
-                        <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
-                    </td>
-                    {% endfor %}
-                    <td></td>
-                </tr>
-            </tbody>
-        {% endif %}    
-    </table>
-</div>
+                    </tbody>
+                {% endif %}    
+            </table>
+        </div>
+    {% endfor %}
 {% endfor %}
-
 <div class="modal fade" id="client-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

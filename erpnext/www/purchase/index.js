@@ -6,6 +6,11 @@ window.onload = function(){
         let sum = get_sum(item,size);
         $(this).text(sum);
     });
+    $('.total-sum').each(function(){
+        let item = $(this).attr('data-item');
+        let total_sum = get_total_sum(item);
+        $(this).text("Total : "+total_sum.toString());
+    });
 }
 
 $(".client-modal-link").click(function(){
@@ -68,6 +73,10 @@ function validate(item){
     let order = collect_data(item,true);
     if (order==null){
         response_message('Unsuccessfull', 'Incomplete data !', 'red')
+        return null
+    }
+    else if(order=="select_all_error"){
+        response_message('Unsuccessfull', 'All orders of the block should be selected before validation !', 'red')
         return null
     }
     frappe.call({
@@ -136,14 +145,22 @@ function cancel(item){
 function collect_data(item,for_validations){
     let is_any_checked = false;
     let is_any_empty = false;
+    let not_all_checked = false;
     $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             is_any_checked = true;
         }
+        else{
+            not_all_checked = true;
+        }
     });
     if (!is_any_checked){
-        return null
+        return null;
     }
+    if (not_all_checked && for_validations){
+        return "select_all_error";
+    }
+
     let order = {}
     $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
@@ -151,7 +168,7 @@ function collect_data(item,for_validations){
             let order_count = $(this).attr('data-order_count');
 
             if (for_validations){
-                order[order_name]={}
+                order[order_name]={"client_name":$(this).attr("data-client_name"),"sizes":{}}
             }
             $("."+ order_count +"-qnty-content-class").each(function(){
                 let size_type = $(this).attr('data-size');
@@ -162,8 +179,9 @@ function collect_data(item,for_validations){
                 if (!(isNaN($(this).text()))&&($(this).attr("data-current_qty") !=  $(this).text())){
                     if ( order[order_name]==undefined){
                         order[order_name]={}
+                        order[order_name]["sizes"]={}
                     }
-                    order[order_name][size_type]= parseInt($(this).text());
+                    order[order_name]["sizes"][size_type]= parseInt($(this).text());
                 }
             })
         }        
@@ -184,6 +202,14 @@ function select_all_chekbox(item) {
     } else {
         $(".sales-order-checkbox[data-item_code|='"+item+"']").prop('checked', false).change();
     }
+}
+
+function get_total_sum(itm_code){
+    let sum = 0;
+    $(".sum-quantity[data-item|='"+itm_code+"']").each(function() {
+        sum = sum + Number($( this ).text());
+    });
+    return sum
 }
 
 function get_sum(itm_code,size){

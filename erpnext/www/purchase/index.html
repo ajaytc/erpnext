@@ -15,13 +15,14 @@
         {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
         {% if sizing|length!=0 %}
             {% set sizing = sizing[0].sizing %}
-            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='size') %}
+            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
             <thead>
                 <th colspan='1' scope='colgroup' ><input type="checkbox" data-item_code='{{item}}' data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders" /></th>
                 <th colspan='1' scope='colgroup' >Order Date</th>
                 <th colspan='1' scope='colgroup' >Order Detail</th>
                 <th colspan='1' scope='colgroup' ></th>
                 <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+                <th colspan='1' scope='colgroup' ></th>
             </thead>
             <thead>
                 <th  scope="col"></th>
@@ -31,6 +32,7 @@
                 {% for temp_size  in sizing_list%}
                 <th  scope="col" >{{temp_size.size}}</th>
                 {% endfor %}
+                <th  scope="col"></th>
             </thead>
             <tbody>
                 {% for order in unique_items_orders[item] %}
@@ -41,16 +43,16 @@
                         {% set temp_order_details = temp_order_details[0] %}
                         {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                         <tr>
-                            <td><input type="checkbox" data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox" /></td>
+                            <td><input type="checkbox" data-client_name="{{order['customer_details'].customer_name}}"  data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox" /></td>
                             <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
                             <td>
                                 {{temp_order_details.name}}<br>
                                 <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
                             </td>
 
-                            {% if order.is_modified=="1" %}
-                                {% set ns.is_modified = true %}
+                            {% if order.is_modified|string() == "1"%}
                                 <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
+                                {% set ns.is_modified = true %}
                             {% else %}
                                 <td></td>
                             {% endif %}
@@ -72,6 +74,7 @@
                                     </td>
                                 {% endfor %}
                             {% endfor %}
+                            <td></td>
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -85,6 +88,9 @@
                             <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
                         </td>
                     {% endfor %}
+                    <td>
+                        <div data-item = '{{item}}'  class ='total-sum'></div>
+                    </td>
                 </tr>
             </tbody>
         {% endif %} 
