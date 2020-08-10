@@ -7,7 +7,7 @@
 
 <h3>
     <a class="font-weight-bold" href="/product-item?name={{item}}">
-        {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
+        {{unique_items_orders[item]["item_name"]}}
     </a>
 </h3>
 <div class="table-wrapper table-responsive mt-2">
@@ -35,7 +35,7 @@
                 <th  scope="col"></th>
             </thead>
             <tbody>
-                {% for order in unique_items_orders[item] %}
+                {% for order in unique_items_orders[item]["orders"] %}
                     {% set ns.is_modified=false %}
                     {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer']) %}
                     {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
@@ -96,8 +96,8 @@
         {% endif %} 
     </table>
     <div>
-        <button  onclick="validate('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Validate</button>
-        <button  onclick="modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify</button>
+        <button  onclick="validate('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Select</button>
+        <button  onclick="modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify quantity</button>
         <button  onclick="cancel('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Cancel</button>
     </div>
 </div>

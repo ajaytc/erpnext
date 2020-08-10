@@ -14,10 +14,10 @@
 {% for item in unique_items_orders %}
     <h3>
         <a class="font-weight-bold">
-            {{frappe.get_all('Item',{'item_code':item},'item_name')[0].item_name}}
+            {{unique_items_orders[item]["item_name"]}}
         </a>
     </h3>
-    {% for prod_order in unique_items_orders[item] %}
+    {% for prod_order in unique_items_orders[item]["orders"] %}
         <div class="table-wrapper table-responsive mt-2">
             <table class="table table-sm table-striped">
                 {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
@@ -42,7 +42,7 @@
                     </thead>
                     <tbody>
                         
-                        {% for order in unique_items_orders[item][prod_order] %}
+                        {% for order in unique_items_orders[item]["orders"][prod_order] %}
                             {% set ns.is_modified=false %}
                             {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
                             {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
