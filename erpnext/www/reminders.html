@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card" style="width: 120%;">
+        <div class="card" style="width: 325px;">
             <div class="card-body">
 
                 <div class="form-group mb-4">
@@ -10,42 +10,50 @@
                         {{_("Confirmation")}}
                         <span class="selected_value ml-auto mr-2" id="conf_reminder">
                             {% if fabricOrder %}{% if fabricOrder.confirmation_reminder %}
-                            {{fabricOrder.confirmation_reminder}}
+                            {% set conf_rem=fabricOrder.confirmation_reminder %}
                             {% endif %}{% endif %}
                             {% if packOrder %}{% if packOrder.confirmation_reminder %}
-                            {{packOrder.payment_reminder}}
+                            {% set conf_rem=packOrder.payment_reminder%}
                             {% endif %}{% endif %}
                             {% if trimOrder %}{% if trimOrder.confirmation_reminder %}
-                            {{trimOrder.payment_reminder}}
+                            {% set conf_rem=trimOrder.payment_reminder%}
                             {% endif %}{% endif %}
+                            {%if conf_rem%}
+                            {{conf_rem}}
+                            {%endif%}
                         </span>
-                        <input type="text" class="date-picker btn" name="confirmation_date">
+                        <input type="text" class="date-picker btn" value="{%if conf_rem %} {{conf_rem}} {%endif%}"
+                            name="confirmation_date">
                     </label>
                 </div>
 
                 <div class="form-group mb-4">
                     <label for="" class="fabric-form-input d-flex align-items-center justify-content-between">
                         {{_("Proforma")}}
-                        <span class="selected_value ml-auto mr-2"  id="prof_reminder">
+                        <span class="selected_value ml-auto mr-2" id="prof_reminder">
                             {% if fabricOrder %}
                             {% if fabricOrder.profoma_reminder%}
-                            {{fabricOrder.profoma_reminder}}
+                            {% set prof_rem= fabricOrder.profoma_reminder%}
                             {% endif %}
                             {% endif %}
 
                             {% if packOrder %}
                             {% if packOrder.profoma_reminder %}
-                            {{packOrder.profoma_reminder}}
+                            {% set prof_rem=packOrder.profoma_reminder%}
                             {% endif %}
                             {% endif %}
 
                             {% if trimOrder %}
                             {% if trimOrder.profoma_reminder %}
-                            {{trimOrder.profoma_reminder}}
+                            {% set prof_rem=trimOrder.profoma_reminder%}
                             {% endif %}
                             {% endif %}
+                            {% if prof_rem%}
+                            {{prof_rem}}
+                            {% endif%}
                         </span>
-                        <input type="text" class="date-picker btn" name="proforma_date">
+                        <input type="text" class="date-picker btn" value="{% if prof_rem%} {{prof_rem}} {% endif%}"
+                            name="proforma_date">
                     </label>
                 </div>
 
@@ -54,16 +62,20 @@
                         {{_("Payment")}}
                         <span class="selected_value ml-auto mr-2" id="paym_reminder">
                             {% if fabricOrder %}{% if fabricOrder.payment_reminder %}
-                            {{fabricOrder.payment_reminder}}
+                            {% set paym_rem=fabricOrder.payment_reminder%}
                             {% endif %}{% endif %}
                             {% if packOrder %}{% if packOrder.payment_reminder %}
-                            {{packOrder.payment_reminder}}
+                            {% set paym_rem=packOrder.payment_reminder%}
                             {% endif %}{% endif %}
                             {% if trimOrder %}{% if trimOrder.payment_reminder %}
-                            {{trimOrder.payment_reminder}}
+                            {% set paym_rem=trimOrder.payment_reminder%}
                             {% endif %}{% endif %}
+                            {%if paym_rem%}
+                            {{paym_rem}}
+                            {%endif%}
                         </span>
-                        <input type="text" class="date-picker btn" title="shipment_date" name="payment_date">
+                        <input type="text" class="date-picker btn" value="{%if paym_rem%} {{paym_rem}} {%endif%}"
+                            title="shipment_date" name="payment_date">
                     </label>
                 </div>
 
@@ -72,16 +84,20 @@
                         {{_("Shipment")}}
                         <span class="selected_value ml-auto mr-2" id="shipment_reminder">
                             {% if fabricOrder %}{% if fabricOrder.shipment_reminder %}
-                            {{fabricOrder.shipment_reminder}}
+                            {% set ship_rem=fabricOrder.shipment_reminder%}
                             {% endif %}{% endif %}
                             {% if packOrder %}{% if packOrder.shipment_reminder %}
-                            {{packOrder.shipment_reminder}}
+                            {% set ship_rem=packOrder.shipment_reminder%}
                             {% endif %}{% endif %}
                             {% if trimOrder %}{% if trimOrder.shipment_reminder %}
-                            {{trimOrder.shipment_reminder}}
+                            {% set ship_rem=trimOrder.shipment_reminder%}
                             {% endif %}{% endif %}
+                            {%if ship_rem%}
+                            {{ship_rem}}
+                            {%endif%}
                         </span>
-                        <input type="text" class="date-picker btn" name="shipment_date">
+                        <input type="text" class="date-picker btn" value="{%if ship_rem%} {{ship_rem}} {%endif%}"
+                            name="shipment_date">
                     </label>
                 </div>
 
@@ -90,16 +106,20 @@
                         {{_("Reception")}}
                         <span class="selected_value ml-auto mr-2" id="recep_reminder">
                             {% if fabricOrder %}{% if fabricOrder.reception_reminder %}
-                            {{fabricOrder.reception_reminder}}
+                            {% set recep_rem=fabricOrder.reception_reminder%}
                             {% endif %}{% endif %}
                             {% if packOrder %}{% if packOrder.reception_reminder %}
-                            {{packOrder.reception_reminder}}
+                            {% set recep_rem=packOrder.reception_reminder%}
                             {% endif %}{% endif %}
                             {% if trimOrder %}{% if trimOrder.reception_reminder %}
-                            {{trimOrder.reception_reminder}}
+                            {% set recep_rem=trimOrder.reception_reminder%}
                             {% endif %}{% endif %}
+                            {%if recep_rem%}
+                            {{recep_rem}}
+                            {%endif%}
                         </span>
-                        <input type="text" class="date-picker btn" name="reception_date">
+                        <input type="text" class="date-picker btn" value="{%if recep_rem%} {{recep_rem}} {%endif%}"
+                            name="reception_date">
                     </label>
                 </div>
             </div>
@@ -115,9 +135,59 @@
         $(".date-picker").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('input.date-picker').on('change', function () {
+            console.log('ddddddddddddd')
+            validateTime($(this))
             $(this).siblings('span.selected_value').text($(this).val())
             $(this).addClass('active');
+
+            function validateTime(el) {
+                var reminders = $('.date-picker')
+                thisIndex = reminders.index(el)
+                thisVal=el.val()
+                console.log(reminders)
+                $('.date-picker').each(function (index, item) {
+                    if ($(item).val() != "") {
+                        if (thisIndex > index) {
+                            if (Date.parse($.trim($(item).val())) > Date.parse($.trim(el.val()))) {
+                                el.val($.trim(el.siblings('span.selected_value').text()))
+                                
+
+                                frappe.msgprint({
+                                    title: __("Notification"),
+                                    indicator: "red",
+                                    message: __(
+                                        "Invalid Date"
+                                    ),
+                                });
+
+                            }
+                        } else if (thisIndex < index) {
+                            if (Date.parse($.trim($(item).val())) < Date.parse($.trim(el.val()))) {
+                                el.val($.trim(el.siblings('span.selected_value').text()))
+                                
+                                frappe.msgprint({
+                                    title: __("Notification"),
+                                    indicator: "red",
+                                    message: __(
+                                        "Invalid Date"
+                                    ),
+                                });
+
+                            }
+                        }
+                    }
+
+
+                })
+            };
         })
 
+
+
     })
+
+
+
+
+
 </script>
