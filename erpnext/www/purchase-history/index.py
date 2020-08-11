@@ -23,7 +23,7 @@ def get_context(context):
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    if (context.user_type == "Brand"):
+    if (context.user_type == "Brand" or context.user_type == "System"):
         orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
     else:
         orders = frappe.get_list('Sales Order', filters={'company': brand, 'owner':frappe.session.user}, fields=['name', 'customer'])
@@ -32,12 +32,14 @@ def get_context(context):
 
     order_items = {}
     for o in orders:
-        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus'])
+        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus','prod_order_ref'])
 
         for sales_order_item_index in range(len(order_items[o.name])):
             order_items[o.name][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
+    item_orders =  sort_item_doc(get_unique_items_orders(order_items))
 
-    context.unique_items_orders = get_unique_items_orders(order_items)
+    context.unique_items_orders = seperate_item_orders_by_production_orders(item_orders)
+
     return context
 
 ## returns unique item objects
@@ -47,11 +49,17 @@ def get_unique_items_orders(order_items):
     for order in order_items:
         for item in order_items[order]: 
             if item.item_code in temp_codes:
-                temp_objects[item.item_code].append(item)
+                temp_objects[item.item_code]["orders"].append(item)
                 continue
             temp_codes.append(item.item_code)
-            temp_objects[item.item_code] = []
-            temp_objects[item.item_code].append(item)
+            item_name = frappe.get_all('Item',{'item_code':item.item_code},'item_name')
+            if (len(item_name)!=0):
+                item_name = item_name[0].item_name
+            else:
+                item_name = ""
+            temp_objects[item.item_code] = {"item_name":item_name}
+            temp_objects[item.item_code]["orders"]=[]
+            temp_objects[item.item_code]["orders"].append(item)
     return temp_objects
 
 def collect_client_data(orders):
@@ -67,3 +75,32 @@ def collect_client_data(orders):
             continue
         client_object[order.customer] = cus_db_data[0]
     return client_object
+
+def seperate_item_orders_by_production_orders(item_orders):
+    temp_result_dic = {}
+    for item in item_orders:
+        if item not in temp_result_dic:
+            temp_result_dic[item] = {}
+            temp_result_dic[item]["item_name"] = item_orders[item]["item_name"]
+            temp_result_dic[item]["orders"] = {}
+        for order in item_orders[item]["orders"]:
+            if order.prod_order_ref not in temp_result_dic[item]["orders"]:
+                temp_result_dic[item]["orders"][order.prod_order_ref] = []
+            temp_result_dic[item]["orders"][order.prod_order_ref].append(order)
+    return temp_result_dic
+
+
+def sort_item_doc(item_doc):
+    result_doc = {}
+    string_list = []
+    for item in item_doc:
+        if item_doc[item]["item_name"] in string_list:
+            continue
+        string_list.append(item_doc[item]["item_name"])
+    string_list = sorted(string_list,key=str.lower)
+    for item_name in string_list:
+        for item in item_doc:
+            if item_doc[item]["item_name"]==item_name:
+                result_doc[item] = item_doc[item]
+                break
+    return result_doc

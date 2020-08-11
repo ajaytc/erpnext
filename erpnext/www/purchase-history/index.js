@@ -3,15 +3,30 @@ window.onload = function(){
     $('.sum-quantity').each(function(){
         let item = $(this).attr('data-item');
         let size = $(this).attr('data-size');
-        let sum = get_sum(item,size);
+        let prod_order = $(this).attr("data-prod_order");
+        let sum = get_sum(item,size,prod_order);
         $(this).text(sum);
+    });
+    $('.total-sum').each(function(){
+        let item = $(this).attr('data-item');
+        let prod_order = $(this).attr("data-prod_order");
+        let total_sum = get_total_sum(item,prod_order);
+        $(this).text("Total : "+total_sum.toString());
     });
 }
 
-function get_sum(itm_code,size){
-    let sum = 0
-    $(".qnty-content-class[data-item_code|='"+itm_code+"'][data-size|='"+size+"']").each(function() {
+function get_sum(itm_code,size,prod_order){
+    let sum = 0;
+    $(".qnty-content-class[data-item_code|='"+itm_code+"'][data-size|='"+size+"'][data-prod_order|='"+prod_order+"']").each(function() {
         sum = sum + Number($( this ).attr('data-current_qty'));
+    });
+    return sum
+}
+
+function get_total_sum(itm_code,prod_order){
+    let sum = 0;
+    $(".sum-quantity[data-item|='"+itm_code+"'][data-prod_order|='"+prod_order+"']").each(function() {
+        sum = sum + Number($( this ).text());
     });
     return sum
 }

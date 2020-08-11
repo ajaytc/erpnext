@@ -89,7 +89,8 @@
   "section_break_63",
   "page_break",
   "item_tax_rate",
-  "is_modified"
+  "is_modified",
+  "prod_order_ref"
  ],
  "fields": [
   {
@@ -773,12 +774,18 @@
    "fieldname": "is_modified",
    "fieldtype": "Check",
    "label": "Is modified"
+  },
+  {
+   "fieldname": "prod_order_ref",
+   "fieldtype": "Link",
+   "label": "Production Ref",
+   "options": "Production Order"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-08-07 16:53:10.351250",
+ "modified": "2020-08-10 08:02:56.933730",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",

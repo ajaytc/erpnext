@@ -26,7 +26,7 @@ def get_context(context):
         for sales_order_item_index in range(len(order_items[o.name])):
             order_items[o.name][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
     
-    context.unique_items_orders = get_unique_items_orders(order_items)
+    context.unique_items_orders = sort_item_doc(get_unique_items_orders(order_items))
     return context
 
 ## returns unique item objects
@@ -36,11 +36,17 @@ def get_unique_items_orders(order_items):
     for order in order_items:
         for item in order_items[order]: 
             if item.item_code in temp_codes:
-                temp_objects[item.item_code].append(item)
+                temp_objects[item.item_code]["orders"].append(item)
                 continue
             temp_codes.append(item.item_code)
-            temp_objects[item.item_code] = []
-            temp_objects[item.item_code].append(item)
+            item_name = frappe.get_all('Item',{'item_code':item.item_code},'item_name')
+            if (len(item_name)!=0):
+                item_name = item_name[0].item_name
+            else:
+                item_name = ""
+            temp_objects[item.item_code] = {"item_name":item_name}
+            temp_objects[item.item_code]["orders"]=[]
+            temp_objects[item.item_code]["orders"].append(item)
     return temp_objects
 
 def collect_client_data(orders):
@@ -56,3 +62,22 @@ def collect_client_data(orders):
             continue
         client_object[order.customer] = cus_db_data[0]
     return client_object
+
+def sort_item_doc(item_doc):
+    result_doc = {}
+    string_list = []
+    for item in item_doc:
+        if item_doc[item]["item_name"] in string_list:
+            continue
+        string_list.append(item_doc[item]["item_name"])
+    string_list = sorted(string_list,key=str.lower)
+    for item_name in string_list:
+        for item in item_doc:
+            if item_doc[item]["item_name"]==item_name:
+                result_doc[item] = item_doc[item]
+                break
+    return result_doc
+
+
+
+
