@@ -135,6 +135,7 @@ $('#submit').click(() => {
     let qtys = []
     let sizes = []
     let counter = 0
+    $('.loader').show()
 
     $('.sizing').map(function () {
         sizes.push($(this).text())
@@ -197,6 +198,7 @@ function createOrder(product, qtys, techpack, pattern, picture) {
             }
         },
         callback: function (r) {
+            $('.loader').hide()
             if (!r.exc) {
                 console.log(r)
                 let order = r.message.order

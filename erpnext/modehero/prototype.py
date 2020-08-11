@@ -2,7 +2,7 @@ import frappe
 import json
 import ast
 from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order
-
+from frappe.email.doctype.notification.notification import sendCustomEmail
 
 @frappe.whitelist()
 def create_prototype_order(data):
@@ -32,8 +32,25 @@ def create_prototype_order(data):
     order.insert(ignore_permissions=True)
 
     reduce_supply_stock(order)
+    sendNotificationEmail(order)
 
     return {'status': 'ok', 'order': order}
+
+def sendNotificationEmail(order):
+    notification=frappe.get_doc("Notification","Order Recieved")
+    factory=frappe.get_doc("Production Factory",order.production_factory)
+    templateData={}
+    templateData['SNF']=factory.factory_name
+    templateData['order_name']=order.name
+    templateData['brand']=order.brand
+    templateData['order_type']='prototype'
+    templateData['recipient']=factory.email_address
+    templateData['country']=factory.country
+    templateData['notification']=notification
+
+    if(factory.email_address != None):
+        sendCustomEmail(templateData)
+    
 
 
 def reduce_supply_stock(order):
