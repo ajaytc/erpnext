@@ -2,7 +2,7 @@ import frappe
 import json
 from frappe.email.doctype.notification.notification import sendCustomEmail
 
-@frappe.whitelist()
+@frappe.whitelist(allow_email_guest=True)
 def submit_pack_vendor_summary_info(data):
     data = json.loads(data)
     packOrder = frappe.get_doc('Packaging Order', data['order'])
@@ -41,7 +41,7 @@ def createShipmentOrderForPackage(data):
     shipmentOrder.insert()
     frappe.db.commit()
 
-@frappe.whitelist()
+@frappe.whitelist(allow_email_guest=True)
 def submit_payment_proof(data):
     data = json.loads(data)
     packOrder = frappe.get_doc('Packaging Order', data['order'])

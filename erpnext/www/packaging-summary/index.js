@@ -244,6 +244,16 @@ xhr.onload = function(success) {
     //Open report in a new window
     // window.open(objectUrl);
   }
+  else{
+    frappe.msgprint({
+      title: __("Notification"),
+      indicator: "red",
+      message: __(
+        "Not Permitted"
+      ),
+    });
+    $(".row").css("opacity",1);
+  }
   };
   
   xhr.send(formData);

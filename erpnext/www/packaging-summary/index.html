@@ -2,9 +2,9 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Packaging','url':'/'},{'label':'Packaging Order List','url':'/supply-dashboard?type=packaging'},{'label':'Packaging Order','url':'#'}]) }}
 <h1>Packaging Order Summary</h1>
 
-<div class="row mt-5">
+<div class="row mt-5" style="width: 89%;">
     <div class="col-sm-6 col-md-4 col-xl-3">
-        <div class="card">
+        <div class="card" style="width: 89%;">
             <div class="card-body">
                 <p class="label">
                     {{_("Date")}}
@@ -145,8 +145,7 @@
                         <div class="row" id="order_doc">
 
                             <!-- to put document -->
-                            <a href="#" class="order-summary-download" id="pdf_doc"
-                                style="padding-bottom: 0%;">
+                            <a href="#" class="order-summary-download" id="pdf_doc" style="padding-bottom: 0%;">
                                 <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
                                 <span>{{_('Order Document')}}</span>
                             </a>
@@ -164,8 +163,7 @@
 
                                 <a href="{{packOrder.payment_proof}}" download class="order-summary-download"
                                     style="padding-bottom: 0%;width:112%">
-                                    <img src="/assets/erpnext/images/icons/pdf.svg" alt=""
-                                        style="margin-top:0%;" />
+                                    <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top:0%;" />
                                     <span>{{packOrder.payment_proof}}</span>
                                 </a>
                                 {% endif %}
@@ -212,7 +210,7 @@
 </div>
 
 
-<div class="sidebar right">
+<div class="sidebar right" style="position: fixed;top: 80px;right: 0;height: calc(100% - 80px);width: 375px;overflow-x: hidden;overflow-y: auto;border-left: 1px solid #e6e6e6;background-color:white;padding-left:2%">
     <div class="sidebar-inner">
         <h5 class="mb-4 mt-0">{{_("Trimming Vendor")}}</h5>
 

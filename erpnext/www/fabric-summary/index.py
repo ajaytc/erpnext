@@ -16,20 +16,24 @@ def get_context(context):
     if('order' in params):
         context.fabricOrder = frappe.get_doc('Fabric Order', params.order)
         context.fabric=frappe.get_doc('Fabric',context.fabricOrder.fabric_ref);
-        supplier=frappe.get_doc('Supplier',context.fabricOrder.fabric_vendor)
+        context.supplier=frappe.get_doc('Supplier',context.fabricOrder.fabric_vendor)
         context.fabricOrderShipment=frappe.get_all('Shipment Order',fields=['tracking_number','carrier_company','shipping_date','expected_delivery_date','shipping_price','html_tracking_link'],filters={'fabric_order_id':params.order})
     
     context.roles = frappe.get_roles(frappe.session.user)
-    context.isFabricVendor = "Fabric Vendor" in context.roles
     context.isBrand = "Brand User" in context.roles
+
+    if('sk' in params):
+        context.isFabricVendor=True
+    else:
+        context.isFabricVendor = "Fabric Vendor" in context.roles
     
 
     # get data for pdf generation
     
     context.order_number=context.fabricOrder.internal_ref
     context.creation=context.fabricOrder.creation
-    context.supplier_name=supplier.name
-    context.supplier_address=supplier.address1
+    context.supplier_name=context.supplier.name
+    context.supplier_address=context.supplier.address1
     context.destination=context.fabricOrder.destination
     if(context.fabric.fabric_image != None):
         context.item_pic=getBase64Img(context.fabric.fabric_image)
@@ -49,9 +53,14 @@ def get_context(context):
     return context
 
 def getPdfDoc(context):
-    brand_name = frappe.get_doc('User', frappe.session.user).brand_name
 
-    brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
+    params = frappe.form_dict
+    if('sk' in params):
+        context.brand_name=context.supplier.brand
+    else:
+        context.brand_name = frappe.get_doc('User', frappe.session.user).brand_name
+
+    brand = frappe.get_all("User", filters={"type": "brand", "brand_name": context.brand_name}, fields=[
         "user_image", "address1", "name"])
     context.brand_logo=getBase64Img(brand[0].user_image)
     context.address=brand[0].address1
