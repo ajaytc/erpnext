@@ -43,12 +43,13 @@ def get_context(context):
 
 
 def getPdfDoc(context):
-    params = frappe.form_dict
-    if('sk' in params):
-        context.brand_name=context.supplier.brand
-    else:
-        context.brand_name = frappe.get_doc('User', frappe.session.user).brand_name
+    # params = frappe.form_dict
+    # if('sk' in params):
+    #     context.brand_name=context.supplier.brand
+    # else:
+    #     context.brand_name = frappe.get_doc('User', frappe.session.user).brand_name
 
+    context.brand_name=context.packOrder.brand
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": context.brand_name}, fields=[
         "user_image", "address1", "name"])
     context.brand_logo=getBase64Img(brand[0].user_image)
