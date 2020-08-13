@@ -18,3 +18,9 @@ td{
     cursor: pointer;
     font-weight: bold;
 }
+#order-section{
+    margin-bottom: 40px;
+}
+#supply-order-section{
+    border-top:5px solid rgb(219, 210, 210);
+}

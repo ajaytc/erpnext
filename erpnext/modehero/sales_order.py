@@ -246,7 +246,6 @@ def modify_sales_item_orders(orders_object):
     # {
     #     "sales_item_order":
     #     {
-    #         "client_name": "name of the client"
     #         "sizes":
     #         {
     #             "M":2,
