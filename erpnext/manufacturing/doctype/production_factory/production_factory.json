@@ -20,7 +20,8 @@
   "zip_code",
   "country",
   "brand",
-  "user"
+  "user",
+  "assigned_brands"
  ],
  "fields": [
   {
@@ -105,10 +106,16 @@
    "fieldtype": "Link",
    "label": "User",
    "options": "User"
+  },
+  {
+   "fieldname": "assigned_brands",
+   "fieldtype": "Table",
+   "label": "Assigned Brands",
+   "options": "Brand Factory"
   }
  ],
  "links": [],
- "modified": "2020-07-22 09:23:59.809992",
+ "modified": "2020-08-12 12:10:44.201899",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

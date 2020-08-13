@@ -34,6 +34,13 @@
         {% endif %}
     </div>
 </div>
+{%if isSupplier%}
+<div style="display: flex;align-items: right;justify-content: right;">
+    <button id="canceled" type="button" class="btn btn-primary ml-auto" disabled>
+        {{_("Cancel")}}
+    </button>
+</div>
+{%endif%}
 
 {# to add red dot to tab, add `notification` class to span sorrounding tab name #}
 <ul class="nav nav-tabs nav-fill mt-3" id="myTab" role="tablist">
@@ -50,9 +57,15 @@
             aria-selected="false"><span id="ready-notf" class="">{{_("Ready")}}</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="contact"
+        <a class="nav-link" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped"
             aria-selected="false"><span id="shipped-notf" class="">{{_("Shipped")}}</span></a>
     </li>
+    {%if isSupplier%}
+    <li class="nav-item">
+        <a class="nav-link" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel"
+            aria-selected="false"><span id="cancel-notf" class="">{{_("Canceled")}}</span></a>
+    </li>
+    {%endif%}
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane show active" id="neworders" role="tabpanel" aria-labelledby="neworders-tab">
@@ -66,6 +79,11 @@
     <div class="tab-pane" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/supply-dashboard/shipped.html' %}
     </div>
+    {%if isSupplier%}
+    <div class="tab-pane" id="cancel" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/supply-dashboard/canceled.html' %}
+    </div>
+    {%endif%}
 </div>
 
 </div>

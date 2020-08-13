@@ -18,13 +18,16 @@ def get_context(context):
 
     params = frappe.form_dict
     if('type' in params):
+        context.isSupplier=False
         if params.type == 'fabric':
             context.isFabric = True
         elif params.type == 'trimming':
             context.isTrimming = True
         elif params.type == 'packaging':
             context.isPackaging = True
+
     else:
+        context.isSupplier=True
         context.isFabric = "Fabric Vendor" in context.roles
         context.isPackaging = "Packaging Vendor" in context.roles
         context.isTrimming = "Trimming Vendor" in context.roles
@@ -38,38 +41,90 @@ def get_context(context):
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
 
-    if context.isFabric:
-        orderType = 'Fabric Order'
-        context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=fabric_fields)
-        context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=fabric_fields)
-        context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=fabric_fields)
-        context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=fabric_fields)
+    # if brand access the dashboard
+    if(context.isSupplier==False):
+        if context.isFabric:
+            context.orderType = 'Fabric Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'brand': brand}, fields=fabric_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'brand': brand}, fields=fabric_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'brand': brand}, fields=fabric_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'brand': brand}, fields=fabric_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'brand': brand}, fields=fabric_fields)
 
-    elif context.isPackaging:
-        orderType = 'Packaging Order'
-        context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=packaging_fields)
-        context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=packaging_fields)
-        context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=packaging_fields)
-        context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=packaging_fields)
+        elif context.isPackaging:
+            context.orderType = 'Packaging Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'brand': brand}, fields=packaging_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'brand': brand}, fields=packaging_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'brand': brand}, fields=packaging_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'brand': brand}, fields=packaging_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'brand': brand}, fields=packaging_fields)
 
-    elif context.isTrimming:
-        orderType = 'Trimming Order'
-        context.neworders = frappe.get_all(
-            orderType, filters={'docstatus': 0, 'brand': brand}, fields=trimming_fields)
-        context.onprocess = frappe.get_all(
-            orderType, filters={'docstatus': 1, 'brand': brand}, fields=trimming_fields)
-        context.ready = frappe.get_all(
-            orderType, filters={'docstatus': 4, 'brand': brand}, fields=trimming_fields)
-        context.shipped = frappe.get_all(
-            orderType, filters={'docstatus': 3, 'brand': brand}, fields=trimming_fields)
+        elif context.isTrimming:
+            context.orderType = 'Trimming Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'brand': brand}, fields=trimming_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'brand': brand}, fields=trimming_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'brand': brand}, fields=trimming_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'brand': brand}, fields=trimming_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'brand': brand}, fields=trimming_fields)
+
+    else:
+        # if supplier access the dashboard
+        vendor_name=frappe.get_all('Supplier',filters={'user':user.name},fields=['name'])
+        if context.isFabric:
+            context.orderType = 'Fabric Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'fabric_vendor': vendor_name[0]['name']}, fields=fabric_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'fabric_vendor': vendor_name[0]['name']}, fields=fabric_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'fabric_vendor': vendor_name[0]['name']}, fields=fabric_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'fabric_vendor': vendor_name[0]['name']}, fields=fabric_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'fabric_vendor': vendor_name[0]['name']}, fields=fabric_fields)
+
+        elif context.isPackaging:
+            context.orderType = 'Packaging Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'packaging_vendor': vendor_name[0]['name']}, fields=packaging_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'packaging_vendor': vendor_name[0]['name']}, fields=packaging_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'packaging_vendor': vendor_name[0]['name']}, fields=packaging_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'packaging_vendor': vendor_name[0]['name']}, fields=packaging_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'packaging_vendor': vendor_name[0]['name']}, fields=packaging_fields)
+
+
+        elif context.isTrimming:
+            context.orderType = 'Trimming Order'
+            context.neworders = frappe.get_all(
+                context.orderType, filters={'docstatus': 0, 'trimming_vendor': vendor_name[0]['name']}, fields=trimming_fields)
+            context.onprocess = frappe.get_all(
+                context.orderType, filters={'docstatus': 1, 'trimming_vendor': vendor_name[0]['name']}, fields=trimming_fields)
+            context.ready = frappe.get_all(
+                context.orderType, filters={'docstatus': 4, 'trimming_vendor': vendor_name[0]['name']}, fields=trimming_fields)
+            context.shipped = frappe.get_all(
+                context.orderType, filters={'docstatus': 3, 'trimming_vendor': vendor_name[0]['name']}, fields=trimming_fields)
+            context.canceled = frappe.get_all(
+                context.orderType, filters={'docstatus': 2, 'trimming_vendor': vendor_name[0]['name']}, fields=trimming_fields)
+    
 
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"}

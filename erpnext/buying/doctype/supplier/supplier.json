@@ -64,7 +64,8 @@
   "phone",
   "email",
   "brand",
-  "user"
+  "user",
+  "assigned_brands"
  ],
  "fields": [
   {
@@ -421,13 +422,19 @@
    "fieldtype": "Link",
    "label": "User",
    "options": "User"
+  },
+  {
+   "fieldname": "assigned_brands",
+   "fieldtype": "Table",
+   "label": "Assigned Brands",
+   "options": "Brand Suppliers"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-05-13 13:59:03.959272",
+ "modified": "2020-08-12 11:51:47.285575",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",

@@ -25,3 +25,17 @@ def create_supplier(data):
     supplier.insert()
     frappe.db.commit()
     return {'status': 'ok', 'supplier': supplier}
+
+@frappe.whitelist()
+def cancelSupplyOrder(data):
+    data=json.loads(data)
+    canceledOrders=data['orders']
+    orderGroup=data['orderGroup']
+
+    for order in canceledOrders:
+        frappe.db.set_value(orderGroup,order,'docstatus',2)
+
+    frappe.db.commit()
+
+    return {'status':'ok'}
+        
