@@ -1,7 +1,7 @@
 import frappe
 import json
 import ast
-
+from frappe.email.doctype.notification.notification import sendCustomEmail
 
 @frappe.whitelist()
 def create_supplier(data):
@@ -34,8 +34,37 @@ def cancelSupplyOrder(data):
 
     for order in canceledOrders:
         frappe.db.set_value(orderGroup,order,'docstatus',2)
+        order=frappe.get_doc(orderGroup,order)
+        sendNotificationEmail(order,orderGroup)
 
     frappe.db.commit()
 
     return {'status':'ok'}
         
+def sendNotificationEmail(order,orderGroup):
+    notification=frappe.get_doc("Notification","Supply Order Cancel")
+    
+    if(orderGroup=='Fabric Order'):
+        orderType='fabric';
+        vendor=frappe.get_doc("Supplier",order.fabric_vendor) 
+    elif (orderGroup=='Trimming Order'):
+        orderType='trimming';
+        vendor=frappe.get_doc("Supplier",order.trimming_vendor) 
+    else:
+        orderType='packaging'; 
+        vendor=frappe.get_doc("Supplier",order.packaging_vendor)
+
+    templateData={}
+    templateData['SNF']=vendor.supplier_name
+    templateData['internal_ref']=order.internal_ref
+    templateData['brand']=order.brand
+    templateData['order_date']=order.creation.date()
+    templateData['order_type']=orderType
+    templateData['order_name']=order.name
+    templateData['recipient']=vendor.email
+    templateData['country']=vendor.country
+    templateData['notification']=notification
+
+    if(vendor.email != None):
+        print('ddd')
+        sendCustomEmail(templateData)

@@ -134,7 +134,7 @@ $('#submit').click(function () {
                 frappe.msgprint({
                     title: __('Notification'),
                     indicator: 'green',
-                    message: __('Bulk Order Template Saved Successfully')
+                    message: __('Template Saved Successfully')
                 });
 
 
@@ -142,7 +142,7 @@ $('#submit').click(function () {
                 frappe.msgprint({
                     title: __('Notification'),
                     indicator: 'red',
-                    message: __('Bulk Order Template Saving Failed')
+                    message: __('Template Saving Failed')
                 });
             }
         }

@@ -30,8 +30,8 @@ def get_context(context):
         temp=frappe.get_all("Pdf Document",fields=["content","type","name"])
         context.pdf_template_names=temp
     elif (context.case=='email'):
-        temp=frappe.get_all("Notification")
-        context.email_template_names=temp[0:2]
+        temp=frappe.get_list("Notification",filters={'enabled':0})
+        context.email_template_names=temp
         # context.subject=temp.subject
     
     

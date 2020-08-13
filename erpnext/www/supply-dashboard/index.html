@@ -60,12 +60,12 @@
         <a class="nav-link" id="shipped-tab" data-toggle="tab" href="#shipped" role="tab" aria-controls="shipped"
             aria-selected="false"><span id="shipped-notf" class="">{{_("Shipped")}}</span></a>
     </li>
-    {%if isSupplier%}
+    
     <li class="nav-item">
         <a class="nav-link" id="cancel-tab" data-toggle="tab" href="#cancel" role="tab" aria-controls="cancel"
             aria-selected="false"><span id="cancel-notf" class="">{{_("Canceled")}}</span></a>
     </li>
-    {%endif%}
+   
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane show active" id="neworders" role="tabpanel" aria-labelledby="neworders-tab">
@@ -79,11 +79,11 @@
     <div class="tab-pane" id="shipped" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/supply-dashboard/shipped.html' %}
     </div>
-    {%if isSupplier%}
+    
     <div class="tab-pane" id="cancel" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/supply-dashboard/canceled.html' %}
     </div>
-    {%endif%}
+    
 </div>
 
 </div>
