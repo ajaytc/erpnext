@@ -15,7 +15,13 @@ def get_context(context):
         context.supplier=frappe.get_doc('Supplier',context.packOrder.packaging_vendor)
         context.packagingOrderShipment=frappe.get_all('Shipment Order',fields=['tracking_number','carrier_company','shipping_date','expected_delivery_date','shipping_price','html_tracking_link'],filters={'packaging_order_id':params.order})
     
+    if frappe.session.user == 'Guest':
+        context.isGuest=True
+    else:
+        context.isGuest=False
+
     context.roles = frappe.get_roles(frappe.session.user)
+    context.isBrand = "Brand User" in context.roles
 
     if('sk' in params):
         context.isPackVendor=True

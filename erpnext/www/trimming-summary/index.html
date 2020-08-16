@@ -2,7 +2,21 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Trimming Order List','url':'/supply-dashboard?type=trimming'},{'label':'Trimming Order','url':'#'}]) }}
 <h1>Trimming Order Summary</h1>
 
-<div class="row mt-5" style="width: 89%;">
+<div class="row mt-5" style="{%if isGuest %}width: 90%;{%else%}width:108%;{%endif%}">
+    {%if isTrimVendor %}
+    <div class="col-sm-6 col-md-4 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <p class="label">
+                    {{_("Brand Name")}}
+                </p>
+                <p class="value">
+                    {{trimOrder.brand}}
+                </p>
+            </div>
+        </div>
+    </div>
+    {%endif%}
     <div class="col-sm-6 col-md-4 col-xl-3">
         <div class="card">
             <div class="card-body">
@@ -30,6 +44,7 @@
         </div>
     </div>
 
+    {%if isBrand%}
     <div class="col-sm-6 col-md-4 col-xl-3">
         <div class="card">
             <div class="card-body">
@@ -42,6 +57,7 @@
             </div>
         </div>
     </div>
+    {%endif%}
 
     <div class="col-sm-12 mt-4 pt-3">
         <div class="card">
@@ -199,16 +215,29 @@
                         {% include 'erpnext/www/reminders.html' %}
                         {% endif %}
 
-                        <div class="form-group">
+                        {%if isBrand%}
+                        <!-- <div class="form-group">
                             <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
+                        </div> -->
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-3">
+                                    <button class="btn btn-primary mt-4" id="proofSubmit">{{_("Submit")}}</button>
+                                </div>
+                                <div class="col-3">
+                                    <div class="loader mt-4 proof"></div>
+                                </div>
+                            </div>
+                            
                         </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+{%if (isTrimVendor or isBrand)%}
 <div class="sidebar right" style="position: fixed;top: 80px;right: 0;height: calc(100% - 80px);width: 375px;overflow-x: hidden;overflow-y: auto;border-left: 1px solid #e6e6e6;background-color:white;padding-left:2%">
     <div class="sidebar-inner">
 
@@ -235,12 +264,18 @@
             <a href="{{trimOrder.confirmation_doc}}">{{trimOrder.confirmation_doc}}</a>
             {% else %}
             {% endif %}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}}
-                    name="confirmation_doc" id="confirmation_doc">
+            <div class="custom-file row" style="{%if isGuest %}width: 120%;{%else%}width:160%;{%endif%}display:flex !important">
+                <div class="col-md-8">
+                    <input type="file" class="custom-file-input" value={{trimOrder.confirmation_doc}}
+                        name="confirmation_doc" id="confirmation_doc">
 
-                <label id="confirmation_doc-label" class="custom-file-label"
-                    for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
+                    <label id="confirmation_doc-label" class="custom-file-label"
+                        for="confirmation_doc">{% if trimOrder.confirmation_doc %}{{trimOrder.confirmation_doc}}{% endif %}</label>
+
+                </div>
+                <div class="col-md-4 del" id="conf_del">
+                    <button class="delbtn"><i class="fa fa-trash"></i></button>
+                </div>
 
             </div>
         </div>
@@ -252,11 +287,17 @@
             <a href="{{trimOrder.profoma}}">{{trimOrder.profoma}}</a>
             {% else %}
             {% endif %}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma" id="profoma">
+            <div class="custom-file row" style="{%if isGuest %}width: 120%;{%else%}width:160%;{%endif%}display:flex !important">
+                <div class="col-md-8">
+                    <input type="file" class="custom-file-input" value={{trimOrder.profoma}} name="profoma" id="profoma">
 
-                <label id="profoma-label" class="custom-file-label"
-                    for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
+                    <label id="profoma-label" class="custom-file-label"
+                        for="profoma">{% if trimOrder.profoma %}{{trimOrder.profoma}}{% endif %}</label>
+                </div>
+                <div class="col-md-4 del" id="profoma_del">
+                    <button class="delbtn"><i class="fa fa-trash"></i></button>
+                </div>
+                
 
             </div>
         </div>
@@ -268,13 +309,16 @@
             <a href="{{trimOrder.invoice}}">{{trimOrder.invoice}}</a>
             {% else %}
             {% endif %}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice" id="invoice">
+            <div class="custom-file row" style="{%if isGuest %}width: 120%;{%else%}width:160%;{%endif%}display:flex !important">
+                <div class="col-md-8">
+                    <input type="file" class="custom-file-input" value={{trimOrder.invoice}} name="invoice" id="invoice">
 
-                <label id="invoice-label" class="custom-file-label"
-                    for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
-
-
+                    <label id="invoice-label" class="custom-file-label"
+                        for="invoice">{% if trimOrder.invoice %}{{trimOrder.invoice}}{% endif %}</label>
+                </div>
+                <div class="col-md-4 del" id="invoice_del">
+                    <button class="delbtn"><i class="fa fa-trash"></i></button>
+                </div>
             </div>
         </div>
 
@@ -283,20 +327,20 @@
         <div class="form-group">
             {{_("Carrier")}}
             <input id="carrier" type="text"
-                value="{% if trimmingOrderShipment.carrier %}{{trimmingOrderShipment.carrier}}{% endif %}"
+                value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].carrier_company}}{% endif %}"
                 class="form-control mt-2">
         </div>
         <div class="form-group">
             {{_("Tracking Number")}}
             <input id="tracking_number" type="text"
-                value="{% if trimmingOrderShipment.tracking_number %}{{trimmingOrderShipment.tracking_number}}{% endif %}"
+                value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].tracking_number}}{% endif %}"
                 class="form-control mt-2">
         </div>
 
         <div class="form-group">
             {{_("Date of Shipment")}}
             <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{trimmingOrderShipment.shipment_date}}
+                <input id="shipmentDate" class="form-control" value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].shipment_date}}{% endif %}"
                     name="desireddate" placeholder="Desired date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -307,7 +351,7 @@
         <div class="form-group">
             {{_("Expected Delivery Date")}}
             <div class="input-group date">
-                <input id="expectedDate" class="form-control" value={{trimmingOrderShipment.expected_delivery_date}}
+                <input id="expectedDate" class="form-control" value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].expected_delivery_date}}{% endif %}"
                     name="expecteddate" placeholder="Expected Delivery date" type="date">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -318,14 +362,14 @@
         <div class="form-group">
             {{_("Shipping Price")}}
             <input id="shipping_price" type="text"
-                value="{% if trimmingOrderShipment.shipping_price %}{{trimmingOrderShipment.shipping_price}}{% endif %}"
+                value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].shipping_price}}{% endif %}"
                 class="form-control mt-2">
         </div>
 
         <div class="form-group">
             {{_("HTML Tracking Link")}}
             <input id="html_tracking_link" type="text"
-                value="{% if trimmingOrderShipment.html_tracking_link %}{{trimmingOrderShipment.html_tracking_link}}{% endif %}"
+                value="{% if trimmingOrderShipment %}{{trimmingOrderShipment[0].html_tracking_link}}{% endif %}"
                 class="form-control mt-2">
         </div>
 
@@ -335,15 +379,25 @@
                 rows="4">{% if trimOrder.production_comment %}{{trimOrder.production_comment}}{% endif %}</textarea>
         </div>
         <div class="form-group">
-            {% if isTrimVendor %}
-            {% if trimOrder.docstatus==0 %}
-            <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
-            {% endif %}
+            {% if isTrimVendor or isBrand %}
+            <!-- <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button> -->
+            <div class="col-12">
+                <div class="row" style="width: 130%;">
+                    <div class="col-9" >
+                        <button class="btn btn-primary" id="vendorSubmit">{{_("Submit")}}</button>
+                    </div>
+                    <div class="col-3">
+                        <div class="loader vendor"></div>
+                    </div>
+                </div>
+                
+            </div>
             {% endif %}
         </div>
 
     </div>
 </div>
+{%endif%}
 
 <div id="full">
     <div id="doc" style="display: none;">

@@ -6,43 +6,128 @@ from frappe.email.doctype.notification.notification import sendCustomEmail
 @frappe.whitelist(allow_email_guest=True)
 def submit_fabric_vendor_summary_info(data):
     data = json.loads(data)
+
+    roles=frappe.get_roles(frappe.session.user)
+    if(data['profoma'] == 'None'):
+        profoma = None
+    else:
+        profoma = data['profoma']
+    if (data['invoice'] == 'None'):
+        invoice = None
+    else:
+        invoice = data['invoice']
+    if(data['confirmation_doc'] == 'None'):
+        conf_doc = None
+    else:
+        conf_doc = data['confirmation_doc']
+
     fabricOrder = frappe.get_doc('Fabric Order', data['order'])
+
+    if(("Fabric Vendor" in roles) or (frappe.session.user == 'Guest')):
+        if(fabricOrder.docstatus!=2):
+            checkNSendDocSubmitMail(fabricOrder,data)
+
     fabricOrder.ex_work_date = data['ex_work_date']
-    fabricOrder.confirmation_doc = data['confirmation_doc']
-    fabricOrder.profoma = data['profoma']
-    fabricOrder.invoice = data['invoice']
+    fabricOrder.confirmation_doc = conf_doc
+    fabricOrder.profoma = profoma
+    fabricOrder.invoice = invoice
     fabricOrder.carrier = data['carrier']
     fabricOrder.tracking_number = data['tracking_number']
     fabricOrder.shipment_date = data['shipment_date']
     fabricOrder.production_comment = data['production_comment']
-    if(fabricOrder.confirmation_doc != 'None' or fabricOrder.profoma != 'None' or fabricOrder.invoice != 'None' or fabricOrder.ex_work_date):
-        fabricOrder.docstatus = 4
-    if(fabricOrder.carrier or fabricOrder.tracking_number or fabricOrder.shipment_date):
-        fabricOrder.docstatus = 3
-        createShipmentOrderForFabric(data)
+    hasShipment=(fabricOrder.docstatus==3)
+    if(fabricOrder.docstatus!=2):
+        fabricOrder.docstatus=0
+        if(fabricOrder.confirmation_doc != None or fabricOrder.profoma != None):
+            fabricOrder.docstatus = 1
+        if(fabricOrder.invoice != None):
+            fabricOrder.docstatus = 4
+        if(fabricOrder.carrier!='' or fabricOrder.tracking_number!='' or fabricOrder.shipment_date!=''):
+            fabricOrder.docstatus = 3
+            createShipmentOrderForFabric(data)
+        elif hasShipment:
+            frappe.db.delete("Shipment Order",{'fabric_order_id': fabricOrder.name})
 
-    fabricOrder.save()
+    try:
+        fabricOrder.save()
+        return fabricOrder
+    except:
+        frappe.throw(frappe._("Canceled Orders can't modify"))
+    
 
-    return fabricOrder
+    
 
+def checkNSendDocSubmitMail(fabricOrder,data):
+    document_type=''
+    if(fabricOrder.confirmation_doc == None and data['confirmation_doc']!='None'):
+        document_type='confirmation document'
+        sendDocSubmitMail(fabricOrder,document_type)
+        
+    if(fabricOrder.profoma == None and data['profoma']!='None'):
+        document_type='profoma'
+        sendDocSubmitMail(fabricOrder,document_type)
+        
+    if(fabricOrder.invoice == None and data['invoice']!='None'):
+        document_type='invoice'
+        sendDocSubmitMail(fabricOrder,document_type)
+    
+    
+
+
+def sendDocSubmitMail(fabricOrder,document_type):
+
+    notification=frappe.get_doc("Notification","Document added to an order summary")
+    vendor=frappe.get_doc("Supplier",fabricOrder.fabric_vendor)
+    recipient=frappe.get_doc('User',fabricOrder.owner) 
+
+    templateData={}
+    templateData['SNF']=vendor.supplier_name
+    templateData['internal_ref']=fabricOrder.internal_ref
+    templateData['brand']=fabricOrder.brand
+    templateData['order_date']=fabricOrder.creation.date()
+    templateData['order_type']='fabric'
+    templateData['order_name']=fabricOrder.name
+    templateData['document_type']=document_type
+    templateData['recipient']=recipient.email
+    templateData['lang']=recipient.language
+    templateData['notification']=notification
+
+    if(recipient.email != None):
+        sendCustomEmail(templateData)
 
 def createShipmentOrderForFabric(data):
-    
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
-    shipmentOrder=frappe.get_doc({
-        'doctype': 'Shipment Order',
-        'tracking_number':data['tracking_number'],
-        'carrier_company':data['carrier'],
-        'shipping_date':data['shipment_date'],
-        'expected_delivery_date':data['expected_date'],
-        'shipping_price':data['shipping_price'],
-        'html_tracking_link':data['html_tracking_link'],
-        'fabric_order_id':data['order'],
-        'brand':brand
-    })
-    shipmentOrder.insert()
-    frappe.db.commit()
+
+    shipmentOrderName=frappe.get_all('Shipment Order', fields=['name'], filters={'fabric_order_id': data['order']})
+    
+    if(len(shipmentOrderName)>0):
+        shipmentOrder=frappe.get_doc('Shipment Order',shipmentOrderName[0].name)
+        shipmentOrder.carrier_company=data['carrier']
+        shipmentOrder.tracking_number=data['tracking_number']
+        shipmentOrder.shipping_date=data['shipment_date']
+        shipmentOrder.expected_delivery_date=data['expected_date']
+        shipmentOrder.shipping_price=data['shipping_price']
+        shipmentOrder.html_tracking_link=data['html_tracking_link']
+
+        shipmentOrder.save()
+        frappe.db.commit()
+
+    else:
+        shipmentOrder=frappe.get_doc({
+            'doctype': 'Shipment Order',
+            'tracking_number':data['tracking_number'],
+            'carrier_company':data['carrier'],
+            'shipping_date':data['shipment_date'],
+            'expected_delivery_date':data['expected_date'],
+            'shipping_price':data['shipping_price'],
+            'html_tracking_link':data['html_tracking_link'],
+            'fabric_order_id':data['order'],
+            'brand':brand
+        })
+        shipmentOrder.insert()
+        frappe.db.commit()
+
 
 @frappe.whitelist(allow_email_guest=True)
 def submit_payment_proof(data):
@@ -50,11 +135,11 @@ def submit_payment_proof(data):
     fabricOrder = frappe.get_doc('Fabric Order', data['order'])
     fabricOrder.payment_proof = data['payment_proof']
     fabricOrder.comment = data['comment']
-    fabricOrder.confirmation_reminder=data['confirmation_reminder']
-    fabricOrder.profoma_reminder=data['proforma_reminder']
-    fabricOrder.payment_reminder=data['payment_reminder']
-    fabricOrder.shipment_reminder=data['shipment_reminder']
-    fabricOrder.reception_reminder=data['reception_reminder']
+    fabricOrder.confirmation_reminder = data['confirmation_reminder']
+    fabricOrder.profoma_reminder = data['proforma_reminder']
+    fabricOrder.payment_reminder = data['payment_reminder']
+    fabricOrder.shipment_reminder = data['shipment_reminder']
+    fabricOrder.reception_reminder = data['reception_reminder']
     fabricOrder.save()
     frappe.db.commit()
 
@@ -87,25 +172,24 @@ def create_fabric_order(data):
     })
     order.insert()
     frappe.db.commit()
-    sendNotificationEmail(order)
+    sendFabricOrderNotificationEmail(order)
     return {'status': 'ok', 'order': order}
 
-def sendNotificationEmail(order):
-    notification=frappe.get_doc("Notification","Order Recieved")
-    vendor=frappe.get_doc("Supplier",order.fabric_vendor)
-    templateData={}
-    templateData['SNF']=vendor.supplier_name
-    templateData['order_name']=order.name
-    templateData['brand']=order.brand
-    templateData['order_type']='fabric'
-    templateData['recipient']=vendor.email
-    templateData['country']=vendor.country
-    templateData['notification']=notification
+
+def sendFabricOrderNotificationEmail(order):
+    notification = frappe.get_doc("Notification", "Order Recieved")
+    vendor = frappe.get_doc("Supplier", order.fabric_vendor)
+    templateData = {}
+    templateData['SNF'] = vendor.supplier_name
+    templateData['order_name'] = order.name
+    templateData['brand'] = order.brand
+    templateData['order_type'] = 'fabric'
+    templateData['recipient'] = vendor.email
+    templateData['country'] = vendor.country
+    templateData['notification'] = notification
 
     if(vendor.email != None):
         sendCustomEmail(templateData)
-    
-
 
 
 @frappe.whitelist()
@@ -130,3 +214,33 @@ def create_fabric(data):
 @frappe.whitelist()
 def get_fabric(vendor):
     return frappe.get_all('Fabric', filters={'fabric_vendor': vendor}, fields=['name', 'fabric_ref'])
+
+
+@frappe.whitelist(allow_email_guest=True)
+def deleteDoc(data):
+    data = json.loads(data)
+    order_name = data['order']
+    doc = data['doc_type']
+    order = frappe.get_doc("Fabric Order", order_name)
+
+    if(doc=='confirmation_doc'):
+        order.confirmation_doc=None
+    elif (doc=='profoma'):
+        order.profoma=None
+    elif (doc=='invoice'):
+        order.invoice=None
+    fabricOrder=changeDocStatus(order)
+    fabricOrder.save()
+    frappe.db.commit()
+    return {'status': 'ok'}
+
+
+def changeDocStatus(fabricOrder):
+    fabricOrder.docstatus = 0
+    if(fabricOrder.confirmation_doc != None or fabricOrder.profoma != None):
+        fabricOrder.docstatus = 1
+    if(fabricOrder.invoice != None):
+        fabricOrder.docstatus = 4
+    if(fabricOrder.carrier != '' or fabricOrder.tracking_number != '' or fabricOrder.shipment_date != None):
+        fabricOrder.docstatus = 3
+    return fabricOrder
