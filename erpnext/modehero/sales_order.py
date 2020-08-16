@@ -381,3 +381,14 @@ def format_quantity_dic(quantit_dic):
     for size in quantit_dic:
         result_array.append({"size":size,"quantity":str(quantit_dic[size])})
     return result_array
+
+@frappe.whitelist()
+def get_total_products(order_list):
+    order_list =  ast.literal_eval(order_list)
+    total = 0
+    for sales_order_item in order_list:
+        item_quantites = frappe.get_all('Quantity Per Size',filters={'order_id':sales_order_item},fields=['quantity'])
+        for quantty in item_quantites:
+            total = total + int(quantty["quantity"])
+    return total
+

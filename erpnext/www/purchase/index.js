@@ -7,7 +7,7 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                                 <th>Number of pieces</th>\
                                 <th>Consumption per piece</th>\
                                 <th>Total consumption</th>\
-                                <th>Safety margin</th>\
+                                <th>Safety margin (%)</th>\
                                 <th>Theoritical order</th>\
                                 <th>Minimum order quantity</th>\
                                 <th>ORDER</th>\
@@ -19,7 +19,7 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                             </tbody>\
                         </table>\
                     </div>'
-
+var SUPPLIERE_CONTENT = {}
 
 window.onload = function(){
     $(".client-modal-link").css("color","#3B3DBF");
@@ -105,7 +105,7 @@ function modify(item){
     });
 }
 
-function validate(item){
+async function validate(item){
     let order = collect_data_for_validate(item);
     if (order==null){
         response_message('Unsuccessfull', 'Incomplete data !', 'red')
@@ -119,8 +119,14 @@ function validate(item){
         response_message('Unsuccessfull', 'Factory is not selected !', 'red')
         return null
     }
-    console.log(order)
-    set_supply_order_section(item,order)
+
+    let total_order_count = await get_total_order_detail(order)
+    if (total_order_count==null){
+        console.log("++++>total order")
+        return null
+    }
+    set_supply_order_section(item,order,total_order_count)
+    
     // frappe.call({
     //     method: 'erpnext.modehero.sales_order.validate_sales_item_orders',
     //     args: {
@@ -256,7 +262,7 @@ function collect_data_for_modify(item){
     return order
 }
 
-async function set_supply_order_section(item,order){
+async function set_supply_order_section(item,order,total_order_count){
     let item_details = null
     await frappe.call({
         method: 'erpnext.modehero.product.get_product_item',
@@ -274,51 +280,239 @@ async function set_supply_order_section(item,order){
     });
 
     if (item_details!=null){
-        change_supplier_division(item_details,order)
+        change_supplier_division(item_details,order,total_order_count)
     }
 }
 
-function change_supplier_division(item,order){
-    item.supplier = [{"name":123,"supplier_name":"test1"}]
+async function change_supplier_division(item,order,total_order_count){
     let supplieres = item.supplier
     for (let i=0;i<supplieres.length;i++){
-        if ($(".suppliere-block[data-supplier|='"+supplieres[i]+"']").length==0){
-            let markup = '<div class="suppliere-block" data-supplier="'+supplieres[i].name+'" >\
-                            <h3>'+supplieres[i].supplier_name+'</h3>\
-                          </div>'
-            $("#supply-order-section").append(markup)
-            $(".suppliere-block[data-supplier|='"+supplieres[i].name+"']").append(SUPPLY_TABLE)
+        let supplier_detail = await get_supplier_details(supplieres[i].supplier).then()
+        console.log(supplier_detail)
+        if (supplier_detail==null){
+            console.log("+++++> null supp detail")
+            continue
         }
-        let tbody_element = $(".suppliere-block[data-supplier|='"+supplieres[i].name+"'] > .table-wrapper > table > .tbody-supply-order-section")
-        add_supply_block_table_body(tbody_element,supplieres[i],item,order)
+        await create_supply_table_head(supplier_detail)
+        if (!SUPPLIERE_CONTENT.hasOwnProperty(supplier_detail.name)){
+            SUPPLIERE_CONTENT[supplier_detail.name] = []
+        }
+        let tbody_element = $(".suppliere-block[data-supplier|='"+supplier_detail.name+"'] > .table-wrapper > table > .tbody-supply-order-section")
+        await add_supply_block_table_body(tbody_element,supplier_detail,supplieres[i],item,order,total_order_count)
+    }
+    $(".numeric-editable").keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+    });
+}
+
+async function create_supply_table_head(supplier_detail){
+    if ($(".suppliere-block[data-supplier|='"+supplier_detail.name+"']").length==0){
+        let markup = '<div class="suppliere-block" data-supplier="'+supplier_detail.name+'" >\
+                        <h3>'+supplier_detail.supplier_name+'</h3>\
+                      </div>'
+        $("#supply-order-section").append(markup)
+        $(".suppliere-block[data-supplier|='"+supplier_detail.name+"']").append(SUPPLY_TABLE)
     }
 }
 
-function add_supply_block_table_body(tbody_element,supplier,item,order){
-    let total_order_details = get_total_order_detail(order)
+async function get_supplier_details(item_supplier_ref){
+    let suppliere = null
+    await frappe.call({
+        method: 'erpnext.modehero.supplier.get_supplier',
+        args: {
+            suppier_ref:item_supplier_ref
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                suppliere= r.message
+                return null
+            }
+            response_message('Unsuccessfull', 'Error !', 'red')
+            return null
+        }
+    });
+    return suppliere
+}
+
+async function add_supply_block_table_body(tbody_element,supplier,item_supplier_obj,item,order,total_order_count){
+    let consumption_per_piece = await get_consumption(item_supplier_obj).then()
+    if (consumption_per_piece==null){
+        console.log("++++> null cpp")
+        return null
+    }
+    let stock = await get_stock(supplier)
+    if (stock==null){
+        console.log("++++> null stock")
+        return null
+    }
+    let moq = await get_moq(item_supplier_obj)
+    if (moq==null){
+        console.log("++++> null moq", item_supplier_obj.packaging_ref, item_supplier_obj.trimming_ref, item_supplier_obj.fabric_ref)
+        return null
+    }
+    
     let markup = '\
-    <tr data-suppliere_row_item="'+item.name+'" >\
-        <td class="select-box-supply-product"></td>\
+    <tr class="data-row" data-suppliere_row_item="'+item.name+'"  data-destination="'+order.factory+'">\
+        <td class="select-box-supply-product"><input type="checkbox"/></td>\
         <td class="destination-supply-product">'+order.factory_name+'</td>\
         <td class="product-supply-product">'+item.item_name+'</td>\
-        <td class="nop-supply-product"></td>\
-        <td class="cpp-supply-product"></td>\
-        <td class="sm-supply-product"></td>\
-        <td class="to-supply-product"></td>\
-        <td class="moq-supply-product"></td>\
-        <td class="order-supply-prodcut"></td>\
-        <td class="sat-supply-product"></td>\
-        <td class="if-supply-product"></td>\
+        <td class="nop-supply-product">'+total_order_count+'</td>\
+        <td class="cpp-supply-product">'+consumption_per_piece+'</td>\
+        <td class="tc-supply-product">'+Number(consumption_per_piece)*Number(total_order_count)+'</td>\
+        <td class="sm-supply-product" ><span class="background-ash numeric-editable" contenteditable="true">5</span></td>\
+        <td class="to-supply-product">'+(Number(consumption_per_piece)*Number(total_order_count)*1.05).toFixed(2)+'</td>\
+        <td class="moq-supply-product">'+moq+'</td>\
+        <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
+        <td class="sat-supply-product">'+stock+'</td>\
+        <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
         <td class="reminder-supply-product"></td>\
     </tr>'
-    tbody_element.append(markup)
+    if (SUPPLIERE_CONTENT[supplier.name].indexOf(order.factory)==-1){
+        SUPPLIERE_CONTENT[supplier.name].push(order.factory)
+        tbody_element.append(markup)
+        tbody_element.children(".data-row").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element.children(".data-row"),Number(consumption_per_piece)*Number(total_order_count))
+        })
+    }else{
+        tbody_element.children(".data-row[data-destination|='"+order.factory+"']").last().after(markup)
+        add_summary_row(tbody_element,order.factory,stock,moq,item.name)
+    }
 }
 
-function get_total_order_detail(order){
-    let total_prod = 0
-    for (const sales_order_item in order.order){
-        
+function add_summary_row(tbody_element,destination,stock,moq,item){
+    let to = 0
+    $(".data-row[data-destination|='"+destination+"']").each(function(){
+        $(this).children(".order-supply-prodcut").empty()
+        $(this).children(".if-supply-product").empty()        
+        $(this).children(".select-box-supply-product").empty() 
+        to = to + Number($(this).children(".to-supply-product").text())
+    })
+    let markup = '\
+    <tr class="summary-row data-row" data-suppliere_row_item="'+item+'"  data-destination="'+destination+'">\
+        <td class="select-box-supply-product"><input type="checkbox"/></td>\
+        <td class="destination-supply-product"></td>\
+        <td class="product-supply-product"></td>\
+        <td class="nop-supply-product"></td>\
+        <td class="cpp-supply-product"></td>\
+        <td class="tc-supply-product"></td>\
+        <td class="sm-supply-product" ></td>\
+        <td class="to-supply-product">'+to+'</td>\
+        <td class="moq-supply-product">'+moq+'</td>\
+        <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
+        <td class="sat-supply-product">'+stock+'</td>\
+        <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
+        <td class="reminder-supply-product"></td>\
+    </tr>'
+    tbody_element.children(".data-row[data-destination|='"+destination+"']").last().after(markup)
+}
+
+async function get_moq(item_supplier_obj){
+    let ref = await get_supply_item_ref(item_supplier_obj).then()
+    if (ref==null ||ref=="" ){
+        return null
     }
+    let moq = null
+    await frappe.call({
+        method: 'erpnext.modehero.supplier.get_moq',
+        args: {
+            supply_ref:ref,
+            supply_type:item_supplier_obj.supplier_group
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                moq= r.message
+                return null
+            }
+            response_message('Unsuccessfull', 'Error !', 'red')
+            return null
+        }
+    });
+    return moq
+}
+
+async function get_supply_item_ref(item_supplier_obj){
+    let type = item_supplier_obj.supplier_group
+    let supp_item = null
+    if (type=="Packaging"){
+        supp_item = item_supplier_obj.packaging_ref
+    }else if (type=="Trimming"){
+        supp_item = item_supplier_obj.trimming_ref
+    }else if (type=="Fabric"){
+        supp_item = item_supplier_obj.fabric_ref
+    }
+    if (supp_item==null || supp_item ==""){
+        return null
+    }else{
+        return supp_item
+    }
+}
+
+function set_theoritical_order_of_row(table_row,total_consumption){
+    let rate = Number(table_row.children(".sm-supply-product").children(".numeric-editable").text())
+    if (rate==""||rate==null){
+        table_row.children(".to-supply-product").text(0)
+    }
+    table_row.children(".to-supply-product").text(((rate+100)/100*total_consumption).toFixed(2))
+}
+
+async function get_consumption(item_supplier_obj){
+    let type = item_supplier_obj.supplier_group
+    let cpp = null
+    if (type=="Packaging"){
+        cpp = item_supplier_obj.packaging_consumption
+    }else if (type=="Trimming"){
+        cpp = item_supplier_obj.trimming_consumption
+    }else if (type=="Fabric"){
+        cpp = item_supplier_obj.fabric_consumption
+    }
+    if (cpp==null || cpp ==""){
+        return null
+    }else{
+        return cpp
+    }
+}
+
+async function get_stock(supplier){
+    let stock = null
+    await frappe.call({
+        method: 'erpnext.modehero.stock.get_stock',
+        args: {
+            item_type:supplier.supplier_group.toLowerCase(),
+            ref:supplier.name
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                stock= r.message
+                return null
+            }
+            response_message('Unsuccessfull', 'Error !', 'red')
+            return null
+        }
+    });
+    return stock.quantity
+}
+
+async function get_total_order_detail(order){
+    let sales_order_collection = []
+    for (const sales_order_item in order.order){
+        sales_order_collection.push(sales_order_item)
+    }
+    let total_prodcts = null
+    await frappe.call({
+        method: 'erpnext.modehero.sales_order.get_total_products',
+        args: {
+            order_list:sales_order_collection
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                total_prodcts= r.message
+                return null
+            }
+            response_message('Unsuccessfull', 'Error !', 'red')
+            return null
+        }
+    });
+    return total_prodcts
 }
 
 function select_all_chekbox(item) {

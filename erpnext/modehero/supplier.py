@@ -68,3 +68,22 @@ def sendNotificationEmail(order,orderGroup):
     if(vendor.email != None):
         print('ddd')
         sendCustomEmail(templateData)
+
+@frappe.whitelist()
+def get_supplier(suppier_ref):
+    try:
+        return frappe.get_doc("Supplier",suppier_ref)
+    except:
+        return None
+
+@frappe.whitelist()
+def get_moq(supply_ref,supply_type):
+    try:
+        if supply_type == "Fabric":
+            return frappe.get_doc("Fabric",supply_ref).minimum_order_qty
+        elif supply_type == "Trimming":
+            return frappe.get_doc("Trimming",supply_ref).minimum_order_qty
+        elif supply_type=="Packaging":
+            return frappe.get_doc("Packaging",supply_ref).minimum_order_qty
+    except:
+        return None
