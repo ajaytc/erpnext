@@ -1309,6 +1309,20 @@ label.fabric-form-input .btn.date-picker.active {
   animation: spin 2s linear infinite;
 }
 
+.delbtn {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 12px;
+  font-size: 20px;
+  cursor: pointer;
+  border-color: black;
+}
+
+.delbtn:hover{
+  color: black;
+}
+
 /* Safari */
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

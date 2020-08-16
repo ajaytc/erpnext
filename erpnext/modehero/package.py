@@ -5,41 +5,127 @@ from frappe.email.doctype.notification.notification import sendCustomEmail
 @frappe.whitelist(allow_email_guest=True)
 def submit_pack_vendor_summary_info(data):
     data = json.loads(data)
+
+    roles=frappe.get_roles(frappe.session.user)
+    if(data['profoma'] == 'None'):
+        profoma = None
+    else:
+        profoma = data['profoma']
+    if (data['invoice'] == 'None'):
+        invoice = None
+    else:
+        invoice = data['invoice']
+    if(data['confirmation_doc'] == 'None'):
+        conf_doc = None
+    else:
+        conf_doc = data['confirmation_doc']
+
     packOrder = frappe.get_doc('Packaging Order', data['order'])
+
+    if("Packaging Vendor" in roles or (frappe.session.user == 'Guest')):
+        if(packOrder.docstatus!=2):
+            checkNSendDocSubmitMail(packOrder,data)
+
     packOrder.ex_work_date = data['ex_work_date']
-    packOrder.confirmation_doc = data['confirmation_doc']
-    packOrder.profoma = data['profoma']
-    packOrder.invoice = data['invoice']
+    packOrder.confirmation_doc = conf_doc
+    packOrder.profoma =profoma
+    packOrder.invoice = invoice
     packOrder.carrier = data['carrier']
     packOrder.tracking_number = data['tracking_number']
     packOrder.shipment_date = data['shipment_date']
     packOrder.production_comment = data['production_comment']
-    if(packOrder.confirmation_doc != 'None' or packOrder.profoma != 'None' or packOrder.invoice != 'None' or packOrder.ex_work_date):
-        packOrder.docstatus = 4
-    if(packOrder.carrier or packOrder.tracking_number or packOrder.shipment_date):
-        packOrder.docstatus = 3
-        createShipmentOrderForPackage(data)
-    packOrder.save()
+    hasShipment=(packOrder.docstatus==3)
+    if(packOrder.docstatus!=2):
+        packOrder.docstatus=0
+        if(packOrder.confirmation_doc != None or packOrder.profoma != None):
+            packOrder.docstatus = 1
+        if(packOrder.invoice != None):
+            packOrder.docstatus = 4
+        if(packOrder.carrier!='' or packOrder.tracking_number!='' or packOrder.shipment_date!=''):
+            packOrder.docstatus = 3
+            createShipmentOrderForPackage(data)
+        elif hasShipment:
+            frappe.db.delete("Shipment Order",{'packaging_order_id': packOrder.name})
+    try:
+        packOrder.save()
+        return packOrder
+    except:
+        frappe.throw(frappe._("Canceled Orders can't modify"))
+    
 
-    return packOrder
+    
+
+def checkNSendDocSubmitMail(packOrder,data):
+    document_type=''
+    if(packOrder.confirmation_doc == None and data['confirmation_doc']!='None'):
+        document_type='confirmation document'
+        sendDocSubmitMail(packOrder,document_type)
+        
+    if(packOrder.profoma == None and data['profoma']!='None'):
+        document_type='profoma'
+        sendDocSubmitMail(packOrder,document_type)
+        
+    if(packOrder.invoice == None and data['invoice']!='None'):
+        document_type='invoice'
+        sendDocSubmitMail(packOrder,document_type)
+    
+    
+
+
+def sendDocSubmitMail(packOrder,document_type):
+
+    notification=frappe.get_doc("Notification","Document added to an order summary")
+    vendor=frappe.get_doc("Supplier",packOrder.packaging_vendor)
+    recipient=frappe.get_doc('User',packOrder.owner) 
+
+    templateData={}
+    templateData['SNF']=vendor.supplier_name
+    templateData['internal_ref']=packOrder.internal_ref
+    templateData['brand']=packOrder.brand
+    templateData['order_date']=packOrder.creation.date()
+    templateData['order_type']='packaging'
+    templateData['order_name']=packOrder.name
+    templateData['document_type']=document_type
+    templateData['recipient']=recipient.email
+    templateData['lang']=recipient.language
+    templateData['notification']=notification
+
+    if(recipient.email != None):
+        sendCustomEmail(templateData)
 
 def createShipmentOrderForPackage(data):
     
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
-    shipmentOrder=frappe.get_doc({
-        'doctype': 'Shipment Order',
-        'tracking_number':data['tracking_number'],
-        'carrier_company':data['carrier'],
-        'shipping_date':data['shipment_date'],
-        'expected_delivery_date':data['expected_date'],
-        'shipping_price':data['shipping_price'],
-        'html_tracking_link':data['html_tracking_link'],
-        'packaging_order_id':data['order'],
-        'brand':brand
-    })
-    shipmentOrder.insert()
-    frappe.db.commit()
+
+    shipmentOrderName=frappe.get_all('Shipment Order', fields=['name'], filters={'packaging_order_id': data['order']})
+    
+    if(len(shipmentOrderName)>0):
+        shipmentOrder=frappe.get_doc('Shipment Order',shipmentOrderName[0].name)
+        shipmentOrder.carrier_company=data['carrier']
+        shipmentOrder.tracking_number=data['tracking_number']
+        shipmentOrder.shipping_date=data['shipment_date']
+        shipmentOrder.expected_delivery_date=data['expected_date']
+        shipmentOrder.shipping_price=data['shipping_price']
+        shipmentOrder.html_tracking_link=data['html_tracking_link']
+
+        shipmentOrder.save()
+        frappe.db.commit()
+
+    else:
+        shipmentOrder=frappe.get_doc({
+            'doctype': 'Shipment Order',
+            'tracking_number':data['tracking_number'],
+            'carrier_company':data['carrier'],
+            'shipping_date':data['shipment_date'],
+            'expected_delivery_date':data['expected_date'],
+            'shipping_price':data['shipping_price'],
+            'html_tracking_link':data['html_tracking_link'],
+            'packaging_order_id':data['order'],
+            'brand':brand
+        })
+        shipmentOrder.insert()
+        frappe.db.commit()
 
 @frappe.whitelist(allow_email_guest=True)
 def submit_payment_proof(data):
@@ -83,10 +169,10 @@ def create_packaging_order(data):
     })
     order.insert()
     frappe.db.commit()
-    sendNotificationEmail(order)
+    sendPackagingOrderNotificationEmail(order)
     return {'status': 'ok', 'order': order}
 
-def sendNotificationEmail(order):
+def sendPackagingOrderNotificationEmail(order):
     notification=frappe.get_doc("Notification","Order Recieved")
     vendor=frappe.get_doc("Supplier",order.packaging_vendor)
     templateData={}
@@ -125,3 +211,32 @@ def create_packaging(data):
 @frappe.whitelist()
 def get_item(vendor):
     return frappe.get_all('Packaging Item', filters={'packaging_vendor': vendor}, fields=['name', 'internal_ref'])
+
+@frappe.whitelist(allow_email_guest=True)
+def deleteDoc(data):
+    data = json.loads(data)
+    order_name = data['order']
+    doc = data['doc_type']
+    order = frappe.get_doc("Packaging Order", order_name)
+
+    if(doc=='confirmation_doc'):
+        order.confirmation_doc=None
+    elif (doc=='profoma'):
+        order.profoma=None
+    elif (doc=='invoice'):
+        order.invoice=None
+    packOrder=changeDocStatus(order)
+    packOrder.save()
+    frappe.db.commit()
+    return {'status': 'ok'}
+
+
+def changeDocStatus(packOrder):
+    packOrder.docstatus = 0
+    if(packOrder.confirmation_doc != None or packOrder.profoma != None):
+        packOrder.docstatus = 1
+    if(packOrder.invoice != None):
+        packOrder.docstatus = 4
+    if(packOrder.carrier != '' or packOrder.tracking_number != '' or packOrder.shipment_date != None):
+        packOrder.docstatus = 3
+    return packOrder

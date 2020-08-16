@@ -54,6 +54,8 @@ def sendNotificationEmail(order,orderGroup):
         orderType='packaging'; 
         vendor=frappe.get_doc("Supplier",order.packaging_vendor)
 
+    recipient=frappe.get_doc('User',order.owner)
+
     templateData={}
     templateData['SNF']=vendor.supplier_name
     templateData['internal_ref']=order.internal_ref
@@ -61,12 +63,11 @@ def sendNotificationEmail(order,orderGroup):
     templateData['order_date']=order.creation.date()
     templateData['order_type']=orderType
     templateData['order_name']=order.name
-    templateData['recipient']=vendor.email
-    templateData['country']=vendor.country
+    templateData['recipient']=recipient.email
+    templateData['lang']=recipient.language
     templateData['notification']=notification
 
-    if(vendor.email != None):
-        print('ddd')
+    if(recipient.email != None):
         sendCustomEmail(templateData)
 
 @frappe.whitelist()

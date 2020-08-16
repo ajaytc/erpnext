@@ -1,8 +1,29 @@
+$(function() {
+  if("{{packOrder.confirmation_doc}}"=='None'){
+    $('#conf_del').hide()
+  }else{
+    $('#conf_del').show()
+  }
+  if("{{packOrder.profoma}}"=='None'){
+    $('#profoma_del').hide()
+  }else{
+    $('#profoma_del').show()
+  }
+  if("{{packOrder.invoice}}"=='None'){
+    $('#invoice_del').hide()
+  }else{
+    $('#invoice_del').show()
+  }
+});
+
+
+
 $(".display-file-selector").click(function () {
   $(this).next().trigger("click");
 });
 
 $("#proofSubmit").click(function () {
+  $('.proof').show()
   checkFileUpload("paymentProof").then((res) =>
     frappe.call({
       method: "erpnext.modehero.package.submit_payment_proof",
@@ -19,6 +40,7 @@ $("#proofSubmit").click(function () {
         },
       },
       callback: function (r) {
+        $('.proof').hide()
         if (!r.exc) {
           console.log(r);
           frappe.msgprint({
@@ -38,6 +60,7 @@ $("#proofSubmit").click(function () {
 
 $("#vendorSubmit").click(function () {
   let files = ["confirmation_doc", "profoma", "invoice"];
+  $('.vendor').show()
 
   Promise.all(
     files.map((f) => {
@@ -132,6 +155,8 @@ function submitVendorSummary(files) {
       },
     },
     callback: function (r) {
+      $('.vendor').hide()
+      console.log(r)
       if (!r.exc) {
         console.log(r);
         frappe.msgprint({
@@ -143,6 +168,7 @@ function submitVendorSummary(files) {
               " summary created successfully"
           ),
         });
+        location.reload()
       } else {
         frappe.msgprint({
           title: __("Notification"),
@@ -258,3 +284,49 @@ xhr.onload = function(success) {
   
   xhr.send(formData);
 }
+
+
+$('#conf_del').click(function (){
+  deleteFile('confirmation_doc')
+})
+
+$('#profoma_del').click(function (){
+  deleteFile('profoma')
+})
+$('#invoice_del').click(function (){
+  deleteFile('invoice')
+})
+
+function deleteFile(file_type){
+  frappe.call({
+    method: "erpnext.modehero.package.deleteDoc",
+    args: {
+      data: {
+        order: "{{frappe.form_dict.order}}",
+        doc_type:file_type
+      },
+    },
+    callback: function (r) {
+      if (!r.exc) {
+        console.log(r);
+        frappe.msgprint({
+          title: __("Notification"),
+          indicator: "green",
+          message: __(
+            file_type+" successfully deleted"
+          )
+        });
+        location.reload()
+      }else{
+        frappe.msgprint({
+          title: __("Notification"),
+          indicator: "red",
+          message: __(r.message)
+        });
+      }
+    },
+  });
+}
+  
+  
+
