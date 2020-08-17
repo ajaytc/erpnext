@@ -20,6 +20,7 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                         </table>\
                     </div>'
 var SUPPLIERE_CONTENT = {}
+var SELECTED_ITEM_FACTORY_DETAILS = {}
 
 window.onload = function(){
     $(".client-modal-link").css("color","#3B3DBF");
@@ -119,7 +120,13 @@ async function validate(item){
         response_message('Unsuccessfull', 'Factory is not selected !', 'red')
         return null
     }
-
+    
+    let selected = check_already_selected(item,order)
+    if (selected){
+        response_message('Unsuccessfull', 'Already selected with the same factory !', 'red')
+        return null
+    }
+    
     let total_order_count = await get_total_order_detail(order)
     if (total_order_count==null){
         console.log("++++>total order")
@@ -146,6 +153,18 @@ async function validate(item){
     //         response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
     //     }
     // });
+}
+function check_already_selected(item,order){
+    if (!SELECTED_ITEM_FACTORY_DETAILS.hasOwnProperty(item)){
+        SELECTED_ITEM_FACTORY_DETAILS[item]=[]
+        SELECTED_ITEM_FACTORY_DETAILS[item].push(order.factory)
+        return false
+    }
+    if (SELECTED_ITEM_FACTORY_DETAILS[item].indexOf(order.factory)==-1){
+        SELECTED_ITEM_FACTORY_DETAILS[item].push(order.factory)
+        return false
+    }
+    return true
 }
 
 function cancel(item){
@@ -288,7 +307,6 @@ async function change_supplier_division(item,order,total_order_count){
     let supplieres = item.supplier
     for (let i=0;i<supplieres.length;i++){
         let supplier_detail = await get_supplier_details(supplieres[i].supplier).then()
-        console.log(supplier_detail)
         if (supplier_detail==null){
             console.log("+++++> null supp detail")
             continue
@@ -340,11 +358,11 @@ async function add_supply_block_table_body(tbody_element,supplier,item_supplier_
         console.log("++++> null cpp")
         return null
     }
-    let stock = await get_stock(supplier)
-    if (stock==null){
-        console.log("++++> null stock")
-        return null
-    }
+    // let stock = await get_stock(item_supplier_obj)
+    // if (stock==null){
+    //     console.log("++++> null stock")
+    //     return null
+    // }
     let moq = await get_moq(item_supplier_obj)
     if (moq==null){
         console.log("++++> null moq", item_supplier_obj.packaging_ref, item_supplier_obj.trimming_ref, item_supplier_obj.fabric_ref)
@@ -363,7 +381,7 @@ async function add_supply_block_table_body(tbody_element,supplier,item_supplier_
         <td class="to-supply-product">'+(Number(consumption_per_piece)*Number(total_order_count)*1.05).toFixed(2)+'</td>\
         <td class="moq-supply-product">'+moq+'</td>\
         <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
-        <td class="sat-supply-product">'+stock+'</td>\
+        <td class="sat-supply-product"></td>\
         <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
         <td class="reminder-supply-product"></td>\
     </tr>'
@@ -371,24 +389,27 @@ async function add_supply_block_table_body(tbody_element,supplier,item_supplier_
         SUPPLIERE_CONTENT[supplier.name].push(order.factory)
         tbody_element.append(markup)
         tbody_element.children(".data-row").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
-            set_theoritical_order_of_row(tbody_element.children(".data-row"),Number(consumption_per_piece)*Number(total_order_count))
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),item.name)
         })
     }else{
         tbody_element.children(".data-row[data-destination|='"+order.factory+"']").last().after(markup)
-        add_summary_row(tbody_element,order.factory,stock,moq,item.name)
+        tbody_element.children(".data-row[data-destination|='"+order.factory+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),item.name)
+        })
+        add_summary_row(tbody_element,order.factory,0,moq,item.name)
     }
 }
 
 function add_summary_row(tbody_element,destination,stock,moq,item){
     let to = 0
-    $(".data-row[data-destination|='"+destination+"']").each(function(){
+    tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
         $(this).children(".order-supply-prodcut").empty()
         $(this).children(".if-supply-product").empty()        
         $(this).children(".select-box-supply-product").empty() 
         to = to + Number($(this).children(".to-supply-product").text())
     })
     let markup = '\
-    <tr class="summary-row data-row" data-suppliere_row_item="'+item+'"  data-destination="'+destination+'">\
+    <tr class="summary-row"  data-destination="'+destination+'">\
         <td class="select-box-supply-product"><input type="checkbox"/></td>\
         <td class="destination-supply-product"></td>\
         <td class="product-supply-product"></td>\
@@ -399,7 +420,7 @@ function add_summary_row(tbody_element,destination,stock,moq,item){
         <td class="to-supply-product">'+to+'</td>\
         <td class="moq-supply-product">'+moq+'</td>\
         <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
-        <td class="sat-supply-product">'+stock+'</td>\
+        <td class="sat-supply-product"></td>\
         <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
         <td class="reminder-supply-product"></td>\
     </tr>'
@@ -447,12 +468,15 @@ async function get_supply_item_ref(item_supplier_obj){
     }
 }
 
-function set_theoritical_order_of_row(table_row,total_consumption){
-    let rate = Number(table_row.children(".sm-supply-product").children(".numeric-editable").text())
-    if (rate==""||rate==null){
-        table_row.children(".to-supply-product").text(0)
-    }
-    table_row.children(".to-supply-product").text(((rate+100)/100*total_consumption).toFixed(2))
+function set_theoritical_order_of_row(tbody_element,this_element,total_consumption,item){
+    let rate = Number(this_element.text())
+    this_element.parent().parent().children(".to-supply-product").text(((rate+100)/100*total_consumption).toFixed(2))
+    let destination = this_element.parent().parent().attr("data-destination")
+    let to = 0
+    tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
+        to = to + Number($(this).children(".to-supply-product").text())
+    })
+    tbody_element.children(".summary-row[data-destination|='"+destination+"' ]").children(".to-supply-product").text(to)
 }
 
 async function get_consumption(item_supplier_obj){
@@ -472,13 +496,14 @@ async function get_consumption(item_supplier_obj){
     }
 }
 
-async function get_stock(supplier){
+async function get_stock(item_supplier_obj){
     let stock = null
+    let supplier_ref =  await get_supply_item_ref(item_supplier_obj)
     await frappe.call({
         method: 'erpnext.modehero.stock.get_stock',
         args: {
-            item_type:supplier.supplier_group.toLowerCase(),
-            ref:supplier.name
+            item_type:item_supplier_obj.supplier_group.toLowerCase(),
+            ref:supplier_ref
         },
         callback: function (r) {
             if (!r.exc) {
