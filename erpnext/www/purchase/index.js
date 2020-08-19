@@ -120,17 +120,15 @@ async function validate(item){
         response_message('Unsuccessfull', 'Factory is not selected !', 'red')
         return null
     }
-    
     let selected = check_already_selected(item,order.factory)
-    if (selected){
+    if (selected.status){
         return null
+    }else if(selected.earlier!=null && selected.earlier!=order.factory){
+        console.log(1)
+        change_item_factory(item,selected.earlier)
+        console.log(5)
     }
-    
-    let total_order_count = await get_total_order_detail(order)
-    if (total_order_count==null){
-        return null
-    }
-    set_supply_order_section(item,order,total_order_count)
+    set_supply_order_section(item,order)
     
     // frappe.call({
     //     method: 'erpnext.modehero.sales_order.validate_sales_item_orders',
@@ -267,7 +265,38 @@ function collect_data_for_modify(item){
     return order
 }
 
-async function set_supply_order_section(item,order,total_order_count){
+function change_item_factory(item,factory){
+    console.log( $(".data-row[data-destination|='"+factory+"'][data-suppliere_row_item|='"+item+"']").length)
+    $(".data-row[data-destination|='"+factory+"'][data-suppliere_row_item|='"+item+"']").remove()
+    for (let supply in SUPPLY_CONTENT){
+        for (let destination in SUPPLY_CONTENT[supply]){
+            console.log(3)
+            if (destination==factory){
+                SUPPLY_CONTENT[supply][destination] = SUPPLY_CONTENT[supply][destination]-1
+            }
+            if (SUPPLY_CONTENT[supply][destination]==0){
+                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
+            }else if(SUPPLY_CONTENT[supply][destination]==1){
+                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
+                let k  = $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']")
+                k.children(".order-supply-prodcut").append('<span class="background-ash" contenteditable="true"> </span>')
+                k.children(".if-supply-product").append('<span class="background-ash" contenteditable="true"> </span>')        
+                k.children(".select-box-supply-product").append('<input type="checkbox"/>')
+
+            }else{
+                console.log($(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']").last())
+                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']").children(".sm-supply-product").children(".numeric-editable").last().trigger("input")
+            }
+        }
+    }
+    console.log(4)
+}
+
+async function set_supply_order_section(item,order){
+    let total_order_count = await get_total_order_detail(order)
+    if (total_order_count==null){
+        return null
+    }
     let item_details = null
     await frappe.call({
         method: 'erpnext.modehero.product.get_product_item',
@@ -300,7 +329,7 @@ async function change_supplier_division(item,order,total_order_count){
         }
         await create_supply_table_head(supply_detail)
         if (!SUPPLY_CONTENT.hasOwnProperty(supply_detail.name)){
-            SUPPLY_CONTENT[supply_detail.name] = []
+            SUPPLY_CONTENT[supply_detail.name] = {}
         }
         let tbody_element = $(".supply-block[data-supply|='"+supply_detail.name+"'] > .table-wrapper > table > .tbody-supply-order-section")
         await add_supply_block_table_body(tbody_element,supply_detail,supply_type,supplieres[i],item,order,total_order_count)
@@ -336,9 +365,9 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
         console.log("++++> null moq")
         return null
     }
-    
+    let destination = order.factory
     let markup = '\
-    <tr class="data-row" data-suppliere_row_item="'+item.name+'"  data-destination="'+order.factory+'">\
+    <tr class="data-row" data-suppliere_row_item="'+item.name+'"  data-destination="'+destination+'">\
         <td class="select-box-supply-product"><input type="checkbox"/></td>\
         <td class="destination-supply-product">'+order.factory_name+'</td>\
         <td class="product-supply-product">'+item.item_name+'</td>\
@@ -353,22 +382,27 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
         <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
         <td class="reminder-supply-product"></td>\
     </tr>'
-    if (SUPPLY_CONTENT[supply_detail.name].indexOf(order.factory)==-1){
-        SUPPLY_CONTENT[supply_detail.name].push(order.factory)
+    if (!SUPPLY_CONTENT[supply_detail.name].hasOwnProperty(destination)){
+        SUPPLY_CONTENT[supply_detail.name][destination] = 1
         tbody_element.append(markup)
-        tbody_element.children(".data-row").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
-            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count))
+        tbody_element.children(".data-row[data-destination|='"+destination+"']").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
         })
     }else{
-        tbody_element.children(".data-row[data-destination|='"+order.factory+"']").last().after(markup)
-        tbody_element.children(".data-row[data-destination|='"+order.factory+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
-            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count))
+        SUPPLY_CONTENT[supply_detail.name][destination] = SUPPLY_CONTENT[supply_detail.name][destination] + 1
+        tbody_element.children(".data-row[data-destination|='"+destination+"']").last().after(markup)
+        tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
         })
-        add_summary_row(tbody_element,order.factory,0,moq,item.name)
+        let to = await empty_rows(destination,tbody_element).then()
+        if (tbody_element.children(".summary-row[data-destination|='"+destination+"']").length==0){
+            add_summary_row(tbody_element,destination,0,moq,to)
+        }else{
+            tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").trigger("input")
+        }
     }
 }
-
-function add_summary_row(tbody_element,destination,stock,moq,item){
+async function empty_rows(destination,tbody_element){
     let to = 0
     tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
         $(this).children(".order-supply-prodcut").empty()
@@ -376,6 +410,11 @@ function add_summary_row(tbody_element,destination,stock,moq,item){
         $(this).children(".select-box-supply-product").empty() 
         to = to + Number($(this).children(".to-supply-product").text())
     })
+    return to
+}
+
+function add_summary_row(tbody_element,destination,stock,moq,to){
+
     let markup = '\
     <tr class="summary-row"  data-destination="'+destination+'">\
         <td class="select-box-supply-product"><input type="checkbox"/></td>\
@@ -385,7 +424,7 @@ function add_summary_row(tbody_element,destination,stock,moq,item){
         <td class="cpp-supply-product"></td>\
         <td class="tc-supply-product"></td>\
         <td class="sm-supply-product" ></td>\
-        <td class="to-supply-product">'+to+'</td>\
+        <td class="to-supply-product">'+to.toFixed(2)+'</td>\
         <td class="moq-supply-product">'+moq+'</td>\
         <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
         <td class="sad-supply-product">'+stock+'</td>\
@@ -434,15 +473,14 @@ async function get_supply_item_ref(item_supplier_obj){
     }
 }
 
-function set_theoritical_order_of_row(tbody_element,this_element,total_consumption){
+function set_theoritical_order_of_row(tbody_element,this_element,total_consumption,destination){
     let rate = Number(this_element.text())
     this_element.parent().parent().children(".to-supply-product").text(((rate+100)/100*total_consumption).toFixed(2))
-    let destination = this_element.parent().parent().attr("data-destination")
     let to = 0
     tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
         to = to + Number($(this).children(".to-supply-product").text())
     })
-    tbody_element.children(".summary-row[data-destination|='"+destination+"' ]").children(".to-supply-product").text(to)
+    tbody_element.children(".summary-row[data-destination|='"+destination+"' ]").children(".to-supply-product").text(to.toFixed(2))
 }
 
 async function get_consumption(item_supplier_obj,type){
@@ -506,16 +544,12 @@ async function get_total_order_detail(order){
 }
 
 function check_already_selected(item,factory){
-    if (!SELECTED_ITEM_FACTORY_DETAILS.hasOwnProperty(item)){
-        SELECTED_ITEM_FACTORY_DETAILS[item]=[]
-        SELECTED_ITEM_FACTORY_DETAILS[item].push(factory)
-        return false
+    if(SELECTED_ITEM_FACTORY_DETAILS.hasOwnProperty(item) && SELECTED_ITEM_FACTORY_DETAILS[item]==factory){
+        return {"status":true}
     }
-    if (SELECTED_ITEM_FACTORY_DETAILS[item].indexOf(factory)==-1){
-        SELECTED_ITEM_FACTORY_DETAILS[item].push(factory)
-        return false
-    }
-    return true
+    let earlier = SELECTED_ITEM_FACTORY_DETAILS[item]
+    SELECTED_ITEM_FACTORY_DETAILS[item]=factory
+    return {"status":false ,"earlier":earlier}
 }
 
 function select_all_chekbox(item) {
