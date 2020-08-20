@@ -271,9 +271,27 @@ def cancel_sales_item_orders(item_order_list):
         frappe.db.commit()
     return {'status': 'ok'}
 
-# @frappe.whitelist()
-# def validate_products_only(order_bloc_object):
-
+@frappe.whitelist()
+def validate_products_only(order_bloc_object):
+    # {
+    #     "item_name1":
+    #     "factory_details":"12345",
+    #     "order":
+    #         {
+    #             "sales_item_order1":{},
+    #             "sales_itm_order2":{}
+    #         }
+    # }
+    try:
+        order_bloc_object_dic = json.loads(order_bloc_object)
+        for item in order_bloc_object_dic:
+            result = validate_sales_item_orders(order_bloc_object_dic[item]["order"])
+            if (result["status"]!="ok"):
+                break
+        else:
+            return {"status":"ok"}
+    except:
+        return {"status":"error"}
 
 @frappe.whitelist()
 def validate_sales_item_orders(orders_object):
@@ -289,7 +307,10 @@ def validate_sales_item_orders(orders_object):
     #         }
     #     }
     #}
-    order_dic = json.loads(orders_object)
+    if not(isinstance(orders_object, dict)):
+        order_dic = json.loads(orders_object)
+    else:
+        order_dic = orders_object
     quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names = collect_vaidation_form_data(order_dic)
     production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order).name
     update_sales_order_items(production_order_ref,order_dic)
