@@ -1,0 +1,90 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Uniform','url':'#'}]) }}
+
+{% macro dropdown(items,class,id,typetwo) %}
+<div class="form-group">
+
+    <select class="form-control {{class}}" id="{{id}}">
+        <option value=""></option>
+        {% for i in items %}
+        {% if typetwo %}
+        <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.fabric_ref %}
+        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+<h2>{{_("Uniform Order")}}</h2>
+
+<div id="container" class="container">
+    <div class="card" style="width: 108%;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <label>{{_("Client")}}</label>
+                    <select class="form-control clientname-select" id="client-name-select">
+                        <option value="" disabled selected>Select a client</option>
+                        {% for client in clients %}
+                        <option value="{{client[0]}}">{{client[0]}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>{{_("Point of Sale")}}</label>
+                    <select class="form-control" id="pos-select">
+                        <option value="">---:---</option>
+                    </select>
+                    <!-- <input id="point-of-sale" type="text" class="form-control"> -->
+                </div>
+                <div class="col-3">
+                    <label>{{_("Package")}}</label>
+                    <select class="form-control" id="package-select">
+                        <option value="">---:---</option>
+                    </select>
+                </div>
+            </div>
+            <div id="seg">
+                <div class="row product" id="products">
+                    <!-- <div class="col-1" style="padding-top: 2.6%;">
+                        <label>{{_("Name")}}</label>
+                        <input class="form-control clientname-select" id="client-name-select">
+                    </div>
+                    <div class="col-2" style="text-align: center;flex: 0 0 12.667%;padding-left:2%">
+                        <label style="margin-top: 4%;">{{_("Product 1")}}</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <label>{{_("Order#")}}</label>
+                                <input class="form-control clientname-select" id="client-name-select">
+
+
+                            </div>
+                            <div class="col-4">
+                                <label>{{_("Qty")}}</label>
+                                <input class="form-control clientname-select" id="client-name-select">
+
+                            </div>
+                            <div class="col-4">
+                                <label>{{_("Size")}}</label>
+                                <input class="form-control clientname-select" id="client-name-select">
+
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+            </div>
+            <a type="button" id="addSegment" style="display: none;">add Line</a>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary mt-4" style="display: none;" id="uniformSubmit">{{_("Submit")}}</button>
+        </div>
+    </div>
+</div>
