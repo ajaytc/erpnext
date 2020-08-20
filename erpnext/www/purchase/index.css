@@ -24,3 +24,9 @@ td{
 #supply-order-section{
     border-top:5px solid rgb(219, 210, 210);
 }
+.reminder-link{
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: rgb(157, 179, 155);
+}

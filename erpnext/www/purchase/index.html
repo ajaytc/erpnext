@@ -27,7 +27,7 @@
             {% set sizing = sizing[0].sizing %}
             {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
             <thead>
-                    <th class="modify-show-{{item}} default-hide" colspan='1' scope='colgroup' ><input type="checkbox" data-item_code='{{item}}' data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders" /></th>
+                    <th class="modify-show-{{item}} default-hide" colspan='1' scope='colgroup' ><input type="checkbox" data-item_code='{{item}}' data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders sales-order-section" /></th>
                     <th colspan='1' scope='colgroup' >Order Date</th>
                     <th colspan='1' scope='colgroup' >Order Detail</th>
                     <th colspan='1' scope='colgroup' ></th>
@@ -53,7 +53,7 @@
                     {% set temp_order_details = temp_order_details[0] %}
                     {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                     <tr  data-client_name="{{order['customer_details'].customer_name}}"  data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}">
-                        <td class="modify-show-{{item}} default-hide"><input type="checkbox"   data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox" /></td>
+                        <td class="modify-show-{{item}} default-hide"><input type="checkbox"   data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox sales-order-section" /></td>
                                 <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
                                 <td>
                                     {{temp_order_details.name}}<br>
@@ -141,42 +141,31 @@
 </div>
 
 <div id="supply-order-section">
-    <!-- <div class="suppliere-block" data-supplier="tet-1" >
-        <h3>Test1</h3>
-        <div class="table-wrapper table-responsive mt-2">
-            <table class="table table-sm table-striped">
-                <thead>
-                    <th></th>
-                    <th>Destination</th>
-                    <th>Product</th>
-                    <th>Number of pieces</th>
-                    <th>Consumption per piece</th>
-                    <th>Total consumption</th>
-                    <th>Safety margin</th>
-                    <th>Theoritical order</th>
-                    <th>Minimum order quantity</th>
-                    <th>ORDER</th>
-                    <th>Stock at destination</th>
-                    <th>Internal referance</th>
-                    <th></th>
-                </thead>
-                <tbody class="tbody-supply-order-section">
-                    <tr data-suppliere_row_item="gilet" >
-                        <td class="select-box-supply-product"></td>
-                        <td class="destination-supply-product"></td>
-                        <td class="product-supply-product"></td>
-                        <td class="nop-supply-product"></td>
-                        <td class="cpp-supply-product"></td>
-                        <td class="sm-supply-product"></td>
-                        <td class="to-supply-product"></td>
-                        <td class="moq-supply-product"></td>
-                        <td class="order-supply-prodcut"></td>
-                        <td class="sat-supply-product"></td>
-                        <td class="if-supply-product"></td>
-                        <td class="reminder-supply-product"></td>
-                    </tr>
-                </tbody>
-            </table>
+    <div id="supply-content-section"> 
+        
+    </div>
+    <div id="supply-button-section"> 
+
+    </div>
+</div>
+
+
+<div class="modal fade" data-destination="" data-supply="" id="reminder-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% include 'erpnext/www/reminders.html' %}
+            </div>
+            <div class="modal-footer">
+                <button id="add-reminder-button" type="button" class="btn btn-secondary" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
-    </div> -->
+    </div>
 </div>
