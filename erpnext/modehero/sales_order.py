@@ -271,6 +271,9 @@ def cancel_sales_item_orders(item_order_list):
         frappe.db.commit()
     return {'status': 'ok'}
 
+# @frappe.whitelist()
+# def validate_products_only(order_bloc_object):
+
 
 @frappe.whitelist()
 def validate_sales_item_orders(orders_object):
@@ -309,7 +312,7 @@ def collect_vaidation_form_data(order_dic):
     for order in order_dic:
         if (one_of_sales_order_item_names==""):
             one_of_sales_order_item_names = order
-        update_item_quantities(order,order_dic[order]["sizes"])
+        # update_item_quantities(order,order_dic[order]["sizes"])
         sales_order_item=frappe.get_doc('Sales Order Item',order)  
         if (item==None):
             item=sales_order_item.item_code
