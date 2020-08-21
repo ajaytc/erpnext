@@ -41,6 +41,41 @@ window.onload = function(){
     $(".default-hide").hide().find('input').prop('disabled', true)
 }
 
+$(".select-button").click(async function(){
+    let item = $(this).attr("data-item")
+    if ($(this).hasClass("not-selected")){
+        let is_selected = await select(item).then()
+        if (is_selected){
+            $(this).removeClass("not-selected").addClass("selected").css("background-color", "#8a7c7c")
+        }
+    }else if ($(this).hasClass("selected")){
+        $(this).removeClass("selecte").addClass("not-selected").css("background-color", "#ddd")
+        let early_selected_factory = SELECTED_ITEM_FACTORY_DETAILS[item]
+        remove_item_factory(item,early_selected_factory)
+        delete SELECTED_ITEM_FACTORY_DETAILS[item]
+        delete ORDER_DETAILS[item]
+        if (Object.keys(SELECTED_ITEM_FACTORY_DETAILS).length==0){
+            IS_SUPPLY_BUTTONS = false
+            $("#supply-button-section").empty()
+        }
+    }
+})
+
+$(".factory-select").change(function(){
+    let item = $(this).attr("data-item_code")
+    if ($(".select-button[data-item|='"+item+"']").hasClass("not-selected")){
+        return null
+    }
+    let early_selected_factory = SELECTED_ITEM_FACTORY_DETAILS[item]
+    let current_factory = $(this).val()
+    if (early_selected_factory!=undefined && current_factory!="" && ORDER_DETAILS[item]!=undefined){
+        remove_item_factory(item,early_selected_factory)
+        SELECTED_ITEM_FACTORY_DETAILS[item] = current_factory
+        let order = {"factory_name":$("option[value|='"+current_factory+"']").attr("data-factory_name") ,"factory":current_factory,"order":ORDER_DETAILS[item]["order"]}
+        set_supply_order_section(item,order)
+    }
+})
+
 $(".client-modal-link").click(function(){
     let data_array = ["country","city","phone","email","cusname"];
     for (let k=0;k<data_array.length;k++){
@@ -49,6 +84,10 @@ $(".client-modal-link").click(function(){
     $("#client-modal").modal('show');
 });
 
+// $("#cancel-confirmation-modal").click(function(){
+//     window.location.reload()
+// })
+
 $("#add-reminder-button").click(function(){
     let reminder_values = {}
     $("input.date-picker").each(function(){
@@ -56,7 +95,6 @@ $("#add-reminder-button").click(function(){
     })
     REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")] = {}
     REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")] = reminder_values
-    console.log(REMINDER_INPUTS)
 })
 
 $("input[type='checkbox'].sales-order-section").change(function(){
@@ -78,6 +116,28 @@ $("input[type='checkbox'].sales-order-section").change(function(){
             $(this).removeClass("background-ash");
         })
     }
+})
+
+$("#product-only-confirmation-button").click(function(){
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.validate_products_only',
+        args: {
+            order_bloc_object:ORDER_DETAILS
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Orders validated successfully', 'green')
+                    window.location.reload()
+                    return null;
+                }
+                response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+        }
+    });
 })
 
 function open_reminder_modal(destination,supply){
@@ -102,25 +162,12 @@ function validate_product_and_supply(){
 }
 
 function validate_product_only(){
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.validate_products_only',
-        args: {
-            order_bloc_object:{}
-        },
-        callback: function (r) {
-            if (r) {
-                if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders updated successfully', 'green')
-                    window.location.reload()
-                    return null;
-                }
-                response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
-                window.location.reload()
-                return null
-            }
-            response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
-        }
-    });
+    let item_amount = Object.keys(ORDER_DETAILS).length
+    if (item_amount==0){
+        return null
+    }
+    $("#product-only-confirmation-modal-body").text("You have selected "+item_amount+" order blocks. Are you sure want to confirm?")
+    $("#product-only-confirmation-modal").modal("show")
 }
 
 function modify(item){
@@ -151,32 +198,30 @@ function modify(item){
     });
 }
 
-async function validate(item){
+async function select(item){
     let order = collect_data_for_select(item);
     if (order==null){
         response_message('Unsuccessfull', 'Incomplete data !', 'red')
-        return null
-    }
-    else if(order=="select_all_error"){
-        response_message('Unsuccessfull', 'All orders of the block should be selected before validation !', 'red')
-        return null
+        return false
     }
     else if(order=="factory_error"){
         response_message('Unsuccessfull', 'Factory is not selected !', 'red')
-        return null
+        return false
     }
     let selected = check_already_selected(item,order.factory)
     if (selected.status){
-        return null
-    }else if(selected.earlier!=null && selected.earlier!=order.factory){
-        change_item_factory(item,selected.earlier)
+        return false
+    }
+    let is_set_supply_section = await set_supply_order_section(item,order)
+    if (!is_set_supply_section){
+        return false
     }
     if (!IS_SUPPLY_BUTTONS){
         IS_SUPPLY_BUTTONS = true
         add_validate_buttons()
     }
     ORDER_DETAILS[item] = order
-    set_supply_order_section(item,order)
+    return true
 }
 
 function cancel(item){
@@ -293,25 +338,36 @@ function collect_data_for_modify(item){
     return order
 }
 
-function change_item_factory(item,factory){
+function remove_item_factory(item,factory){
+    // here factory is earlier selecte factory
     $(".data-row[data-destination|='"+factory+"'][data-suppliere_row_item|='"+item+"']").remove()
     for (let supply in SUPPLY_CONTENT){
         for (let destination in SUPPLY_CONTENT[supply]){
-            if (destination==factory){
-                REMINDER_INPUTS[supply][destination] = null
-                SUPPLY_CONTENT[supply][destination] = SUPPLY_CONTENT[supply][destination]-1
+            if (destination==factory && SUPPLY_CONTENT[supply][destination]["items"].includes(item) ){
+                SUPPLY_CONTENT[supply][destination]["items"].splice(SUPPLY_CONTENT[supply][destination]["items"].indexOf(item), 1)
+                SUPPLY_CONTENT[supply][destination]["count"] = SUPPLY_CONTENT[supply][destination]["count"]-1
             }
-            if (SUPPLY_CONTENT[supply][destination]==0){
+            if (SUPPLY_CONTENT[supply][destination]["count"]==0){
+                if (REMINDER_INPUTS[supply] ){
+                    delete REMINDER_INPUTS[supply][destination] 
+                }
+                delete SUPPLY_CONTENT[supply][destination]
                 $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
-            }else if(SUPPLY_CONTENT[supply][destination]==1){
-                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
-                let k  = $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']")
-                k.children(".order-supply-prodcut").append('<span class="background-ash" contenteditable="true"> </span>')
-                k.children(".if-supply-product").append('<span class="background-ash" contenteditable="true"> </span>')        
-                k.children(".select-box-supply-product").append('<input type="checkbox"/>')
-
+            }else if(SUPPLY_CONTENT[supply][destination]["count"]==1){
+                if ($(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").length!=0){
+                    $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
+                    let k  = $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']")
+                    k.children(".order-supply-prodcut").append('<span class="background-ash" contenteditable="true"> </span>')
+                    k.children(".if-supply-product").append('<span class="background-ash" contenteditable="true"> </span>')        
+                    k.children(".select-box-supply-product").append('<input type="checkbox"/>')
+                    k.children(".reminder-supply-product").append('<div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply+'\')">Reminder</div>')
+                }
             }else{
                 $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']").children(".sm-supply-product").children(".numeric-editable").last().trigger("input")
+            }
+            if (Object.keys(SUPPLY_CONTENT[supply]).length==0){
+                delete SUPPLY_CONTENT[supply]
+                $(".supply-block[data-supply|='"+supply+"']").remove()
             }
         }
     }
@@ -320,7 +376,7 @@ function change_item_factory(item,factory){
 async function set_supply_order_section(item,order){
     let total_order_count = await get_total_order_detail(order)
     if (total_order_count==null){
-        return null
+        return false
     }
     let item_details = null
     await frappe.call({
@@ -339,8 +395,10 @@ async function set_supply_order_section(item,order){
     });
 
     if (item_details!=null){
-        change_supplier_division(item_details,order,total_order_count)
+        await change_supplier_division(item_details,order,total_order_count)
+        return true
     }
+    return false
 }
 
 async function change_supplier_division(item,order,total_order_count){
@@ -393,7 +451,7 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
     let destination = order.factory
     let markup = '\
     <tr class="data-row" data-suppliere_row_item="'+item.name+'"  data-destination="'+destination+'">\
-        <td class="select-box-supply-product"><input type="checkbox"/></td>\
+        <td class="select-box-supply-product"><input class="supply-order-checkbox supply-section" type="checkbox"/></td>\
         <td class="destination-supply-product">'+order.factory_name+'</td>\
         <td class="product-supply-product">'+item.item_name+'</td>\
         <td class="nop-supply-product">'+total_order_count+'</td>\
@@ -408,20 +466,21 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
         <td class="reminder-supply-product"><div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply_detail.name+'\')">Reminder</div></td>\
     </tr>'
     if (!SUPPLY_CONTENT[supply_detail.name].hasOwnProperty(destination)){
-        SUPPLY_CONTENT[supply_detail.name][destination] = 1
+        SUPPLY_CONTENT[supply_detail.name][destination] = {"items":[item.name],"count":1}
         tbody_element.append(markup)
         tbody_element.children(".data-row[data-destination|='"+destination+"']").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
             set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
         })
     }else{
-        SUPPLY_CONTENT[supply_detail.name][destination] = SUPPLY_CONTENT[supply_detail.name][destination] + 1
+        SUPPLY_CONTENT[supply_detail.name][destination]["items"].push(item.name)
+        SUPPLY_CONTENT[supply_detail.name][destination]["count"] = SUPPLY_CONTENT[supply_detail.name][destination]["count"] + 1
         tbody_element.children(".data-row[data-destination|='"+destination+"']").last().after(markup)
         tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
             set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
         })
         let to = await empty_rows(destination,tbody_element).then()
         if (tbody_element.children(".summary-row[data-destination|='"+destination+"']").length==0){
-            add_summary_row(tbody_element,destination,0,moq,to)
+            add_summary_row(tbody_element,destination,0,moq,to,supply_detail)
         }else{
             tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").trigger("input")
         }
@@ -439,11 +498,11 @@ async function empty_rows(destination,tbody_element){
     return to
 }
 
-function add_summary_row(tbody_element,destination,stock,moq,to){
+function add_summary_row(tbody_element,destination,stock,moq,to,supply_detail){
 
     let markup = '\
     <tr class="summary-row"  data-destination="'+destination+'">\
-        <td class="select-box-supply-product"><input type="checkbox"/></td>\
+        <td class="select-box-supply-product"><input  class="supply-order-checkbox supply-section" type="checkbox"/></td>\
         <td class="destination-supply-product"></td>\
         <td class="product-supply-product"></td>\
         <td class="nop-supply-product"></td>\
