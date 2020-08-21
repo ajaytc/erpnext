@@ -51,14 +51,18 @@
                     </select>
                 </div>
             </div>
-            <div id="seg">
-                <div class="row product" id="products">
-                    <!-- <div class="col-1" style="padding-top: 2.6%;">
+            <div id="segs">
+                <div class="row segmentPart" id="segment">
+                    <div class="col-1" style="padding-top: 2.6%;">
                         <label>{{_("Name")}}</label>
                         <input class="form-control clientname-select" id="client-name-select">
                     </div>
                     <div class="col-2" style="text-align: center;flex: 0 0 12.667%;padding-left:2%">
-                        <label style="margin-top: 4%;">{{_("Product 1")}}</label>
+                        <label style="margin-top: 4%;" id="dh">{{_("Product 1")}}</label>
+                        <span style="text-align: right !important;">
+                            <a type="button" id="comment" style="">+</a>
+                        </span><span><a type="button" id="addFromStock" style="">!</a></span>
+
                         <div class="row">
                             <div class="col-4">
                                 <label>{{_("Order#")}}</label>
@@ -77,11 +81,15 @@
 
                             </div>
                         </div>
-                    </div> -->
+                        <div style="display: none;" id="commentdiv">
+                            <label>{{_("Comment")}}</label>
+                            <input type="text" class="form-control clientname-select" id="comment">
+                        </div>
+                    </div>
 
                 </div>
             </div>
-            <a type="button" id="addSegment" style="display: none;">add Line</a>
+            <a type="button" id="addSegment" style="display: none;color:#3b3dbf">add Line +</a>
         </div>
         <div class="form-group">
             <button class="btn btn-primary mt-4" style="display: none;" id="uniformSubmit">{{_("Submit")}}</button>
