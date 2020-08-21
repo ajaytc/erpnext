@@ -272,15 +272,22 @@ def cancel_sales_item_orders(item_order_list):
     return {'status': 'ok'}
 
 @frappe.whitelist()
+def validate_products_supply(sales_orders,supply_orders):
+    sales_orders = json.loads(sales_orders)
+    supply_orders = json.loads(supply_orders)
+    return {"status":"ok","message":"ok"}
+
+@frappe.whitelist()
 def validate_products_only(order_bloc_object):
     # {
-    #     "item_name1":
-    #     "factory_details":"12345",
-    #     "order":
-    #         {
-    #             "sales_item_order1":{},
-    #             "sales_itm_order2":{}
-    #         }
+    #     "item_name1":{
+    #         "factory_details":"12345",
+    #         "order":
+    #             {
+    #                 "sales_item_order1":{},
+    #                 "sales_itm_order2":{}
+    #             }
+    #     }
     # }
     try:
         order_bloc_object_dic = json.loads(order_bloc_object)
