@@ -128,11 +128,11 @@ $("#product-only-confirmation-button").click(function(){
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders validated successfully', 'green')
+                    response_message('Successfull', r.message['message'] , 'green')
                     window.location.reload()
                     return null;
                 }
-                response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+                response_message('Unsuccessfull',r.message['message'], 'red')
                 window.location.reload()
                 return null
             }
@@ -151,11 +151,11 @@ $("#product-supply-confirmation-button").click(function(){
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders validated successfully.', 'green')
+                    response_message('Successfull', r.message['message'], 'green')
                     window.location.reload()
                     return null;
                 }
-                response_message('Unsuccessfull', 'Orders validated unsuccessfully.'+r.message['message'], 'red')
+                response_message('Unsuccessfull',r.message['message'], 'red')
                 window.location.reload()
                 return null
             }
@@ -193,7 +193,7 @@ function validate_product_and_supply(){
         return null
     }
     SUPPLY_ORDER_DETAILS = supply_order_details
-    $("#product-supply-confirmation-modal-body").text("You have selected only "+Object.keys(SALES_ORDER_DETAILS).length+" order blocks and "+Object.keys(SUPPLY_ORDER_DETAILS).length +" supply orders. Are you sure want to confirm?")
+    $("#product-supply-confirmation-modal-body").text("You have selected only "+Object.keys(SALES_ORDER_DETAILS).length+" order blocks and supply orders from "+Object.keys(SUPPLY_ORDER_DETAILS).length +" supply. Are you sure want to confirm?")
     $("#product-supply-confirmation-modal").modal("show")
 }
 
@@ -221,15 +221,15 @@ function modify(item){
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders updated successfully', 'green')
+                    response_message('Successfull', 'Orders updated successfully !', 'green')
                     window.location.reload()
                     return null;
                 }
-                response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+                response_message('Unsuccessfull', 'Orders not updated successfully !', 'red')
                 window.location.reload()
                 return null
             }
-            response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+            response_message('Unsuccessfull', 'Orders updated unsuccessfully !', 'red')
         }
     });
 }
@@ -385,16 +385,23 @@ function collect_data_for_supply(){
         }
         let destination = $(this).attr("data-destination")
         let supply = $(this).attr("data-supply")
-        if (!supply_details.hasOwnProperty(supply)){
-            supply_details[supply] = {}
-        }
-        order = get_supply_order_detail($(this).parent().parent(),destination,supply)
-        console.log(order)
-        if (order==null){
+        let vendor = $(this).attr("data-supplier")
+        if (destination.trim().length==0 || supply.trim().length==0 || vendor.trim().length==0 || SUPPLY_TYPES.indexOf($(this).parent().parent().attr("data-supply_group"))==-1){
             is_any_wrong_input = true
             return false
         }
-        supply_details[supply][destination] = order
+        if (!supply_details.hasOwnProperty(supply)){
+            supply_details[supply] = {"supply_group":$(this).parent().parent().attr("data-supply_group"),"destinations":{}}
+        }
+        if (!supply_details[supply]["destinations"].hasOwnProperty(destination)){
+            supply_details[supply]["destinations"][destination] = {}
+        }
+        order = get_supply_order_detail($(this).parent().parent(),destination,supply,vendor)
+        if (order==null ){
+            is_any_wrong_input = true
+            return false
+        }
+        supply_details[supply]["destinations"][destination][vendor] = order
     })
     if(is_any_wrong_input){
         return null
@@ -413,22 +420,24 @@ function is_any_supply_check(){
     return is_any_checked
 }
 
-function get_supply_order_detail(table_row,destination,supply){
-    
+function get_supply_order_detail(table_row,destination,supply,vendor){
     let order = {}
+    order["products"] = get_products_of_supply_rows(table_row,destination,supply,vendor)
     order["theoritical_order"] = table_row.children(".to-supply-product").text()
     order["minimum_oq"] = table_row.children(".moq-supply-product").text()
     order["order_count"] = table_row.children(".order-supply-product").children("span").text()
     order["internal_ref"] = table_row.children(".if-supply-product").children("span").text()
-    order["type"] = table_row.attr("data-supply_group")
-    if (REMINDER_INPUTS[supply] ){
-        order["reminder"] = REMINDER_INPUTS[supply][destination] 
+    if (REMINDER_INPUTS.hasOwnProperty(supply)&& REMINDER_INPUTS[supply].hasOwnProperty(destination) &&  REMINDER_INPUTS[supply][destination].hasOwnProperty(vendor)){
+        order["reminder"] = REMINDER_INPUTS[supply][destination][vendor]
     }else{
-        order["reminder"] = undefined
+        order["reminder"] = {"profoma_reminder":"","confirmation_reminder":"","payment_reminder":"","reception_reminder":"","shipment_reminder":""}
     }
     let validated = true
     for(let key in order){
-        if ((key!="reminder" && order[key].trim().length==0)||(key =="order_count" && isNaN(order[key]))||(key =="type" && SUPPLY_TYPES.indexOf(order[key])==-1)){
+        if (key=="reminder"||key=="products"){
+            continue
+        }
+        if ( order[key].trim().length==0 ||(key =="order_count" && isNaN(order[key]))){
             validated = false
             break
         }
@@ -437,6 +446,18 @@ function get_supply_order_detail(table_row,destination,supply){
         return null
     }
     return order
+}
+
+function get_products_of_supply_rows(table_row,destination,supply,vendor){
+    let product_list =[]
+    if (table_row.hasClass("data-row")){
+        product_list.push(table_row.attr("data-suppliere_row_item"))
+    }else if (table_row.hasClass("summary-row")){
+        table_row.parent().children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").each(function(){
+            product_list.push($(this).attr("data-suppliere_row_item"))
+        })
+    }
+    return product_list
 }
 
 function remove_item(item){

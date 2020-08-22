@@ -3,7 +3,11 @@ import json
 import ast
 import random
 from erpnext.modehero.production import create_production_order
-
+from erpnext.modehero.supplier import get_supply_doc
+from erpnext.modehero.stock import get_stock
+from erpnext.modehero.fabric import create_fabric_order
+from erpnext.modehero.trimming import create_trimming_order
+from erpnext.modehero.package import create_packaging_order
 
 @frappe.whitelist()
 def create_sales_order(items, garmentlabel, internalref, profoma):
@@ -254,10 +258,14 @@ def modify_sales_item_orders(orders_object):
     #     }
     #}
     order_dic = json.loads(orders_object)
+    status = "ok"
     for order in order_dic:
-        update_item_quantities(order,order_dic[order]["sizes"])
-
-    return {'status': 'ok'}
+        try:
+            update_item_quantities(order,order_dic[order]["sizes"])
+        except:
+            status = "error"
+            continue
+    return {'status': status}
 
 @frappe.whitelist()
 def cancel_sales_item_orders(item_order_list):
@@ -273,9 +281,136 @@ def cancel_sales_item_orders(item_order_list):
 
 @frappe.whitelist()
 def validate_products_supply(sales_orders,supply_orders):
-    sales_orders = json.loads(sales_orders)
     supply_orders = json.loads(supply_orders)
-    return {"status":"ok","message":"ok"}
+    # lets create the suppy order first because the use input of the supply order is higher and the prtob of having a error higher
+    supply_order_result = create_supply_orders(supply_orders)
+    production_order_result = validate_products_only(sales_orders)
+    message = production_order_result["message"] + supply_order_result["message"]
+    if (supply_order_result["status"]=="ok" and production_order_result["status"]=="ok"):
+        return {"status":"ok","message":message}
+    return {"status":"error","message":message}
+
+def create_supply_orders(supply_orders):
+    # {
+    #     "supply_ref_1":{
+    #                     "supply_group":"fabric",
+    #                     "destination_1":{
+    #                                         "vendor_1":{
+    #                                                         "total_count":23,
+    #                                                         "bla bla":"bla"
+    #                                                     }
+    #                                     }
+    #                     },
+    #     "supply_ref_2":............
+    # }
+    successfull_supply_order_internal_refs = []
+    unsuccessfull_supply_order_internal_refs = []
+    result_message = ""
+    is_completed = "error"
+    supply_order_data_list,total_order_count = collect_data_for_supply_order(supply_orders)
+    for supply_order_data in supply_order_data_list:
+        created_order = None
+        try:
+            created_order = create_supply_order_by_category(supply_order_data)
+            if (created_order["status"]=="ok"):
+                successfull_supply_order_internal_refs.append(created_order["order"].internal_ref)
+        except:
+            unsuccessfull_supply_order_internal_refs.append(supply_order_data["internal_ref"])
+            continue
+    if (total_order_count==len(successfull_supply_order_internal_refs)):
+        is_completed = "ok"
+        result_message = "All supply orders created sucessfully !"
+    else:
+        result_message = "Supply order creation is not completed. From requested internal refs, only "
+        for ir in successfull_supply_order_internal_refs:
+            result_message = result_message + "  '"+ ir+"'  " 
+        result_message  = result_message + " internal refs' orders are created successfully !"
+    return { "status":is_completed, "message":result_message }
+
+def create_supply_order_by_category(supply_order_data):
+    if (supply_order_data["supply_group"]=="fabric"):
+        return create_fabric_order(supply_order_data)
+    elif (supply_order_data["supply_group"]=="trimming"):
+        return create_trimming_order(supply_order_data)
+    elif (supply_order_data["supply_group"]=="packaging"):
+        return create_packaging_order(supply_order_data)
+    else : 
+        return {"status":"error"}
+
+def collect_data_for_supply_order(supply_data):
+    supply_order_data_list = []
+    count = 0
+    for supply_ref in supply_data:
+        supply_doc = get_supply_doc(supply_ref,supply_data[supply_ref]["supply_group"])
+        stock_doc = get_stock(supply_data[supply_ref]["supply_group"],supply_ref)
+        for destination_ref in supply_data[supply_ref]["destinations"]:
+            for vendor_ref in supply_data[supply_ref]["destinations"][destination_ref]:
+                count = count + 1
+                order_count =  str(supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]["order_count"]).strip()
+                if not(len(supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]["internal_ref"].strip())!=0 and len(destination_ref.strip())!=0  and supply_doc!=None and order_count.isnumeric() ):
+                    continue
+                unit_price = str(supply_doc.unit_price).strip()
+                if not(is_number(unit_price)):
+                    continue
+                data_dictionary = supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]
+                data_obj = {
+                    "in_stock" : stock_doc["quantity"],
+                    "price_per_unit":unit_price,
+                    "production_factory":destination_ref,
+                    "supply_group":supply_data[supply_ref]["supply_group"],
+                    "minimum_order_quanity":int(supply_doc.minimum_order_qty),
+                    "total_price": float(unit_price)*int(order_count),
+                    "internal_ref":data_dictionary["internal_ref"],
+                    "quantity":order_count,
+                    "profoma_reminder":data_dictionary["reminder"]["profoma_reminder"],
+                    "confirmation_reminder":data_dictionary["reminder"]["confirmation_reminder"],
+                    "payment_reminder":data_dictionary["reminder"]["payment_reminder"],
+                    "reception_reminder":data_dictionary["reminder"]["reception_reminder"],
+                    "shipment_reminder":data_dictionary["reminder"]["shipment_reminder"]
+                }
+                data_obj_with_product_attribute = set_product_attribute_of_supply_order(data_dictionary["products"],data_obj)
+                if data_obj_with_product_attribute==None:
+                    continue
+                data_obj = data_obj_with_product_attribute
+                if (supply_data[supply_ref]["supply_group"]=="fabric"):
+                    data_obj["fabric_ref"] = supply_ref
+                    data_obj["fabric_vendor"] = vendor_ref
+                elif (supply_data[supply_ref]["supply_group"]=="packaging"):
+                    data_obj["packaging_item"] = supply_ref
+                    data_obj["packaging_vendor"] = vendor_ref
+                elif (supply_data[supply_ref]["supply_group"]=="trimming"):
+                    data_obj["trimming_item"] = supply_ref
+                    data_obj["trimming_vendor"] = vendor_ref
+                else:
+                    continue
+                supply_order_data_list.append(data_obj)
+    return supply_order_data_list,count
+
+def is_number(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+def set_product_attribute_of_supply_order(data_product,full_data_obj):
+    if not type(data_product) is list:
+        return None
+    if len(data_product)==1 and data_product[0]!="" and data_product[0]!=None :
+        full_data_obj["item_code"] = data_product[0]
+    elif len(data_product)>1:
+        temp_p_list = []
+        for product in data_product:
+            if product!=None and product!="":
+                temp_p_list.append({"product":product})
+        if len(temp_p_list)!=len(data_product):
+            return None
+        full_data_obj["item_code"]=None
+        full_data_obj["item_list"] = temp_p_list
+    else:
+        return None
+    return full_data_obj
+    
 
 @frappe.whitelist()
 def validate_products_only(order_bloc_object):
@@ -289,19 +424,28 @@ def validate_products_only(order_bloc_object):
     #             }
     #     }
     # }
-    try:
-        order_bloc_object_dic = json.loads(order_bloc_object)
-        for item in order_bloc_object_dic:
-            result = validate_sales_item_orders(order_bloc_object_dic[item]["order"])
-            if (result["status"]!="ok"):
-                break
-        else:
-            return {"status":"ok"}
-    except:
-        return {"status":"error"}
+    order_bloc_object_dic = json.loads(order_bloc_object)
+    requested_item_count = len(order_bloc_object_dic)
+    successfull_items = []
+    result_message=""
+    for item in order_bloc_object_dic:
+        try:
+            result = validate_sales_item_orders_n_create_production_order(order_bloc_object_dic[item]["order"],order_bloc_object_dic[item]["factory"])
+            successfull_items.append(item)
+        except:
+            continue
+    if requested_item_count==len(successfull_items):
+        result_message = "Sales orders validated and production order created successfully !"
+        return {"status":"ok", "message":result_message}
+    else:
+        result_message = "Sales orders valdiation and prouction order creation is not completed. Only "
+        for item in successfull_items:
+            result_message = result_message + " '"+item+"' "
+        result_message = result_message + " item's sales orders validated and production orders created successfully !"
+        return {"status":"error" , "message":result_message}
+        
 
-@frappe.whitelist()
-def validate_sales_item_orders(orders_object):
+def validate_sales_item_orders_n_create_production_order(orders_object,factory):
     # order_object is in following format
     # {
     #     "sales_item_order":
@@ -318,8 +462,8 @@ def validate_sales_item_orders(orders_object):
         order_dic = json.loads(orders_object)
     else:
         order_dic = orders_object
-    quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names = collect_vaidation_form_data(order_dic)
-    production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order).name
+    quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names = collect_sales_order_data_for_production_order(order_dic)
+    production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory).name
     update_sales_order_items(production_order_ref,order_dic)
     return {'status': 'ok'}
 
@@ -332,7 +476,7 @@ def update_sales_order_items(production_order_ref,order_dic):
     frappe.db.commit()
 
 
-def collect_vaidation_form_data(order_dic):
+def collect_sales_order_data_for_production_order(order_dic):
     quantity_dic_for_production_order = {}
     item = None
     destinations_comment = ""
@@ -355,7 +499,7 @@ def collect_vaidation_form_data(order_dic):
         destinations_comment = destinations_comment + str(order_dic[order]["client_name"])+" : "+str(sales_order_item.item_destination)+" \n "
     return quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names
     
-def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order):
+def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory):
 
     item=frappe.get_doc("Item",item_name)
     fabSuppliers={}
@@ -394,7 +538,7 @@ def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_com
         'product_category':item.item_group,
         'internal_ref':'SOI-'+one_of_sales_order_item_names,
         'product_name':item.name,
-        'production_factory':'Test Factory',     #need to set factory from sales order validation page
+        'production_factory':factory,     #need to set factory from sales order validation page
         'final_destination': None,       #many final destinations for different clients and its comlicated
         'quantity':format_quantity_dic(quantity_dic_for_production_order),
         'fab_suppliers':fabSuppliers,

@@ -37,7 +37,8 @@
   "profoma_reminder",
   "payment_reminder",
   "shipment_reminder",
-  "reception_reminder"
+  "reception_reminder",
+  "product_list"
  ],
  "fields": [
   {
@@ -212,11 +213,17 @@
    "fieldname": "reception_reminder",
    "fieldtype": "Date",
    "label": "Reception Reminder"
+  },
+  {
+   "fieldname": "product_list",
+   "fieldtype": "Table",
+   "label": "Product List",
+   "options": "Trimming Order Products"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-22 13:58:12.205575",
+ "modified": "2020-08-22 17:22:52.975019",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Trimming Order",

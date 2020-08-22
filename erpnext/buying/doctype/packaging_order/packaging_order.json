@@ -39,7 +39,8 @@
   "profoma_reminder",
   "payment_reminder",
   "shipment_reminder",
-  "reception_reminder"
+  "reception_reminder",
+  "product_list"
  ],
  "fields": [
   {
@@ -222,11 +223,17 @@
    "fieldname": "destination",
    "fieldtype": "Data",
    "label": "Destination"
+  },
+  {
+   "fieldname": "product_list",
+   "fieldtype": "Table",
+   "label": "Product List",
+   "options": "Packaging Order Products"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-22 16:06:23.195235",
+ "modified": "2020-08-22 17:21:35.648597",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Packaging Order",
