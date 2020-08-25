@@ -314,7 +314,7 @@ def create_supply_orders(supply_orders):
             created_order = create_supply_order_by_category(supply_order_data)
             if (created_order["status"]=="ok"):
                 successfull_supply_order_internal_refs.append(created_order["order"].internal_ref)
-        except:
+        except Exception:
             unsuccessfull_supply_order_internal_refs.append(supply_order_data["internal_ref"])
             continue
     if (total_order_count==len(successfull_supply_order_internal_refs)):
@@ -362,11 +362,11 @@ def collect_data_for_supply_order(supply_data):
                     "total_price": float(unit_price)*int(order_count),
                     "internal_ref":data_dictionary["internal_ref"],
                     "quantity":order_count,
-                    "profoma_reminder":data_dictionary["reminder"]["profoma_reminder"],
-                    "confirmation_reminder":data_dictionary["reminder"]["confirmation_reminder"],
-                    "payment_reminder":data_dictionary["reminder"]["payment_reminder"],
-                    "reception_reminder":data_dictionary["reminder"]["reception_reminder"],
-                    "shipment_reminder":data_dictionary["reminder"]["shipment_reminder"]
+                    "profoma_reminder":data_dictionary["reminder"]["proforma_date"],
+                    "confirmation_reminder":data_dictionary["reminder"]["confirmation_date"],
+                    "payment_reminder":data_dictionary["reminder"]["payment_date"],
+                    "reception_reminder":data_dictionary["reminder"]["reception_date"],
+                    "shipment_reminder":data_dictionary["reminder"]["shipment_date"]
                 }
                 data_obj_with_product_attribute = set_product_attribute_of_supply_order(data_dictionary["products"],data_obj)
                 if data_obj_with_product_attribute==None:
@@ -432,7 +432,7 @@ def validate_products_only(order_bloc_object):
         try:
             result = validate_sales_item_orders_n_create_production_order(order_bloc_object_dic[item]["order"],order_bloc_object_dic[item]["factory"])
             successfull_items.append(item)
-        except:
+        except Exception:
             continue
     if requested_item_count==len(successfull_items):
         result_message = "Sales orders validated and production order created successfully !"

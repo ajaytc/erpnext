@@ -5,13 +5,13 @@
 {% set ns = namespace(universal_order_item_count=0) %}
 {% for item in unique_items_orders %}
 <div id="order-section" data-item='{{unique_items_orders[item]["item_name"]}}'>
-    <h3>
-        <a class="font-weight-bold" href="/product-item?name={{item}}">
-            {{unique_items_orders[item]["item_name"]}}
-        </a>
-    </h3>
-    <div class="row">
-        <div class="col-3">
+    <div >
+        <h3 class="col-3" style="display: inline-block;">
+            <a class="font-weight-bold" href="/product-item?name={{item}}">
+                {{unique_items_orders[item]["item_name"]}}
+            </a>
+        </h3>
+        <div class="col-3" style="display: inline-block;">
             <select data-item_code="{{item}}"  class="form-control factory-select">
                 <option value="" selected disabled>Select Factory</option>
                 {% for factory in factories %}

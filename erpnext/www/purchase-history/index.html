@@ -18,6 +18,7 @@
         </a>
     </h3>
     {% for prod_order in unique_items_orders[item]["orders"] %}
+        {% set ns.is_set_status=false %}
         <div class="table-wrapper table-responsive mt-2">
             <table class="table table-sm table-striped">
                 {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
@@ -42,7 +43,7 @@
                     </thead>
                     <tbody>
                         
-                        {% for order in unique_items_orders[item]["orders"][prod_order] %}
+                        {% for order in unique_items_orders[item]["orders"][prod_order]["client_orders"] %}
                             {% set ns.is_modified=false %}
                             {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
                             {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
@@ -79,16 +80,21 @@
                                             </td>
                                         {% endfor %}
                                     {% endfor %}
-                                    {% if order.docstatus==2 %}
-                                    <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                                    {% elif order.docstatus==1 %}
-                                    <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                                    {% elif order.docstatus==2 %}
-                                    <td class="order-status"><sub class="cancel">Production</sub></td>
-                                    {% elif order.docstatus==3 %}
-                                    <td class="order-status"><sub  class="cancel">Pending</sub></td>
-                                    {% endif %}
+                                    {% if ns.is_set_status==false and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]!=None %}
 
+                                        {% if order.docstatus==2 %}
+                                            {% set ns.is_set_status=true %}
+                                            <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
+                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]==0 %}
+                                            {% set ns.is_set_status=true %}
+                                            <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
+                                            <sub class="pending">Pending</sub> </td>
+                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]==1%}
+                                            {% set ns.is_set_status=true %}
+                                            <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
+                                            <sub class="production">Production</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>     
+                                        {% endif %}
+                                    {% endif %}
                                 </tr>
                             {% endif %}
                         {% endfor %}
