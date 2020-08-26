@@ -10,10 +10,16 @@ $(document).ready(function () {
         $('#subjectBlock').hide()
         $('#bodyTag').hide()
         {% endif %}
+        
         initTiny()
+        
        
 
     }, 200);
+
+    setTimeout(() => {
+        $('.tox-notifications-container').hide()
+    }, 3000);
 
 
 })
