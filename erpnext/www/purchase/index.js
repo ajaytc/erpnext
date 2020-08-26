@@ -21,9 +21,11 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                     </div>'
 var SUPPLY_CONTENT = {}
 var SELECTED_ITEM_FACTORY_DETAILS = {}
-var ORDER_DETAILS = {}
+var SALES_ORDER_DETAILS = {}
+var SUPPLY_ORDER_DETAILS = {}
 var IS_SUPPLY_BUTTONS= false
 var REMINDER_INPUTS = {}
+var SUPPLY_TYPES = ["fabric","trimming","packaging"]
 
 window.onload = function(){
     $(".client-modal-link").css("color","#3B3DBF");
@@ -50,10 +52,9 @@ $(".select-button").click(async function(){
         }
     }else if ($(this).hasClass("selected")){
         $(this).removeClass("selecte").addClass("not-selected").css("background-color", "#ddd")
-        let early_selected_factory = SELECTED_ITEM_FACTORY_DETAILS[item]
-        remove_item_factory(item,early_selected_factory)
+        remove_item(item)
         delete SELECTED_ITEM_FACTORY_DETAILS[item]
-        delete ORDER_DETAILS[item]
+        delete SALES_ORDER_DETAILS[item]
         if (Object.keys(SELECTED_ITEM_FACTORY_DETAILS).length==0){
             IS_SUPPLY_BUTTONS = false
             $("#supply-button-section").empty()
@@ -61,18 +62,19 @@ $(".select-button").click(async function(){
     }
 })
 
-$(".factory-select").change(function(){
+$(".factory-select").change( async function(){
     let item = $(this).attr("data-item_code")
     if ($(".select-button[data-item|='"+item+"']").hasClass("not-selected")){
         return null
     }
-    let early_selected_factory = SELECTED_ITEM_FACTORY_DETAILS[item]
     let current_factory = $(this).val()
-    if (early_selected_factory!=undefined && current_factory!="" && ORDER_DETAILS[item]!=undefined){
-        remove_item_factory(item,early_selected_factory)
-        SELECTED_ITEM_FACTORY_DETAILS[item] = current_factory
-        let order = {"factory_name":$("option[value|='"+current_factory+"']").attr("data-factory_name") ,"factory":current_factory,"order":ORDER_DETAILS[item]["order"]}
-        set_supply_order_section(item,order)
+    if (current_factory!=""){
+        remove_item(item)
+        let order = {"factory_name":$("option[value|='"+current_factory+"']").attr("data-factory_name") ,"factory":current_factory,"order":SALES_ORDER_DETAILS[item]["order"]}
+        let is_set_supply_section = await set_supply_order_section(item,order)
+        if (!is_set_supply_section){
+            SELECTED_ITEM_FACTORY_DETAILS[item] = current_factory
+        }
     }
 })
 
@@ -84,9 +86,7 @@ $(".client-modal-link").click(function(){
     $("#client-modal").modal('show');
 });
 
-// $("#cancel-confirmation-modal").click(function(){
-//     window.location.reload()
-// })
+
 
 $("#add-reminder-button").click(function(){
     let reminder_values = {}
@@ -94,7 +94,8 @@ $("#add-reminder-button").click(function(){
         reminder_values[this.name] = $(this).val();
     })
     REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")] = {}
-    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")] = reminder_values
+    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")]={}
+    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")][$("#reminder-modal").attr("data-supplier")] = reminder_values
 })
 
 $("input[type='checkbox'].sales-order-section").change(function(){
@@ -122,16 +123,16 @@ $("#product-only-confirmation-button").click(function(){
     frappe.call({
         method: 'erpnext.modehero.sales_order.validate_products_only',
         args: {
-            order_bloc_object:ORDER_DETAILS
+            order_bloc_object:SALES_ORDER_DETAILS
         },
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders validated successfully', 'green')
+                    response_message('Successfull', r.message['message'] , 'green')
                     window.location.reload()
                     return null;
                 }
-                response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
+                response_message('Unsuccessfull',r.message['message'], 'red')
                 window.location.reload()
                 return null
             }
@@ -140,9 +141,33 @@ $("#product-only-confirmation-button").click(function(){
     });
 })
 
-function open_reminder_modal(destination,supply){
+$("#product-supply-confirmation-button").click(function(){
+    frappe.call({
+        method: 'erpnext.modehero.sales_order.validate_products_supply',
+        args: {
+            sales_orders:SALES_ORDER_DETAILS,
+            supply_orders:SUPPLY_ORDER_DETAILS
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', r.message['message'], 'green')
+                    window.location.reload()
+                    return null;
+                }
+                response_message('Unsuccessfull',r.message['message'], 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Orders validated unsuccessfully.', 'red')
+        }
+    });
+})
+
+function open_reminder_modal(destination,supply,supplier){
     $("#reminder-modal").attr("data-destination",destination)
     $("#reminder-modal").attr("data-supply",supply)
+    $("#reminder-modal").attr("data-supplier",supplier)
     $("#reminder-modal").modal('show');
 }
 
@@ -158,15 +183,26 @@ function cancel_modify(item){
 }
 
 function validate_product_and_supply(){
-
+    if (is_any_supply_check()){
+        validate_product_only()
+        return null
+    }
+    let supply_order_details = collect_data_for_supply()
+    if (supply_order_details==null){
+        response_message('Unsuccessfull', 'Incompleted inpput.', 'red')
+        return null
+    }
+    SUPPLY_ORDER_DETAILS = supply_order_details
+    $("#product-supply-confirmation-modal-body").text("You have selected only "+Object.keys(SALES_ORDER_DETAILS).length+" order blocks and supply orders from "+Object.keys(SUPPLY_ORDER_DETAILS).length +" supply. Are you sure want to confirm?")
+    $("#product-supply-confirmation-modal").modal("show")
 }
 
 function validate_product_only(){
-    let item_amount = Object.keys(ORDER_DETAILS).length
+    let item_amount = Object.keys(SALES_ORDER_DETAILS).length
     if (item_amount==0){
         return null
     }
-    $("#product-only-confirmation-modal-body").text("You have selected "+item_amount+" order blocks. Are you sure want to confirm?")
+    $("#product-only-confirmation-modal-body").text("You have selected only "+item_amount+" order blocks and no supply. Are you sure want to confirm?")
     $("#product-only-confirmation-modal").modal("show")
 }
 
@@ -185,15 +221,15 @@ function modify(item){
         callback: function (r) {
             if (r) {
                 if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders updated successfully', 'green')
+                    response_message('Successfull', 'Orders updated successfully !', 'green')
                     window.location.reload()
                     return null;
                 }
-                response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+                response_message('Unsuccessfull', 'Orders not updated successfully !', 'red')
                 window.location.reload()
                 return null
             }
-            response_message('Unsuccessfull', 'Orders updated unsuccessfully', 'red')
+            response_message('Unsuccessfull', 'Orders updated unsuccessfully !', 'red')
         }
     });
 }
@@ -208,10 +244,10 @@ async function select(item){
         response_message('Unsuccessfull', 'Factory is not selected !', 'red')
         return false
     }
-    let selected = check_already_selected(item,order.factory)
-    if (selected.status){
-        return false
-    }
+    // let selected = check_already_selected(item,order.factory)
+    // if (selected.status){
+    //     return false
+    // }
     let is_set_supply_section = await set_supply_order_section(item,order)
     if (!is_set_supply_section){
         return false
@@ -220,7 +256,8 @@ async function select(item){
         IS_SUPPLY_BUTTONS = true
         add_validate_buttons()
     }
-    ORDER_DETAILS[item] = order
+    SALES_ORDER_DETAILS[item] = order
+    SELECTED_ITEM_FACTORY_DETAILS[item] = order.factory
     return true
 }
 
@@ -300,6 +337,7 @@ function collect_data_for_modify(item){
     $(".sales-order-checkbox[data-item_code|='"+item+"']").each(function(){
         if ($(this).is(':checked')){
             is_any_checked = true;
+            return false
         }
     });
     if (!is_any_checked){
@@ -338,39 +376,134 @@ function collect_data_for_modify(item){
     return order
 }
 
-function remove_item_factory(item,factory){
-    // here factory is earlier selecte factory
-    $(".data-row[data-destination|='"+factory+"'][data-suppliere_row_item|='"+item+"']").remove()
-    for (let supply in SUPPLY_CONTENT){
-        for (let destination in SUPPLY_CONTENT[supply]){
-            if (destination==factory && SUPPLY_CONTENT[supply][destination]["items"].includes(item) ){
-                SUPPLY_CONTENT[supply][destination]["items"].splice(SUPPLY_CONTENT[supply][destination]["items"].indexOf(item), 1)
-                SUPPLY_CONTENT[supply][destination]["count"] = SUPPLY_CONTENT[supply][destination]["count"]-1
-            }
-            if (SUPPLY_CONTENT[supply][destination]["count"]==0){
-                if (REMINDER_INPUTS[supply] ){
-                    delete REMINDER_INPUTS[supply][destination] 
-                }
-                delete SUPPLY_CONTENT[supply][destination]
-                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
-            }else if(SUPPLY_CONTENT[supply][destination]["count"]==1){
-                if ($(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").length!=0){
-                    $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+factory+"']").remove()
-                    let k  = $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']")
-                    k.children(".order-supply-prodcut").append('<span class="background-ash" contenteditable="true"> </span>')
-                    k.children(".if-supply-product").append('<span class="background-ash" contenteditable="true"> </span>')        
-                    k.children(".select-box-supply-product").append('<input type="checkbox"/>')
-                    k.children(".reminder-supply-product").append('<div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply+'\')">Reminder</div>')
-                }
-            }else{
-                $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+factory+"']").children(".sm-supply-product").children(".numeric-editable").last().trigger("input")
-            }
-            if (Object.keys(SUPPLY_CONTENT[supply]).length==0){
-                delete SUPPLY_CONTENT[supply]
-                $(".supply-block[data-supply|='"+supply+"']").remove()
-            }
+function collect_data_for_supply(){
+    let supply_details = {}
+    let is_any_wrong_input = false
+    $("input:checkbox.supply-section").each(function(){
+        if (!$(this).is(':checked')){
+            return 
+        }
+        let destination = $(this).attr("data-destination")
+        let supply = $(this).attr("data-supply")
+        let vendor = $(this).attr("data-supplier")
+        if (destination.trim().length==0 || supply.trim().length==0 || vendor.trim().length==0 || SUPPLY_TYPES.indexOf($(this).parent().parent().attr("data-supply_group"))==-1){
+            is_any_wrong_input = true
+            return false
+        }
+        if (!supply_details.hasOwnProperty(supply)){
+            supply_details[supply] = {"supply_group":$(this).parent().parent().attr("data-supply_group"),"destinations":{}}
+        }
+        if (!supply_details[supply]["destinations"].hasOwnProperty(destination)){
+            supply_details[supply]["destinations"][destination] = {}
+        }
+        order = get_supply_order_detail($(this).parent().parent(),destination,supply,vendor)
+        if (order==null ){
+            is_any_wrong_input = true
+            return false
+        }
+        supply_details[supply]["destinations"][destination][vendor] = order
+    })
+    if(is_any_wrong_input){
+        return null
+    }
+    return supply_details
+}
+
+function is_any_supply_check(){
+    let is_any_checked = true
+    $("input:checkbox.supply-section").each(function(){
+        if ($(this).is(':checked')){
+            is_any_checked = false;
+            return false
+        }
+    })
+    return is_any_checked
+}
+
+function get_supply_order_detail(table_row,destination,supply,vendor){
+    let order = {}
+    order["products"] = get_products_of_supply_rows(table_row,destination,supply,vendor)
+    order["theoritical_order"] = table_row.children(".to-supply-product").text()
+    order["minimum_oq"] = table_row.children(".moq-supply-product").text()
+    order["order_count"] = table_row.children(".order-supply-product").children("span").text()
+    order["internal_ref"] = table_row.children(".if-supply-product").children("span").text()
+    if (REMINDER_INPUTS.hasOwnProperty(supply)&& REMINDER_INPUTS[supply].hasOwnProperty(destination) &&  REMINDER_INPUTS[supply][destination].hasOwnProperty(vendor)){
+        order["reminder"] = REMINDER_INPUTS[supply][destination][vendor]
+    }else{
+        order["reminder"] = {"profoma_reminder":"","confirmation_reminder":"","payment_reminder":"","reception_reminder":"","shipment_reminder":""}
+    }
+    let validated = true
+    for(let key in order){
+        if (key=="reminder"||key=="products"){
+            continue
+        }
+        if ( order[key].trim().length==0 ||(key =="order_count" && isNaN(order[key]))){
+            validated = false
+            break
         }
     }
+    if(!validated){
+        return null
+    }
+    return order
+}
+
+function get_products_of_supply_rows(table_row,destination,supply,vendor){
+    let product_list =[]
+    if (table_row.hasClass("data-row")){
+        product_list.push(table_row.attr("data-suppliere_row_item"))
+    }else if (table_row.hasClass("summary-row")){
+        table_row.parent().children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").each(function(){
+            product_list.push($(this).attr("data-suppliere_row_item"))
+        })
+    }
+    return product_list
+}
+
+function remove_item(item){
+    // here factory is earlier selecte factory
+    $(".data-row[data-suppliere_row_item|='"+item+"']").remove()
+    for (let supply in SUPPLY_CONTENT){
+        for (let destination in SUPPLY_CONTENT[supply]){
+            for (let vendor in SUPPLY_CONTENT[supply][destination]){
+                if (!SUPPLY_CONTENT[supply][destination][vendor]["items"].includes(item) ){
+                    continue
+                }
+                SUPPLY_CONTENT[supply][destination][vendor]["items"].splice(SUPPLY_CONTENT[supply][destination][vendor]["items"].indexOf(item), 1)
+                SUPPLY_CONTENT[supply][destination][vendor]["count"] = SUPPLY_CONTENT[supply][destination][vendor]["count"]-1
+                if (SUPPLY_CONTENT[supply][destination][vendor]["count"]==0){
+                    if (REMINDER_INPUTS[supply] && REMINDER_INPUTS[supply][destination]  ){
+                        delete REMINDER_INPUTS[supply][destination][vendor]
+                    }
+                    delete SUPPLY_CONTENT[supply][destination][vendor]
+                    $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").remove()
+                }
+                else if(SUPPLY_CONTENT[supply][destination][vendor]["count"]==1){
+                    if ($(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").length!=0){
+                        $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .summary-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").remove()
+                        let k  = $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']")
+                        k.children(".order-supply-product").append('<span class="background-ash numeric-editable" contenteditable="true"> </span>')
+                        k.children(".if-supply-product").append('<span class="background-ash" contenteditable="true"> </span>')        
+                        k.children(".select-box-supply-product").append('<input data-supply="'+supply+'"   data-destination="'+destination+'"  data-supplier="'+vendor+'" class="supply-order-checkbox not-summary-box supply-section" type="checkbox"/>')
+                        k.children(".reminder-supply-product").append('<div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply+'\',\''+vendor+'\')">Reminder</div>')
+                    }
+                }else{
+                    $(".supply-block[data-supply|='"+supply+"'] > .table-wrapper > table > .tbody-supply-order-section > .data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").children(".sm-supply-product").children(".numeric-editable").last().trigger("input")
+                }
+            }
+            if (Object.keys(SUPPLY_CONTENT[supply][destination]).length==0){
+                delete SUPPLY_CONTENT[supply][destination]
+            }
+        }
+        if (Object.keys(SUPPLY_CONTENT[supply]).length==0){
+            delete SUPPLY_CONTENT[supply]
+            $(".supply-block[data-supply|='"+supply+"']").remove()
+        }
+    }
+    
+    $(".numeric-editable").keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+    });
 }
 
 async function set_supply_order_section(item,order){
@@ -434,24 +567,18 @@ async function create_supply_table_head(supply_detail){
 
 async function add_supply_block_table_body(tbody_element,supply_detail,supply_type,item_supplier_obj,item,order,total_order_count){
     let consumption_per_piece = await get_consumption(item_supplier_obj,supply_type).then()
-    if (consumption_per_piece==null){
-        console.log("++++> null cpp")
-        return null
-    }
-    // let stock = await get_stock(item_supplier_obj)
-    // if (stock==null){
-    //     console.log("++++> null stock")
+    // if (consumption_per_piece==null){
     //     return null
     // }
     let moq = supply_detail.minimum_order_qty
-    if (moq==null){
-        console.log("++++> null moq")
-        return null
-    }
+    // if (moq==null){
+    //     return null
+    // }
     let destination = order.factory
+    let vendor = item_supplier_obj.supplier
     let markup = '\
-    <tr class="data-row" data-suppliere_row_item="'+item.name+'"  data-destination="'+destination+'">\
-        <td class="select-box-supply-product"><input class="supply-order-checkbox supply-section" type="checkbox"/></td>\
+    <tr class="data-row" data-supplier="'+vendor+'" data-supply_group="'+supply_type+'" data-suppliere_row_item="'+item.name+'"  data-destination="'+destination+'">\
+        <td class="select-box-supply-product"><input data-supply="'+supply_detail.name+'"   data-destination="'+destination+'"  data-supplier="'+vendor+'" class="supply-order-checkbox not-summary-box supply-section" type="checkbox"/></td>\
         <td class="destination-supply-product">'+order.factory_name+'</td>\
         <td class="product-supply-product">'+item.item_name+'</td>\
         <td class="nop-supply-product">'+total_order_count+'</td>\
@@ -460,36 +587,39 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
         <td class="sm-supply-product" ><span class="background-ash numeric-editable" contenteditable="true">5</span></td>\
         <td class="to-supply-product">'+(Number(consumption_per_piece)*Number(total_order_count)*1.05).toFixed(2)+'</td>\
         <td class="moq-supply-product">'+moq+'</td>\
-        <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
+        <td class="order-supply-product" ><span class="background-ash numeric-editable" contenteditable="true"> </span></td>\
         <td class="sad-supply-product">0</td>\
         <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
-        <td class="reminder-supply-product"><div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply_detail.name+'\')">Reminder</div></td>\
+        <td class="reminder-supply-product"><div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply_detail.name+'\',\''+vendor+'\')">Reminder</div></td>\
     </tr>'
-    if (!SUPPLY_CONTENT[supply_detail.name].hasOwnProperty(destination)){
-        SUPPLY_CONTENT[supply_detail.name][destination] = {"items":[item.name],"count":1}
+    if(!SUPPLY_CONTENT[supply_detail.name].hasOwnProperty(destination)){
+        SUPPLY_CONTENT[supply_detail.name][destination] = {} 
+    }
+    if (!SUPPLY_CONTENT[supply_detail.name][destination].hasOwnProperty(vendor)){
+        SUPPLY_CONTENT[supply_detail.name][destination][vendor] = {"items":[item.name],"count":1}
         tbody_element.append(markup)
-        tbody_element.children(".data-row[data-destination|='"+destination+"']").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
-            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
+        tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination,vendor)
         })
     }else{
-        SUPPLY_CONTENT[supply_detail.name][destination]["items"].push(item.name)
-        SUPPLY_CONTENT[supply_detail.name][destination]["count"] = SUPPLY_CONTENT[supply_detail.name][destination]["count"] + 1
-        tbody_element.children(".data-row[data-destination|='"+destination+"']").last().after(markup)
-        tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
-            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination)
+        SUPPLY_CONTENT[supply_detail.name][destination][vendor]["items"].push(item.name)
+        SUPPLY_CONTENT[supply_detail.name][destination][vendor]["count"] = SUPPLY_CONTENT[supply_detail.name][destination][vendor]["count"] + 1
+        tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").last().after(markup)
+        tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").last().children(".sm-supply-product").children(".numeric-editable").on('input',function(e){
+            set_theoritical_order_of_row(tbody_element,$(this),Number(consumption_per_piece)*Number(total_order_count),destination,vendor)
         })
-        let to = await empty_rows(destination,tbody_element).then()
+        let to = await empty_rows(destination,tbody_element,vendor).then()
         if (tbody_element.children(".summary-row[data-destination|='"+destination+"']").length==0){
-            add_summary_row(tbody_element,destination,0,moq,to,supply_detail)
+            add_summary_row(tbody_element,destination,0,moq,to,supply_detail,supply_type,vendor)
         }else{
             tbody_element.children(".data-row[data-destination|='"+destination+"']").last().children(".sm-supply-product").children(".numeric-editable").trigger("input")
         }
     }
 }
-async function empty_rows(destination,tbody_element){
+async function empty_rows(destination,tbody_element,vendor){
     let to = 0
-    tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
-        $(this).children(".order-supply-prodcut").empty()
+    tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").each(function(){
+        $(this).children(".order-supply-product").empty()
         $(this).children(".reminder-supply-product").empty() 
         $(this).children(".if-supply-product").empty()        
         $(this).children(".select-box-supply-product").empty() 
@@ -498,11 +628,11 @@ async function empty_rows(destination,tbody_element){
     return to
 }
 
-function add_summary_row(tbody_element,destination,stock,moq,to,supply_detail){
+function add_summary_row(tbody_element,destination,stock,moq,to,supply_detail,supply_type,vendor){
 
     let markup = '\
-    <tr class="summary-row"  data-destination="'+destination+'">\
-        <td class="select-box-supply-product"><input  class="supply-order-checkbox supply-section" type="checkbox"/></td>\
+    <tr class="summary-row" data-supplier="'+vendor+'" data-supply_group="'+supply_type+'" data-destination="'+destination+'">\
+        <td class="select-box-supply-product"><input data-supplier="'+vendor+'" data-supply="'+supply_detail.name+'"   data-destination="'+destination+'" class="supply-order-checkbox summary-box supply-section" type="checkbox"/></td>\
         <td class="destination-supply-product"></td>\
         <td class="product-supply-product"></td>\
         <td class="nop-supply-product"></td>\
@@ -511,12 +641,12 @@ function add_summary_row(tbody_element,destination,stock,moq,to,supply_detail){
         <td class="sm-supply-product" ></td>\
         <td class="to-supply-product">'+to.toFixed(2)+'</td>\
         <td class="moq-supply-product">'+moq+'</td>\
-        <td class="order-supply-prodcut" ><span class="background-ash" contenteditable="true"> </span></td>\
+        <td class="order-supply-product" ><span class="background-ash numeric-editable" contenteditable="true"> </span></td>\
         <td class="sad-supply-product">'+stock+'</td>\
         <td class="if-supply-product" ><span class="background-ash" contenteditable="true"> </span></td>\
-        <td class="reminder-supply-product"><div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply_detail.name+'\')">Reminder</div></td>\
+        <td class="reminder-supply-product"><div class="reminder-link" onclick="open_reminder_modal(\''+destination+'\',\''+supply_detail.name+'\',\''+vendor+'\')">Reminder</div></td>\
     </tr>'
-    tbody_element.children(".data-row[data-destination|='"+destination+"']").last().after(markup)
+    tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").last().after(markup)
 }
 
 
@@ -558,14 +688,14 @@ async function get_supply_item_ref(item_supplier_obj){
     }
 }
 
-function set_theoritical_order_of_row(tbody_element,this_element,total_consumption,destination){
+function set_theoritical_order_of_row(tbody_element,this_element,total_consumption,destination,vendor){
     let rate = Number(this_element.text())
     this_element.parent().parent().children(".to-supply-product").text(((rate+100)/100*total_consumption).toFixed(2))
     let to = 0
-    tbody_element.children(".data-row[data-destination|='"+destination+"']").each(function(){
+    tbody_element.children(".data-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").each(function(){
         to = to + Number($(this).children(".to-supply-product").text())
     })
-    tbody_element.children(".summary-row[data-destination|='"+destination+"' ]").children(".to-supply-product").text(to.toFixed(2))
+    tbody_element.children(".summary-row[data-destination|='"+destination+"'][data-supplier|='"+vendor+"']").children(".to-supply-product").text(to.toFixed(2))
 }
 
 async function get_consumption(item_supplier_obj,type){

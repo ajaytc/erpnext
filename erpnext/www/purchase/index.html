@@ -5,13 +5,13 @@
 {% set ns = namespace(universal_order_item_count=0) %}
 {% for item in unique_items_orders %}
 <div id="order-section" data-item='{{unique_items_orders[item]["item_name"]}}'>
-    <h3>
-        <a class="font-weight-bold" href="/product-item?name={{item}}">
-            {{unique_items_orders[item]["item_name"]}}
-        </a>
-    </h3>
-    <div class="row">
-        <div class="col-3">
+    <div >
+        <h3 class="col-3" style="display: inline-block;">
+            <a class="font-weight-bold" href="/product-item?name={{item}}">
+                {{unique_items_orders[item]["item_name"]}}
+            </a>
+        </h3>
+        <div class="col-3" style="display: inline-block;">
             <select data-item_code="{{item}}"  class="form-control factory-select">
                 <option value="" selected disabled>Select Factory</option>
                 {% for factory in factories %}
@@ -150,7 +150,7 @@
 </div>
 
 
-<div class="modal fade" data-destination="" data-supply="" id="reminder-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" data-supplier="" data-destination="" data-supply="" id="reminder-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -186,6 +186,27 @@
             </div>
             <div class="modal-footer">
                 <button id="product-only-confirmation-button" type="button" class="btn btn-secondary" data-dismiss="modal">Confirm</button>
+                <button type="button" id="cancel-confirmation-modal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade"  id="product-supply-confirmation-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="product-supply-confirmation-modal-body">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="product-supply-confirmation-button" type="button" class="btn btn-secondary" data-dismiss="modal">Confirm</button>
                 <button type="button" id="cancel-confirmation-modal" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

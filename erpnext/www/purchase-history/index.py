@@ -85,8 +85,12 @@ def seperate_item_orders_by_production_orders(item_orders):
             temp_result_dic[item]["orders"] = {}
         for order in item_orders[item]["orders"]:
             if order.prod_order_ref not in temp_result_dic[item]["orders"]:
-                temp_result_dic[item]["orders"][order.prod_order_ref] = []
-            temp_result_dic[item]["orders"][order.prod_order_ref].append(order)
+                temp_result_dic[item]["orders"][order.prod_order_ref] = {"prod_order_status":None,"client_orders":[]}
+                try:
+                    temp_result_dic[item]["orders"][order.prod_order_ref]["prod_order_status"] = frappe.get_doc('Production Order',order.prod_order_ref).docstatus
+                except Exception:
+                    pass
+            temp_result_dic[item]["orders"][order.prod_order_ref]["client_orders"].append(order)
     return temp_result_dic
 
 

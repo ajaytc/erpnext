@@ -146,10 +146,11 @@ def submit_payment_proof(data):
 
 @frappe.whitelist()
 def create_packaging_order(data):
-    data = json.loads(data)
+    if not(isinstance(data, dict)):
+        data = json.loads(data)
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
-    order = frappe.get_doc({
+    order_data_obj = {
         'doctype': 'Packaging Order',
         'brand': brand,
         'packaging_vendor': data['packaging_vendor'],
@@ -166,7 +167,10 @@ def create_packaging_order(data):
         'payment_reminder': data['payment_reminder'],
         'reception_reminder': data['reception_reminder'],
         'shipment_reminder': data['shipment_reminder']
-    })
+    }
+    if (order_data_obj["product_name"]==None and "item_list" in data):
+        order_data_obj["product_list"] = data["item_list"]
+    order = frappe.get_doc(order_data_obj)
     order.insert()
     frappe.db.commit()
     sendPackagingOrderNotificationEmail(order)
