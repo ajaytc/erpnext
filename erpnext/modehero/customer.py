@@ -91,10 +91,17 @@ def make_delete_wp_query(wps):
 @frappe.whitelist()
 def set_pricing(form_data):
     form_data = json.loads(form_data)
+    if ((not type(form_data["wholesale_price"]) is list) or (not type(form_data["pricing_options"]) is list)  or len(form_data["client"].strip())==0 or len(form_data["item_code"].strip())==0 or len(form_data["item_group"].strip())==0 or len(form_data["season"].strip())==0 or (not is_number( str(form_data["minimum_order"]))) ):
+        return {'status': 'error'}
+    elif (len(form_data["wholesale_price"])==0):
+        return {'status': 'error'}
     # here the consisency of the from to values are checked.
     # wholesale_prices = check_wholesale_correct(form_data["wholesale_price"])
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
+    already_set = is_already_set(form_data["client"],form_data["item_code"],brand)
+    if (already_set):
+        return {'status': 'error'}
     pricing = form_data["client"] + " " + form_data["season"]
     pricing = frappe.get_doc(
         {
@@ -135,6 +142,20 @@ def set_pricing(form_data):
 
 # def get_from(wholesale_dict):
 #     return wholesale_dict['from']
+
+def is_already_set(client,item_code,brand):
+    existing_data = frappe.get_all('Client Pricing',filters={'client':client,'item_code':item_code,'brand':brand})
+    if len(existing_data)==0:
+        return False
+    return True
+
+
+def is_number(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
 
 @frappe.whitelist()
 def deactivate_pricing(name_list):

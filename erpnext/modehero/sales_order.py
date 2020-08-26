@@ -281,6 +281,7 @@ def cancel_sales_item_orders(item_order_list):
 
 @frappe.whitelist()
 def validate_products_supply(sales_orders,supply_orders):
+    # try except is used in supply order creation and production order creation because, the final message is important to customer.
     supply_orders = json.loads(supply_orders)
     # lets create the suppy order first because the use input of the supply order is higher and the prtob of having a error higher
     supply_order_result = create_supply_orders(supply_orders)
