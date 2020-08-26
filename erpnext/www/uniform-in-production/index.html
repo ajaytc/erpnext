@@ -1,0 +1,77 @@
+{% import 'erpnext/templates/macros.html' as macros %}
+
+{{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Uniform','url':'#'}]) }}
+
+
+
+<div id="container" class="container">
+    {% for key,value in orderSets.items()%}
+
+    <div class="card" style="width: 100%;">
+        <div class="card-body">
+            <div style="text-align: center;flex: 0 0 12.667%;">
+                <span>{{_("Monday  ")}}</span><span>{{key}}</span>
+                <hr>
+            </div>
+            <table class="table table-striped table-text-center" id="readyTab">
+                <thead>
+                    <tr>
+                        <th>{{_("Order #")}}</th>
+                        <th>{{_("Point of sale")}}</th>
+                        <th>{{_("Product name")}}</th>
+                        <th>{{_("Qty")}}</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for key2,value2 in orderSets[key].items()%}
+
+                    {%for n in range(orderSets[key][key2]|length)%}
+                    <tr class="item">
+
+                        {%if n==0%}
+                        <td rowspan="{{orderSets[key][key2]|length}}" id="orderNum">{{orderSets[key][key2][n][0]}}</td>
+                        {%endif%}
+                        {%if orderSets[key][key2][n][4]!= None%}
+                        {% set pos=orderSets[key][key2][n][4]%}
+                        <td>{{orderSets[key][key2][n][4]}}</td>
+                        {%else%}
+                        {% set pos=orderSets[key][key2][n][3]%}
+                        <td>{{orderSets[key][key2][n][3]}}</td>
+                        {%endif%}
+                        {%set product=frappe.get_doc('Item',orderSets[key][key2][n][2])%}
+                        <td class="productName" data-product="{{product.name}}"
+                            data-order="{{orderSets[key][key2][n][0]}}" style="cursor: pointer;">{{product.item_name}}</td>
+                        <td style="width: 33%;">{{posNItemDicts[key][key2][pos+'-'+orderSets[key][key2][n][2]]}}
+
+                            <table id="sizeDetails" style="display: none;margin-left:30%">
+                                <tbody id="sizeDetailBody">
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                    {%endfor%}
+                    
+                    {%endfor%}
+                    <button type="button" class="btn btn-primary ml-auto">
+                        {{_("Stock")}}
+                    </button>
+                    <button type="button" class="btn btn-primary ml-auto">
+                        {{_("Recieved")}}
+                    </button>
+
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+    </div>
+    <br>
+
+    {%endfor%}
+
+</div>

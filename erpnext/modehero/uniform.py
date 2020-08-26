@@ -1,6 +1,7 @@
 import frappe
 import json
 import ast
+import datetime
 
 @frappe.whitelist()
 def get_pos_of_client(client):
@@ -99,7 +100,38 @@ def updateSegmentProductDetails(data,order):
         
     frappe.db.commit()
 
+@frappe.whitelist()
+def getSizesDetails(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    order_no=data['order_no']
+    item_code=data['item_name']
 
+    sizeDetails=frappe.db.sql("""select uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uos.reciever_name,uosp.size,uo.creation from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s and uosp.order_no=%s and uosp.item_code=%s order by creation desc""",(brand,order_no,item_code))
+    
+    # order_no=0
+    # qty=1
+    # item_code=2
+    # customer=3
+    # reciever_name=4
+    # size=5
+    # creation=6
+
+    return sizeDetails
+
+
+
+def calcEndOfProductionDate(order):
+    creationDate = order[5]
+    creationDay = creationDate.weekday()
+
+    if(creationDay <= 3):
+        dateOfEnd = creationDate + datetime.timedelta(days=(28 - creationDay))
+    else:
+        dateOfEnd = creationDate + datetime.timedelta(days=(35 - creationDay))
+
+    return dateOfEnd.date()
     # for segmentIdx in range(0,len(data['segments'])) :
         
     #     recieverName=segment['name']
