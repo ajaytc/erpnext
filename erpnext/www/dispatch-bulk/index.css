@@ -1,0 +1,36 @@
+.modified-qty{
+    color: rgb(185, 157, 157);
+}
+.sumation-row{
+    border-top:1px solid rgb(219, 210, 210);
+}
+.background-ash{
+    background-color: rgb(213, 218, 226);
+    text-align: center;
+}
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+.client-modal-link{
+    cursor: pointer;
+    font-weight: bold;
+}
+#order-section{
+    margin-bottom: 40px;
+}
+#supply-order-section{
+    border-top:5px solid rgb(219, 210, 210);
+}
+.reminder-link{
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: rgb(157, 179, 155);
+}
+
+#supply-button-section{
+    margin-top: 45px;
+}

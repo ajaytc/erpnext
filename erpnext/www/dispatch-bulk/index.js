@@ -86,29 +86,7 @@ $(".client-modal-link").click(function(){
     $("#client-modal").modal('show');
 });
 
-function open_reminder_modal(destination,supply,supplier){
-    $("#reminder-modal").attr("data-destination",destination)
-    $("#reminder-modal").attr("data-supply",supply)
-    $("#reminder-modal").attr("data-supplier",supplier)
-    $("#reminder-modal").modal('show');
-    let empty_rem = false
-    if (!REMINDER_INPUTS.hasOwnProperty(supply)){
-        empty_rem = true
-    }else if(!REMINDER_INPUTS[supply].hasOwnProperty(destination)){
-        empty_rem = true
-    }else if(!REMINDER_INPUTS[supply][destination].hasOwnProperty(supplier)){
-        empty_rem = true
-    }
-    if (empty_rem){
-        $("input.date-picker").each(function(){
-            $(this).datepicker("setDate","");
-        })
-    }else{
-        $("input.date-picker").each(function(){
-            $(this).datepicker("setDate",REMINDER_INPUTS[supply][destination][supplier][this.name]);
-        })
-    }
-}
+
 
 $("#add-reminder-button").click(function(){
     let reminder_values = {}
@@ -185,6 +163,13 @@ $("#product-supply-confirmation-button").click(function(){
         }
     });
 })
+
+function open_reminder_modal(destination,supply,supplier){
+    $("#reminder-modal").attr("data-destination",destination)
+    $("#reminder-modal").attr("data-supply",supply)
+    $("#reminder-modal").attr("data-supplier",supplier)
+    $("#reminder-modal").modal('show');
+}
 
 function set_modify(item){
     $('.modify-show-'+item).show().find('input').prop('disabled', false)
@@ -445,7 +430,7 @@ function get_supply_order_detail(table_row,destination,supply,vendor){
     if (REMINDER_INPUTS.hasOwnProperty(supply)&& REMINDER_INPUTS[supply].hasOwnProperty(destination) &&  REMINDER_INPUTS[supply][destination].hasOwnProperty(vendor)){
         order["reminder"] = REMINDER_INPUTS[supply][destination][vendor]
     }else{
-        order["reminder"] = {"proforma_date":"","confirmation_date":"","payment_date":"","reception_date":"","shipment_date":""}
+        order["reminder"] = {"profoma_reminder":"","confirmation_reminder":"","payment_reminder":"","reception_reminder":"","shipment_reminder":""}
     }
     let validated = true
     for(let key in order){
