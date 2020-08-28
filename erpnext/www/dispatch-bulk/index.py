@@ -17,7 +17,7 @@ def get_context(context):
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
+    orders = frappe.get_all('Production Order', filters={'brand': brand})
     support_client_dic = collect_client_data(orders)
 
     order_items = {}

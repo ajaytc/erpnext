@@ -2,20 +2,20 @@ import frappe
 import json
 
 
-@frappe.whitelist()
-def updateStock(stock_name, quantity, old_quantity, description, price):
-    quantity = int(quantity)
-    old_quantity = int(old_quantity)
-    if quantity > old_quantity:
-        amount = quantity-old_quantity
-        stockIn(stock_name, amount, quantity, description)
-    elif old_quantity > quantity:
-        amount = old_quantity-quantity
-        stockOut(stock_name, amount, quantity, description)
-    else:
-        pass
+# @frappe.whitelist()
+# def updateStock(stock_name, quantity, old_quantity, description, price):
+#     quantity = int(quantity)
+#     old_quantity = int(old_quantity)
+#     if quantity > old_quantity:
+#         amount = quantity-old_quantity
+#         stockIn(stock_name, amount, quantity, description)
+#     elif old_quantity > quantity:
+#         amount = old_quantity-quantity
+#         stockOut(stock_name, amount, quantity, description)
+#     else:
+#         pass
 
-    updateQuantity(stock_name, quantity, price)
+#     updateQuantity(stock_name, quantity, price)
 
 
 @frappe.whitelist()
@@ -23,7 +23,7 @@ def directShip(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)-int(amount)
 
     stockOut(stock_name, amount, new_stock, description)
-    updateQuantity(stock_name, new_stock, price)
+    updateQuantity(stock_name, new_stock, price,None)
 
 
 @frappe.whitelist()
@@ -31,7 +31,7 @@ def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
     stockIn(stock_name, amount, new_stock, description)
-    updateQuantity(stock_name, new_stock, price)
+    updateQuantity(stock_name, new_stock, price,None)
 
 
 @frappe.whitelist()
@@ -215,24 +215,36 @@ def get_product_details_from_order(order, order_type):
         product = order.product_name
     if product == None:
         return None
-    production_stock_name = frappe.get_all('Stock', filters={
-        'item_type': 'product', 'product': product}, fields=['name'])
-    if production_stock_name == None or len(production_stock_name) == 0:
+    production_stock = frappe.get_all('Stock', filters={
+        'item_type': 'product', 'product': product})
+    if production_stock == None or len(production_stock) == 0:
         return None
-    production_stock = frappe.get_doc('Stock', production_stock_name[0].name)
-    return {'stock_name': production_stock_name[0].name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value}
+    production_stock = frappe.get_doc("Stock",production_stock[0].name)
+    # this is for develeopment perposes
+    if len(production_stock.product_stock_per_size)==0:
+        return None
+    # this is for develeopment perposes
+    if order_type == "prototype":
+        return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value,"size_details":None}
+    return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value,"size_details":production_stock.product_stock_per_size}
 
 
 def createNewProductStock(doc, method):
 
     total_value = int(doc.avg_price)*0
+    item_doc = frappe.get_doc('Item',doc.name)
+    sizings = frappe.get_all('Sizing', filters={'parent': item_doc.sizing}, fields=['size'],order_by='idx')
+    size_n_qty = []
+    for size in sizings:
+        size_n_qty.append({"size":size.size,"quantity":0})
     docStock = frappe.get_doc({
         "doctype": "Stock",
         "item_type": 'product',
         "product": doc.name,
         "parent": doc.name,
         "quantity": 0,
-        "total_value": total_value
+        "total_value": total_value,
+        "product_stock_per_size":size_n_qty
     })
     docStock.insert()
     frappe.db.commit()
@@ -293,6 +305,7 @@ def stockIn(stock_name, amount, quantity, description):
     })
     doc.insert()
     frappe.db.commit()
+    return doc
 
 
 def stockOut(stock_name, amount, quantity, description):
@@ -308,36 +321,80 @@ def stockOut(stock_name, amount, quantity, description):
     })
     doc.insert()
     frappe.db.commit()
+    return doc
 
 
-def updateQuantity(stock_name, quantity, price):
+def updateQuantity(stock_name, quantity, price,size_detail):
     total_value = float(quantity)*float(price)
-    frappe.db.set_value('Stock', stock_name, {
-        'quantity': quantity,
-        'total_value': total_value
-    })
-
+    stock_doc = frappe.get_doc("Stock",stock_name)
+    if len(stock_doc.product_stock_per_size)==0:
+        return None
+    if size_detail!=None:
+        for x in range(len(stock_doc.product_stock_per_size)):
+            for y in range(len(size_detail)):
+                if stock_doc.product_stock_per_size[x].size == size_detail[y].size:
+                    stock_doc.product_stock_per_size[x].quantity = size_detail[y].quantity
+    stock_doc.quantity = quantity
+    stock_doc.total_value = total_value
+    stock_doc.save()
     frappe.db.commit()
 
 
-def updateStock2(stock_name, quantity, old_quantity, description, price):
+def updateStock2(stock_name, quantity, old_quantity, description, price,item_type,size_detail):
+    # size_detail is not None only for product stocks
     quantity = int(quantity)
     if(old_quantity == None):
-        old_quantity = frappe.get_doc('Stock', stock_name).quantity
+        old_quantity = int(frappe.get_doc('Stock', stock_name).quantity)
     else:
         old_quantity = int(old_quantity)
 
+    stock_history_doc = None
     if quantity > old_quantity:
         amount = quantity-old_quantity
-        stockIn(stock_name, amount, quantity, description)
+        stock_history_doc = stockIn(stock_name, amount, quantity, description)
+        if size_detail !=None:
+            set_size_qty_history(stock_history_doc.name,size_detail["new_incoming"])
+            size_detail = get_final_size_quantities(size_detail,"in")
     elif old_quantity > quantity:
         amount = old_quantity-quantity
-        stockOut(stock_name, amount, quantity, description)
+        stock_history_doc = stockOut(stock_name, amount, quantity, description)
+        if size_detail !=None:
+            set_size_qty_history(stock_history_doc.name,size_detail["new_incoming"])
+            size_detail = get_final_size_quantities(size_detail,"out")
     else:
         pass
+    
+    updateQuantity(stock_name, quantity, price,size_detail)
 
-    updateQuantity(stock_name, quantity, price)
 
+def set_size_qty_history(stock_history_name,size_detail):
+    for size in size_detail:
+        doc = frappe.get_doc({
+            "doctype": "Product Stock History Per Size",
+            "parent": stock_history_name,
+            "parentfield": "name",
+            "parenttype": "Stock History",
+            "quantity": size_detail[size],
+            "size": size,
+        })
+        doc.insert()
+    frappe.db.commit()
+
+
+def get_final_size_quantities(size_detail,in_or_out):
+    if size_detail==None:
+        return None
+    old_size_qty = size_detail["old"]
+    incoming_size_qty = size_detail["new_incoming"]
+    for index_of_sq in range(len(old_size_qty)):
+        if old_size_qty[index_of_sq].size not in incoming_size_qty:
+            continue
+        if in_or_out=="in":
+            old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) + int(incoming_size_qty[old_size_qty[index_of_sq].size])
+        elif in_or_out=="out":
+            old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) - int(incoming_size_qty[old_size_qty[index_of_sq].size])
+
+    return old_size_qty
 
 def get_total_quantity(order):
     # this functio returns total quantity of the order collecting all size quantities
@@ -404,7 +461,7 @@ def updateShipmentorderStocks(doc, method):
                     sales_order_item.item_code]
             final_quantity = production_stock.quantity-quantity
             updateStock2(production_stock_name[0].name, final_quantity, production_stock.quantity, "Shipment Order", float(
-                total_price)/final_quantity)
+                total_price)/final_quantity,"product",None)
 
 
 @frappe.whitelist()

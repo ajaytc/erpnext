@@ -59,10 +59,10 @@ def reduce_supply_stock(order):
         existing_details = get_old_quantities_unitprice(order)
         if existing_details['fabric_details']:
             updateStock2(existing_details['fabric_details']['stock_name'], existing_details['fabric_details']['old_stock']-order_quantities['fabric_quantity'],
-                         existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'])
+                         existing_details['fabric_details']['old_stock'], "", existing_details['fabric_details']['unit_price'],"fabric",None)
         if existing_details['trimming_details']:
             updateStock2(existing_details['trimming_details']['stock_name'], existing_details['trimming_details']['old_stock'] - order_quantities['trimming_quantity'],
-                         existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'])
+                         existing_details['trimming_details']['old_stock'], "", existing_details['trimming_details']['unit_price'],"trimming",None)
 
 
 def increase_product_stock(order):
@@ -78,7 +78,7 @@ def increase_product_stock(order):
     order_value = order.price_per_unit * order_quantity
     total_price = existing_details['old_value'] + int(order_value)
     updateStock2(existing_details['stock_name'], total_quantity,
-                 existing_details['old_stock'], "", float(total_price)/total_quantity)
+                 existing_details['old_stock'], "", float(total_price)/total_quantity,"prototype",None)
 
 
 @frappe.whitelist()
