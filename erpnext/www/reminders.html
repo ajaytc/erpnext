@@ -135,7 +135,6 @@
         $(".date-picker").datepicker({ dateFormat: 'yy-mm-dd' });
 
         $('input.date-picker').on('change', function () {
-            console.log('ddddddddddddd')
             validateTime($(this))
             $(this).siblings('span.selected_value').text($(this).val())
             $(this).addClass('active');

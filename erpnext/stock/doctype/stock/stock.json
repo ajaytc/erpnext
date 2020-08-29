@@ -14,7 +14,8 @@
   "size",
   "quantity",
   "localization",
-  "total_value"
+  "total_value",
+  "product_stock_per_size"
  ],
  "fields": [
   {
@@ -66,10 +67,16 @@
    "fieldname": "total_value",
    "fieldtype": "Float",
    "label": "Total Value "
+  },
+  {
+   "fieldname": "product_stock_per_size",
+   "fieldtype": "Table",
+   "label": "Product Quantity Per Size",
+   "options": "Product Stock Per Size"
   }
  ],
  "links": [],
- "modified": "2020-04-17 20:43:24.379869",
+ "modified": "2020-08-28 12:39:57.927572",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock",

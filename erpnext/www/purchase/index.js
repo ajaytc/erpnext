@@ -101,23 +101,37 @@ function open_reminder_modal(destination,supply,supplier){
     }
     if (empty_rem){
         $("input.date-picker").each(function(){
-            $(this).datepicker("setDate","");
+            $(this).val("");
+            $(this).siblings('span.selected_value').text("")
+            $(this).removeClass('active')
         })
     }else{
         $("input.date-picker").each(function(){
-            $(this).datepicker("setDate",REMINDER_INPUTS[supply][destination][supplier][this.name]);
+            $(this).val(REMINDER_INPUTS[supply][destination][supplier][this.name]);
+            $(this).siblings('span.selected_value').text(REMINDER_INPUTS[supply][destination][supplier][this.name])
+            $(this).addClass('active');
         })
     }
 }
 
 $("#add-reminder-button").click(function(){
     let reminder_values = {}
+    let supply = $("#reminder-modal").attr("data-supply")
+    let destination  = $("#reminder-modal").attr("data-destination")
+    let supplier = $("#reminder-modal").attr("data-supplier")
     $("input.date-picker").each(function(){
         reminder_values[this.name] = $(this).val();
     })
-    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")] = {}
-    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")]={}
-    REMINDER_INPUTS[$("#reminder-modal").attr("data-supply")][$("#reminder-modal").attr("data-destination")][$("#reminder-modal").attr("data-supplier")] = reminder_values
+    if (!REMINDER_INPUTS.hasOwnProperty(supply)){
+        REMINDER_INPUTS[supply] = {}
+        REMINDER_INPUTS[supply][destination]={}
+        REMINDER_INPUTS[supply][destination][supplier] = reminder_values
+    }else if(!REMINDER_INPUTS[supply].hasOwnProperty(destination)){
+        REMINDER_INPUTS[supply][destination]={}
+        REMINDER_INPUTS[supply][destination][supplier] = reminder_values
+    }
+    REMINDER_INPUTS[supply][destination][supplier] = reminder_values
+    
 })
 
 $("input[type='checkbox'].sales-order-section").change(function(){
