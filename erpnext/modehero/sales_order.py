@@ -545,7 +545,8 @@ def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_com
         'fab_suppliers':fabSuppliers,
         'trim_suppliers':trimSuppliers,
         'pack_suppliers':packSuppliers,
-        'comment':destinations_comment
+        'comment':destinations_comment,
+        'destination_type':None
     }
 
     prod_order =  create_production_order(json.dumps(production_order))
