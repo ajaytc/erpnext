@@ -77,7 +77,7 @@ def createUniformOrder(data):
         'doctype':'Uniform Order',
         'brand': brand,
         'customer':data['client'],
-        'point_of_safe':data['pos'],
+        'point_of_sale':data['pos'],
         'package':data['package'],
         'order_segments':segments
     })
@@ -108,7 +108,7 @@ def getSizesDetails(data):
     order_no=data['order_no']
     item_code=data['item_name']
 
-    sizeDetails=frappe.db.sql("""select uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uos.reciever_name,uosp.size,uo.creation from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s and uosp.order_no=%s and uosp.item_code=%s order by creation desc""",(brand,order_no,item_code))
+    sizeDetails=frappe.db.sql("""select uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uos.reciever_name,uosp.size,uo.creation,uosp.name from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s and uosp.order_no=%s and uosp.item_code=%s order by creation desc""",(brand,order_no,item_code))
     
     # order_no=0
     # qty=1
@@ -117,6 +117,7 @@ def getSizesDetails(data):
     # reciever_name=4
     # size=5
     # creation=6
+    # uosp.name=7
 
     return sizeDetails
 
@@ -158,6 +159,23 @@ def calcEndOfProductionDate(order):
     #     'internal_ref': data['internal_ref'],
     #     'fabric_ref': data['fabric_ref'],
     #     'product_name': data['item_code'],
+
+@frappe.whitelist()
+def recieveOrderPieces(data):
+    data = json.loads(data)
+    orderPieces=data['pieces']
+
+    for pieceName in orderPieces:
+        piece=frappe.get_doc('Uniform Order Segment Products',pieceName)
+        piece.recieved=1
+
+        piece.save(ignore_permissions=True)
+    
+    frappe.db.commit()
+
+    return {'status': 'ok'}
+
+
 
 
 

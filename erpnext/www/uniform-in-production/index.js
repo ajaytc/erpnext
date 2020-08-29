@@ -43,7 +43,8 @@ function getSizeDetails(el,item,order) {
                     for (a = 0; a < qty; a++) {
                         html = html + `<tr style='background-color:white'>
                             <td style="background-color: white !important;"><label class="custom-checkbox">
-                                <input type="checkbox"  data-name="">
+                            <input type="checkbox" class="pieces" name="piecesCheck"
+                            data-piece="`+value[7]+`">
                                 <span class="icon"></span>
                             </label></td>
                             <td style="background-color: transparent !important;">1</td>
@@ -65,3 +66,35 @@ function getSizeDetails(el,item,order) {
         }
     })
 }
+
+$('#recieved').click(function () {
+    selectedPieces=[]
+    
+    $('input[name="piecesCheck"]:checked').each(function () {
+        selectedPieces.push($(this).attr('data-piece'))
+    });
+
+    if (selectedPieces.length != 0) {
+        frappe.call({
+            method: 'erpnext.modehero.uniform.recieveOrderPieces',
+            args: {
+                data: {
+                    pieces: selectedPieces
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    location.reload();
+
+                } else {
+                    console.log(r)
+                }
+            }
+        })
+    } else {
+        console.error('Order not selected')
+
+    }
+
+})

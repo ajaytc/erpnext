@@ -65,6 +65,7 @@ def get_context(context):
     return context
 
 def checkMutipleRecs(context):
+    #get quantities sumation of same pos and Items records
     context.posNItemDicts={}
     for key,value in context.orderSets.items():
         posNItems={}
@@ -91,7 +92,7 @@ def removeElements(orders,removeOrders):
 
 
 def getposNitem(order):
-    if(order[4] != None):
+    if(order[4] != None and order[4]!=''):
         posNitem = order[4]+'-'+order[2]
     else:
         posNitem = order[3]+'-'+order[2]

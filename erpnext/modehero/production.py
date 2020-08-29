@@ -80,6 +80,7 @@ def create_production_order(data):
         'production_factory': data['production_factory'],
         'fac_country':production_factory.country,
         'final_destination':data['final_destination'],
+        'destination_type':data['destination_type'], #if pos-->1, if destination-->0
         'quantity_per_size': data['quantity'],
         'suppliers': order_suppliers,
         'factory_email':production_factory.email_address,

@@ -233,7 +233,7 @@ function generateSizingTable(sizes) {
 const cleartable = () => $('.table-section').html('')
 
 function generateOptions(values) {
-    let html = ''
+    let html = `<option value="">--+--</option>`
     values.map(v => {
         html += `<option value="${v.name}">${v.item_name}</option>`
     })
@@ -366,6 +366,7 @@ function createOrder(product, qtys) {
                 product_name: product,
                 production_factory: $('#factory_list>option:selected').text(),
                 final_destination:$('#destination_list>option:selected').val(),
+                destination_type:$('#destination_list>option:selected').attr('data-type'),
                 quantity: qtys,
                 fab_suppliers: fab_suppliers,
                 trim_suppliers: trim_suppliers,

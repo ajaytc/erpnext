@@ -3,7 +3,7 @@
 {{ macros.breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Uniform','url':'#'}]) }}
 
 
-
+<h2>{{_("Uniform in Production")}}</h2>
 <div id="container" class="container">
     {% for key,value in orderSets.items()%}
 
@@ -33,9 +33,10 @@
                         {%if n==0%}
                         <td rowspan="{{orderSets[key][key2]|length}}" id="orderNum">{{orderSets[key][key2][n][0]}}</td>
                         {%endif%}
-                        {%if orderSets[key][key2][n][4]!= None%}
-                        {% set pos=orderSets[key][key2][n][4]%}
-                        <td>{{orderSets[key][key2][n][4]}}</td>
+                        {%if (orderSets[key][key2][n][4]!= None and orderSets[key][key2][n][4]!='')%}
+                        {% set pos= orderSets[key][key2][n][4]%}
+                        {%set posName=frappe.get_doc('Point Of Sales',orderSets[key][key2][n][4])%}
+                        <td>{{posName.point_of_sale}}</td>
                         {%else%}
                         {% set pos=orderSets[key][key2][n][3]%}
                         <td>{{orderSets[key][key2][n][3]}}</td>
@@ -58,7 +59,7 @@
                     <button type="button" class="btn btn-primary ml-auto">
                         {{_("Stock")}}
                     </button>
-                    <button type="button" class="btn btn-primary ml-auto">
+                    <button type="button" id="recieved" class="btn btn-primary ml-auto">
                         {{_("Recieved")}}
                     </button>
 

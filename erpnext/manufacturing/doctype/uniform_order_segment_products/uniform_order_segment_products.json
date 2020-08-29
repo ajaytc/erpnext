@@ -9,7 +9,8 @@
   "order_no",
   "quantity",
   "size",
-  "comment"
+  "comment",
+  "recieved"
  ],
  "fields": [
   {
@@ -37,10 +38,16 @@
    "fieldname": "comment",
    "fieldtype": "Data",
    "label": "Comment"
+  },
+  {
+   "default": "0",
+   "fieldname": "recieved",
+   "fieldtype": "Int",
+   "label": "Recieved"
   }
  ],
  "links": [],
- "modified": "2020-08-21 13:37:06.487958",
+ "modified": "2020-08-28 15:58:50.950506",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Uniform Order Segment Products",
