@@ -16,7 +16,7 @@ def get_context(context):
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
 
-    orders = frappe.db.sql("""select uos.reciever_name,uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation,uo.name,uosp.size,uosp.recieved from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s order by customer Asc,reciever_name Asc """, brand)
+    orders = frappe.db.sql("""select uos.reciever_name,uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation,uo.name,uosp.size,uosp.recieved,uosp.name,uosp.packing_list,pos.point_of_sale from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name left join `tabPoint Of Sales` pos on uo.point_of_sale=pos.name where uo.brand=%s order by pos.point_of_sale Asc,customer Asc,reciever_name Asc """, brand)
 
     # reciever_name=0
     # order_no =1
@@ -28,37 +28,60 @@ def get_context(context):
     # uo.name=7
     #size=8
     #recieved=9
+    #uosp.name=10
+    # uosp.packing_list=11
+    #pos.point_of_sale=12
     
     context.orderSets = {}
+    context.posSets={}
     clients=[]
     reciever=[]
     uniformName=[]
 
     for order in orders:
         client=order[4]
+        pos=order[12]
+        if(pos!=None and pos!=''):
+            primary=pos
+        elif (client!=None and client!=''):
+            primary=client
+
+        
+        context.posSets[primary]={
+            'client':client,
+            'pos':pos,
+            'posName':order[5]
+        }
+            
         reciever=order[0]
         uniformName=order[7]
-        if(client not in context.orderSets.keys()):
+        if(primary not in context.orderSets.keys()):
+            
             # reciever=[]
             # uniformName=[]
             # clients.append(order[4])
-            context.orderSets[client]={}
+            context.orderSets[primary]={}
             # reciever.append(order[0])
-            context.orderSets[client][reciever]={}
+            context.orderSets[primary][reciever]={}
             # uniformName.append(order[7])
-            context.orderSets[client][reciever][uniformName]=[]
-            context.orderSets[client][reciever][uniformName].append(order)
+            context.orderSets[primary][reciever][uniformName]=[]
+            context.orderSets[primary][reciever][uniformName].append(order)
+            
+
         else:
-            if(reciever not in context.orderSets[client].keys()):
-                context.orderSets[client][reciever]={}
-                context.orderSets[client][reciever][uniformName]=[]
-                context.orderSets[client][reciever][uniformName].append(order)
+            if(reciever not in context.orderSets[primary].keys()):
+                context.orderSets[primary][reciever]={}
+                context.orderSets[primary][reciever][uniformName]=[]
+                context.orderSets[primary][reciever][uniformName].append(order)
+               
             else:
-                if(uniformName not in context.orderSets[client][reciever].keys()):
-                    context.orderSets[client][reciever][uniformName]=[]
-                    context.orderSets[client][reciever][uniformName].append(order)
+                if(uniformName not in context.orderSets[primary][reciever].keys()):
+                    context.orderSets[primary][reciever][uniformName]=[]
+                    context.orderSets[primary][reciever][uniformName].append(order)
+
                 else:
-                    context.orderSets[client][reciever][uniformName].append(order)
+                    context.orderSets[primary][reciever][uniformName].append(order)
+        
     return context
 
 
