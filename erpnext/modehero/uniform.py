@@ -187,12 +187,18 @@ def generatePl(data):
     client = frappe.get_doc('Customer', data['client'])
     
     clientAddress = getClientAddress(client)
-    # destinationAddress=getDestinationAddress(data['pos'])
-    packProductDetails = data['packProductDetails']
-
     brand_name = frappe.get_doc('User', frappe.session.user).brand_name
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
         "user_image", "address1", "name"])
+    if('pos' in data.keys()):
+        destinationAddress=getDestinationAddress(data['pos'])
+    else:
+        destinationAddress=brand[0].address1
+    
+    
+    packProductDetails = data['packProductDetails']
+
+    
     # brand = user.brand_name
 
     templateDetails = {}
@@ -205,7 +211,7 @@ def generatePl(data):
     templateDetails['creation'] = datetime.datetime.now()
     templateDetails['client_name'] = client.name
     templateDetails['client_address'] = clientAddress
-    templateDetails['destination'] = 'Destination Address'
+    templateDetails['destination'] = destinationAddress
     templateDetails['packProductDetails'] = packProductDetails
     temp = frappe.get_all("Pdf Document", filters={"type": "Packing List"}, fields=[
         "content", "type", "name"])
@@ -260,24 +266,28 @@ def displayPLDoc(data):
     return plDetails
 
 
-
-
-
-    
-
-
 def getClientAddress(client):
     clientAddress=''
     if(client.address_line_1!=None):
-        clientAddress=clientAddress+client.address_line_1
+        clientAddress=clientAddress+client.address_line_1+','
     if(client.address_line_2!=None):
         clientAddress=clientAddress+client.address_line_2
+    else:
+        clientAddress = clientAddress.replace(clientAddress[len(clientAddress)-1], '.')
     
     return clientAddress
         
 def getDestinationAddress(pos):
     destinationAddress=''
     pos = frappe.get_doc('Point Of Sales',pos)
+    if(pos.address_line_1!=None):
+        destinationAddress=destinationAddress+pos.address_line_1+','
+    if(pos.address_line_2!=None):
+        destinationAddress=destinationAddress+pos.address_line_2
+    else:
+        destinationAddress = destinationAddress.replace(destinationAddress[len(destinationAddress)-1], '.')
+
+    return destinationAddress
     
 
 def getBrandLogo(file):

@@ -267,15 +267,12 @@ $('#prodSubmit').click(function () {
     let files = ['confirmation_doc', 'profoma', 'invoice']
 
     Promise.all(files.map(f => {
-
         return checkFileUpload(f)
-
     })).then(files => {
         console.log(files);
         submitProductionSummary(files);
 
     }).catch(e => {
-
         frappe.throw(e)
     })
 

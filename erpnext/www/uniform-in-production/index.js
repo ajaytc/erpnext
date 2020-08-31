@@ -67,7 +67,7 @@ function getSizeDetails(el,item,order) {
     })
 }
 
-$('#recieved').click(function () {
+$('.recievedBtn').click(function () {
     selectedPieces=[]
     
     $('input[name="piecesCheck"]:checked').each(function () {

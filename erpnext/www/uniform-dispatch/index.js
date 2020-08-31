@@ -7,11 +7,30 @@ $(document).ready(function () {
     })
 });
 
+$('.piecesCheck').change(function () {
+    plt=false
+    checked = $(this).parent().parent().parent().parent().parent().find('input[name="piecesCheck"]:checked');
+    $(checked).each(function (index, value) {
+        if ($(value).parent().find('.pl').length){
+            plt=true
+            $(value).parent().parent().parent().parent().parent().find('#plGen').prop('disabled', true)
+            $(value).parent().parent().parent().parent().parent().find('#plNInvGen').prop('disabled', true)
+        }
+    })
+    if(plt==false){
+        $(this).parent().parent().parent().parent().parent().find('#plGen').prop('disabled', false)
+        $(this).parent().parent().parent().parent().parent().find('#plNInvGen').prop('disabled', false)
+    }
+    
+
+
+})
+
 $('.plGen').click(function () {
     packProductDetails = {}
     el = $(this)
     client = $(el).parent().parent().parent().find('#client').text()
-    pos=$(el).parent().parent().parent().attr('data-pos')
+    pos = $(el).parent().parent().parent().find('#pos').attr('data-pos')
     fullCheckedEls = $(el).parent().parent().parent().find('input[name="piecesCheck"]:checked')
     $(fullCheckedEls).each(function (index, pack) {
         reciever = $(pack).parent().parent().parent().find('#recieverName').text()
@@ -41,27 +60,32 @@ $('.plGen').click(function () {
 
 
     })
+    
+    if (!jQuery.isEmptyObject(packProductDetails)) {
+        frappe.call({
+            method: 'erpnext.modehero.uniform.generatePl',
+            args: {
+                data: {
+                    packProductDetails: packProductDetails,
+                    client: client,
+                    pos: pos
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    $(".piecesCheck").prop("checked", false);
+                    location.reload();
 
-    frappe.call({
-        method: 'erpnext.modehero.uniform.generatePl',
-        args: {
-            data: {
-                packProductDetails: packProductDetails,
-                client: client,
-                pos:pos
+                } else {
+                    console.log(r)
+                }
             }
-        },
-        callback: function (r) {
-            if (!r.exc) {
-                console.log(r)
-                location.reload();
+        })
 
-            } else {
-                console.log(r)
-            }
-        }
-    })
+    }
 })
+
 
 // $('#plGen').click(function () {
 //     markBatchGeneration()
@@ -81,9 +105,9 @@ $('.pl').click(function () {
         },
         callback: function (r) {
             if (!r.exc) {
-                html=r.message.content
+                html = r.message.content
                 // html=$.parseHTML(htmlstr)
-                html=html.replace('src="brandlogoimage"', "src="+r.message.brand_logo);
+                html = html.replace('src="brandlogoimage"', "src=" + r.message.brand_logo);
                 // $(html).find('#brand_logo').attr("src",r.message.brand_logo)
                 // $("#my_image").attr("src","second.jpg");
                 render_pdf(html)
@@ -98,45 +122,45 @@ $('.pl').click(function () {
 function render_pdf(html) {
     var formData = new FormData();
 
-	//Push the HTML content into an element
-    formData.append("html",html);
+    //Push the HTML content into an element
+    formData.append("html", html);
     // if (opts.orientation) {
-	// 	formData.append("orientation", opts.orientation);
-	// }
-	var blob = new Blob([], { type: "text/xml"});
-	formData.append("blob", blob);
+    // 	formData.append("orientation", opts.orientation);
+    // }
+    var blob = new Blob([], { type: "text/xml" });
+    formData.append("blob", blob);
 
     var xhr = new XMLHttpRequest();
-    $("#container").css("opacity",0.5);
-	xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
-	xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
+    $("#container").css("opacity", 0.5);
+    xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
+    xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
     xhr.responseType = "arraybuffer";
-    
-	xhr.onload = function(success) {
-		if (this.status === 200) {
-            $("#container").css("opacity",1);
-			var blob = new Blob([success.currentTarget.response], {type: "application/pdf"});
+
+    xhr.onload = function (success) {
+        if (this.status === 200) {
+            $("#container").css("opacity", 1);
+            var blob = new Blob([success.currentTarget.response], { type: "application/pdf" });
             var objectUrl = URL.createObjectURL(blob);
             window.open(objectUrl);
             // target=`<a href="${objectUrl}">${objectUrl}</a>`
             // $('#order_doc').html(target)
 
-			
-			//Open report in a new window
-			// window.open(objectUrl);
+
+            //Open report in a new window
+            // window.open(objectUrl);
         }
-        else{
+        else {
             frappe.msgprint({
-              title: __("Notification"),
-              indicator: "red",
-              message: __(
-                "Not Permitted"
-              ),
+                title: __("Notification"),
+                indicator: "red",
+                message: __(
+                    "Not Permitted"
+                ),
             });
-            $(".row").css("opacity",1);
-          }
+            $(".row").css("opacity", 1);
+        }
     };
-    
+
     xhr.send(formData);
 }
 

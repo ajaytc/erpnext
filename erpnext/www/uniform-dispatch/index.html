@@ -24,7 +24,6 @@
                 <div class="col-1" style="padding-top: 2.6%;">
                     <label>{{_("Name")}}</label>
                     <br>
-                    <input type="checkbox" id="fullCheck" class="fulpack" name='fullPack' style="display: none;">
                     <!-- <input class="form-control clientname-select" value="{{recieverKey}}" id="client-name-select"> -->
                     <label style="margin-top: 4%;" id="recieverName">{{recieverKey}}</label>
                 </div>
@@ -36,7 +35,9 @@
 
                     <div class="row">
                         {%if order[9]==1%}
+
                         <input type="checkbox" name="piecesCheck" class="piecesCheck" id="ck">
+
                         {%endif%}
                         <div class="col-3" style="max-width:42%">
                             <label>{{_("Order#")}}</label>
@@ -68,7 +69,8 @@
 
                 </div>
                 {%endfor%}
-                <hr>
+                <hr style="width: 100%;">
+                
 
             </div>
             {%endfor%}
