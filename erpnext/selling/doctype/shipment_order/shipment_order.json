@@ -1,114 +1,121 @@
 {
- "actions": [],
- "autoname": "hash",
- "creation": "2020-04-10 15:59:20.195858",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "internal_ref_prod_order",
-  "tracking_number",
-  "carrier_company",
-  "shipping_date",
-  "expected_delivery_date",
-  "shipping_price",
-  "shipping_document",
-  "brand",
-  "html_tracking_link",
-  "fabric_order_id",
-  "trimming_order_id",
-  "packaging_order_id"
- ],
- "fields": [
-  {
-   "fieldname": "tracking_number",
-   "fieldtype": "Data",
-   "label": "Tracking Number"
-  },
-  {
-   "fieldname": "carrier_company",
-   "fieldtype": "Data",
-   "label": "Carrier Company"
-  },
-  {
-   "fieldname": "shipping_date",
-   "fieldtype": "Date",
-   "label": "Shipping Date"
-  },
-  {
-   "fieldname": "expected_delivery_date",
-   "fieldtype": "Date",
-   "label": "Expected Delivery Date"
-  },
-  {
-   "fieldname": "shipping_price",
-   "fieldtype": "Currency",
-   "label": "Shipping Price"
-  },
-  {
-   "fieldname": "shipping_document",
-   "fieldtype": "Attach",
-   "label": "Shipping Document"
-  },
-  {
-   "fieldname": "brand",
-   "fieldtype": "Link",
-   "label": "Brand",
-   "options": "Company"
-  },
-  {
-   "fieldname": "html_tracking_link",
-   "fieldtype": "Data",
-   "label": "Html Tracking Link"
-  },
-  {
-   "fieldname": "fabric_order_id",
-   "fieldtype": "Link",
-   "label": "Fabric Order Id",
-   "options": "Fabric Order"
-  },
-  {
-   "fieldname": "trimming_order_id",
-   "fieldtype": "Link",
-   "label": "Trimming Order Id",
-   "options": "Trimming Order"
-  },
-  {
-   "fieldname": "packaging_order_id",
-   "fieldtype": "Link",
-   "label": "Packaging Order Id",
-   "options": "Packaging Order"
-  },
-  {
-   "fieldname": "internal_ref_prod_order",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Production Order Internal Ref",
-   "options": "Production Order"
-  }
- ],
- "links": [],
- "modified": "2020-08-31 06:56:46.614818",
- "modified_by": "Administrator",
- "module": "Selling",
- "name": "Shipment Order",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
- "quick_entry": 1,
- "sort_field": "modified",
- "sort_order": "DESC",
- "track_changes": 1
+   "actions": [],
+   "autoname": "hash",
+   "creation": "2020-04-10 15:59:20.195858",
+   "doctype": "DocType",
+   "editable_grid": 1,
+   "engine": "InnoDB",
+   "field_order": [
+      "internal_ref_prod_order",
+      "tracking_number",
+      "carrier_company",
+      "shipping_date",
+      "expected_delivery_date",
+      "shipping_price",
+      "shipping_document",
+      "brand",
+      "html_tracking_link",
+      "fabric_order_id",
+      "trimming_order_id",
+      "packaging_order_id",
+      "shipment_quantity_per_size"
+   ],
+   "fields": [
+      {
+         "fieldname": "tracking_number",
+         "fieldtype": "Data",
+         "label": "Tracking Number"
+      },
+      {
+         "fieldname": "carrier_company",
+         "fieldtype": "Data",
+         "label": "Carrier Company"
+      },
+      {
+         "fieldname": "shipping_date",
+         "fieldtype": "Date",
+         "label": "Shipping Date"
+      },
+      {
+         "fieldname": "expected_delivery_date",
+         "fieldtype": "Date",
+         "label": "Expected Delivery Date"
+      },
+      {
+         "fieldname": "shipping_price",
+         "fieldtype": "Currency",
+         "label": "Shipping Price"
+      },
+      {
+         "fieldname": "shipping_document",
+         "fieldtype": "Attach",
+         "label": "Shipping Document"
+      },
+      {
+         "fieldname": "brand",
+         "fieldtype": "Link",
+         "label": "Brand",
+         "options": "Company"
+      },
+      {
+         "fieldname": "html_tracking_link",
+         "fieldtype": "Data",
+         "label": "Html Tracking Link"
+      },
+      {
+         "fieldname": "fabric_order_id",
+         "fieldtype": "Link",
+         "label": "Fabric Order Id",
+         "options": "Fabric Order"
+      },
+      {
+         "fieldname": "trimming_order_id",
+         "fieldtype": "Link",
+         "label": "Trimming Order Id",
+         "options": "Trimming Order"
+      },
+      {
+         "fieldname": "packaging_order_id",
+         "fieldtype": "Link",
+         "label": "Packaging Order Id",
+         "options": "Packaging Order"
+      },
+      {
+         "fieldname": "internal_ref_prod_order",
+         "fieldtype": "Link",
+         "in_list_view": 1,
+         "label": "Production Order Internal Ref",
+         "options": "Production Order"
+      },
+      {
+         "fieldname": "shipment_quantity_per_size",
+         "fieldtype": "Table",
+         "label": "Shipment Quantity Per Size",
+         "options": "Shipment Quantity Per Size"
+      }
+   ],
+   "links": [],
+   "modified": "2020-08-29 15:17:08.566152",
+   "modified_by": "Administrator",
+   "module": "Selling",
+   "name": "Shipment Order",
+   "owner": "Administrator",
+   "permissions": [
+      {
+         "create": 1,
+         "delete": 1,
+         "email": 1,
+         "export": 1,
+         "print": 1,
+         "read": 1,
+         "report": 1,
+         "role": "System Manager",
+         "share": 1,
+         "write": 1
+      }
+   ],
+   "quick_entry": 1,
+   "sort_field": "modified",
+   "sort_order": "DESC",
+   "track_changes": 1
 }

@@ -34,3 +34,7 @@ td{
 #supply-button-section{
     margin-top: 45px;
 }
+
+table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.table-custom-header) tbody tr:nth-child(2n+1) td{
+    background-color: white !important;
+}
