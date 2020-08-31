@@ -17,7 +17,8 @@
   "html_tracking_link",
   "fabric_order_id",
   "trimming_order_id",
-  "packaging_order_id"
+  "packaging_order_id",
+  "shipment_quantity_per_size"
  ],
  "fields": [
   {
@@ -84,10 +85,16 @@
    "fieldtype": "Link",
    "label": "Internal Ref Prod Order",
    "options": "Production Order"
+  },
+  {
+   "fieldname": "shipment_quantity_per_size",
+   "fieldtype": "Table",
+   "label": "Shipment Quantity Per Size",
+   "options": "Shipment Quantity Per Size"
   }
  ],
  "links": [],
- "modified": "2020-08-31 09:35:03.571029",
+ "modified": "2020-08-31 09:56:07.677033",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",
