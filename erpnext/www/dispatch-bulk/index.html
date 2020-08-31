@@ -26,11 +26,14 @@
                 {% for order in presenting_order_data[location]["orders"] %}
                     <tr >
                         <td rowspan="{{order[ship_history_index]|length + 4}}" scope="rowgroup">
-                            {% if order[po_creation_time_index]!=None %}{{order[po_creation_time_index].strftime('%Y-%m-%d')}}
-                            {% elif order[soi_creation_time_index]!=None %}{{order[soi_creation_time_index].strftime('%Y-%m-%d')}}{% endif %}
+                            {% if order[soi_name_index]!=None %}{{order[soi_creation_time_index].strftime('%Y-%m-%d')}}
+                            {% elif order[po_creation_time_index]!=None %}{{order[po_creation_time_index].strftime('%Y-%m-%d')}}{% endif %}
                         </td>
-                        <td rowspan="{{order[ship_history_index]|length + 4}}" scope="rowgroup">{{ order[if_index] }} <br> {{ order[item_name_index] }}</td>
-                        <td rowspan="{{order[ship_history_index]|length + 3}}" scope="rowgroup"></td>
+                        <td rowspan="{{order[ship_history_index]|length + 4}}" scope="rowgroup">
+                            {% if order[soi_name_index]!=None %}{{ order[soi_parent_index] }}{% else %}{{ order[if_index] }}{% endif %} <br>
+                             {{ order[item_name_index] }}
+                        </td>
+                        <td></td>
                         <td></td>
                         {% for size in order[sizes_scheme_index] %}
                             <td>{{size["size"]}}</td>
@@ -41,6 +44,7 @@
                         <td></td>
                     </tr>
                     <tr >
+                        <td></td>
                         <td>Qty</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             {% for order_qty in order[order_qty_index] if order_qty.size==size_col.size %}
@@ -55,6 +59,7 @@
                         <td></td>
                     </tr>
                     <tr >
+                        <td></td>
                         <td>Stock</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             {% for stock_qty in order[stock_qty_index] if stock_qty.size==size_col.size %}
@@ -69,14 +74,45 @@
                         <td></td>
                     </tr>
                     {% for row_index in range(order[ship_history_index]|length) %}
-                        <tr class="{{ns.row_class}}"></tr>
+                    <tr >
+                        <td>{{order[ship_history_index][row_index]["date"].strftime('%Y-%m-%d')}}</td>
+                        <td>Sent</td>
+                        {% for size_col in order[sizes_scheme_index] %}
+                            {% for ship_qty in order[ship_history_index][row_index]["quantity_per_size"] if ship_qty.size==size_col.size %}
+                                <td>{{ship_qty.quantity}}</td>
+                            {% else %}
+                                <td>-</td>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for empty_i in range (presenting_order_data[location]["max_col_span"]-order[sizes_scheme_index]|length) %}
+                            <td></td>
+                        {% endfor %}
+                        <td>
+                            <div class="row">
+                                <div class="col-6">S</div>
+                            </div>
+                        </td>
+                    </tr>
                     {% endfor %}
-                    <tr></tr>
+                    <tr class="ship-row">
+                        <td><input type="checkbox" data-location="{{location}}" data-if="{{order[if_index]}}"  /></td>
+                        <td >Ship</td>
+                        {% for size_col in order[sizes_scheme_index] %}
+                            <td class="ship-quantity-boxs"><input class="background-ash ship-quantity-box" data-size="{{size_col.size}}" type="text" /></td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
                 
                 {% endfor %}
             </tbody>
         </table>
+        <div class="button-set">
+            <button   type="button" class="btn btn-primary add-shipment-info" style="display: inline-block;" data-location="{{location}}">Add Shipment Info</button>
+            <button   type="button" class="btn btn-primary" style="display: inline-block;">PL + Invoice</button>
+            <button   type="button" class="btn btn-primary" style="display: inline-block;">Cancel</button>
+        </div>
     </div>
     {% endfor %}
 </div>
 
+{% include 'erpnext/www/modals/shipment_order_modal.html' %}

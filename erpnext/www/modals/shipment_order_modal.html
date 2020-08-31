@@ -1,0 +1,200 @@
+<div class="modal fade"  id="shipment-order-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname">Shipment Order</p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id = "create-shipment-order">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Production Order Internal Ref")}}</label>
+                                <div class="form-group">
+                                    <select class="form-control" id="shipment-order-if"> 
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Carrirer Company")}}</label>
+                                <input id="shipment-order-ca-company" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Shipping Price")}}</label>
+                                <input id="shipment-order-shipping-price" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Tracking Number")}}</label>
+                                <input id="shipment-order-tracking-number" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("HTML Tracking Link")}}</label>
+                                <input id="shipment-order-tracking-link" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Shipping Date")}}</label>
+                                <input id="shipment-order-shipping-date" type="date" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Expeced Delivery Date")}}</label>
+                                <input id="shipment-order-expected-date" type="date" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Shipping Ducument")}}</label>
+                                <div class="btn btn-secondary">
+                                    <input id="shipment-order-document" type="file">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="shipment-order-save" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#shipment-order-save').click(function (e) {
+        e.preventDefault();
+        let values = {}
+        values["shipment_quantity_per_size"] = collect_ship_size_qty()
+        values["internal_ref_prod_order"] = $("#shipment-order-if").val()
+        values["carrier_company"] = $("#shipment-order-ca-company").val()
+        values["shipping_price"] = $("#shipment-order-shipping-price").val()
+        values["tracking_number"] = $("#shipment-order-tracking-number").val()
+        values["html_tracking_link"] = $("#shipment-order-tracking-link").val()
+        values["shipping_date"] = $("#shipment-order-shipping-date").val()
+        values["expected_delivery_date"] = $("#shipment-order-expected-date").val()
+        if ($("#shipment-order-document").prop('files').length!=1){
+            response_message('Unsuccessfull', "Please upload document !", 'red')
+            return null
+        }
+        for (let key in values){
+            if (key=="shipment_quantity_per_size"){
+                continue
+            }
+            if (values[key].trim().length==0 ){
+                $("create-shipment-order").trigger("reset")
+                response_message('Unsuccessfull', "Please fill all fields !", 'red')
+                return null
+            }
+        }
+        file_upload_function()
+        .then(url=>{
+            values["shipping_document"] = url
+            frappe_create_shipping_order(values)
+        })
+        .catch(error=>{
+            $("create-shipment-order").trigger("reset")
+            response_message('Unsuccessfull', error, 'red')
+        })
+    });
+
+    function file_upload_function() {
+        return new Promise((resolve, reject) => {
+            let file = $("#shipment-order-document").prop('files')[0]
+            if (file.size / 1024 / 1024 > 5) {
+                reject("Please upload file less than 5mb")
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            console.log(file, reader, reader.result)
+            reader.onload = function () {
+                frappe.call({
+                    method: 'frappe.handler.uploadfile',
+                    args: {
+                        filename: file.name,
+                        attached_to_doctype: 'Shipping Order',
+                        attached_to_field: 'shipment-order-document',
+                        is_private: true,
+                        filedata: reader.result,
+                        from_form: true,
+                    },
+                    callback: function (r) {
+                        if (!r.exc) {
+                            console.log(r)
+                            $("#shipment-order-document").html(r.message.file_url)
+                            resolve(r.message.file_url)
+                        }
+                    }
+                })
+            }
+        })
+    }
+    function response_message(title, message, color) {
+        frappe.msgprint({
+            title: __(title),
+            indicator: color,
+            message: __(message)
+        });
+    }
+    function collect_ship_size_qty(){
+        let location = $("#shipment-order-modal").attr("data-location")
+        let result_obj = {}
+        $("input:checkbox[data-location|='"+location+"']:checked").first().parent().parent().children(".ship-quantity-boxs").each(function(){
+            result_obj[$(this).children(":input.ship-quantity-box").first().attr("data-size")] = $(this).children(":input.ship-quantity-box").first().val()
+        })
+        return result_obj
+    }
+    function frappe_create_shipping_order(data){
+        frappe.call({
+                method: 'erpnext.modehero.shipment_orders.createShipmentOrder',
+                args: {
+                    data:data
+                },
+                callback: function (r) {
+                    if (r) {
+                        if (r.message['status'] == "ok") {
+                            response_message('Successfull', 'Order created successfully', 'green')
+                            clear_inputs()
+                            window.location.reload()
+                            return null;
+                        }
+                        clear_inputs()
+                        response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
+                        window.location.reload()
+                        return null
+                    }
+                    $("create-shipment-order").trigger("reset")
+                    response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
+                }
+            });
+    }
+    function clear_inputs(){
+        let location = $("#shipment-order-modal").attr("data-location")
+        $("input:checkbox[data-location|='"+location+"']:checked").first().parent().parent().children(".ship-quantity-boxs").each(function(){
+            $(this).children(":input.ship-quantity-box").first().val("")
+            console.log($(this).children(":input.ship-quantity-box").first().val())
+        })
+        $("input:checkbox[data-location|='"+location+"']:checked").prop('checked', false)
+    }
+</script>

@@ -445,24 +445,57 @@ def get_size_sales_order(sales_order):
 
 # decrease item quantity from stock
 def updateShipmentorderStocks(doc, method):
-    sales_order_item = frappe.get_doc('Sales Order Item', doc.product_order_id)
-    # sales_order_item.docstatus = 3
-    # sales_order_item.save()
-    # frappe.db.commit()
-    quantity = get_total_quantity(sales_order_item)
-    if quantity != 0 and sales_order_item.item_code != None:
-        production_stock_name = frappe.get_all(
-            'Stock', filters={'item_type': 'product', 'product': sales_order_item.item_code}, fields=['name'])
-        if production_stock_name != None and len(production_stock_name) != 0:
-            production_stock = frappe.get_doc(
-                'Stock', production_stock_name[0].name)
-            total_price = production_stock.total_value - \
-                calculate_price(get_size_sales_order(sales_order_item))[
-                    sales_order_item.item_code]
-            final_quantity = production_stock.quantity-quantity
-            updateStock2(production_stock_name[0].name, final_quantity, production_stock.quantity, "Shipment Order", float(
-                total_price)/final_quantity,"product",None)
 
+    # here if the production order has the searching inernal ref, that is considered as a product shipping ( underlying code is to reduce product stock)
+    if doc.internal_ref_prod_order!=None:
+        production_order = frappe.get_doc("Production Order",doc.internal_ref_prod_order)
+        if len(doc.shipment_quantity_per_size)==0:
+            quantity = get_total_quantity(production_order)
+        else:
+            quantity = get_total_quantity_from_shipment(doc)
+        existing_details = get_product_details_from_order(production_order, "production")
+        if quantity != 0 and existing_details!=None:
+            if len(doc.shipment_quantity_per_size)==0:
+                total_price = existing_details["old_value"] - calculate_price(get_size_from_prod_order(production_order))[production_order.product_name]
+            else:
+                total_price = existing_details["old_value"] - calculate_price(get_size_from_prod_shipment_order(doc,production_order.product_name))[production_order.product_name]
+            final_quantity = existing_details["old_stock"]-quantity
+            updateStock2(existing_details["stock_name"], final_quantity, existing_details["old_stock"], "Shipment Order", float(
+                total_price)/final_quantity,"product",{"old":existing_details["size_details"],"new_incoming":get_shipment_qty_size_detail(doc)})
+
+def get_total_quantity_from_shipment(order):
+    # this functio returns total quantity of the order collecting all size quantities
+    total_quantity = 0
+    for size in order.shipment_quantity_per_size:
+        if (size.quantity != None):
+            total_quantity = total_quantity + int(size.quantity)
+    return total_quantity
+
+def get_shipment_qty_size_detail(doc):
+    result_dic = {}
+    for detail in doc.shipment_quantity_per_size:
+        result_dic[detail.size] = detail.quantity
+    return result_dic
+
+
+def get_size_from_prod_order(order):
+    # this returns a dictionary of size quantities with product name
+    # output of this function can be used in calculate_price function
+    size_order = {}
+    size_order.update([(order.product_name, {})])
+    for size in order.quantity_per_size:
+        size_order[order.product_name].update(
+            [(size.size, int(size.quantity))])
+    return size_order
+
+def get_size_from_prod_shipment_order(order,product_name):
+    # this returns a dictionary of size quantities with product name
+    # output of this function can be used in calculate_price function
+    size_order = {}
+    size_order.update([(product_name, {})])
+    for size in order.shipment_quantity_per_size:
+        size_order[product_name].update([(size.size, int(size.quantity))])
+    return size_order
 
 @frappe.whitelist()
 def get_stock(item_type, ref):
@@ -470,3 +503,4 @@ def get_stock(item_type, ref):
         return frappe.get_all('Stock', filters={'item_type': item_type, 'internal_ref': ref}, fields=['quantity'])[0]
     except:
         return {'quantity': 0}
+
