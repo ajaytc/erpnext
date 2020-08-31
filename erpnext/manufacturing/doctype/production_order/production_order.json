@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "format:{internal_ref}",
  "creation": "2020-04-07 18:37:27.027667",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -215,7 +216,7 @@
   }
  ],
  "links": [],
- "modified": "2020-08-28 07:24:25.527346",
+ "modified": "2020-08-31 06:55:53.752821",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

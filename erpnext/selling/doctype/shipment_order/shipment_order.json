@@ -6,7 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "product_order_id",
+  "internal_ref_prod_order",
   "tracking_number",
   "carrier_company",
   "shipping_date",
@@ -20,13 +20,6 @@
   "packaging_order_id"
  ],
  "fields": [
-  {
-   "fieldname": "product_order_id",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Product Order Id",
-   "options": "Sales Order Item"
-  },
   {
    "fieldname": "tracking_number",
    "fieldtype": "Data",
@@ -85,10 +78,17 @@
    "fieldtype": "Link",
    "label": "Packaging Order Id",
    "options": "Packaging Order"
+  },
+  {
+   "fieldname": "internal_ref_prod_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Production Order Internal Ref",
+   "options": "Production Order"
   }
  ],
  "links": [],
- "modified": "2020-06-30 21:13:09.539161",
+ "modified": "2020-08-31 06:56:46.614818",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",

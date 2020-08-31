@@ -20,7 +20,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-07-07 06:52:12.918366",
+ "modified": "2020-08-31 06:57:22.202336",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "shipment-order",
@@ -38,13 +38,13 @@
  "web_form_fields": [
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "product_order_id",
+   "fieldname": "internal_ref_prod_order",
    "fieldtype": "Link",
    "hidden": 0,
-   "label": "Product Order Id",
+   "label": "Production Order Internal Ref",
    "max_length": 0,
    "max_value": 0,
-   "options": "Sales Order Item",
+   "options": "Production Order",
    "read_only": 0,
    "reqd": 0,
    "show_in_filter": 0
