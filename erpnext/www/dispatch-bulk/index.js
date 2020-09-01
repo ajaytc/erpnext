@@ -19,10 +19,10 @@ $(".add-shipment-info").click(function(){
         response_message('Unsuccessfull', 'Multiple selection are not allowed at once to add shipment info!', 'red')
         return null
     }
-    if (!validate_ship_quantity($("input:checkbox[data-location|='"+location+"']:checked").first())){
-        response_message('Unsuccessfull', 'Fill all quantities!', 'red')
-        return null
-    }
+    // if (!validate_ship_quantity($("input:checkbox[data-location|='"+location+"']:checked").first())){
+    //     response_message('Unsuccessfull', 'Fill all quantities!', 'red')
+    //     return null
+    // }
     
     let po_if = $("input:checkbox[data-location|='"+location+"']:checked").first().attr("data-if")
     let sales_order_item = $("input:checkbox[data-location|='"+location+"']:checked").first().attr("data-sales_order_item")

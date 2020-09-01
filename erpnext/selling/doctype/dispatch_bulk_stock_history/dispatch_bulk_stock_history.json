@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "creation": "2020-09-01 16:30:14.333396",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "is_bulk",
+  "stock_history",
+  "sales_order",
+  "bulk_order"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "is_bulk",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Is Bulk",
+   "reqd": 1
+  },
+  {
+   "fieldname": "stock_history",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Stock History",
+   "options": "Stock History",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order Number",
+   "options": "Sales Order Item"
+  },
+  {
+   "fieldname": "bulk_order",
+   "fieldtype": "Link",
+   "label": "Bulk Order Number",
+   "options": "Production Order"
+  }
+ ],
+ "links": [],
+ "modified": "2020-09-01 16:30:14.333396",
+ "modified_by": "Administrator",
+ "module": "Selling",
+ "name": "Dispatch Bulk Stock History",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -45,8 +45,8 @@ def get_context(context):
     context.stock_qty_index = 16
     # 17 = order_size_details
     context.order_qty_index = 17
-    # 18 = shipping_history
-    context.ship_history_index = 18
+    # 18 = sent_history
+    context.sent_history_index = 18
     # 19 = POS_or_DESTINY
 
     orders = list(orders)
@@ -54,7 +54,7 @@ def get_context(context):
         orders[i] = list(orders[i])
     pos_destination_support_data,item_support_data = collect_item_destination_data(orders)
     orders_with_quantity_data = add_size_quantity_data(orders,item_support_data)
-    final_order_list = add_shipment_n_order_number_data(orders_with_quantity_data)
+    final_order_list = add_sent_data(orders_with_quantity_data)
     context.presenting_order_data = modify_order_list(final_order_list,pos_destination_support_data)
 
     return context
@@ -146,21 +146,21 @@ def add_size_quantity_data(orders,item_support):
             orders[i].append(None)
     return orders
 
-def add_shipment_n_order_number_data(orders):
+def add_sent_data(orders):
     for i in range(len(orders)):
         ship_order_docs = []
         ship_list = []
-        if orders[i][0]==None:
-            ship_list = frappe.get_all('Shipment Order',{'internal_ref_prod_order':orders[i][12]},['name'])
-        else:
-            ship_list = frappe.get_all('Shipment Order',{'sales_order_item':orders[i][0]},['name'])
+        # if orders[i][0]==None:
+        #     ship_list = frappe.get_all('Shipment Order',{'internal_ref_prod_order':orders[i][12]},['name'])
+        # else:
+        #     ship_list = frappe.get_all('Shipment Order',{'sales_order_item':orders[i][0]},['name'])
 
-        for ship_order in ship_list:
-            ship_doc = frappe.get_doc("Shipment Order",ship_order.name)
-            temp_list = []
-            for qps in ship_doc.shipment_quantity_per_size:
-                temp_list.append({"size":qps.size,"quantity":qps.quantity})
-            ship_order_docs.append({"date":ship_doc.creation,"quantity_per_size":temp_list})
+        # for ship_order in ship_list:
+        #     ship_doc = frappe.get_doc("Shipment Order",ship_order.name)
+        #     temp_list = []
+        #     for qps in ship_doc.shipment_quantity_per_size:
+        #         temp_list.append({"size":qps.size,"quantity":qps.quantity})
+        #     ship_order_docs.append({"date":ship_doc.creation,"quantity_per_size":temp_list})
 
         orders[i].append(ship_order_docs)
     return orders

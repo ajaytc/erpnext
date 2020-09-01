@@ -348,16 +348,10 @@ def submitPaymentProof(data):
 @frappe.whitelist()
 def createShipmentOrderForProduction(data):
     data = json.loads(data)
-    validated,message = size_quantity_validation_for_shipment(data["shipment_quantity_per_size"],data["internal_ref_prod_order"])
-    if (not validated):
-        return {"status":"error","message":message}
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
     if (len(data['tracking_number'].strip())==0 or len(data['internal_ref_prod_order'].strip())==0 ):
         return {"status":"error","message":"Incompleted data !"}
-    shipment_quantity_per_size_data = []
-    for size in data['shipment_quantity_per_size']:
-        shipment_quantity_per_size_data.append({"size":size,"quantity":int(data['shipment_quantity_per_size'][size])})
     if data["sales_order_item"]=="" or  data["sales_order_item"]=="None": data["sales_order_item"] = None
     shipmentOrder=frappe.get_doc({
         'doctype': 'Shipment Order',
@@ -369,7 +363,6 @@ def createShipmentOrderForProduction(data):
         'html_tracking_link':data['html_tracking_link'],
         # internal_ref_prod_order shoul be None if that particular shipment is a another kind of shipment but product
         'internal_ref_prod_order':data['internal_ref_prod_order'],
-        'shipment_quantity_per_size':shipment_quantity_per_size_data,
         # Sales order item is none the production order is bulk order
         'sales_order_item':data["sales_order_item"],
         'brand':brand
@@ -378,20 +371,20 @@ def createShipmentOrderForProduction(data):
     frappe.db.commit()
     return {"status":"ok"}
 
-def size_quantity_validation_for_shipment(size_qty_obj,internal_ref_prod_order):
+# def size_quantity_validation_for_shipment(size_qty_obj,internal_ref_prod_order):
 
-    prod_order_list = frappe.get_all("Production Order",{"internal_ref":internal_ref_prod_order},["product_name"])
-    if len(prod_order_list)==0:
-        return False
-    stock_doc = frappe.get_doc("Sizing Scheme",frappe.get_doc("Item",prod_order_list[0].product_name).sizing)
-    count = 0
-    is_not_enogh = False
-    for size_req in size_qty_obj:
-        for real_sizing in stock_doc.sizing:
-            if size_req == real_sizing.size:
-                count = count + 1
+#     prod_order_list = frappe.get_all("Production Order",{"internal_ref":internal_ref_prod_order},["product_name"])
+#     if len(prod_order_list)==0:
+#         return False
+#     stock_doc = frappe.get_doc("Sizing Scheme",frappe.get_doc("Item",prod_order_list[0].product_name).sizing)
+#     count = 0
+#     is_not_enogh = False
+#     for size_req in size_qty_obj:
+#         for real_sizing in stock_doc.sizing:
+#             if size_req == real_sizing.size:
+#                 count = count + 1
     
-    if (count!=len(size_qty_obj.keys())):
-        return False,"Error of data !"
+#     if (count!=len(size_qty_obj.keys())):
+#         return False,"Error of data !"
 
-    return True,None
+#     return True,None

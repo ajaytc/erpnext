@@ -87,7 +87,6 @@
         e.preventDefault();
         let values = {}
         values["sales_order_item"] = $("#shipment-order-modal").attr("data-sales_order_item")
-        values["shipment_quantity_per_size"] = collect_ship_size_qty()
         values["internal_ref_prod_order"] = $("#shipment-order-if").val()
         values["carrier_company"] = $("#shipment-order-ca-company").val()
         values["shipping_price"] = $("#shipment-order-shipping-price").val()
@@ -100,7 +99,7 @@
             return null
         }
         for (let key in values){
-            if (key=="shipment_quantity_per_size" || key=="sales_order_item"){
+            if ( key=="sales_order_item"){
                 continue
             }
             if (values[key].trim().length==0 ){
@@ -191,11 +190,6 @@
             });
     }
     function clear_inputs(){
-        let location = $("#shipment-order-modal").attr("data-location")
-        $("input:checkbox[data-location|='"+location+"']:checked").first().parent().parent().children(".ship-quantity-boxs").each(function(){
-            $(this).children(":input.ship-quantity-box").first().val("")
-            console.log($(this).children(":input.ship-quantity-box").first().val())
-        })
         $("input:checkbox[data-location|='"+location+"']:checked").prop('checked', false)
     }
 </script>

@@ -22,7 +22,7 @@ import json
 def directShip(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)-int(amount)
 
-    stockOut(stock_name, amount, new_stock, description)
+    stockOut(stock_name, amount, new_stock, description,None)
     updateQuantity(stock_name, new_stock, price,None)
 
 
@@ -30,7 +30,7 @@ def directShip(stock_name, amount, old_stock, description, price):
 def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
-    stockIn(stock_name, amount, new_stock, description)
+    stockIn(stock_name, amount, new_stock, description,None)
     updateQuantity(stock_name, new_stock, price,None)
 
 
@@ -292,8 +292,8 @@ def createNewPackagingStock(doc, method):
     frappe.db.commit()
 
 
-def stockIn(stock_name, amount, quantity, description):
-    doc = frappe.get_doc({
+def stockIn(stock_name, amount, quantity, description,size_quantites):
+    doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
         "parentfield": "name",
@@ -302,14 +302,17 @@ def stockIn(stock_name, amount, quantity, description):
         "quantity": amount,
         "stock": quantity,
         "description": description
-    })
+    }
+    if size_quantites!=None:
+        doc_dic["product_stock_history_per_size"] = size_quantites
+    doc = frappe.get_doc(doc_dic)
     doc.insert()
     frappe.db.commit()
     return doc
 
 
-def stockOut(stock_name, amount, quantity, description):
-    doc = frappe.get_doc({
+def stockOut(stock_name, amount, quantity, description,size_quantites):
+    doc_dic ={
         "doctype": "Stock History",
         "parent": stock_name,
         "parentfield": "name",
@@ -318,7 +321,10 @@ def stockOut(stock_name, amount, quantity, description):
         "quantity": amount,
         "stock": quantity,
         "description": description
-    })
+    }
+    if size_quantites!=None:
+        doc_dic["product_stock_history_per_size"] = size_quantites
+    doc = frappe.get_doc(doc_dic)
     doc.insert()
     frappe.db.commit()
     return doc
@@ -348,37 +354,37 @@ def updateStock2(stock_name, quantity, old_quantity, description, price,item_typ
     else:
         old_quantity = int(old_quantity)
 
-    stock_history_doc = None
     if quantity > old_quantity:
         amount = quantity-old_quantity
-        stock_history_doc = stockIn(stock_name, amount, quantity, description)
         if size_detail !=None:
-            set_size_qty_history(stock_history_doc.name,size_detail["new_incoming"])
+            stock_history_sizeqty = get_size_qty_history(size_detail["new_incoming"])
+            stockIn(stock_name, amount, quantity, description,stock_history_sizeqty)
             size_detail = get_final_size_quantities(size_detail,"in")
+        else:
+            stockIn(stock_name, amount, quantity, description,None)
     elif old_quantity > quantity:
         amount = old_quantity-quantity
-        stock_history_doc = stockOut(stock_name, amount, quantity, description)
         if size_detail !=None:
-            set_size_qty_history(stock_history_doc.name,size_detail["new_incoming"])
+            stock_history_sizeqty = get_size_qty_history(size_detail["new_incoming"])
+            stockOut(stock_name, amount, quantity, description,stock_history_sizeqty)
             size_detail = get_final_size_quantities(size_detail,"out")
+        else:
+            stockOut(stock_name, amount, quantity, description,None)
     else:
         pass
     
     updateQuantity(stock_name, quantity, price,size_detail)
 
 
-def set_size_qty_history(stock_history_name,size_detail):
+def get_size_qty_history(size_detail):
+    doc_list = []
     for size in size_detail:
-        doc = frappe.get_doc({
-            "doctype": "Product Stock History Per Size",
-            "parent": stock_history_name,
-            "parentfield": "name",
-            "parenttype": "Stock History",
+        doc = {
             "quantity": size_detail[size],
             "size": size,
-        })
-        doc.insert()
-    frappe.db.commit()
+        }
+        doc_list.append(doc)
+    return doc_list
 
 
 def get_final_size_quantities(size_detail,in_or_out):
