@@ -29,6 +29,7 @@ def createShipmentOrder(data):
     shipment_quantity_per_size_data = []
     for size in data['shipment_quantity_per_size']:
         shipment_quantity_per_size_data.append({"size":size,"quantity":int(data['shipment_quantity_per_size'][size])})
+    if data["sales_order_item"]=="" or  data["sales_order_item"]=="None": data["sales_order_item"] = None
     shipmentOrder=frappe.get_doc({
         'doctype': 'Shipment Order',
         'tracking_number':data['tracking_number'],
@@ -40,6 +41,8 @@ def createShipmentOrder(data):
         # internal_ref_prod_order shoul be None if that particular shipment is a another kind of shipment but product
         'internal_ref_prod_order':data['internal_ref_prod_order'],
         'shipment_quantity_per_size':shipment_quantity_per_size_data,
+        # Sales order item is none the production order is bulk order
+        'sales_order_item':data["sales_order_item"],
         'brand':brand
     })
     order = shipmentOrder.insert()

@@ -104,7 +104,7 @@
                                 {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_ref}}
                                 {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_item}}
                                 {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_item}}
-                                {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_name}}
+                                {%elif o.internal_ref_prod_order%}{{frappe.get_doc('Production Order',o.internal_ref_prod_order).product_name}}
                                 {% endif %}
                             </a>
                         </td>
@@ -113,7 +113,7 @@
                             {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_vendor}}
                             {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_vendor}}
                             {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_vendor}}
-                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order',frappe.get_doc('Sales Order Item',o.product_order_id).parent).company}}
+                            {%elif o.internal_ref_prod_order%}{{frappe.get_doc('Production Order',o.internal_ref_prod_order).production_factory}}
                             {% endif %}
 
 
@@ -122,7 +122,8 @@
                             {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).destination}}
                             {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).destination}}
                             {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).destination}}
-                            {%elif o.product_order_id%}{{frappe.get_doc('Sales Order Item',o.product_order_id).item_destination}}
+                            {%elif o.sales_order_item%}{{frappe.get_doc('Sales Order Item',o.sales_order_item).item_destination}}
+                            {%elif o.internal_ref_prod_order%}{{frappe.get_doc('Production Order',o.internal_ref_prod_order).final_destination}}
                             {% endif %}
                         </td>
 

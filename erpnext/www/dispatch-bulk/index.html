@@ -95,7 +95,7 @@
                     </tr>
                     {% endfor %}
                     <tr class="ship-row">
-                        <td><input type="checkbox" data-location="{{location}}" data-if="{{order[if_index]}}"  /></td>
+                        <td><input type="checkbox" data-location="{{location}}" data-sales_order_item="{{ order[soi_name_index]}}" data-if="{{order[if_index]}}"  /></td>
                         <td >Ship</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             <td class="ship-quantity-boxs"><input class="background-ash ship-quantity-box" data-size="{{size_col.size}}" type="text" /></td>

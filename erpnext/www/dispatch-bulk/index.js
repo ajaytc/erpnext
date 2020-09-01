@@ -10,6 +10,7 @@ window.onload = function(){
 
 $(".add-shipment-info").click(function(){
     let location = $(this).attr("data-location")
+    
     let selected_amt = $("input:checkbox[data-location|='"+location+"']:checked").length
     if (selected_amt==0){
         return null
@@ -24,8 +25,10 @@ $(".add-shipment-info").click(function(){
     }
     
     let po_if = $("input:checkbox[data-location|='"+location+"']:checked").first().attr("data-if")
+    let sales_order_item = $("input:checkbox[data-location|='"+location+"']:checked").first().attr("data-sales_order_item")
     $("#shipment-order-if").empty().append("<option value='"+po_if+"'>"+po_if+"</option>")
     $("#shipment-order-modal").attr("data-location",location)
+    $("#shipment-order-modal").attr("data-sales_order_item",sales_order_item)
     $("#shipment-order-modal").modal('show')
 })
 
