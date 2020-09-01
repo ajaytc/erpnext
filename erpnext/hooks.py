@@ -305,7 +305,10 @@ doc_events = {
         "after_insert": "erpnext.modehero.stock.createNewPackagingStock"
     },
     "Shipment Order": {
-        "after_insert": ["erpnext.modehero.shipment_orders.updateShipmentSizeQuantitesIfSizePerQuantitesNotGiven","erpnext.modehero.stock.updateShipmentorderStocks"]
+        "after_insert": [
+            "erpnext.modehero.shipment_orders.updateShipmentSizeQuantitesIfSizePerQuantitesNotGiven",
+            # "erpnext.modehero.stock.updateShipmentorderStocks"
+            ]
     },
     # "Customer":{
     #     "after_insert": "erpnext.modehero.user.signup"

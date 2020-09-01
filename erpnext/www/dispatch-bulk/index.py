@@ -149,7 +149,11 @@ def add_size_quantity_data(orders,item_support):
 def add_shipment_n_order_number_data(orders):
     for i in range(len(orders)):
         ship_order_docs = []
-        ship_list = frappe.get_all('Shipment Order',{'internal_ref_prod_order':orders[i][12]},['name'])
+        ship_list = []
+        if orders[i][0]==None:
+            ship_list = frappe.get_all('Shipment Order',{'internal_ref_prod_order':orders[i][12]},['name'])
+        else:
+            ship_list = frappe.get_all('Shipment Order',{'sales_order_item':orders[i][0]},['name'])
 
         for ship_order in ship_list:
             ship_doc = frappe.get_doc("Shipment Order",ship_order.name)

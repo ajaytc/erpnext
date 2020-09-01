@@ -16,7 +16,7 @@ $(".add-shipment-info").click(function(){
         return null
     }
     if (selected_amt>1){
-        response_message('Unsuccessfull', 'Multiple selection are not allowed at once !', 'red')
+        response_message('Unsuccessfull', 'Multiple selection are not allowed at once to add shipment info!', 'red')
         return null
     }
     if (!validate_ship_quantity($("input:checkbox[data-location|='"+location+"']:checked").first())){

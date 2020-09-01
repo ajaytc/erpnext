@@ -383,21 +383,15 @@ def size_quantity_validation_for_shipment(size_qty_obj,internal_ref_prod_order):
     prod_order_list = frappe.get_all("Production Order",{"internal_ref":internal_ref_prod_order},["product_name"])
     if len(prod_order_list)==0:
         return False
-    stock_doc = frappe.get_doc("Stock",frappe.get_all("Stock",{'item_type': 'product', 'product':prod_order_list[0].product_name},["name"])[0].name)
+    stock_doc = frappe.get_doc("Sizing Scheme",frappe.get_doc("Item",prod_order_list[0].product_name).sizing)
     count = 0
     is_not_enogh = False
     for size_req in size_qty_obj:
-        for size_stock in stock_doc.product_stock_per_size:
-            if size_req == size_stock.size:
+        for real_sizing in stock_doc.sizing:
+            if size_req == real_sizing.size:
                 count = count + 1
-                if int(size_qty_obj[size_req])>int(size_stock.quantity):
-                    is_not_enogh = True
-                    break
-        if is_not_enogh==True:
-            break
     
     if (count!=len(size_qty_obj.keys())):
         return False,"Error of data !"
-    elif is_not_enogh:
-        return False, "Stock Insufficient !"
+
     return True,None
