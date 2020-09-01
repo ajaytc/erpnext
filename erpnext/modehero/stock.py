@@ -463,6 +463,8 @@ def updateShipmentorderStocks(doc, method):
             updateStock2(existing_details["stock_name"], final_quantity, existing_details["old_stock"], "Shipment Order", float(
                 total_price)/final_quantity,"product",{"old":existing_details["size_details"],"new_incoming":get_shipment_qty_size_detail(doc)})
 
+
+
 def get_total_quantity_from_shipment(order):
     # this functio returns total quantity of the order collecting all size quantities
     total_quantity = 0

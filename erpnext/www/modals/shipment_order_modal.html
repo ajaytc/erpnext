@@ -168,7 +168,7 @@
     }
     function frappe_create_shipping_order(data){
         frappe.call({
-                method: 'erpnext.modehero.shipment_orders.createShipmentOrder',
+                method: 'erpnext.modehero.production.createShipmentOrderForProduction',
                 args: {
                     data:data
                 },
