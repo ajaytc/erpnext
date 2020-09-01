@@ -1,0 +1,110 @@
+<div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
+    <div style="text-align: center;">{{address}}<br />
+    <h3>&nbsp;</h3>
+    </div>
+    <div style="text-align: center;"><span style="font-size: 14pt;">INVOICE #</span></div>
+    </div>
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{creation.date()}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{client_name}}</p>
+    <p>{{client_address}}</p>
+    </li>
+    <li>&nbsp;</li>
+    </ul>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; width: 100%; height: 88px;" border="1">
+    <tbody>
+    <tr style="height: 44px;">
+    <td style="width: 18.9011%; height: 44px;"><strong>Employee </strong><br /><strong>Product Designation</strong></td>
+    <td style="width: 18.9011%; height: 44px;"><strong>Point Of Sale</strong></td>
+    <td style="width: 18.9011%; height: 44px;"><strong>Unit</strong></td>
+    <td style="width: 18.9011%; height: 44px;"><strong>Price</strong></td>
+    <td style="width: 18.9011%; height: 44px;"><strong>Amount</strong></td>
+    </tr>
+    </tbody>
+    </table>
+    <p>{% for packRecieveName,PackDetails in packProductDetails.items()%}</p>
+    <table style="border-collapse: collapse; width: 100%; height: 88px;" border="1">
+    <tbody>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; height: 22px;">{{packRecieveName}}</td>
+    <td style="width: 18.9011%; height: 22px;">Destination</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>{%for packProductDetail in packProductDetails[packRecieveName]%}</p>
+    <table style="border-collapse: collapse; width: 100%; height: 88px;" border="1">
+    <tbody>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; height: 22px;"><span style="font-size: 10pt;">{{packProductDetail['product']}}</span></td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">{{packProductDetail['qty']}}</td>
+    <td style="width: 18.9011%; height: 22px;">{{packProductDetail['price']}}</td>
+    <td style="width: 18.9011%; height: 22px;">{{int(packProductDetail['price'])*int(packProductDetail['qty'])}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+    <p style="display: none;">{% set totalcost=int(total) + int(shipment_cost) %}</p>
+    <p style="display: none;">{% set vatamount=int(totalcost)/100)*int(vat_rate) %}</p>
+    <table style="border-collapse: collapse; width: 100%; height: 88px;" border="1">
+    <tbody>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; height: 22px;"><span style="font-size: 10pt;">TOTAL</span></td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; height: 22px;">{{total}}</td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">Transport</td>
+    <td style="width: 18.9011%; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; height: 22px;">{{shipment_cost}}</td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; height: 22px;">Total</td>
+    <td style="width: 18.9011%; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; height: 22px;">{{int(total) + int(shipment_cost)}}</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">VAT Rate%</td>
+    <td style="width: 18.9011%;">{{vat_rate}}</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">VAT Amount</td>
+    <td style="width: 18.9011%;">{{(int(totalcost)/100)*int(vat_rate)}}</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">Total to pay EUR</td>
+    <td style="width: 18.9011%;">&nbsp;</td>
+    <td style="width: 18.9011%;">{{int(totalcost)+int(vatamount)}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>&nbsp;</p>

@@ -37,7 +37,7 @@ def get_products_of_package(packageName):
             'item_name': productOb.item_name,
             'qty': product.quantity,
             'item_code': productOb.name
-        };
+        }
         productDetails.append(prod)
 
     return productDetails
@@ -141,20 +141,20 @@ def calcEndOfProductionDate(order):
     # for segmentIdx in range(0,len(data['segments'])) :
 
     #     recieverName=segment['name']
-        # productDetails=[]
+    # productDetails=[]
 
-        # for productDetail in segment['segmentProducts']:
-        #     product={}
-        #     product['item_code']=productDetail['item_code']
-        #     product['order_no']=productDetail['orderNum']
-        #     product['quantity']=productDetail['qty']
-        #     product['size']=productDetail['size']
+    # for productDetail in segment['segmentProducts']:
+    #     product={}
+    #     product['item_code']=productDetail['item_code']
+    #     product['order_no']=productDetail['orderNum']
+    #     product['quantity']=productDetail['qty']
+    #     product['size']=productDetail['size']
 
-        #     productDetails.append(product)
+    #     productDetails.append(product)
 
-        # segment={}
-        # segment['reciever_name']=recieverName
-        # segment['segment_products']=productDetails
+    # segment={}
+    # segment['reciever_name']=recieverName
+    # segment['segment_products']=productDetails
 
     # order = frappe.get_doc({
     #     'doctype': 'Fabric Order',
@@ -185,20 +185,18 @@ def recieveOrderPieces(data):
 def generatePl(data):
     data = json.loads(data)
     client = frappe.get_doc('Customer', data['client'])
-    
+
     clientAddress = getClientAddress(client)
     brand_name = frappe.get_doc('User', frappe.session.user).brand_name
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
         "user_image", "address1", "name"])
     if('pos' in data.keys()):
-        destinationAddress=getDestinationAddress(data['pos'])
+        destinationAddress = getDestinationAddress(data['pos'])
     else:
-        destinationAddress=brand[0].address1
-    
-    
+        destinationAddress = brand[0].address1
+
     packProductDetails = data['packProductDetails']
 
-    
     # brand = user.brand_name
 
     templateDetails = {}
@@ -217,31 +215,131 @@ def generatePl(data):
         "content", "type", "name"])
 
     generatedPl = frappe.render_template(temp[0]['content'], templateDetails)
-    packingList = storePL(generatedPl, brand_name)
-    recordOnPieces(packingList, packProductDetails)
+    packingList = storePL(generatedPl, brand_name,client.customer_name)
+    recordOnPieces(packingList, packProductDetails,True)
 
     return {'status': 'ok'}
 
 
-def recordOnPieces(packingList, packProductDetails):
+@frappe.whitelist()
+def generateInvoice(data):
+
+    data = json.loads(data)
+    client = frappe.get_doc('Customer', data['client'])
+    clientAddress = getClientAddress(client)
+    brandOb = frappe.get_doc('User', frappe.session.user)
+    
+    brand_name=brandOb.brand_name
+    brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
+        "user_image", "address1", "name","tax_id"])
+    if('pos' in data.keys()):
+        destinationAddress = getDestinationAddress(data['pos'])
+    else:
+        destinationAddress = brand[0].address1
+
+    packProductDetails = data['packProductDetails']
+    packProductDetails,totalCost=getProductPrices(data)
+
+    # brand = user.brand_name
+
+    templateDetails = {}
+    vatRate=int(brand[0].tax_id)
+    shipmentCost=int(data['shipment_cost'])
+    totalAmount=int(totalCost)+int(shipmentCost)
+    vatAmount=(totalAmount/100)*int(vatRate)
+    totalPay=totalAmount+vatAmount
+
+    if(brand[0].user_image != None and brand[0].user_image != ''):
+        brand_logo = getBase64Img(brand[0].user_image)
+        # templateDetails['brand_logo'] = brand_logo
+
+    templateDetails['address'] = brand[0].address1
+    templateDetails['creation'] = datetime.datetime.now()
+    templateDetails['client_name'] = client.name
+    templateDetails['client_address'] = clientAddress
+    templateDetails['destination'] = destinationAddress
+    templateDetails['packProductDetails'] = packProductDetails
+    templateDetails['totalCost']=totalCost
+    templateDetails['shipment_cost']=shipmentCost
+    templateDetails['totalAmount']=totalAmount
+    templateDetails['vat_rate']=vatRate
+    templateDetails['vatAmount']=vatAmount
+    templateDetails['totalPay']=totalPay
+
+
+
+    temp = frappe.get_all("Pdf Document", filters={"type": "Invoice"}, fields=[
+        "content", "type", "name"])
+
+    generatedInv = frappe.render_template(
+        temp[0]['content'], templateDetails)
+    invList = storeInv(generatedInv, brand_name,client.customer_name)
+    recordOnPieces(invList, packProductDetails,False)
+
+    return {'status': 'ok'}
+
+def getProductPrices(data):
+    packProductDetails=data['packProductDetails']
+    client=data['client']
+    totalCost=0
+    for reciever,recieverVal in packProductDetails.items():
+        for packProductDetail in packProductDetails[reciever]:
+            packProductDetail=getProductPrice(packProductDetail,client)
+            totalCost=totalCost+int(packProductDetail['price'])
+
+    
+    return packProductDetails,totalCost
+
+def getProductPrice(packProduct,client):
+    pricing=frappe.get_all('Client Pricing',filters={'item_code':packProduct['item_code'],'client':client})
+    pricinigDetail=frappe.get_doc('Client Pricing',pricing[0])
+    itemPrice=0
+    for priceRange in pricinigDetail.wholesale_price:
+        if(int(priceRange.from_quantity) <=int(packProduct['qty'])<= int(priceRange.to_quantity)):
+            itemPrice=int(packProduct['qty'])*int(priceRange.price)
+    
+    packProduct['price']=priceRange.price
+    packProduct['itemfullPrice']=itemPrice
+
+    print(pricing)
+    return packProduct
+
+    
+def recordOnPieces(plOinv, packProductDetails,isPL):
     for pack, packValue in packProductDetails.items():
         for piece in packProductDetails[pack]:
             pieceOb = frappe.get_doc(
                 'Uniform Order Segment Products', piece['name'])
-            pieceOb.packing_list = packingList.name
+            if(isPL):
+                pieceOb.packing_list = plOinv.name
+            else:
+                pieceOb.invoice = plOinv.name
             pieceOb.save(ignore_permissions=True)
 
 
-def storePL(pl, brand_name):
+def storePL(pl, brand_name,client):
     packingList = frappe.get_doc({
-            'doctype': 'Packing List',
-            'content': pl,
-            'brand': brand_name
-        })
+        'doctype': 'Packing List',
+        'content': pl,
+        'brand': brand_name,
+        'client':client
+    })
     packingList.insert()
     frappe.db.commit()
 
     return packingList
+
+def storeInv(inv, brand_name,client):
+    invoiceList = frappe.get_doc({
+        'doctype': 'Uniform Invoice',
+        'content': inv,
+        'brand': brand_name,
+        'client':client
+    })
+    invoiceList.insert()
+    frappe.db.commit()
+
+    return invoiceList
 
 
 @frappe.whitelist()
@@ -255,43 +353,67 @@ def displayPLDoc(data):
         "user_image", "address1", "name"])
 
     if(brand[0].user_image != None and brand[0].user_image != ''):
-            brand_logo = getBase64Img(brand[0].user_image)
+        brand_logo = getBase64Img(brand[0].user_image)
     else:
-        brand_logo=''
-    
-    plDetails={}
-    plDetails['content']=packingList.content
-    plDetails['brand_logo']=brand_logo
+        brand_logo = ''
+
+    plDetails = {}
+    plDetails['content'] = packingList.content
+    plDetails['brand_logo'] = brand_logo
 
     return plDetails
 
+@frappe.whitelist()
+def displayInvDoc(data):
+    data = json.loads(data)
+    invName = data['invoice_name']
+
+    invoice = frappe.get_doc('Uniform Invoice', invName)
+
+    brand = frappe.get_all("User", filters={"type": "brand", "brand_name": invoice.brand}, fields=[
+        "user_image", "address1", "name"])
+
+    if(brand[0].user_image != None and brand[0].user_image != ''):
+        brand_logo = getBase64Img(brand[0].user_image)
+    else:
+        brand_logo = ''
+
+    invDetails = {}
+    invDetails['content'] = invoice.content
+    invDetails['brand_logo'] = brand_logo
+
+    return invDetails
+
 
 def getClientAddress(client):
-    clientAddress=''
-    if(client.address_line_1!=None):
-        clientAddress=clientAddress+client.address_line_1+','
-    if(client.address_line_2!=None):
-        clientAddress=clientAddress+client.address_line_2
+    clientAddress = ''
+    if(client.address_line_1 != None):
+        clientAddress = clientAddress+client.address_line_1+','
+    if(client.address_line_2 != None):
+        clientAddress = clientAddress+client.address_line_2
     else:
-        clientAddress = clientAddress.replace(clientAddress[len(clientAddress)-1], '.')
-    
+        clientAddress = clientAddress.replace(
+            clientAddress[len(clientAddress)-1], '.')
+
     return clientAddress
-        
+
+
 def getDestinationAddress(pos):
-    destinationAddress=''
-    pos = frappe.get_doc('Point Of Sales',pos)
-    if(pos.address_line_1!=None):
-        destinationAddress=destinationAddress+pos.address_line_1+','
-    if(pos.address_line_2!=None):
-        destinationAddress=destinationAddress+pos.address_line_2
+    destinationAddress = ''
+    pos = frappe.get_doc('Point Of Sales', pos)
+    if(pos.address_line_1 != None):
+        destinationAddress = destinationAddress+pos.address_line_1+','
+    if(pos.address_line_2 != None):
+        destinationAddress = destinationAddress+pos.address_line_2
     else:
-        destinationAddress = destinationAddress.replace(destinationAddress[len(destinationAddress)-1], '.')
+        destinationAddress = destinationAddress.replace(
+            destinationAddress[len(destinationAddress)-1], '.')
 
     return destinationAddress
-    
+
 
 def getBrandLogo(file):
-    path_prefix=getImagePath()
+    path_prefix = getImagePath()
     fp = path_prefix+str(file)
     try:
         with open(fp, "rb") as img_file:
@@ -301,5 +423,3 @@ def getBrandLogo(file):
         print(e)
         my_string = "data:image/png;base64,"
     return my_string
-
-

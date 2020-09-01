@@ -31,13 +31,14 @@
                 <div class="col-3 pieces" style="text-align: center;flex: 0 0 14.7%;padding-left:2%;padding-right:1%"
                     data-piece={{order[10]}}>
                     {%set product=frappe.get_doc('Item',order[3])%}
-                    <label style="margin-top: 4%;" class="product">{{product.item_name}}</label>
+                    <label style="margin-top: 4%;" class="product"
+                        data-item="{{order[3]}}">{{product.item_name}}</label>
 
                     <div class="row">
                         {%if order[9]==1%}
-
+                        {% if not order[13]%}
                         <input type="checkbox" name="piecesCheck" class="piecesCheck" id="ck">
-
+                        {%endif%}
                         {%endif%}
                         <div class="col-3" style="max-width:42%">
                             <label>{{_("Order#")}}</label>
@@ -47,6 +48,11 @@
                                 {% if order[11]%}
                                 <label style="margin-top: 4%;color:green;cursor:pointer;" class="pl"
                                     data-packList="{{order[11]}}">P</label>
+                                {%endif%}</span>
+                            <span>
+                                {% if order[13]%}
+                                <label style="margin-top: 4%;color:green;cursor:pointer;" class="inv"
+                                    data-invoice="{{order[13]}}">I</label>
                                 {%endif%}</span>
 
 
@@ -70,7 +76,7 @@
                 </div>
                 {%endfor%}
                 <hr style="width: 100%;">
-                
+
 
             </div>
             {%endfor%}
@@ -84,12 +90,15 @@
                 </button>
             </div>
             <div style="margin-left: 2%;margin-right: 0px;margin-bottom: 10px;">
-                <button type="button" id="invGen" class="btn btn-primary ml-auto invGen" style="padding-left: 23px;">
+                <button type="button" id="invGen" class="btn btn-primary ml-auto invGen" data-toggle="modal" data-target="#shipmentcost" style="padding-left: 23px;">
                     {{_("Invoice")}}
                 </button>
+                <!-- <a href="#" data-toggle="modal" data-target="#factory_modal"
+                                    class="add-supplier text-teal ml-auto">Add
+                                    new +</a> -->
             </div>
             <div style="margin-right: 0px;margin-left: auto;margin-bottom: 10px;">
-                <button type="button" id="plNInvGen" class="btn btn-primary ml-auto" style="margin-right: 24px;">
+                <button type="button" id="plNInvGen" class="btn btn-primary ml-auto plNInvGen" data-toggle="modal" data-target="#shipmentcost2" style="margin-right: 24px;">
                     {{_("PL + Inv")}}
                 </button>
             </div>
@@ -101,109 +110,56 @@
     {%endfor%}
 </div>
 
-<div>
-    <div style="text-align: center;"><img style="max-width: 150px;"
-            src="https://blog.modehero.com/wp-content/uploads/2020/04/logo-mode-hero-moyen.png" alt="Logo" /></div>
-    <div style="text-align: center;">address<br />
-        <h3>&nbsp;</h3>
-    </div>
-    <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
-</div>
-<div style="text-align: right; padding-right: 2%;">
-    <div>
-        <ul style="list-style-type: none;">
-            <ul style="list-style-type: none;">
-                <li><span id="date"> date( </span></li>
-            </ul>
-        </ul>
-        <br />
-        <ul style="list-style-type: none;">
-            <li><strong>Invoiced To<br /></strong>
-                <p id="factory">invoiced to</p>
-            </li>
-            <li><strong>Deliver to</strong>
-                <p id="destination">delivered to</p>
-            </li>
-        </ul>
-    </div>
-</div>
-<table>
-    <tbody>
-        <tr>
-            <td id="size_table" style="width: 100%; text-align: left;">Size Table</td>
-        </tr>
-    </tbody>
-</table>
-<p>Employee Name</p>
-<p>Product Description</p>
-<hr />
-
-<p>name</p>
-<div style="display: flex;flex-wrap:wrap">
-
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+<div class="modal hide fade" id="shipmentcost">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{_("Transport Cost")}}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-
-
-    </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="form-group">
+                <label>{{_("Transport Cost")}}</label>
+                <input class="form-control" id="shipment_cost" name="ref">
+            </div>
         </div>
-
-
-    </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary ml-auto" id="onlyInvoice" data-dismiss="modal">{{_("Invoice")}}</button>
         </div>
-
-
+        
+      </div>
     </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+  </div>
+
+  <div class="modal hide fade" id="shipmentcost2">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">{{_("Transport Cost")}}</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-
-
-    </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="form-group">
+                <label>{{_("Transport Cost")}}</label>
+                <input class="form-control" id="shipment_cost2" name="ref">
+            </div>
         </div>
-
-
-    </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary ml-auto" id="bothPlNInv" data-dismiss="modal"> {{_("PL + Inv")}}</button>
         </div>
-
-
+        
+      </div>
     </div>
-    <div style="flex:0 0 25%;max-width:25%">
-        <div style="display: flex;flex-wrap:wrap">
-            <p style="padding-right: 15px;">product 1</p>
-            <p style="padding-right: 15px;">qty 1</p>
-            <p>size 1</p>
-        </div>
-
-
-    </div>
-
-
-</div>
+  </div>

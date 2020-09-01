@@ -6,29 +6,46 @@ $(document).ready(function () {
 
     })
 });
+var both = false
 
 $('.piecesCheck').change(function () {
-    plt=false
+    plt = false
+    invt = false
     checked = $(this).parent().parent().parent().parent().parent().find('input[name="piecesCheck"]:checked');
     $(checked).each(function (index, value) {
-        if ($(value).parent().find('.pl').length){
-            plt=true
+        if ($(value).parent().find('.pl').length) {
+            plt = true
             $(value).parent().parent().parent().parent().parent().find('#plGen').prop('disabled', true)
             $(value).parent().parent().parent().parent().parent().find('#plNInvGen').prop('disabled', true)
         }
+        if ($(value).parent().find('.inv').length) {
+            invt = true
+            $(value).parent().parent().parent().parent().parent().find('#invGen').prop('disabled', true)
+            $(value).parent().parent().parent().parent().parent().find('#plNInvGen').prop('disabled', true)
+        }
     })
-    if(plt==false){
+    if (plt == false) {
         $(this).parent().parent().parent().parent().parent().find('#plGen').prop('disabled', false)
+    }
+    if (invt == false) {
+        $(this).parent().parent().parent().parent().parent().find('#invGen').prop('disabled', false)
+
+    }
+    if ((plt == false) && (invt == false)) {
         $(this).parent().parent().parent().parent().parent().find('#plNInvGen').prop('disabled', false)
     }
-    
+
 
 
 })
 
 $('.plGen').click(function () {
+    generatePL($(this))
+})
+
+function generatePL(element) {
     packProductDetails = {}
-    el = $(this)
+    el = $(element)
     client = $(el).parent().parent().parent().find('#client').text()
     pos = $(el).parent().parent().parent().find('#pos').attr('data-pos')
     fullCheckedEls = $(el).parent().parent().parent().find('input[name="piecesCheck"]:checked')
@@ -60,7 +77,7 @@ $('.plGen').click(function () {
 
 
     })
-    
+
     if (!jQuery.isEmptyObject(packProductDetails)) {
         frappe.call({
             method: 'erpnext.modehero.uniform.generatePl',
@@ -74,8 +91,11 @@ $('.plGen').click(function () {
             callback: function (r) {
                 if (!r.exc) {
                     console.log(r)
-                    $(".piecesCheck").prop("checked", false);
-                    location.reload();
+                    if (!both) {
+                        $(".piecesCheck").prop("checked", false);
+                        location.reload();
+                    }
+
 
                 } else {
                     console.log(r)
@@ -84,7 +104,8 @@ $('.plGen').click(function () {
         })
 
     }
-})
+
+}
 
 
 // $('#plGen').click(function () {
@@ -119,6 +140,126 @@ $('.pl').click(function () {
     })
 
 })
+$('.inv').click(function () {
+    invoiceName = $(this).attr('data-invoice')
+    frappe.call({
+        method: 'erpnext.modehero.uniform.displayInvDoc',
+        args: {
+            data: {
+                invoice_name: invoiceName
+            }
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                html = r.message.content
+                // html=$.parseHTML(htmlstr)
+                html = html.replace('src="brandlogoimage"', "src=" + r.message.brand_logo);
+                // $(html).find('#brand_logo').attr("src",r.message.brand_logo)
+                // $("#my_image").attr("src","second.jpg");
+                render_pdf(html)
+
+            } else {
+                console.log(r)
+            }
+        }
+    })
+
+})
+
+var invoiceOnly = ''
+var bothInvNPl = ''
+
+$('.invGen').click(function () {
+    invoiceOnly = $(this)
+    $('#shipmentcost').modal('show')
+    
+    // generateInvoice($(this))
+
+})
+
+$('#onlyInvoice').click(function () {
+    generateInvoice($(invoiceOnly))
+})
+
+
+$('.plNInvGen').click(function () {
+    both = true
+    bothInvNPl = $(this)
+    $('#shipmentcost2').modal('show')
+    
+})
+
+$('#bothPlNInv').click(function () {
+    generatePL($(bothInvNPl))
+    generateInvoice($(bothInvNPl))
+})
+function generateInvoice(element) {
+    packProductDetails = {}
+    el = $(element)
+    client = $(el).parent().parent().parent().find('#client').text()
+    if (both) {
+        shipmentCost = $('#shipment_cost2').val()
+    } else {
+        shipmentCost = $('#shipment_cost').val()
+    }
+    pos = $(el).parent().parent().parent().find('#pos').attr('data-pos')
+    fullCheckedEls = $(el).parent().parent().parent().find('input[name="piecesCheck"]:checked')
+    $(fullCheckedEls).each(function (index, pack) {
+        reciever = $(pack).parent().parent().parent().find('#recieverName').text()
+        if (!(reciever in packProductDetails)) {
+            packProductDetails[reciever] = []
+        }
+
+        packProduct = $(pack).parent().parent()
+        product = $(packProduct).find('.product').text()
+        item_code = $(packProduct).find('.product').attr('data-item')
+        order_no = $(packProduct).find('#order_no').text()
+        qty = $(packProduct).find('#qty').text()
+        size = $(packProduct).find('#size').text()
+        piece_name = $(packProduct).attr('data-piece')
+        prodDetail = {}
+        prodDetail['product'] = product
+        prodDetail['item_code'] = item_code
+        prodDetail['size'] = size
+        prodDetail['qty'] = qty
+        prodDetail['name'] = piece_name
+
+        packProductDetails[reciever].push(prodDetail)
+
+        // packProducts=$(pack).parent().parent().parent().find('.pieces')
+        // $(packProducts).each(function (index,packProduct) {
+
+
+        // })
+
+
+    })
+
+    if (!jQuery.isEmptyObject(packProductDetails)) {
+        frappe.call({
+            method: 'erpnext.modehero.uniform.generateInvoice',
+            args: {
+                data: {
+                    packProductDetails: packProductDetails,
+                    client: client,
+                    pos: pos,
+                    shipment_cost: shipmentCost
+                }
+            },
+            callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    $(".piecesCheck").prop("checked", false);
+                    location.reload();
+
+                } else {
+                    console.log(r)
+                }
+            }
+        })
+
+    }
+}
 function render_pdf(html) {
     var formData = new FormData();
 

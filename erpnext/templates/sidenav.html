@@ -342,6 +342,23 @@
                     </a>
                 </div>
             </div>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c7a"
+                aria-expanded="false" aria-controls="c7a">
+                {{_("Dispatch")}}
+            </a>
+            <div id="c7a" class="collapse" data-parent="#collapse6">
+                <div class="list-group">
+                    <a href="/stock-fabric" class="list-group-item ">
+                        {{_("Bulk")}}
+                    </a>
+                    <a href="/uniform-dispatch" class="list-group-item ">
+                        {{_("Uniform")}}
+                    </a>
+                    <a href="/stock-packaging" class="list-group-item ">
+                        {{_("Direct Ship")}}
+                    </a>
+                </div>
+            </div>
             {# <a href="#" class="list-group-item ">
                 {{_("Finished product")}}
             </a> #}
@@ -426,6 +443,35 @@
                     </a> -->
                 </div>
             </div>
+        </div>
+    </div>
+    <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse8"
+        aria-expanded="false" aria-controls="collapse8">
+        <i class="custom-icon icon-settings"></i> {{_("PL & INVOICE")}}
+    </a>
+    <div id="collapse8" class="collapse" data-parent="#accordionMenu">
+        <div class="list-group">
+            <a href="/packing-list" class="list-group-item">
+                {{_("Packing List")}}
+            </a>
+
+            <!-- <div id="new_product"  class="collapse" data-parent="#c5a">
+                <div class="list-group" style="padding-left: 20px !important;">
+                    
+                    <a href="/product-items" class="list-group-item ">
+                        {{_("New Product")}}
+                    </a>
+                    <a href="/product-item" class="list-group-item ">
+                        {{_("Products List")}}
+                    </a>
+                </div>
+            </div> -->
+            <a href="/invoice-list" class="list-group-item ">
+                {{_("Invoice")}}
+            </a>
+            
+            
+            
         </div>
     </div>
     {# <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"

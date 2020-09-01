@@ -1,0 +1,23 @@
+<div id="container">
+    <div class="table-wrapper">
+        <table class="table table-striped" id="allSuppliers">
+            <thead>
+                <tr>
+                    <th scope="col" id="cat_col" class="fa fa-sort">{{_("Client Name")}}</th>
+                    <th scope="col">{{_("Date")}}</th>
+                    <th scope="col">{{_("Invoice #")}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in invoice_list %}
+                <tr class="inv" data-invoice="{{invoice.name}}" style="cursor: pointer;">
+                    <td>{{invoice.client}}</td>
+                    <td>{{invoice.creation.date()}}</td>
+                    <td>{{invoice.name}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -16,7 +16,7 @@ def get_context(context):
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
 
-    orders = frappe.db.sql("""select uos.reciever_name,uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation,uo.name,uosp.size,uosp.recieved,uosp.name,uosp.packing_list,pos.point_of_sale from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name left join `tabPoint Of Sales` pos on uo.point_of_sale=pos.name where uo.brand=%s order by pos.point_of_sale Asc,customer Asc,reciever_name Asc """, brand)
+    orders = frappe.db.sql("""select uos.reciever_name,uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation,uo.name,uosp.size,uosp.recieved,uosp.name,uosp.packing_list,pos.point_of_sale,uosp.invoice from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name left join `tabPoint Of Sales` pos on uo.point_of_sale=pos.name where uo.brand=%s order by pos.point_of_sale Asc,customer Asc,reciever_name Asc """, brand)
 
     # reciever_name=0
     # order_no =1
@@ -31,6 +31,7 @@ def get_context(context):
     #uosp.name=10
     # uosp.packing_list=11
     #pos.point_of_sale=12
+    # uosp.invoice=13
     
     context.orderSets = {}
     context.posSets={}

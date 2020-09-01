@@ -1,0 +1,43 @@
+<div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
+    <div style="text-align: center;">{{address}}<br />
+    <h3>&nbsp;</h3>
+    </div>
+    <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
+    </div>
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{creation.date()}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{client_name}}</p>
+    <p>{{client_address}}</p>
+    </li>
+    <li><strong>Deliver to</strong>
+    <p id="destination">{{destination}}</p>
+    </li>
+    </ul>
+    </div>
+    </div>
+    <p>Employee Name</p>
+    <p>Product Description</p>
+    <hr />
+    <p style="display: none;">{% for packRecieveName,PackDetails in packProductDetails.items()%}</p>
+    <p>{{packRecieveName}}</p>
+    <div style="display: flex; flex-wrap: wrap;">
+    <p style="display: none;">{%for packProductDetail in packProductDetails[packRecieveName]%}</p>
+    <div style="flex: 0 0 25%; max-width: 25%;">
+    <div style="display: flex; flex-wrap: wrap;">
+    <p style="padding-right: 15px;">{{packProductDetail['product']}}</p>
+    <p style="padding-right: 15px;">{{packProductDetail['size']}}</p>
+    <p>{{packProductDetail['qty']}}</p>
+    </div>
+    </div>
+    <p style="display: none;">{%endfor%}</p>
+    </div>
+    <p style="display: none;">{%endfor%}</p>
