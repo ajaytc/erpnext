@@ -17,8 +17,9 @@ def get_context(context):
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    orders = frappe.db.sql("""select soi.name,po.name,po.destination_type,soi.item_destination,po.final_destination,po.product_name,po.production_factory,po.carrier,po.tracking_number,po.shipment_date,po.creation,soi.creation,po.internal_ref from `tabProduction Order` po left join `tabSales Order Item`soi on po.name=soi.prod_order_ref where po.brand=%s order by po.creation desc""", brand)
+    orders = frappe.db.sql("""select soi.name,po.name,po.destination_type,soi.item_destination,po.final_destination,po.product_name,po.production_factory,po.carrier,po.tracking_number,po.shipment_date,po.creation,soi.creation,po.internal_ref,soi.parent from `tabProduction Order` po left join `tabSales Order Item`soi on po.name=soi.prod_order_ref where po.brand=%s order by po.creation desc""", brand)
     # 0 = sales_order_item_name
+    context.soi_name_index = 0
     # 1 = production_order_name
     # 2 = production_order_destination_type
     # 3 = sales_order_item_destination
@@ -34,23 +35,26 @@ def get_context(context):
     context.soi_creation_time_index = 11
     # 12 = po_internal_ref
     context.if_index = 12
-    # 13 = item_name
-    context.item_name_index = 13
-    # 14 = item_sizes
-    context.sizes_scheme_index = 14
-    # 15 = current_stock_sizes_quantities
-    context.stock_qty_index = 15
-    # 16 = order_size_details
-    context.order_qty_index = 16
-    # 17 = POS_or_DESTINY
-    # 18 = shipping_history
-    context.ship_history_index = 18
+    # 13 = soi_parent_name
+    context.soi_parent_index = 13
+    # 14 = item_name
+    context.item_name_index = 14
+    # 15 = item_sizes
+    context.sizes_scheme_index = 15
+    # 16 = current_stock_sizes_quantities
+    context.stock_qty_index = 16
+    # 17 = order_size_details
+    context.order_qty_index = 17
+    # 18 = sent_history
+    context.sent_history_index = 18
+    # 19 = POS_or_DESTINY
+
     orders = list(orders)
     for i in range(len(orders)):
         orders[i] = list(orders[i])
     pos_destination_support_data,item_support_data = collect_item_destination_data(orders)
     orders_with_quantity_data = add_size_quantity_data(orders,item_support_data)
-    final_order_list = add_shipment_data(orders_with_quantity_data)
+    final_order_list = add_sent_data(orders_with_quantity_data)
     context.presenting_order_data = modify_order_list(final_order_list,pos_destination_support_data)
 
     return context
@@ -106,7 +110,7 @@ def  modify_order_list(orders,support_destination_data):
             if client_id not in result_obj:
                 result_obj[client_id]={"show_name":client_name,"orders":[],"max_col_span":0}
             order.append("destination")
-            if len(order[14])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[14])
+            if len(order[15])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[15])
             result_obj[client_id]["orders"].append(order)
         elif order[2]==None and order[0]==None:
             continue
@@ -117,14 +121,14 @@ def  modify_order_list(orders,support_destination_data):
             if client_id not in result_obj:
                 result_obj[client_id]={"show_name":client_name,"orders":[],"max_col_span":0}
             order.append("destination")
-            if len(order[14])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[14])
+            if len(order[15])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[15])
             result_obj[client_id]["orders"].append(order)
         elif int(order[2])==1 and order[0]==None:
             # this is situation of bulk order destination is a pos
             if order[4] not in result_obj:
                 result_obj[order[4]]={"show_name":support_destination_data["poss"][order[4]]["name"],"orders":[],"max_col_span":0}
             order.append("pos")
-            if len(order[14])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[14])
+            if len(order[15])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[15])
             result_obj[order[4]]["orders"].append(order)
     return result_obj
 
@@ -142,17 +146,21 @@ def add_size_quantity_data(orders,item_support):
             orders[i].append(None)
     return orders
 
-def add_shipment_data(orders):
+def add_sent_data(orders):
     for i in range(len(orders)):
         ship_order_docs = []
         ship_list = []
-        if orders[i][0]!=None:
-            ship_list = frappe.get_all('Shipment Order',{'product_order_id':orders[i][0]},['name'])    
-        elif orders[i][1]!=None:
-            ship_list = frappe.get_all('Shipment Order',{'product_order_id':orders[i][1]},['name'])
+        # if orders[i][0]==None:
+        #     ship_list = frappe.get_all('Shipment Order',{'internal_ref_prod_order':orders[i][12]},['name'])
+        # else:
+        #     ship_list = frappe.get_all('Shipment Order',{'sales_order_item':orders[i][0]},['name'])
 
-        for ship_order in ship_list:
-            ship_order_docs.append(frappe.get_doc("Shipment Order",ship_order.name))
+        # for ship_order in ship_list:
+        #     ship_doc = frappe.get_doc("Shipment Order",ship_order.name)
+        #     temp_list = []
+        #     for qps in ship_doc.shipment_quantity_per_size:
+        #         temp_list.append({"size":qps.size,"quantity":qps.quantity})
+        #     ship_order_docs.append({"date":ship_doc.creation,"quantity_per_size":temp_list})
 
         orders[i].append(ship_order_docs)
     return orders

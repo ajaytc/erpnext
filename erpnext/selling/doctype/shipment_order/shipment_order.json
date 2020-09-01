@@ -18,7 +18,7 @@
   "fabric_order_id",
   "trimming_order_id",
   "packaging_order_id",
-  "shipment_quantity_per_size"
+  "sales_order_item"
  ],
  "fields": [
   {
@@ -87,14 +87,14 @@
    "options": "Production Order"
   },
   {
-   "fieldname": "shipment_quantity_per_size",
-   "fieldtype": "Table",
-   "label": "Shipment Quantity Per Size",
-   "options": "Shipment Quantity Per Size"
+   "fieldname": "sales_order_item",
+   "fieldtype": "Link",
+   "label": "Sales Order Item",
+   "options": "Sales Order Item"
   }
  ],
  "links": [],
- "modified": "2020-08-31 09:56:07.677033",
+ "modified": "2020-09-01 16:19:29.949966",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",

@@ -344,3 +344,47 @@ def submitPaymentProof(data):
     return order
 
 
+
+@frappe.whitelist()
+def createShipmentOrderForProduction(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    if (len(data['tracking_number'].strip())==0 or len(data['internal_ref_prod_order'].strip())==0 ):
+        return {"status":"error","message":"Incompleted data !"}
+    if data["sales_order_item"]=="" or  data["sales_order_item"]=="None": data["sales_order_item"] = None
+    shipmentOrder=frappe.get_doc({
+        'doctype': 'Shipment Order',
+        'tracking_number':data['tracking_number'],
+        'carrier_company':data['carrier_company'],
+        'shipping_date':data['shipping_date'],
+        'expected_delivery_date':data['expected_delivery_date'],
+        'shipping_price':data['shipping_price'],
+        'html_tracking_link':data['html_tracking_link'],
+        # internal_ref_prod_order shoul be None if that particular shipment is a another kind of shipment but product
+        'internal_ref_prod_order':data['internal_ref_prod_order'],
+        # Sales order item is none the production order is bulk order
+        'sales_order_item':data["sales_order_item"],
+        'brand':brand
+    })
+    order = shipmentOrder.insert()
+    frappe.db.commit()
+    return {"status":"ok"}
+
+# def size_quantity_validation_for_shipment(size_qty_obj,internal_ref_prod_order):
+
+#     prod_order_list = frappe.get_all("Production Order",{"internal_ref":internal_ref_prod_order},["product_name"])
+#     if len(prod_order_list)==0:
+#         return False
+#     stock_doc = frappe.get_doc("Sizing Scheme",frappe.get_doc("Item",prod_order_list[0].product_name).sizing)
+#     count = 0
+#     is_not_enogh = False
+#     for size_req in size_qty_obj:
+#         for real_sizing in stock_doc.sizing:
+#             if size_req == real_sizing.size:
+#                 count = count + 1
+    
+#     if (count!=len(size_qty_obj.keys())):
+#         return False,"Error of data !"
+
+#     return True,None

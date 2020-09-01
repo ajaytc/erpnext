@@ -16,7 +16,7 @@ def get_context(context):
 
     brand = frappe.get_doc('User', frappe.session.user).brand_name
 
-    pricing_details = frappe.get_all('Client Pricing', filters={'brand': brand}, fields=['client','item_group','item_code'])
+    pricing_details = frappe.get_all('Client Pricing', filters={'brand': brand,'docstatus':0}, fields=['client','item_group','item_code'])
     context.clients = {}
     support_itemgroup_dic, support_itemcode_dic = fill_suport_dics(pricing_details)
 

@@ -15,7 +15,7 @@ def get_context(context):
     brand = user.brand_name
     context.username = frappe.get_doc('User', frappe.session.user).full_name
 
-    context.shipmentOrdersList = frappe.get_all('Shipment Order',filters={'docstatus':0,'brand':brand}, fields=[
+    context.shipmentOrdersList = frappe.get_all('Shipment Order',filters={'docstatus':0,'brand':brand}, fields=['internal_ref_prod_order',
                                                 'internal_ref', 'product_order_id','fabric_order_id','trimming_order_id','packaging_order_id','shipping_document','html_tracking_link','shipping_date','carrier_company','tracking_number','expected_delivery_date','name', 'docstatus'])
 
 

@@ -28,10 +28,10 @@ def get_context(context):
     # context.active = frappe.db.sql(query,(1,brand))
     # context.completed = frappe.db.sql(query,(0,brand))
 
-    context.active=frappe.get_all('Shipment Order',filters={'docstatus':0,'brand':brand},fields=[
+    context.active=frappe.get_all('Shipment Order',filters={'docstatus':0,'brand':brand},fields=['internal_ref_prod_order',
                                                 'internal_ref', 'product_order_id','fabric_order_id','trimming_order_id','packaging_order_id','shipping_document','html_tracking_link','shipping_date','carrier_company','tracking_number','expected_delivery_date','name', 'docstatus'])
     
-    context.completed=frappe.get_all('Shipment Order',filters={'docstatus':1,'brand':brand},fields=[
+    context.completed=frappe.get_all('Shipment Order',filters={'docstatus':1,'brand':brand},fields=['internal_ref_prod_order',
                                                 'internal_ref', 'product_order_id','fabric_order_id','trimming_order_id','packaging_order_id','shipping_document','html_tracking_link','shipping_date','carrier_company','tracking_number','expected_delivery_date','name', 'docstatus'])
     
     # context.parents = [

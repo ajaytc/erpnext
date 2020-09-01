@@ -38,3 +38,12 @@ td{
 table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.table-custom-header) tbody tr:nth-child(2n+1) td{
     background-color: white !important;
 }
+.ship-row{
+    border-bottom: 1px solid #000;
+}
+.ship-quantity-box{
+    width: 90%;
+}
+.button-set{
+    text-align: right;
+}
