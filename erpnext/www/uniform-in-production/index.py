@@ -19,7 +19,7 @@ def get_context(context):
     # frappe.get_all('Uniform Order',filters={'brand':brand},)
     # order = frappe.get_doc('Uniform Order', '2d67ae10b1')
 
-    orders = frappe.db.sql("""select uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s order by creation desc""", brand)
+    orders = frappe.db.sql("""select uosp.order_no,uosp.quantity,uosp.item_code,uo.customer,uo.point_of_sale,uo.creation from `tabUniform Order` uo inner join `tabUniform order Segment`uos on uos.parent=uo.name inner join `tabUniform Order Segment Products` uosp on uosp.parent=uos.name where uo.brand=%s and uosp.recieved='0' order by creation desc""", brand)
 
     # order_no =0
     # quantity=1
