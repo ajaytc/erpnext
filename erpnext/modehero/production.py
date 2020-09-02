@@ -365,11 +365,12 @@ def createShipmentOrderForProduction(data):
         'internal_ref_prod_order':data['internal_ref_prod_order'],
         # Sales order item is none the production order is bulk order
         'sales_order_item':data["sales_order_item"],
+        'shipping_document':data['shipping_document'],
         'brand':brand
     })
     order = shipmentOrder.insert()
     frappe.db.commit()
-    return {"status":"ok"}
+    return {"status":"ok","name":order.name}
 
 # def size_quantity_validation_for_shipment(size_qty_obj,internal_ref_prod_order):
 
@@ -388,3 +389,47 @@ def createShipmentOrderForProduction(data):
 #         return False,"Error of data !"
 
 #     return True,None
+
+@frappe.whitelist()
+def modifyShipmentOrderForProduction(data,shipment_order):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    shipment_doc = check_shipment_validation_for_dispatch(shipment_order,brand)
+
+    if shipment_doc==None or (len(data['tracking_number'].strip())==0 or len(data['internal_ref_prod_order'].strip())==0 ):
+        return {"status":"error","message":"Incompleted data !"}
+    shipment_doc.tracking_number = data['tracking_number']
+    shipment_doc.carrier_company = data['carrier_company']
+    shipment_doc.shipping_date = data['shipping_date']
+    shipment_doc.expected_delivery_date = data['expected_delivery_date']
+    shipment_doc.shipping_price = data['shipping_price']
+    shipment_doc.html_tracking_link = data['html_tracking_link']
+    if "shipping_document" in data:
+        shipment_doc.shipping_document = data["shipping_document"]
+    shipment_doc.save()
+    frappe.db.commit()
+    return {"status":"ok"}
+
+def check_shipment_validation_for_dispatch(shipment_order,brand):
+    shipments = frappe.get_all("Shipment Order",{"brand":brand,"name":shipment_order})
+    if len(shipments)==0:
+        return None
+    return frappe.get_doc("Shipment Order",shipment_order)
+
+@frappe.whitelist()
+def createShipmentOrderForProductionDispatch(data,dispatch_name):
+    data_dic = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    dispatch_names = frappe.get_all("Dispatch Bulk Stock History",{"name":dispatch_name},["name"])
+    if len(dispatch_names)!=1:
+        return {"status":"error"}
+    dispatch_doc = frappe.get_doc("Dispatch Bulk Stock History",dispatch_name)
+    shipment_order_result = createShipmentOrderForProduction(data)
+    if shipment_order_result["status"]!="ok":
+        return {"status":"error"}
+    dispatch_doc.shipment_order = shipment_order_result["name"]
+    dispatch_doc.save()
+    frappe.db.commit()
+    return {"status":"ok"}

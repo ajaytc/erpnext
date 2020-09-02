@@ -66,16 +66,17 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="m-3">
-                                <label for="product">{{_("Shipping Ducument")}}</label>
-                                <div class="btn btn-secondary">
-                                    <input id="shipment-order-document" type="file">
+                                <a  download id="shipment-order-file"><img src="/assets/erpnext/images/icons/pdf.svg" alt=""
+                                    style="margin-top:0%;" /></a>
+                                <div id="shipment-order-document-div" class="btn btn-secondary">
+                                    <input id="shipment-order-document"  type="file">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="shipment-order-save" class="btn btn-primary">Save</button>
+                <div id="footer-modal" class="modal-footer">
+                    <input type="button" id="shipment-order-save" value="Save" class="btn btn-primary">
                 </div>
             </form>
         </div>
@@ -83,10 +84,18 @@
 </div>
 
 <script>
+    // Here important things 
+    // 1) modal is for the creation of brand new shipment order if following steps are not happen
+    // 2) if modal has "data-shipment_name" , then this script modify the already created shipment order
+    // 3) if modal has "data-dispatch_name", then a novel shipment order is created for a dispatched stock history
+    var MODAL_ELEMENT = $("#shipment-order-modal")
+    $("#shipment-order-document").change(function(){
+        $("#shipment-order-file").prop("hidden",true)
+    })
     $('#shipment-order-save').click(function (e) {
         e.preventDefault();
         let values = {}
-        values["sales_order_item"] = $("#shipment-order-modal").attr("data-sales_order_item")
+        values["sales_order_item"] = MODAL_ELEMENT.attr("data-sales_order_item")
         values["internal_ref_prod_order"] = $("#shipment-order-if").val()
         values["carrier_company"] = $("#shipment-order-ca-company").val()
         values["shipping_price"] = $("#shipment-order-shipping-price").val()
@@ -94,27 +103,39 @@
         values["html_tracking_link"] = $("#shipment-order-tracking-link").val()
         values["shipping_date"] = $("#shipment-order-shipping-date").val()
         values["expected_delivery_date"] = $("#shipment-order-expected-date").val()
-        if ($("#shipment-order-document").prop('files').length!=1){
-            response_message('Unsuccessfull', "Please upload document !", 'red')
-            return null
-        }
         for (let key in values){
             if ( key=="sales_order_item"){
                 continue
             }
             if (values[key].trim().length==0 ){
-                $("create-shipment-order").trigger("reset")
+                $("#create-shipment-order").trigger("reset")
                 response_message('Unsuccessfull', "Please fill all fields !", 'red')
                 return null
             }
         }
+        if ($("#shipment-order-document").prop('files').length!=1){
+            if (MODAL_ELEMENT.attr("data-shipment_name")){
+                frappe_modify_shipment(values,MODAL_ELEMENT.attr("data-shipment_name"))
+                return null
+            }
+            response_message('Unsuccessfull', "Please upload document !", 'red')
+            return null
+        }
         file_upload_function()
         .then(url=>{
+            console.log("url===>",url)
             values["shipping_document"] = url
+            if (MODAL_ELEMENT.attr("data-shipment_name")){
+                frappe_modify_shipment(values,MODAL_ELEMENT.attr("data-shipment_name"))
+                return null
+            }else if (MODAL_ELEMENT.attr("data-dispatch_name")){
+                frappe_create_shipment_for_dispatch(values,MODAL_ELEMENT.attr("data-dispatch_name"))
+                return null
+            }
             frappe_create_shipping_order(values)
         })
         .catch(error=>{
-            $("create-shipment-order").trigger("reset")
+            $("#create-shipment-order").trigger("reset")
             response_message('Unsuccessfull', error, 'red')
         })
     });
@@ -157,13 +178,31 @@
             message: __(message)
         });
     }
-    function collect_ship_size_qty(){
-        let location = $("#shipment-order-modal").attr("data-location")
-        let result_obj = {}
-        $("input:checkbox[data-location|='"+location+"']:checked").first().parent().parent().children(".ship-quantity-boxs").each(function(){
-            result_obj[$(this).children(":input.ship-quantity-box").first().attr("data-size")] = $(this).children(":input.ship-quantity-box").first().val()
-        })
-        return result_obj
+
+    function frappe_modify_shipment(data,shipment_order){
+        frappe.call({
+            method: 'erpnext.modehero.production.modifyShipmentOrderForProduction',
+            args: {
+                data:data,
+                shipment_order:shipment_order
+            },
+            callback: function (r) {
+                $("#create-shipment-order").trigger("reset")
+                if (r) {
+                    if (r.message['status'] == "ok") {
+                        response_message('Successfull', 'Order modified successfully', 'green')
+                        clear_inputs()
+                        window.location.reload()
+                        return null;
+                    }
+                    clear_inputs()
+                    response_message('Unsuccessfull', 'Order modified unsuccessfully', 'red')
+                    window.location.reload()
+                    return null
+                }
+                response_message('Unsuccessfull', 'Order modified unsuccessfully', 'red')
+            }
+        });
     }
     function frappe_create_shipping_order(data){
         frappe.call({
@@ -172,6 +211,7 @@
                     data:data
                 },
                 callback: function (r) {
+                    $("#create-shipment-order").trigger("reset")
                     if (r) {
                         if (r.message['status'] == "ok") {
                             response_message('Successfull', 'Order created successfully', 'green')
@@ -184,7 +224,32 @@
                         window.location.reload()
                         return null
                     }
-                    $("create-shipment-order").trigger("reset")
+                    response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
+                }
+            });
+    }
+    function frappe_create_shipment_for_dispatch(data,dispatch_name){
+        frappe.call({
+                method: 'erpnext.modehero.production.createShipmentOrderForProductionDispatch',
+                args: {
+                    data:data,
+                    dispatch_name:dispatch_name
+                },
+                callback: function (r) {
+                    $("#create-shipment-order").trigger("reset")
+                    if (r) {
+                        if (r.message['status'] == "ok") {
+                            response_message('Successfull', 'Order created successfully', 'green')
+                            clear_inputs()
+                            window.location.reload()
+                            return null;
+                        }
+                        clear_inputs()
+                        response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
+                        window.location.reload()
+                        return null
+                    }
+                    
                     response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
                 }
             });

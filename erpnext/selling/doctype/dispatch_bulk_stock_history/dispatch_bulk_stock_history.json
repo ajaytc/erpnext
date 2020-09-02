@@ -8,7 +8,9 @@
   "is_bulk",
   "stock_history",
   "sales_order",
-  "bulk_order"
+  "bulk_order",
+  "shipment_order",
+  "brand"
  ],
  "fields": [
   {
@@ -38,10 +40,24 @@
    "fieldtype": "Link",
    "label": "Bulk Order Number",
    "options": "Production Order"
+  },
+  {
+   "fieldname": "shipment_order",
+   "fieldtype": "Link",
+   "label": "Shipment Order",
+   "options": "Shipment Order",
+   "reqd": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-09-01 16:30:14.333396",
+ "modified": "2020-09-02 07:16:41.113907",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Dispatch Bulk Stock History",

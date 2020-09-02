@@ -75,7 +75,12 @@
                     </tr>
                     {% for row_index in range(order[sent_history_index]|length) %}
                     <tr >
-                        <td>{{order[sent_history_index][row_index]["date"].strftime('%Y-%m-%d')}}</td>
+                        <td>
+                            {{order[sent_history_index][row_index]["date"].strftime('%Y-%m-%d')}}
+                            {% if order[sent_history_index][row_index]["shipment_data"]!=None %}
+                                <br><input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}" data-sales_order_item="{{ order[soi_name_index]}}" data-if="{{order[if_index]}}" />
+                            {% endif %}
+                        </td>
                         <td>Sent</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             {% for ship_qty in order[sent_history_index][row_index]["quantity_per_size"] if ship_qty.size==size_col.size %}
@@ -89,18 +94,32 @@
                         {% endfor %}
                         <td>
                             <div class="row">
-                                <div class="col-6">S</div>
+                                {% if order[sent_history_index][row_index]["shipment_data"]!=None %}
+                                    <div class="col-6 s-tag-sent-shipment" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[sent_history_index][row_index]['shipment_data']}}">S</div>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
                     {% endfor %}
                     <tr class="ship-row">
-                        <td><input type="checkbox" data-location="{{location}}" data-sales_order_item="{{ order[soi_name_index]}}" data-if="{{order[if_index]}}"  /></td>
+                        <td>
+                            {% if order[current_active_shipment_index] != None %}
+                                <input type="checkbox" class="not-sent-tick" data-ship_data="{{order[current_active_shipment_index]}}"   data-location="{{location}}" data-sales_order_item="{{ order[soi_name_index]}}" data-if="{{order[if_index]}}"  />
+                            {% else %}
+                                <input type="checkbox"  data-location="{{location}}" data-sales_order_item="{{ order[soi_name_index]}}" data-if="{{order[if_index]}}"  />
+                            {% endif %}
+                        </td>
                         <td >Ship</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             <td class="ship-quantity-boxs"><input class="background-ash ship-quantity-box" data-size="{{size_col.size}}" type="text" /></td>
                         {% endfor %}
-                        <td></td>
+                        <td>
+                            <div class="row">
+                                {% if order[current_active_shipment_index] != None %}
+                                <div class="col-6 s-tag-current-shipment" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[current_active_shipment_index]}}">S</div>
+                                {% endif %}
+                            </div>
+                        </td>
                     </tr>
                 
                 {% endfor %}
@@ -108,7 +127,7 @@
         </table>
         <div class="button-set">
             <button   type="button" class="btn btn-primary add-shipment-info" style="display: inline-block;" data-location="{{location}}">Add Shipment Info</button>
-            <button   type="button" class="btn btn-primary" style="display: inline-block;">PL + Invoice</button>
+            <button   type="button" class="btn btn-primary add-pl-invoice" style="display: inline-block;" data-location="{{location}}">PL + Invoice</button>
             <button   type="button" class="btn btn-primary" style="display: inline-block;">Cancel</button>
         </div>
     </div>
