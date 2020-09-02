@@ -42,7 +42,7 @@ def cancelSupplyOrder(data):
     return {'status':'ok'}
         
 def sendNotificationEmail(order,orderGroup):
-    notification=frappe.get_doc("Notification","Supply Order Cancel")
+    notification=frappe.get_doc("Notification","Supply/Purchase Order Cancel/Modify")
     
     if(orderGroup=='Fabric Order'):
         orderType='fabric';
@@ -57,15 +57,19 @@ def sendNotificationEmail(order,orderGroup):
     recipient=frappe.get_doc('User',order.owner)
 
     templateData={}
+    templateData['recipient_name']=order.brand
     templateData['SNF']=vendor.supplier_name
+    templateData['trigger']='cancelled'
     templateData['internal_ref']=order.internal_ref
     templateData['brand']=order.brand
     templateData['order_date']=order.creation.date()
-    templateData['order_type']=orderType
-    templateData['order_name']=order.name
+    # templateData['order_type']=orderType
+    templateData['order_link']=orderType+'-summary?order='+order.name+'&amp;sk=1'
+    # templateData['order_name']=order.name
     templateData['recipient']=recipient.email
     templateData['lang']=recipient.language
     templateData['notification']=notification
+    # {{order_type}}-summary?order={{order_name}}&amp;sk=1
 
     if(recipient.email != None):
         sendCustomEmail(templateData)

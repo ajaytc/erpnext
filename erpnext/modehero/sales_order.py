@@ -8,6 +8,7 @@ from erpnext.modehero.stock import get_stock
 from erpnext.modehero.fabric import create_fabric_order
 from erpnext.modehero.trimming import create_trimming_order
 from erpnext.modehero.package import create_packaging_order
+from frappe.email.doctype.notification.notification import sendCustomEmail
 
 @frappe.whitelist()
 def create_sales_order(items, garmentlabel, internalref, profoma):
@@ -152,7 +153,7 @@ def cancel(order):
     frappe.msgprint(frappe._("Client Purchase Order ")+order.name+" cancelled")
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_email_guest=True)
 def calculate_price(products):
     # request format,
     #  products = {'0001':{'XS':1,'S':2},'0002':{'M':3}}
@@ -262,6 +263,8 @@ def modify_sales_item_orders(orders_object):
     for order in order_dic:
         try:
             update_item_quantities(order,order_dic[order]["sizes"])
+            order = frappe.get_doc('Sales Order Item', order)
+            sendCancelNModifyNotificationEmail(order,'Modified')
         except:
             status = "error"
             continue
@@ -277,7 +280,38 @@ def cancel_sales_item_orders(item_order_list):
         order.docstatus = 2
         order.save()
         frappe.db.commit()
+        sendCancelNModifyNotificationEmail(order,'Product Cancelled')
     return {'status': 'ok'}
+
+def sendCancelNModifyNotificationEmail(order_item,trigger):
+    sales_order=frappe.get_doc('Sales Order',order_item.parent)
+    customer=frappe.get_doc('Customer',sales_order.customer)
+    recipient=frappe.get_doc('User',sales_order.owner)
+
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+
+
+    notification=frappe.get_doc("Notification","Supply/Purchase Order Cancel/Modify")
+
+    templateData={}
+    templateData['recipient_name']=customer.customer_name
+    templateData['SNF']=brand
+    templateData['trigger']=trigger
+    templateData['internal_ref']=sales_order.internal_ref
+    # templateData['brand']=sales_order.brand
+    templateData['order_date']=sales_order.creation.date()
+    templateData['order_link']='new-client-order?order='+sales_order.name+'&amp;sk=1'
+    # templateData['order_type']=orderType
+    # templateData['order_name']=sales_order.name
+    templateData['recipient']=customer.email_address
+    templateData['lang']=recipient.language
+    templateData['notification']=notification
+
+    # new-client-order?order=SAL-ORD-2020-00048
+
+    if(customer.email_address != None):
+        sendCustomEmail(templateData)
 
 @frappe.whitelist()
 def validate_products_supply(sales_orders,supply_orders):
