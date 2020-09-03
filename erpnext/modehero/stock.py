@@ -26,7 +26,7 @@ def directShip(stock_name, amount, old_stock, description, price):
     updateQuantity(stock_name, new_stock, price,None)
 
 @frappe.whitelist()
-def directShipfromProductStock(data):
+def directShipfromProductStockNInvoiceGen(data):
     data=json.loads(data)
     stock_name=data['stock_name']
     old_stock=data['old_stock']

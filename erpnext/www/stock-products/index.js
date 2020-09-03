@@ -192,7 +192,7 @@ $('#plNinv').click(() => {
     }
 
     frappe.call({
-        method: 'erpnext.modehero.stock.directShipfromProductStock',
+        method: 'erpnext.modehero.stock.directShipfromProductStockNInvoiceGen',
         args: {
             data:{
                 stock_name:stock_name,
