@@ -1,0 +1,169 @@
+<div class="modal fade"  id="shipment-order-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname">Shipment Order</p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id = "create-shipment-order">
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Carrirer Company")}}</label>
+                                <input id="shipment-order-ca-company" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Shipping Price")}}</label>
+                                <input id="shipment-order-shipping-price" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Tracking Number")}}</label>
+                                <input id="shipment-order-tracking-number" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("HTML Tracking Link")}}</label>
+                                <input id="shipment-order-tracking-link" type="text" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Shipping Date")}}</label>
+                                <input id="shipment-order-shipping-date" type="date" class="form-control mt-2">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="m-3">
+                                <label for="product">{{_("Expeced Delivery Date")}}</label>
+                                <input id="shipment-order-expected-date" type="date" class="form-control mt-2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="m-3">
+                                <a  download id="shipment-order-file"><img src="/assets/erpnext/images/icons/pdf.svg" alt=""
+                                    style="margin-top:0%;" /></a>
+                                <div id="shipment-order-document-div" class="btn btn-secondary">
+                                    <input id="shipment-order-document"  type="file">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer-modal" class="modal-footer">
+                    <input type="button" id="shipment-order-save" value="Save" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#shipment-order-save').click(function (e) {
+        let values = {}
+        values["carrier_company"] = $("#shipment-order-ca-company").val()
+        values["shipping_price"] = $("#shipment-order-shipping-price").val()
+        values["tracking_number"] = $("#shipment-order-tracking-number").val()
+        values["html_tracking_link"] = $("#shipment-order-tracking-link").val()
+        values["shipping_date"] = $("#shipment-order-shipping-date").val()
+        values["expected_delivery_date"] = $("#shipment-order-expected-date").val()
+        values["stock"]=stock_name
+        file_upload_function()
+        .then(url=>{
+            console.log("url===>",url)
+            values["shipping_document"] = url
+            frappe_create_shipping_order(values)
+        })
+        .catch(error=>{
+            response_message('Unsuccessfull', error, 'red')
+        })
+
+    })
+
+    function response_message(title, message, color) {
+        frappe.msgprint({
+            title: __(title),
+            indicator: color,
+            message: __(message)
+        });
+    }
+
+    function frappe_create_shipping_order(data){
+        frappe.call({
+                method: 'erpnext.modehero.shipment_orders.createShipmentOrder',
+                args: {
+                    data:data
+                },
+                callback: function (r) {
+                    
+                    if (r) {
+                        if (r.message['status'] == "ok") {
+                            response_message('Successfull', 'Order created successfully', 'green')
+                            $('#directShip').attr('data-shiporder',r.message['name'])
+                            
+                            $('#shipment-order-modal').modal('hide')
+                            
+                        }else{
+                            response_message('Unsuccessfull', r.message['message'], 'red')
+                            $('#shipment-order-modal').modal('hide')
+                        }
+                    }else{
+                        response_message('Unsuccessfull', 'Order created unsuccessfully', 'red')
+                    }
+                    
+                }
+            });
+    }
+
+
+    function file_upload_function() {
+        return new Promise((resolve, reject) => {
+            let file = $("#shipment-order-document").prop('files')[0]
+            if(file){
+                if (file.size / 1024 / 1024 > 5) {
+                    reject("Please upload file less than 5mb")
+                }
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                console.log(file, reader, reader.result)
+                reader.onload = function () {
+                    frappe.call({
+                        method: 'frappe.handler.uploadfile',
+                        args: {
+                            filename: file.name,
+                            attached_to_doctype: 'Shipping Order',
+                            attached_to_field: 'shipment-order-document',
+                            is_private: true,
+                            filedata: reader.result,
+                            from_form: true,
+                        },
+                        callback: function (r) {
+                            if (!r.exc) {
+                                console.log(r)
+                                $("#shipment-order-document").html(r.message.file_url)
+                                resolve(r.message.file_url)
+                            }
+                        }
+                    })
+                }
+            }else{
+                resolve('')
+            }
+            
+        })
+    }
+</script>

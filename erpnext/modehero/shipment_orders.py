@@ -16,6 +16,41 @@ def deliverOrder(data):
 
     return {'status':'OK'}
 
+@frappe.whitelist()
+def createShipmentOrder(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    if (len(data['tracking_number'].strip())==0 and len(data['shipping_date'].strip())==0 and len(data['carrier_company'].strip())==0 ):
+        return {"status":"error","message":"Incompleted data !"}
+    
+    shipmentOrder=frappe.get_doc({
+        'doctype': 'Shipment Order',
+        'tracking_number':data['tracking_number'],
+        'carrier_company':data['carrier_company'],
+        'shipping_date':data['shipping_date'],
+        'expected_delivery_date':data['expected_delivery_date'],
+        'shipping_price':data['shipping_price'],
+        'html_tracking_link':data['html_tracking_link'],
+        'shipping_document':data['shipping_document'],
+        'stock':data['stock'],
+        'brand':brand
+    })
+    order = shipmentOrder.insert()
+    frappe.db.commit()
+    return {"status":"ok","name":order.name}
+
+@frappe.whitelist()
+def deleteshipment(shipmentName):
+    shipmentOrder=frappe.get_doc('Shipment Order',shipmentName)
+    shipmentOrder.delete()
+
+    frappe.db.commit()
+
+    return {"status":"ok","name":shipmentOrder.name}
+
+
+
 # def updateShipmentSizeQuantitesIfSizePerQuantitesNotGiven(doc,method):
 #     if doc.internal_ref_prod_order==None:
 #         return None

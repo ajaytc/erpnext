@@ -10,3 +10,10 @@ def getSizes(item):
     for s in sizes:
         temp.append(s[0])
     return {"sizes": temp}
+
+
+@frappe.whitelist()
+def getSizesFromStock(stock):
+    stockOb = frappe.get_doc('Stock', stock)
+    sizes = getSizes(stockOb.product)
+    return sizes

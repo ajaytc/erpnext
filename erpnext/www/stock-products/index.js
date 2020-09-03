@@ -5,7 +5,7 @@ $(document).ready(function () {
 })
 
 
-var stock_name =null;
+var stock_name = null;
 var quantity = $('.selectedproduct:checked').attr('data-qty');
 var price = null;
 
@@ -33,8 +33,8 @@ $('#validatebutton').click(() => {
             stock_name,
             quantity,
             old_quantity,
-            description : 'Update Stock',
-            price : price
+            description: 'Update Stock',
+            price: price
         },
         callback: function (r) {
             if (!r.exc) {
@@ -55,26 +55,153 @@ $('#directShip').on('show.bs.modal', function (event) {
     var item_name = $('.selectedproduct:checked').attr('data-item')
     price = $('.selectedproduct:checked').attr('data-price')
 
+    getSizingDetailsNgeneratetable(stock_name)
+
+    // product = $(e.target).find("option:selected").val()
+    // $(e.target).closest('.product-table').attr('id', product)
+    // frappe.call({
+    //     method: 'erpnext.stock.sizing.getSizes',
+    //     args: {
+    //         item: product
+    //     },
+    //     callback: function (r) {
+    //         if (!r.exc) {
+    //             let table = generateSizingTable(r.message.sizes)
+    //             // console.log(table)
+    //             $('#sizeTable').html(table)
+    //             // $('.qty>td>input').change(priceUpdateCallback)
+    //             // getSupplierDetails($('#product').find('option:selected').val())
+    //         }
+    //     }
+    // });
+
     var modal = $(this)
 
     modal.find('.modal-title').text('Direct Ship ' + item_name)
 })
 
-$('#shipbutton').click(() => {
-    var amount = $('.modal-body #quantity').val()
-    var destination = $('.modal-body #destination').val()
+function getSizingDetailsNgeneratetable(stock) {
+    frappe.call({
+        method: 'erpnext.stock.sizing.getSizesFromStock',
+        args: {
+            stock: stock
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                let table = generateSizingTable(r.message.sizes)
+                // console.log(table)
+                if(r.message.sizes.length!=0){
+                    $('#sizeTable').html(table)
+                }else{
+                    $('#sizeTable').html('')
+                }
+               
+                // $('.qty>td>input').change(priceUpdateCallback)
+                // getSupplierDetails($('#product').find('option:selected').val())
+            }
+        }
+    });
+} 
+
+// $('#plNinv').click(function () {
+
+
+// })
+
+$("#directShip").on("hidden.bs.modal", function () {
+
+    shipOrderName = $('#directShip').attr('data-shiporder')
+
+    if(shipOrderName){
+        frappe.call({
+            method: 'erpnext.modehero.shipment_orders.deleteshipment',
+            args: {
+                shipmentName: shipOrderName
+            }, callback: function (r) {
+                if (!r.exc) {
+                    console.log(r)
+                    window.location.reload()
+                }
+            }
+        })
+    }
     
-    console.log(amount)
+});
+
+// $('#directShip').on('show.bs.modal', function (event) {
+//     product = $(e.target).find("option:selected").val()
+//     $(e.target).closest('.product-table').attr('id', product)
+//     frappe.call({
+//         method: 'erpnext.stock.sizing.getSizes',
+//         args: {
+//             item: product
+//         },
+//         callback: function (r) {
+//             if (!r.exc) {
+//                 let table = generateSizingTable(r.message.sizes)
+//                 // console.log(table)
+//                 $(e.target).parent().parent().parent().parent().parent().parent().parent().find('.table-section').html(table)
+//                 $('.qty>td>input').change(priceUpdateCallback)
+//                 getSupplierDetails($('#product').find('option:selected').val())
+//             }
+//         }
+//     });
+// })
+
+$('#plNinv').click(() => {
+    // var amount = $('.modal-body #quantity').val()
+    // var destination = $('.modal-body #destination').val()
+    // $('#prod_order_ref').hide()
+    client=$('#selected-client').val()
+    pos=$('#pos-select').val()
+    destination=''
+    
+    if(pos){
+        destination=pos
+    }else if(client){
+        destination=client
+    }
+
+    // console.log(amount)
     console.log(destination)
+    
+
+    let qtys = []
+    let sizes = []
+    let counter = 0
+
+    $('.sizing').map(function () {
+        sizes.push($(this).text())
+    })
+
+    $('.qty>td>input').map(function () {
+        if ($(this).val() != "") {
+            allnull = false
+            qtys.push({
+                size: sizes[counter],
+                quantity: $(this).val()
+            })
+        }
+        counter++
+        // qtys.push($(this).val())
+    })
+
+    
+    if (allnull) {
+        frappe.throw(frappe._("Please fill quantities"))
+    }
 
     frappe.call({
-        method: 'erpnext.modehero.stock.directShip',
+        method: 'erpnext.modehero.stock.directShipfromProductStock',
         args: {
-            stock_name,
-            amount,
-            old_stock,
-            description : destination,
-            price : price
+            data:{
+                stock_name:stock_name,
+                qtys:qtys,
+                old_stock:old_stock,
+                description:destination,
+                price:price
+            }
+            
         },
         callback: function (r) {
             if (!r.exc) {
@@ -96,13 +223,22 @@ $('#shipFromExisting').on('show.bs.modal', function (event) {
     $('.selected-client').click(clientUpdateCallback)
 
     $('.selected-purchase').click(purchaseUpdateCallback)
-    
+
 })
 
 function generateOptions(values) {
     let html = ''
     values.map(v => {
         html += `<option value="${v.name}">${v.name}</option>`
+    })
+    return html
+}
+
+function generateOptions2(values, val_key, txt_key) {
+    let html = ''
+    html += `<option value="">---:---</option>`
+    values.map(v => {
+        html += `<option value="${v[val_key]}">${v[txt_key]}</option>`
     })
     return html
 }
@@ -142,13 +278,40 @@ const purchaseUpdateCallback = (e) => {
     });
 }
 
+function generateSizingTable(sizes) {
+
+    let heads = '', inputs = ''
+
+    sizes.map(s => {
+        heads += `<th class="sizing" scope="col">${s}</th>`
+        inputs += `<td><input type="text" data-size="${s}" class="form-control"></td>`
+    })
+
+    return `
+            <table class="table table-bordered" id="product-table">
+                <thead>
+                    <tr>
+                        <th scope="col">{{_("Sizing")}}</th>
+                        ${heads}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="qty">
+                        <th class="qty" scope="row">{{_("Quantity")}}</th>
+                        ${inputs}
+                    </tr>
+                </tbody>
+            </table>
+    `
+}
+
 function generateQuantityTables(quantities) {
 
     let tables = ''
 
     for (let i in quantities) {
-        let sizes = '', inputs = '',qtys ='',name = ''
-        let cal =0
+        let sizes = '', inputs = '', qtys = '', name = ''
+        let cal = 0
         quantities[i].map(j => {
             console.log(j)
             cal++
@@ -157,7 +320,7 @@ function generateQuantityTables(quantities) {
             qtys += `<th scope="col">${j[2]}</th>`
             inputs += `<td><input type="number" class="form-control" value="${j[2]}" min="0" max="${j[2]}"></td>`
         })
-        tables += generateTable(sizes, qtys,  inputs, name)
+        tables += generateTable(sizes, qtys, inputs, name)
     }
     return tables
 }
@@ -185,4 +348,28 @@ function generateTable(sizes, qtys, inputs, name) {
                 </tbody>
             </table>
     `
+}
+
+
+$('#selected-client').change(function () {
+    makePOSList($(this))
+    // makePackageList($(this))
+
+
+})
+
+function makePOSList(el) {
+    let client = el.find('option:selected').val()
+    frappe.call({
+        method: 'erpnext.modehero.uniform.get_pos_of_client',
+        args: {
+            client
+        },
+        callback: function (r) {
+            if (!r.exc) {
+                console.log(r.message)
+                $('#pos-select').html(generateOptions2(r.message, 'name', 'point_of_sale'))
+            }
+        }
+    })
 }

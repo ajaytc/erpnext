@@ -47,6 +47,7 @@
 {% macro dropdown(items,class,id) %}
 <div class="form-group">
   <select class="form-control {{class}}" id="{{id}}">
+    <option value=""></option>
     {% for i in items %}
     {% if i.name %}
     <option value="{{i.name}}">{{i.name}}</option>
@@ -123,32 +124,53 @@
   </div>
 </div>
 
-<div class="modal fade" id="directShip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade tt" id="directShip" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 42%;">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{_("Direct Ship")}}</h5>
+        <h5 class="modal-title bv" id="exampleModalLabel">{{_("Direct Ship")}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
-            <label for="quantity" class="col-form-label">{{_("Qty")}}</label>
-            <input type="number" class="form-control" id="quantity">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="selected-client" class="col-form-label">{{_("Client")}}</label>
+                {{dropdown(clients,'','selected-client')}}
+              </div>
+            </div>
+            
+            <div class="col-6">
+              <div class="form-group">
+                <label for="selected-pos" class="col-form-label">{{_("Point of Sale")}}</label>
+                <select class="form-control" id="pos-select">
+                  <option value="">---:---</option>
+              </select>
+              </div>
+            </div>
           </div>
+          
           <div class="form-group">
-            <label for="exampleFormControlSelect1">{{_("Destination")}}</label>
-            {{dropdown(destination,'','destination')}}
+            <label for="exampleFormControlSelect1">{{_("Order Information")}}</label>
+            <input class="form-control" type="text" id="order_info">
+          </div>
+          <div id="sizeTable">
+
           </div>
         </form>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#shipment-order-modal" id=shipbutton>{{_("Add shipment info")}}</button>
+        <button type="button" class="btn btn-primary" id=plNinv>{{_("PL+invoice")}}</button>
+        <!-- <button type="button" class="btn btn-primary" id=shipbutton>{{_("Ship")}}</button> -->
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
-        <button type="button" class="btn btn-primary" id=shipbutton>{{_("Ship")}}</button>
       </div>
     </div>
   </div>
 </div>
+
+{% include 'erpnext/www/modals/shipment_order_modal_for_directship.html' %}

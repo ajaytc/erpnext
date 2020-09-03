@@ -23,7 +23,7 @@ def get_context(context):
 
     context.destination = frappe.get_all("Destination")
 
-    context.clients = frappe.get_list("Customer")
+    context.clients = frappe.get_list("Customer",filters={'brand':brand})
 
     query = """select i.item_name, s.quantity, s.localization, s.total_value, s.name, i.avg_price from `tabStock` s left join `tabItem` i on i.item_code = s.product where s.item_type=%s and i.brand=%s"""
 
