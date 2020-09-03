@@ -1,0 +1,57 @@
+<div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
+    <div style="text-align: center;">{{address}}<br />
+    <h3>&nbsp;</h3>
+    </div>
+    <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
+    </div>
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{creation.date()}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{client_name}}</p>
+    <p>{{client_address}}</p>
+    </li>
+    <li><strong>Deliver to</strong>
+    <p id="destination">{{destination}}</p>
+    </li>
+    </ul>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; width: 102.021%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 20.8843%; border: none; height: 30px;"><strong>Product</strong><br /><strong>Size</strong><br /><strong>Quantities<br /></strong></td>
+    <td style="width: 16.9179%; border: none; height: 30px;"><strong>Order Number</strong></td>
+    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Internal Reference</strong></td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{% for product in order_details %}</p>
+    <table style="border-collapse: collapse; width: 102.233%; height: 10px;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 21.5961%; border: none; height: 10px;">{{order_details[product]["product_name"]}}</td>
+    <td style="width: 16.2061%; border: none; height: 10px;">{{order_details[product]["order"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_details[product]["internal_ref"]}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%for size_qty_dic in order_details[product]["size_qty"] %}</p>
+    <table style="border-collapse: collapse; width: 100%; height: 10px;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">{{size_qty_dic["size"]}}<br />{{size_qty_dic["quantity"]}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%endfor%}</p>
+    <p>&nbsp;</p>
+    <p style="display: none;">{%endfor%}</p>

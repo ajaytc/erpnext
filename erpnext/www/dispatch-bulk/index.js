@@ -8,7 +8,7 @@ window.onload = function(){
 }
 
 $(".add-shipment-info").click(function(){
-    let validation_result= validate_tickboxes($(this))
+    let validation_result= validate_tickboxes_for_add_shipment($(this))
     if (!validation_result[0]){
         return null
     }
@@ -22,7 +22,8 @@ $(".add-shipment-info").click(function(){
     }
     $("#shipment-order-if").empty().append("<option value='"+po_if+"'>"+po_if+"</option>")
     let modal_element = $("#shipment-order-modal")
-    modal_element.attr("data-sales_order_item",sales_order_item).attr("data-location",location)
+    modal_element.attr("data-location",location)
+    if (sales_order_item!=null)  modal_element.attr("data-sales_order_item",sales_order_item) 
     $("#shipment-order-file").prop("hidden",true)
     if (tick_box_element.hasClass("sent-tick")){
         modal_element.attr("dispatch_name",tick_box_element.attr("data-dispatch"))
@@ -30,15 +31,61 @@ $(".add-shipment-info").click(function(){
     modal_element.modal('show')
 })
 
-$("#add-pl-invoice").click()
+$(".add-pl-invoice").click(function(){
+    let validation_result = validate_tickboxes_for_plpi($(this))
+    if (!validation_result){
+        return null
+    }
+    data = collect_data_for_plpi($(this).attr("data-location"))
+    frappe.call({
+        method: 'erpnext.modehero.production.generateMultiplePLInvoice',
+        args: {
+            data:data,
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'PL + Invoice created successfully', 'green')
+                    clear_inputs()
+                    window.location.reload()
+                    return null;
+                }
+                clear_inputs()
+                response_message('Unsuccessfull', 'PL + Invoice created unsuccessfully', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'PL + Invoice created unsuccessfully', 'red')
+        }
+    });
+})
 
 $(".s-tag-current-shipment").click(function(){ 
     open_shipment_modal($(this).attr("data-ship_data"),$(this).attr("data-location"),$(this).attr("data-poif"))
 })
 
-function validate_tickboxes(element){
+function validate_tickboxes_for_plpi(element){
     let location = $(element).attr("data-location")
+    let selected_amt = $("input.not-sent-tick:checkbox[data-location|='"+location+"']:checked").length
+    if (selected_amt==0){
+        return false
+    }
+    let any_error = false
+    $("input.not-sent-tick:checkbox[data-location|='"+location+"']:checked").each(function(){
+        if (!validate_ship_quantity($(this))){
+            any_error = true
+            return false
+        }
+    })
+    if (any_error){
+        response_message('Unsuccessfull', 'Invalid inputs !', 'red')
+        return false
+    }
+    return true
+}
 
+function validate_tickboxes_for_add_shipment(element){
+    let location = $(element).attr("data-location")
     let selected_amt = $("input:checkbox[data-location|='"+location+"']:checked").length
     if (selected_amt==0){
         return [false]
@@ -49,7 +96,7 @@ function validate_tickboxes(element){
     }    
     let tick_box_element = $("input:checkbox[data-location|='"+location+"']:checked").first()
     let po_if = tick_box_element.attr("data-if")
-    let sales_order_item = tick_box_element.attr("data-sales_order_item")
+    let sales_order_item = (tick_box_element.attr("data-sales_order_item")) ? tick_box_element.attr("data-sales_order_item"):null
     return [true,location,po_if,tick_box_element,sales_order_item]
 }
 
@@ -103,13 +150,25 @@ function validate_ship_quantity(tick_box_element){
     return validated
 }
 
-function collect_ship_size_qty(){
-    let location = $("#shipment-order-modal").attr("data-location")
-    let result_obj = {}
-    $("input:checkbox[data-location|='"+location+"']:checked").first().parent().parent().children(".ship-quantity-boxs").each(function(){
-        result_obj[$(this).children(":input.ship-quantity-box").first().attr("data-size")] = $(this).children(":input.ship-quantity-box").first().val()
+function collect_data_for_plpi(location){
+    let result_list = []
+    $("input.not-sent-tick:checkbox[data-location|='"+location+"']:checked").each(function(){
+        let current_shipment_name = null
+        if ($(this).attr("data-ship_name")){
+            current_shipment_name = $(this).attr("data-ship_name")
+        }
+        let temp_obj = {
+            "sales_order_item":  ($(this).attr("data-sales_order_item")) ? $(this).attr("data-sales_order_item") : null ,
+            "po_if":$(this).attr("data-if"),
+            "shipment_order":current_shipment_name,
+            "size_qty":{}
+        }
+        $(this).parent().parent().children(".ship-quantity-boxs").each(function(){
+            temp_obj.size_qty[$(this).children(":input.ship-quantity-box").first().attr("data-size")] = $(this).children(":input.ship-quantity-box").first().val()
+        })
+        result_list.push(temp_obj)
     })
-    return result_obj
+    return result_list
 }
 
 function response_message(title, message, color) {

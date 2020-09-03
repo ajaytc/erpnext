@@ -96,7 +96,7 @@ def collect_item_destination_data(orders):
             supportive_destination_dic["destinations"][order[4]] = {"client_id":destination_data_list[0].client_name,"client_name":client_data_list[0].customer_name}
         elif int(order[2])==1 and order[0]==None and order[4]!=None:
             # this is situation of bulk order destination is a pos
-            pos_data_list = frappe.get_all("Point Of Sale",filters={'name':order[4]},fields=['point_of_sale'])
+            pos_data_list = frappe.get_all("Point Of Sales",filters={'name':order[4]},fields=['point_of_sale'])
             if len(pos_data_list)==0:
                 continue
             supportive_destination_dic["poss"][order[4]] = {"name":pos_data_list[0].point_of_sale}
