@@ -95,7 +95,7 @@
     $('#shipment-order-save').click(function (e) {
         e.preventDefault();
         let values = {}
-        values["sales_order_item"] = MODAL_ELEMENT.attr("data-sales_order_item")
+        values["sales_order_item"] = (MODAL_ELEMENT.attr("data-sales_order_item")) ? MODAL_ELEMENT.attr("data-sales_order_item") : null 
         values["internal_ref_prod_order"] = $("#shipment-order-if").val()
         values["carrier_company"] = $("#shipment-order-ca-company").val()
         values["shipping_price"] = $("#shipment-order-shipping-price").val()
@@ -181,7 +181,7 @@
 
     function frappe_modify_shipment(data,shipment_order){
         frappe.call({
-            method: 'erpnext.modehero.production.modifyShipmentOrderForProduction',
+            method: 'erpnext.modehero.production.generatePLInvoice',
             args: {
                 data:data,
                 shipment_order:shipment_order

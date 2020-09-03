@@ -380,8 +380,8 @@ def updateQuantity(stock_name, quantity, price,size_detail):
     if size_detail!=None:
         for x in range(len(stock_doc.product_stock_per_size)):
             for y in range(len(size_detail)):
-                if stock_doc.product_stock_per_size[x].size == size_detail[y].size:
-                    stock_doc.product_stock_per_size[x].quantity = size_detail[y].quantity
+                if stock_doc.product_stock_per_size[x].size == size_detail[y]["size"]:
+                    stock_doc.product_stock_per_size[x].quantity = size_detail[y]["quantity"]
     stock_doc.quantity = quantity
     stock_doc.total_value = total_value
     stock_doc.save()
@@ -441,8 +441,10 @@ def get_final_size_quantities(size_detail,in_or_out):
             old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) + int(incoming_size_qty[old_size_qty[index_of_sq].size])
         elif in_or_out=="out":
             old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) - int(incoming_size_qty[old_size_qty[index_of_sq].size])
-
-    return old_size_qty
+    sizeqty_list = []
+    for doc in old_size_qty:
+        sizeqty_list.append({"size":doc.size,"quantity":doc.quantity})
+    return sizeqty_list
 
 def get_total_quantity(order):
     # this functio returns total quantity of the order collecting all size quantities
