@@ -18,7 +18,8 @@
   "fabric_order_id",
   "trimming_order_id",
   "packaging_order_id",
-  "sales_order_item"
+  "sales_order_item",
+  "stock"
  ],
  "fields": [
   {
@@ -91,10 +92,16 @@
    "fieldtype": "Link",
    "label": "Sales Order Item",
    "options": "Sales Order Item"
+  },
+  {
+   "fieldname": "stock",
+   "fieldtype": "Link",
+   "label": "Stock",
+   "options": "Stock"
   }
  ],
  "links": [],
- "modified": "2020-09-01 16:19:29.949966",
+ "modified": "2020-09-02 19:46:07.566807",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Shipment Order",

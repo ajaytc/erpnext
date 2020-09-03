@@ -25,6 +25,48 @@ def directShip(stock_name, amount, old_stock, description, price):
     stockOut(stock_name, amount, new_stock, description,None)
     updateQuantity(stock_name, new_stock, price,None)
 
+@frappe.whitelist()
+def directShipfromProductStock(data):
+    data=json.loads(data)
+    stock_name=data['stock_name']
+    old_stock=data['old_stock']
+    description=data['description']
+    price=data['price']
+    qtys=data['qtys']
+    qtySizeDic={}
+    amount=0
+    for qty in data['qtys']:
+        amount=amount+int(qty['quantity'])
+        qtySizeDic[qty['size']]=qty['quantity']
+
+
+
+    new_stock = int(old_stock)-int(amount)
+
+    stockOut(stock_name, amount, new_stock, description,qtys)
+    # stock=frappe.get_doc('Stock',stock_name)
+    newSizeStocks=getNewSizewiseStock(stock_name,qtySizeDic)
+    updateQuantity(stock_name, new_stock, price,newSizeStocks)
+
+def getNewSizewiseStock(stockName,qtysDic):
+    # stock=frappe.get_all('Stock',filters={'parent':stockName,'size':qtysDic.keys()},fields=['quantity','size'])
+    sizeQtys=frappe.db.sql("""select sps.size,sps.quantity from `tabProduct Stock Per Size` sps where `parent`=%s and `size` in %s""",(stockName, tuple(qtysDic.keys())))
+    # stock_per_size=stock.product_stock_per_size
+    newQtys=[]
+
+    for sizeqty in sizeQtys:
+        newQty={}
+        size=sizeqty[0]
+        oldstock=int(sizeqty[1])
+        newstock=oldstock-int(qtysDic[size])
+        newQty['size']=size
+        newQty['quantity']=newstock
+        newQtys.append(newQty)
+    
+    return newQtys
+
+        
+
 
 @frappe.whitelist()
 def shipFromExisting(stock_name, amount, old_stock, description, price):
