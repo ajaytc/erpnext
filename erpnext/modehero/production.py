@@ -717,7 +717,9 @@ def create_invocie_data_dispatch_bulk(doc_data):
 
     template_data["order_details"] = order_details
     template_data["total_cost"] = order_details[production_order.product_name]["order_list"][0]["total"]
-    template_data["shipment_cost"] = shipment_order.shipping_price
+    template_data["shipment_cost"] = 0
+    if shipment_order!=None:
+        template_data["shipment_cost"] = shipment_order.shipping_price
     template_data["totalAmount"] = float(template_data["shipment_cost"]) + float(template_data["total_cost"])
     template_data["vat_rate"] = 1
     if brand.tax_id==None: pass 
