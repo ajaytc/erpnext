@@ -8,35 +8,61 @@ window.onload = function(){
 }
 
 $(".add-shipment-info").click(function(){
-    let validation_result= validate_tickboxes_for_add_shipment($(this))
+    let validation_result= validate_one_tick_n_get_data($(this))
     if (!validation_result[0]){
         return null
     }
     let location = validation_result[1]
     let po_if= validation_result[2]
-    let tick_box_element= validation_result[3]
-    let sales_order_item = validation_result[4]
-    if (tick_box_element.attr("data-ship_data")){
-        open_shipment_modal(tick_box_element.attr("data-ship_data"),location,po_if,1)
+
+    if (validation_result[5]){
+        open_shipment_modal(validation_result[5],location,po_if,1)
         return null
     }
-    $("#shipment-order-if").empty().append("<option value='"+po_if+"'>"+po_if+"</option>")
-    let modal_element = $("#shipment-order-modal")
-    modal_element.attr("data-location",location)
-    if (sales_order_item!=null)  modal_element.attr("data-sales_order_item",sales_order_item) 
-    $("#shipment-order-file").prop("hidden",true)
-    if (tick_box_element.hasClass("sent-tick")){
-        modal_element.attr("dispatch_name",tick_box_element.attr("data-dispatch"))
-    }
-    modal_element.modal('show')
+    open_fresh_shipment_modal(validation_result)
 })
 
 $(".add-pl-invoice").click(function(){
-    let validation_result = validate_tickboxes_for_plpi($(this))
-    if (!validation_result){
+    let validation_result= validate_one_tick_n_get_data($(this))
+    let validated = validate_tickboxes_for_plpi($(this))
+    if (!validation_result[0] || !validated){
         return null
     }
-    data = collect_data_for_plpi($(this).attr("data-location"))
+    if (validation_result[5]==null){
+        $("#yes-shipment-confirm-pli").attr("data-location",validation_result[1])
+        $("#no-shipment-confirm-pli").attr("data-location",validation_result[1])
+        $("#shipment-confirmation_pli").modal('show')
+        return null
+    }
+    create_pl_n_invoice(validation_result[1])
+})
+
+
+$(".s-tag-current-shipment").click(function(){ 
+    open_shipment_modal($(this).attr("data-ship_data"),$(this).attr("data-location"),$(this).attr("data-poif"))
+})
+$("#yes-shipment-confirm-pli").click(function(){
+    $(".add-shipment-info[data-location|='"+$(this).attr("data-location")+"']").trigger("click")
+    $(this).removeAttr("data-location")
+})
+
+$("#no-shipment-confirm-pli").click(function(){
+    let location = $(this).attr("data-location")
+    $(this).removeAttr("data-location")
+    create_pl_n_invoice(location)
+})
+
+$("#shipment-order-modal").on("hidden.bs.modal", function () {
+    $("#create-shipment-order input").removeAttr("disabled")
+    $("#create-shipment-order")[0].reset()
+    $("#shipment-order-document-div").removeAttr("hidden")
+    $("#shipment-order-save").removeAttr("hidden")
+    $("#shipment-order-file").removeAttr("hidden",true).removeAttr("href")
+    $(this).removeAttr("data-shipment_name").removeAttr("data-location").removeAttr("data-sales_order_item").removeAttr("data-dispatch_name")
+})
+
+function create_pl_n_invoice(location){
+    let data = collect_data_for_plpi(location)
     frappe.call({
         method: 'erpnext.modehero.production.generateMultiplePLInvoice',
         args: {
@@ -51,18 +77,28 @@ $(".add-pl-invoice").click(function(){
                     return null;
                 }
                 clear_inputs()
-                response_message('Unsuccessfull', 'PL + Invoice created unsuccessfully', 'red')
+                response_message('Unsuccessfull', r.message['message'], 'red')
                 window.location.reload()
                 return null
             }
             response_message('Unsuccessfull', 'PL + Invoice created unsuccessfully', 'red')
         }
     });
-})
+}
 
-$(".s-tag-current-shipment").click(function(){ 
-    open_shipment_modal($(this).attr("data-ship_data"),$(this).attr("data-location"),$(this).attr("data-poif"))
-})
+
+function open_fresh_shipment_modal(data){
+    $("#shipment-order-if").empty().append("<option value='"+data[2]+"'>"+data[2]+"</option>")
+    let modal_element = $("#shipment-order-modal")
+    modal_element.attr("data-location",location)
+    if (data[4]!=null)  modal_element.attr("data-sales_order_item",data[4]) 
+    $("#shipment-order-file").prop("hidden",true)
+    if (data[3].hasClass("sent-tick")){
+        modal_element.attr("dispatch_name",data[3].attr("data-dispatch"))
+    }
+    modal_element.modal('show')
+}
+
 
 function validate_tickboxes_for_plpi(element){
     let location = $(element).attr("data-location")
@@ -84,20 +120,21 @@ function validate_tickboxes_for_plpi(element){
     return true
 }
 
-function validate_tickboxes_for_add_shipment(element){
+function validate_one_tick_n_get_data(element){
     let location = $(element).attr("data-location")
     let selected_amt = $("input:checkbox[data-location|='"+location+"']:checked").length
     if (selected_amt==0){
         return [false]
     }
     if (selected_amt>1){
-        response_message('Unsuccessfull', 'Multiple selection are not allowed at once to add shipment info!', 'red')
+        response_message('Unsuccessfull', 'Multiple selection are not allowed !', 'red')
         return [false]
     }    
     let tick_box_element = $("input:checkbox[data-location|='"+location+"']:checked").first()
     let po_if = tick_box_element.attr("data-if")
     let sales_order_item = (tick_box_element.attr("data-sales_order_item")) ? tick_box_element.attr("data-sales_order_item"):null
-    return [true,location,po_if,tick_box_element,sales_order_item]
+    let shipment_order = (tick_box_element.attr("data-ship_data")) ? tick_box_element.attr("data-ship_data"):null
+    return [true,location,po_if,tick_box_element,sales_order_item,shipment_order]
 }
 
 function open_shipment_modal(data,location,po_if,is_editable){
@@ -105,15 +142,6 @@ function open_shipment_modal(data,location,po_if,is_editable){
     set_modal_data(data,location,po_if)
     $("#shipment-order-modal").modal('show')
 }
-
-$("#shipment-order-modal").on("hidden.bs.modal", function () {
-    $("#create-shipment-order input").removeAttr("disabled")
-    $("#create-shipment-order")[0].reset()
-    $("#shipment-order-document-div").removeAttr("hidden")
-    $("#shipment-order-save").removeAttr("hidden")
-    $("#shipment-order-file").removeAttr("hidden",true).removeAttr("href")
-    $(this).removeAttr("data-shipment_name").removeAttr("data-location").removeAttr("data-sales_order_item").removeAttr("data-dispatch_name")
-});
 
 function hide_elements(){
     $("#create-shipment-order input").prop("disabled", true)

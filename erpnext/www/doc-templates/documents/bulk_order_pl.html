@@ -44,11 +44,11 @@
     </tr>
     </tbody>
     </table>
-    <p style="display: none;">{%for size_qty_dic in order_details[product]["size_qty"] %}</p>
+    <p style="display: none;">{%for size in order_details[product]["size_qty"] %}</p>
     <table style="border-collapse: collapse; width: 100%; height: 10px;" border="1">
     <tbody>
     <tr style="height: 10px;">
-    <td style="width: 18.9011%; border: none; height: 10px;">{{size_qty_dic["size"]}}<br />{{size_qty_dic["quantity"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{size}}<br />{{order_details[product]["size_qty"][size]}}</td>
     </tr>
     </tbody>
     </table>

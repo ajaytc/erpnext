@@ -2,7 +2,7 @@ import frappe
 import json
 import ast
 import datetime
-from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order, get_details_packaging_from_order
+from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order, get_details_packaging_from_order,stockOut
 from frappe.email.doctype.notification.notification import sendCustomEmail
 
 @frappe.whitelist()
@@ -454,16 +454,28 @@ def generateMultiplePLInvoice(data):
         if doc_data["production_order"] == None or doc_data["client"] == None or doc_data["destination"] == None:
             continue
         size_qty_dic = order["size_qty"]
-        for size in size_qty_dic:
-            size_qty_dic[size] = int(size_qty_dic[size])
+        try:
+            for size in size_qty_dic:
+                size_qty_dic[size] = int(size_qty_dic[size])
+        except ValueError:
+            continue
         size_qty_dic, is_completed = check_dispatch_order_situation(doc_data["production_order"],doc_data["sales_order_item"],size_qty_dic)
-        if not is_quantity_enough(size_qty_dic,doc_data["production_order"].product_name):
+        if not is_quantity_enough(size_qty_dic,doc_data["production_order"].product_name) or all(x == 0 for x in size_qty_dic.values()) :
             continue
         doc_data["brand"] = brand_doc
         doc_data["size_qty"] = size_qty_dic
-        # pl = generate_dispatch_bulk_pl(doc_data)
-        invoice = generate_dispatch_bulk_invoice(doc_data)
-    return {}
+        try:
+            pl = generate_dispatch_bulk_pl(doc_data)
+            invoice = generate_dispatch_bulk_invoice(doc_data)
+            modify_stocks_dispatch_bulk(pl.name,invoice.name,doc_data)
+            if is_completed: complete_order(doc_data["production_order"],doc_data["sales_order_item"])
+            actual_success = actual_success + 1
+        except Exception:
+            continue
+    if actual_success==expected_success:
+        return {"status":"ok"}
+    else:
+        return {"status":"error","message":"Only "+str(actual_success)+" PL and Invoices are created"}
 
 def check_and_get_doc(doc_type,filter_params):
     if filter_params==None:
@@ -553,7 +565,23 @@ def check_dispatch_order_situation(po,soi,size_qty):
         else:
             size_qty[size] = 0
     return size_qty,is_completed
-        
+
+def generate_dispatch_bulk_pl(doc_data):
+    pl_data = create_pl_data_dispatch_bulk(doc_data)
+    temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order Packing List"}, fields=["content", "type", "name"])
+    if len(temp)==0:
+        return None
+    generatedPl = frappe.render_template(temp[0]['content'], pl_data)
+    invoice = frappe.get_doc({
+        'doctype': 'Packing List',
+        'content': generatedPl,
+        'brand': doc_data["brand"].brand_name,
+        'client':doc_data["client"].name
+    })
+    invoice.insert()
+    frappe.db.commit()
+    return invoice    
+
 def generate_dispatch_bulk_invoice(doc_data):
     invoice_data = create_invocie_data_dispatch_bulk(doc_data)
     temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order Invoice"}, fields=["content", "type", "name"])
@@ -570,6 +598,87 @@ def generate_dispatch_bulk_invoice(doc_data):
     frappe.db.commit()
     return invoice
 
+def modify_stocks_dispatch_bulk(pl,inoice,doc_data):
+    stock = frappe.get_all("Stock",{"item_type":"product","product":doc_data["production_order"].product_name},["name","quantity"])[0]
+    amount = 0
+    quantity_array = []
+    for size in doc_data["size_qty"]:
+        quantity_array.append({"size":size,"quantity":doc_data["size_qty"][size]})
+        amount = amount + int(doc_data["size_qty"][size])
+    stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array)
+    is_bulk = 1
+    sales_order = None
+    shipment = None 
+    if doc_data["sales_order_item"]!=None: 
+        is_bulk=0
+        sales_order = doc_data["sales_order_item"].name
+    if doc_data["shipment_order"]!=None:
+        shipment = doc_data["shipment_order"].name
+    data = {
+        "is_bulk":is_bulk,
+        "stock_history":stock_history.name,
+        "sales_order":sales_order,
+        "production_order":doc_data["production_order"].name,
+        "brand":doc_data["brand"].brand_name,
+        "invoice":inoice,
+        "packing_list":pl,
+        "shipment_order":shipment
+    }
+    create_dispatch_bulk(data)
+
+def create_dispatch_bulk(doc_data):
+    dispatch_doc = {
+        "doctype":"Dispatch Bulk Stock History",
+        "is_bulk":doc_data["is_bulk"],
+        "stock_history":doc_data["stock_history"],
+        "sales_order":doc_data["sales_order"],
+        "bulk_order":doc_data["production_order"],
+        "shipment_order": doc_data["shipment_order"],
+        "brand":doc_data["brand"],
+        "invoice":doc_data["invoice"],
+        "packing_list":doc_data["packing_list"]
+    }
+    doc = frappe.get_doc(dispatch_doc)
+    doc.insert()
+    frappe.db.commit()
+    return doc
+
+def complete_order(po,soi):
+    if soi!=None:
+        frappe.db.set_value('Sales Order Item', soi.name, {
+            'docstatus': 3,
+        })
+    else:
+        frappe.db.set_value('Production Order', soi.name, {
+            'docstatus': 1,
+        })
+    frappe.db.commit()
+
+def create_pl_data_dispatch_bulk(doc_data):
+    template_data={}
+    size_qty_dic = doc_data["size_qty"]
+    brand = doc_data["brand"]
+    destination = doc_data["destination"]
+    client = doc_data["client"]  
+    production_order = doc_data["production_order"]
+    shipment_order = doc_data["shipment_order"]
+    sales_order_item = doc_data["sales_order_item"]    
+    template_data["brand_address"] = brand.address1
+    template_data["creation"] = datetime.datetime.now()
+    template_data["client_name"] = client.customer_name
+    template_data["client_address"] = get_address(client)
+    template_data["destination"] = get_address(destination)
+    item_doc = check_and_get_doc("Item",{"name":production_order.product_name})
+    order_details = {}
+    if item_doc!=None:
+        order_details[production_order.product_name] = {"product_name":item_doc.item_name}
+    else:
+        order_details[production_order.product_name] = {"product_name":""}
+    order_details[production_order.product_name]["internal_ref"],order_details[production_order.product_name]["order"] = if_order_for_template_from_order( sales_order_item,production_order )
+    order_details[production_order.product_name]["size_qty"] = size_qty_dic
+    template_data["order_details"] = order_details
+    return template_data
+
 def create_invocie_data_dispatch_bulk(doc_data):
     template_data={}
     size_qty_dic = doc_data["size_qty"]
@@ -582,10 +691,8 @@ def create_invocie_data_dispatch_bulk(doc_data):
     template_data["brand_address"] = brand.address1
     template_data["creation"] = datetime.datetime.now()
     template_data["client_name"] = client.customer_name
-
     template_data["client_address"] = get_address(client)
     template_data["destination"] = get_address(destination)
-
     item_doc = check_and_get_doc("Item",{"name":production_order.product_name})
     order_details = {}
     if item_doc!=None:
@@ -593,7 +700,7 @@ def create_invocie_data_dispatch_bulk(doc_data):
     else:
         order_details[production_order.product_name] = {"product_name":""}
     order_details[production_order.product_name]["order_list"] = []
-    order_details[production_order.product_name]["order_list"].append(get_order_data(sales_order_item,production_order,size_qty_dic))
+    order_details[production_order.product_name]["order_list"].append(get_order_data_for_invoice(sales_order_item,production_order,size_qty_dic))
 
     template_data["order_details"] = order_details
     template_data["total_cost"] = order_details[production_order.product_name]["order_list"][0]["total"]
@@ -615,25 +722,9 @@ def get_address(obj):
         address = address +obj.address_line_2
     return address
 
-def get_order_data(sales_order_item,production_order,size_qty_dic):
+def get_order_data_for_invoice(sales_order_item,production_order,size_qty_dic):
     order_data = {}
-    if sales_order_item!=None:
-        parent = check_and_get_doc("Sales Order",{"name":sales_order_item.parent})
-        if parent!=None and parent.internal_ref!=None:
-            order_data["internal_ref"] = parent.internal_ref
-            order_data["order"] = parent.name
-        elif parent!=None and parent.internal_ref==None:
-            order_data["internal_ref"] = ""
-            order_data["order"] = parent.name
-        elif parent==None:
-            order_data["internal_ref"] = ""
-            order_data["order"] = ""
-    else:
-        if production_order.internal_ref != None:
-            order_data["internal_ref"] = production_order.internal_ref
-        else:
-            order_data["internal_ref"] = ""
-        order_data["order"] = production_order.name
+    order_data["internal_ref"],order_data["order"] = if_order_for_template_from_order( sales_order_item,production_order )
     total_price =  calculate_price({production_order.product_name:size_qty_dic})["total"]   
     quantity = 0
     for size in size_qty_dic:
@@ -642,6 +733,23 @@ def get_order_data(sales_order_item,production_order,size_qty_dic):
     order_data["quantity"] = quantity
     order_data["total"] = total_price
     return order_data
+
+def if_order_for_template_from_order( sales_order_item,production_order ):
+    i_f = ""
+    order = ""
+    if sales_order_item!=None:
+        parent = check_and_get_doc("Sales Order",{"name":sales_order_item.parent})
+        if parent!=None and parent.internal_ref!=None:
+            i_f = parent.internal_ref
+            order = parent.name
+        elif parent!=None and parent.internal_ref==None:
+            order = parent.name
+    else:
+        if production_order.internal_ref != None:
+            i_f = production_order.internal_ref
+
+        order = production_order.name
+    return i_f,order
 
 def is_number(string):
     try:

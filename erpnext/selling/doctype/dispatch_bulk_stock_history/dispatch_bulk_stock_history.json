@@ -47,8 +47,7 @@
    "fieldname": "shipment_order",
    "fieldtype": "Link",
    "label": "Shipment Order",
-   "options": "Shipment Order",
-   "reqd": 1
+   "options": "Shipment Order"
   },
   {
    "fieldname": "brand",
@@ -73,7 +72,7 @@
   }
  ],
  "links": [],
- "modified": "2020-09-03 14:16:21.965921",
+ "modified": "2020-09-04 12:15:18.719975",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Dispatch Bulk Stock History",

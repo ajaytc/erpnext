@@ -181,7 +181,7 @@
 
     function frappe_modify_shipment(data,shipment_order){
         frappe.call({
-            method: 'erpnext.modehero.production.generatePLInvoice',
+            method: 'erpnext.modehero.production.modifyShipmentOrderForProduction',
             args: {
                 data:data,
                 shipment_order:shipment_order

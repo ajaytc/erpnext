@@ -128,6 +128,9 @@
                         {% for size_col in order[sizes_scheme_index] %}
                             <td class="ship-quantity-boxs"><input class="background-ash ship-quantity-box" data-size="{{size_col.size}}" type="text" /></td>
                         {% endfor %}
+                        {% for empty_i in range (presenting_order_data[location]["max_col_span"]-order[sizes_scheme_index]|length) %}
+                            <td></td>
+                        {% endfor %}
                         <td>
                             <div class="row">
                                 {% if order[current_active_shipment_index] != None %}
@@ -150,3 +153,24 @@
 </div>
 
 {% include 'erpnext/www/modals/shipment_order_modal.html' %}
+
+
+<div class="modal fade" id="shipment-confirmation_pli" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to create a shipment</p>
+            </div>
+            <div class="modal-footer">
+                <button id="yes-shipment-confirm-pli" type="button" class="btn btn-secondary" data-dismiss="modal">Yes</button>
+                <button type="button" id="yes-shipment-confirm-pli" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,7 +10,11 @@ def create_package(data):
     for key in data["product_data"]:
         data["product_data"][key]["item_code"] = key
         package_quantity.append(data["product_data"][key])
-
+    try :
+        for pq in package_quantity:
+            pq["quantity"] = int(pq["quantity"])
+    except ValueError:
+        return {"status":"error"}
     package = frappe.get_doc(
         {
             "doctype": "Package",

@@ -24,24 +24,35 @@ def get_branded_companies():
 @frappe.whitelist()
 def modify_pricing(form_data,name):
     form_data = json.loads(form_data)
+    try:
+        for wp_dic in form_data["wholesale_price"]:
+            for key in wp_dic : 
+                if key=="price" : wp_dic[key]=float(wp_dic[key]) 
+        for op in form_data["pricing_options"]:
+            op["price"] = float(op["price"])
+    except ValueError:
+        return {'status': 'error'}
     # here the consisency of the from to values are checked.
     # wholesale_prices = check_wholesale_correct(form_data["wholesale_price"])
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
     pricing = form_data["client"] + " " + form_data["season"]
-    pricing = {
-            "season": form_data["season"],
-            "minimum_order": form_data["minimum_order"],
-            "show_price": form_data["show_price"],
-            "pricing_name":pricing
-         }
-    ap = frappe.get_doc('Client Pricing', name)
-    ap.wholesale_price = []
-    ap.pricing_options = []
-    ap = update_wholesales(ap,form_data["wholesale_price"])
-    ap = modify_options(ap,form_data["pricing_options"])
-    for field in pricing:
-        setattr(ap, field, pricing[field])
+    try:
+        pricing = {
+                "season": form_data["season"],
+                "minimum_order": int(form_data["minimum_order"]),
+                "show_price": form_data["show_price"],
+                "pricing_name":pricing
+            }
+        ap = frappe.get_doc('Client Pricing', name)
+        ap.wholesale_price = []
+        ap.pricing_options = []
+        ap = update_wholesales(ap,form_data["wholesale_price"])
+        ap = modify_options(ap,form_data["pricing_options"])
+        for field in pricing:
+            setattr(ap, field, pricing[field])
+    except ValueError:
+        return {"status":"error"}
     ap.save(ignore_permissions=True)
     frappe.db.commit()
     return {'status': 'ok'}
@@ -52,8 +63,8 @@ def update_wholesales(doc,new_wp_dic):
     for wp in new_wp_dic:
         wh_price = {
             "parentfield":"wholesale_price",
-            "from_quantity": wp["from_quantity"],
-            "to_quantity": wp["to_quantity"],
+            "from_quantity": int(wp["from_quantity"]),
+            "to_quantity": int(wp["to_quantity"]),
             "price": wp["price"]
          }
         doc.append("wholesale_price",wh_price)
@@ -96,7 +107,14 @@ def set_pricing(form_data):
     elif (len(form_data["wholesale_price"])==0):
         return {'status': 'error'}
     # here the consisency of the from to values are checked.
-    # wholesale_prices = check_wholesale_correct(form_data["wholesale_price"])
+    try:
+        for wp_dic in form_data["wholesale_price"]:
+            for key in wp_dic : 
+                if key=="price" : wp_dic[key]=float(wp_dic[key]) 
+        for op in form_data["pricing_options"]:
+            op["price"] = float(op["price"])
+    except ValueError:
+        return {'status': 'error'}
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
     already_set = is_already_set(form_data["client"],form_data["item_code"],brand)
@@ -111,7 +129,7 @@ def set_pricing(form_data):
             "item_group": form_data["item_group"],
             "item_code": form_data["item_code"],
             "season": form_data["season"],
-            "minimum_order": form_data["minimum_order"],
+            "minimum_order": int(form_data["minimum_order"]),
             "show_price": form_data["show_price"],
             "wholesale_price":form_data["wholesale_price"],
             "pricing_options":form_data["pricing_options"],
