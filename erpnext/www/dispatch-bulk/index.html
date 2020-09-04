@@ -78,7 +78,7 @@
                     <tr >
                         <td>
                             {{order[sent_history_index][row_index]["date"].strftime('%Y-%m-%d')}}
-                            {% if order[sent_history_index][row_index]["shipment_data"]!=None %}
+                            {% if order[sent_history_index][row_index]["shipment_data"]==None %}
                                 <br>
                                 {% if ns.soi_name!=None %}
                                     <input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}" />
@@ -101,9 +101,9 @@
                         <td>
                             <div class="row">
                                 {% if order[sent_history_index][row_index]["shipment_data"]!=None %}
-                                    <div class="col-6 s-tag-sent-shipment" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[sent_history_index][row_index]['shipment_data']}}">S</div>
+                                    <div class="col-6 s-tag-sent-shipment shipment-tag" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[sent_history_index][row_index]['shipment_data']}}">S</div>
                                 {% endif %}
-                                <div class="col-6 s-tag-sent-shipment">PL+I</div>
+                                <div class="col-6 s-tag-sent-shipment pl-tag">PL+I</div>
                             </div>
                         </td>
                     </tr>
@@ -134,7 +134,7 @@
                         <td>
                             <div class="row">
                                 {% if order[current_active_shipment_index] != None %}
-                                <div class="col-6 s-tag-current-shipment" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[current_active_shipment_index]}}">S</div>
+                                <div class="col-6 s-tag-current-shipment shipment-tag" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[current_active_shipment_index]}}">S</div>
                                 {% endif %}
                             </div>
                         </td>
@@ -146,7 +146,7 @@
         <div class="button-set">
             <button   type="button" class="btn btn-primary add-shipment-info" style="display: inline-block;" data-location="{{location}}">Add Shipment Info</button>
             <button   type="button" class="btn btn-primary add-pl-invoice" style="display: inline-block;" data-location="{{location}}">PL + Invoice</button>
-            <button   type="button" class="btn btn-primary" style="display: inline-block;">Cancel</button>
+            <button   type="button" class="btn btn-primary cancel-dispatch" style="display: inline-block;" data-location="{{location}}" >Cancel</button>
         </div>
     </div>
     {% endfor %}

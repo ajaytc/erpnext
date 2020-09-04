@@ -418,6 +418,19 @@ def check_shipment_validation_for_dispatch(shipment_order,brand):
     return frappe.get_doc("Shipment Order",shipment_order)
 
 @frappe.whitelist()
+def cancelDispatch(po,soi):
+    if soi!="null":
+        frappe.db.set_value('Sales Order Item', soi, {
+            'docstatus': 2,
+        })
+    else:
+        frappe.db.set_value('Production Order', po, {
+            'docstatus': 3,
+        })
+    frappe.db.commit()
+    return {"status":"ok"}
+
+@frappe.whitelist()
 def createShipmentOrderForProductionDispatch(data,dispatch_name):
     data_dic = json.loads(data)
     user = frappe.get_doc('User', frappe.session.user)
@@ -649,7 +662,7 @@ def complete_order(po,soi):
             'docstatus': 3,
         })
     else:
-        frappe.db.set_value('Production Order', soi.name, {
+        frappe.db.set_value('Production Order', po.name, {
             'docstatus': 1,
         })
     frappe.db.commit()

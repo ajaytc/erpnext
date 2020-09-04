@@ -41,6 +41,9 @@ $(".add-pl-invoice").click(function(){
 $(".s-tag-current-shipment").click(function(){ 
     open_shipment_modal($(this).attr("data-ship_data"),$(this).attr("data-location"),$(this).attr("data-poif"))
 })
+$(".s-tag-sent-shipment").click(function(){ 
+    open_shipment_modal($(this).attr("data-ship_data"),$(this).attr("data-location"),$(this).attr("data-poif"))
+})
 $("#yes-shipment-confirm-pli").click(function(){
     $(".add-shipment-info[data-location|='"+$(this).attr("data-location")+"']").trigger("click")
     $(this).removeAttr("data-location")
@@ -50,6 +53,35 @@ $("#no-shipment-confirm-pli").click(function(){
     let location = $(this).attr("data-location")
     $(this).removeAttr("data-location")
     create_pl_n_invoice(location)
+})
+
+$(".cancel-dispatch").click(function(){
+    let validation_result= validate_one_tick_n_get_data($(this))
+    if (!validation_result[0]){
+        return null
+    }
+    frappe.call({
+        method: 'erpnext.modehero.production.cancelDispatch',
+        args: {
+            po:validation_result[2],
+            soi:validation_result[4]
+        },
+        callback: function (r) {
+            if (r) {
+                if (r.message['status'] == "ok") {
+                    response_message('Successfull', 'Order cancelled successfully', 'green')
+                    clear_inputs()
+                    window.location.reload()
+                    return null;
+                }
+                clear_inputs()
+                response_message('Unsuccessfull','Order cancelled unsuccessfully !', 'red')
+                window.location.reload()
+                return null
+            }
+            response_message('Unsuccessfull', 'Order cancelled unsuccessfully !', 'red')
+        }
+    });
 })
 
 $("#shipment-order-modal").on("hidden.bs.modal", function () {

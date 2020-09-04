@@ -47,3 +47,11 @@ table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.ta
 .button-set{
     text-align: right;
 }
+.shipment-tag{
+    border-radius: 5px;
+    background-color: rgb(192, 127, 66);
+}
+.pl-tag{
+    border-radius: 5px;
+    background-color: rgba(64, 209, 56, 0.891);
+}

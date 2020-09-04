@@ -152,9 +152,9 @@ def add_sent_data(orders,brand):
     for i in range(len(orders)):
         sent_history = []
         sent_history_data_list = []
-        is_bulk = {"is":0,"type":"sales_order","index":0}
+        is_bulk = {"is":"0","type":"sales_order","index":0}
         if orders[i][0]==None:
-            is_bulk = {"is":1,"type":"bulk_order","index":12}
+            is_bulk = {"is":"1","type":"bulk_order","index":12}
         sent_history_data_list = frappe.get_all('Dispatch Bulk Stock History',{'brand':brand,'is_bulk':is_bulk["is"], is_bulk["type"]:orders[i][is_bulk["index"]]},['name','stock_history','shipment_order'])
         for sent_data in sent_history_data_list:
             sent_data_doc = frappe.get_doc("Stock History",sent_data.stock_history)
@@ -163,7 +163,8 @@ def add_sent_data(orders,brand):
                 temp_list.append({"size":qps.size,"quantity":qps.quantity})
             if sent_data.shipment_order!=None:
                 try:
-                    shipment_data = frappe.get_doc("Shipment Order",sent_data.shipment_order)
+                    required_data = ["name","tracking_number","carrier_company","shipping_date","expected_delivery_date","shipping_price","shipping_document","html_tracking_link"]
+                    shipment_data = format_to_js_conversion(frappe.get_all("Shipment Order",{"name":sent_data.shipment_order},required_data)[0])
                 except Exception:
                     shipment_data = None
             else:
@@ -175,9 +176,9 @@ def add_sent_data(orders,brand):
 
 def get_current_active_shipment(is_bulk_data,sent_history_data_list,order,brand):
     # here the logic is the most recent shipment order which is not in dispatch bulk stock history considered as the active shipment
-    if is_bulk_data["is"]==0:
+    if is_bulk_data["is"]=="0":
         is_bulk_data["type"]= "sales_order_item"
-    elif is_bulk_data["is"]==1:
+    elif is_bulk_data["is"]=="1":
         is_bulk_data["type"]= "internal_ref_prod_order"
     required_data = ["name","tracking_number","carrier_company","shipping_date","expected_delivery_date","shipping_price","shipping_document","html_tracking_link"]
     all_shipment_list = frappe.get_all("Shipment Order",{'brand':brand,"docstatus":0,is_bulk_data["type"]:order[is_bulk_data["index"]]},required_data,order_by="creation")
@@ -189,14 +190,7 @@ def get_current_active_shipment(is_bulk_data,sent_history_data_list,order,brand)
     all_shipment_list = [i for j, i in enumerate(all_shipment_list) if j not in old_shipment_orders_idx]
     if len(all_shipment_list)>0:
         result =  all_shipment_list[-1]
-        result_obj = {}
-        for key in result:
-            if result[key]==None:
-                result_obj[key] = ""
-            elif key=="expected_delivery_date" or key=="shipping_date":
-                result_obj[key] = result[key].strftime('%Y-%m-%d')
-            else:
-                result_obj[key] = result[key]
+        result_obj = format_to_js_conversion(result)
         return result_obj
     else:
         return None
@@ -223,7 +217,16 @@ def get_item_details(item):
         resul_obj["current_stock_sizes_quantities"] = None
     return resul_obj
                 
-
+def format_to_js_conversion(doc):
+    doc_obj = {}
+    for key in doc:
+        if doc[key]==None:
+            doc_obj[key] = ""
+        elif key=="expected_delivery_date" or key=="shipping_date":
+            doc_obj[key] = doc[key].strftime('%Y-%m-%d')
+        else:
+            doc_obj[key] = doc[key]
+    return doc_obj
 
 
 
