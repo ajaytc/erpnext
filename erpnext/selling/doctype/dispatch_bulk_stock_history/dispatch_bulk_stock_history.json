@@ -10,7 +10,9 @@
   "sales_order",
   "bulk_order",
   "shipment_order",
-  "brand"
+  "brand",
+  "invoice",
+  "packing_list"
  ],
  "fields": [
   {
@@ -54,10 +56,24 @@
    "label": "Brand",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Link",
+   "label": "Invoice",
+   "options": "Uniform Invoice",
+   "reqd": 1
+  },
+  {
+   "fieldname": "packing_list",
+   "fieldtype": "Link",
+   "label": "Packing List",
+   "options": "Packing List",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-09-02 07:16:41.113907",
+ "modified": "2020-09-03 14:16:21.965921",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Dispatch Bulk Stock History",
