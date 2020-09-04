@@ -1,5 +1,8 @@
 import frappe
 import json
+import datetime
+from frappe.utils.pdf import getBase64Img, getImagePath
+from frappe.utils.print_format import report_to_pdf
 
 
 # @frappe.whitelist()
@@ -22,58 +25,284 @@ import json
 def directShip(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)-int(amount)
 
-    stockOut(stock_name, amount, new_stock, description,None)
-    updateQuantity(stock_name, new_stock, price,None)
+    stockOut(stock_name, amount, new_stock, description, None)
+    updateQuantity(stock_name, new_stock, price, None)
+
+
+def dataValidation(data):
+    error = False
+    if(isinstance(int(data['old_stock']), int)):
+        pass
+    if(isinstance(float(data['price']), float)):
+        pass
+
 
 @frappe.whitelist()
 def directShipfromProductStockNInvoiceGen(data):
-    data=json.loads(data)
-    stock_name=data['stock_name']
-    old_stock=data['old_stock']
-    description=data['description']
-    price=data['price']
-    qtys=data['qtys']
-    qtySizeDic={}
-    amount=0
-    for qty in data['qtys']:
-        amount=amount+int(qty['quantity'])
-        qtySizeDic[qty['size']]=qty['quantity']
+    # {
+    #     stock_name: stock_name,
+    #     qtys: qtys,
+    #     old_stock: old_stock,
+    #     description: destination,
+    #     price: price,
+    #     client: client,
+    #     pos: pos
+    # }
+    data = json.loads(data)
+    stock = frappe.get_doc('Stock', data['stock_name'])
+    product = frappe.get_doc('Item', stock.product)
+
+    stock_name = data['stock_name']
+    old_stock = data['old_stock']
+    description = data['description']
+    price = data['price']
+    qtys = data['qtys']
+    qtySizeDic = {}
+    amount = 0
+    if(data['qtys'] != []):
+        for qty in data['qtys']:
+            try:
+                amount = amount+int(qty['quantity'])
+                qtySizeDic[qty['size']] = qty['quantity']
+            except:
+                return {'status': 'bad', 'message': 'Invalid Input!'}
+        new_stock = int(old_stock)-int(amount)
+        stockOut(stock_name, amount, new_stock, description, qtys)
+        newSizeStocks = getNewSizewiseStock(stock_name, qtySizeDic)
+        updateQuantity(stock_name, new_stock, price, newSizeStocks)
+    elif(data['amountQty'] != ''):
+        amount = int(data['amountQty'])
+        qtys = None
+        new_stock = int(old_stock)-int(amount)
+        stockOut(stock_name, amount, new_stock, description, qtys)
+        updateQuantity(stock_name, new_stock, price, None)
+    elif(data['amountQty'] == ''):
+        return {'status': 'bad', 'message': 'Please Fill Quantity!!'}
+    else:
+        return {'status': 'bad', 'message': 'Invalid Data Input!!'}
+
+    generatePlForDirectShip(data, product)
+    generateInvoiceForDirectShip(data, qtySizeDic, product, amount)
+
+    return {'status': 'ok'}
 
 
+def generatePlForDirectShip(data, product):
+    # data = json.loads(data)
+    client = frappe.get_doc('Customer', data['client'])
+    # stock = frappe.get_doc('Stock', data['stock_name'])
+    # product = frappe.get_doc('Item', stock.product)
 
-    new_stock = int(old_stock)-int(amount)
+    clientAddress = getClientAddress(client)
 
-    stockOut(stock_name, amount, new_stock, description,qtys)
-    # stock=frappe.get_doc('Stock',stock_name)
-    newSizeStocks=getNewSizewiseStock(stock_name,qtySizeDic)
-    updateQuantity(stock_name, new_stock, price,newSizeStocks)
 
-def getNewSizewiseStock(stockName,qtysDic):
+    brand_name = frappe.get_doc('User', frappe.session.user).brand_name
+    destinationAddress,brand = getDestinationAddress(data)
+
+    # packProductDetails = data['packProductDetails']
+
+    # brand = user.brand_name
+
+    templateDetails = {}
+
+    if(brand.user_image != None and brand.user_image != ''):
+        brand_logo = getBase64Img(brand.user_image)
+        # templateDetails['brand_logo'] = brand_logo
+
+    if(data['qtys'] == []):
+        templateDetails['amount'] = data['amountQty']
+    else:
+        templateDetails['sizeNQty'] = data['qtys']
+
+    templateDetails['address'] = brand.address1
+    templateDetails['creation'] = datetime.datetime.now()
+    templateDetails['client_name'] = client.name
+    templateDetails['client_address'] = clientAddress
+    templateDetails['destination'] = destinationAddress
+    templateDetails['product'] = product
+
+    # templateDetails['packProductDetails'] = packProductDetails
+    temp = frappe.get_all("Pdf Document", filters={"type": "Direct Ship Packing List"}, fields=[
+        "content", "type", "name"])
+
+    generatedPl = frappe.render_template(temp[0]['content'], templateDetails)
+    packingList = storePL(generatedPl, brand_name, client.customer_name)
+    # recordOnPieces(packingList, packProductDetails,True)
+
+    return {'status': 'ok'}
+
+
+def generateInvoiceForDirectShip(data, qtySizeDic, product, amount):
+
+    client = frappe.get_doc('Customer', data['client'])
+    clientAddress = getClientAddress(client)
+    if('shipOrderName' in data.keys()):
+        isShip = True
+        shipmentOrder = frappe.get_doc('Shipment Order', data['shipOrderName'])
+        shipmentCost = int(shipmentOrder.shipping_price)
+    else:
+        isShip = False
+        shipmentCost = 0
+    brandOb = frappe.get_doc('User', frappe.session.user)
+
+    pricePerUnit = getPricePerUnit(product, amount)
+    totalCost = getTotalPrice(amount, pricePerUnit, qtySizeDic, product)
+
+    brand_name = frappe.get_doc('User', frappe.session.user).brand_name
+    destinationAddress,brand = getDestinationAddress(data)
+
+   
+
+    templateDetails = {}
+    vatRate = int(brand.tax_id)
+
+    totalAmount = int(totalCost)+int(shipmentCost)
+    vatAmount = (totalAmount/100)*int(vatRate)
+    totalPay = totalAmount+vatAmount
+
+    if(brand.user_image != None and brand.user_image != ''):
+        brand_logo = getBase64Img(brand.user_image)
+        # templateDetails['brand_logo'] = brand_logo
+
+    templateDetails['address'] = brand.address1
+    templateDetails['creation'] = datetime.datetime.now()
+    templateDetails['client_name'] = client.name
+    templateDetails['client_address'] = clientAddress
+    templateDetails['destination'] = destinationAddress
+    templateDetails['product'] = product
+    templateDetails['unitPrice'] = pricePerUnit
+    templateDetails['quantity'] = amount
+    # templateDetails['packProductDetails'] = packProductDetails
+    templateDetails['totalCost'] = totalCost
+    templateDetails['shipment_cost'] = shipmentCost
+    templateDetails['totalAmount'] = totalAmount
+    templateDetails['vat_rate'] = vatRate
+    templateDetails['vatAmount'] = vatAmount
+    templateDetails['totalPay'] = totalPay
+
+    temp = frappe.get_all("Pdf Document", filters={"type": "Direct Ship Invoice"}, fields=[
+        "content", "type", "name"])
+
+    generatedInv = frappe.render_template(
+        temp[0]['content'], templateDetails)
+    invList = storeInv(generatedInv, brand_name, client.customer_name)
+    # recordOnPieces(invList, packProductDetails,False)
+
+    return {'status': 'ok'}
+
+
+def getPricePerUnit(product, amount):
+    unitPrice = frappe.get_list('Prices for Quantity', filters={
+        'parent': product.name, 'from': ['<=', amount], 'to': ['>=', amount]}, fields=['price'])
+
+    if(unitPrice == []):
+        pricePerUnit = product.avg_price
+    else:
+        pricePerUnit = unitPrice[0]['price']
+
+    return pricePerUnit
+
+
+def getTotalPrice(amount, pricePerUnit, qtySizeDic, product):
+    if(qtySizeDic == {}):
+        totalCost = amount*int(pricePerUnit)
+
+    else:
+        productDetail = {}
+        productDetail[product.name] = qtySizeDic
+        totalCostDic = calculate_price(productDetail)
+        totalCost = totalCostDic[product.name]
+    
+    return totalCost
+
+
+def storeInv(inv, brand_name, client):
+    invoiceList = frappe.get_doc({
+        'doctype': 'Uniform Invoice',
+        'content': inv,
+        'brand': brand_name,
+        'client': client
+    })
+    invoiceList.insert()
+    frappe.db.commit()
+
+    return invoiceList
+
+
+def getClientAddress(client):
+    clientAddress = ''
+    if(client.address_line_1 != None):
+        clientAddress = clientAddress+client.address_line_1+','
+    if(client.address_line_2 != None):
+        clientAddress = clientAddress+client.address_line_2
+    else:
+        clientAddress = clientAddress.replace(
+            clientAddress[len(clientAddress)-1], '.')
+
+    return clientAddress
+
+
+def getDestinationAddress(data):
+
+    brand_name = frappe.get_doc('User', frappe.session.user).brand_name
+    brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
+        "user_image", "address1", "name","tax_id"])
+    destinationAddress = ''
+    if(('pos' in data.keys()) and data['pos'] != ''):
+        pos = data['pos']
+        pos = frappe.get_doc('Point Of Sales', pos)
+        if(pos.address_line_1 != None):
+            destinationAddress = destinationAddress+pos.address_line_1+','
+        if(pos.address_line_2 != None):
+            destinationAddress = destinationAddress+pos.address_line_2
+        else:
+            destinationAddress = destinationAddress.replace(
+                destinationAddress[len(destinationAddress)-1], '.')
+    else:
+        destinationAddress = brand[0].address1
+
+    return destinationAddress,brand[0]
+
+
+def storePL(pl, brand_name, client):
+    packingList = frappe.get_doc({
+        'doctype': 'Packing List',
+        'content': pl,
+        'brand': brand_name,
+        'client': client
+    })
+    packingList.insert()
+    frappe.db.commit()
+
+    return packingList
+
+
+def getNewSizewiseStock(stockName, qtysDic):
     # stock=frappe.get_all('Stock',filters={'parent':stockName,'size':qtysDic.keys()},fields=['quantity','size'])
-    sizeQtys=frappe.db.sql("""select sps.size,sps.quantity from `tabProduct Stock Per Size` sps where `parent`=%s and `size` in %s""",(stockName, tuple(qtysDic.keys())))
+
+    sizeQtys = frappe.db.sql(
+        """select sps.size,sps.quantity from `tabProduct Stock Per Size` sps where `parent`=%s and `size` in %s""", (stockName, tuple(qtysDic.keys())))
     # stock_per_size=stock.product_stock_per_size
-    newQtys=[]
+    newQtys = []
 
     for sizeqty in sizeQtys:
-        newQty={}
-        size=sizeqty[0]
-        oldstock=int(sizeqty[1])
-        newstock=oldstock-int(qtysDic[size])
-        newQty['size']=size
-        newQty['quantity']=newstock
+        newQty = {}
+        size = sizeqty[0]
+        oldstock = int(sizeqty[1])
+        newstock = oldstock-int(qtysDic[size])
+        newQty['size'] = size
+        newQty['quantity'] = newstock
         newQtys.append(newQty)
-    
-    return newQtys
 
-        
+    return newQtys
 
 
 @frappe.whitelist()
 def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
-    stockIn(stock_name, amount, new_stock, description,None)
-    updateQuantity(stock_name, new_stock, price,None)
+    stockIn(stock_name, amount, new_stock, description, None)
+    updateQuantity(stock_name, new_stock, price, None)
 
 
 @frappe.whitelist()
@@ -261,24 +490,29 @@ def get_product_details_from_order(order, order_type):
         'item_type': 'product', 'product': product})
     if production_stock == None or len(production_stock) == 0:
         return None
-    production_stock = frappe.get_doc("Stock",production_stock[0].name)
+    production_stock = frappe.get_doc("Stock", production_stock[0].name)
     # this is for develeopment perposes
-    if len(production_stock.product_stock_per_size)==0:
+    if len(production_stock.product_stock_per_size) == 0:
         return None
     # this is for develeopment perposes
     if order_type == "prototype":
-        return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value,"size_details":None}
-    return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value,"size_details":production_stock.product_stock_per_size}
+        return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value, "size_details": None}
+    return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value, "size_details": production_stock.product_stock_per_size}
 
 
 def createNewProductStock(doc, method):
 
     total_value = int(doc.avg_price)*0
-    item_doc = frappe.get_doc('Item',doc.name)
-    sizings = frappe.get_all('Sizing', filters={'parent': item_doc.sizing}, fields=['size'],order_by='idx')
-    size_n_qty = []
-    for size in sizings:
-        size_n_qty.append({"size":size.size,"quantity":0})
+    item_doc = frappe.get_doc('Item', doc.name)
+    if(item_doc.sizing):
+        sizings = frappe.get_all('Sizing', filters={'parent': item_doc.sizing}, fields=[
+                                 'size'], order_by='idx')
+        size_n_qty = []
+        for size in sizings:
+            size_n_qty.append({"size": size.size, "quantity": 0})
+    else:
+        size_n_qty = []
+
     docStock = frappe.get_doc({
         "doctype": "Stock",
         "item_type": 'product',
@@ -286,7 +520,7 @@ def createNewProductStock(doc, method):
         "parent": doc.name,
         "quantity": 0,
         "total_value": total_value,
-        "product_stock_per_size":size_n_qty
+        "product_stock_per_size": size_n_qty
     })
     docStock.insert()
     frappe.db.commit()
@@ -334,7 +568,7 @@ def createNewPackagingStock(doc, method):
     frappe.db.commit()
 
 
-def stockIn(stock_name, amount, quantity, description,size_quantites):
+def stockIn(stock_name, amount, quantity, description, size_quantites):
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -345,7 +579,7 @@ def stockIn(stock_name, amount, quantity, description,size_quantites):
         "stock": quantity,
         "description": description
     }
-    if size_quantites!=None:
+    if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
     doc = frappe.get_doc(doc_dic)
     doc.insert()
@@ -353,8 +587,8 @@ def stockIn(stock_name, amount, quantity, description,size_quantites):
     return doc
 
 
-def stockOut(stock_name, amount, quantity, description,size_quantites):
-    doc_dic ={
+def stockOut(stock_name, amount, quantity, description, size_quantites):
+    doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
         "parentfield": "name",
@@ -364,7 +598,7 @@ def stockOut(stock_name, amount, quantity, description,size_quantites):
         "stock": quantity,
         "description": description
     }
-    if size_quantites!=None:
+    if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
     doc = frappe.get_doc(doc_dic)
     doc.insert()
@@ -372,12 +606,12 @@ def stockOut(stock_name, amount, quantity, description,size_quantites):
     return doc
 
 
-def updateQuantity(stock_name, quantity, price,size_detail):
+def updateQuantity(stock_name, quantity, price, size_detail):
     total_value = float(quantity)*float(price)
-    stock_doc = frappe.get_doc("Stock",stock_name)
-    if len(stock_doc.product_stock_per_size)==0:
+    stock_doc = frappe.get_doc("Stock", stock_name)
+    if len(stock_doc.product_stock_per_size) == 0:
         return None
-    if size_detail!=None:
+    if size_detail != None:
         for x in range(len(stock_doc.product_stock_per_size)):
             for y in range(len(size_detail)):
                 if stock_doc.product_stock_per_size[x].size == size_detail[y]["size"]:
@@ -388,7 +622,7 @@ def updateQuantity(stock_name, quantity, price,size_detail):
     frappe.db.commit()
 
 
-def updateStock2(stock_name, quantity, old_quantity, description, price,item_type,size_detail):
+def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail):
     # size_detail is not None only for product stocks
     quantity = int(quantity)
     if(old_quantity == None):
@@ -398,24 +632,28 @@ def updateStock2(stock_name, quantity, old_quantity, description, price,item_typ
 
     if quantity > old_quantity:
         amount = quantity-old_quantity
-        if size_detail !=None:
-            stock_history_sizeqty = get_size_qty_history(size_detail["new_incoming"])
-            stockIn(stock_name, amount, quantity, description,stock_history_sizeqty)
-            size_detail = get_final_size_quantities(size_detail,"in")
+        if size_detail != None:
+            stock_history_sizeqty = get_size_qty_history(
+                size_detail["new_incoming"])
+            stockIn(stock_name, amount, quantity,
+                    description, stock_history_sizeqty)
+            size_detail = get_final_size_quantities(size_detail, "in")
         else:
-            stockIn(stock_name, amount, quantity, description,None)
+            stockIn(stock_name, amount, quantity, description, None)
     elif old_quantity > quantity:
         amount = old_quantity-quantity
-        if size_detail !=None:
-            stock_history_sizeqty = get_size_qty_history(size_detail["new_incoming"])
-            stockOut(stock_name, amount, quantity, description,stock_history_sizeqty)
-            size_detail = get_final_size_quantities(size_detail,"out")
+        if size_detail != None:
+            stock_history_sizeqty = get_size_qty_history(
+                size_detail["new_incoming"])
+            stockOut(stock_name, amount, quantity,
+                     description, stock_history_sizeqty)
+            size_detail = get_final_size_quantities(size_detail, "out")
         else:
-            stockOut(stock_name, amount, quantity, description,None)
+            stockOut(stock_name, amount, quantity, description, None)
     else:
         pass
-    
-    updateQuantity(stock_name, quantity, price,size_detail)
+
+    updateQuantity(stock_name, quantity, price, size_detail)
 
 
 def get_size_qty_history(size_detail):
@@ -429,22 +667,25 @@ def get_size_qty_history(size_detail):
     return doc_list
 
 
-def get_final_size_quantities(size_detail,in_or_out):
-    if size_detail==None:
+def get_final_size_quantities(size_detail, in_or_out):
+    if size_detail == None:
         return None
     old_size_qty = size_detail["old"]
     incoming_size_qty = size_detail["new_incoming"]
     for index_of_sq in range(len(old_size_qty)):
         if old_size_qty[index_of_sq].size not in incoming_size_qty:
             continue
-        if in_or_out=="in":
-            old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) + int(incoming_size_qty[old_size_qty[index_of_sq].size])
-        elif in_or_out=="out":
-            old_size_qty[index_of_sq].quantity = int(old_size_qty[index_of_sq].quantity) - int(incoming_size_qty[old_size_qty[index_of_sq].size])
+        if in_or_out == "in":
+            old_size_qty[index_of_sq].quantity = int(
+                old_size_qty[index_of_sq].quantity) + int(incoming_size_qty[old_size_qty[index_of_sq].size])
+        elif in_or_out == "out":
+            old_size_qty[index_of_sq].quantity = int(
+                old_size_qty[index_of_sq].quantity) - int(incoming_size_qty[old_size_qty[index_of_sq].size])
     sizeqty_list = []
     for doc in old_size_qty:
-        sizeqty_list.append({"size":doc.size,"quantity":doc.quantity})
+        sizeqty_list.append({"size": doc.size, "quantity": doc.quantity})
     return sizeqty_list
+
 
 def get_total_quantity(order):
     # this functio returns total quantity of the order collecting all size quantities
@@ -497,22 +738,25 @@ def get_size_sales_order(sales_order):
 def updateShipmentorderStocks(doc, method):
 
     # here if the production order has the searching inernal ref, that is considered as a product shipping ( underlying code is to reduce product stock)
-    if doc.internal_ref_prod_order!=None:
-        production_order = frappe.get_doc("Production Order",doc.internal_ref_prod_order)
-        if len(doc.shipment_quantity_per_size)==0:
+    if doc.internal_ref_prod_order != None:
+        production_order = frappe.get_doc(
+            "Production Order", doc.internal_ref_prod_order)
+        if len(doc.shipment_quantity_per_size) == 0:
             quantity = get_total_quantity(production_order)
         else:
             quantity = get_total_quantity_from_shipment(doc)
-        existing_details = get_product_details_from_order(production_order, "production")
-        if quantity != 0 and existing_details!=None:
-            if len(doc.shipment_quantity_per_size)==0:
-                total_price = existing_details["old_value"] - calculate_price(get_size_from_prod_order(production_order))[production_order.product_name]
+        existing_details = get_product_details_from_order(
+            production_order, "production")
+        if quantity != 0 and existing_details != None:
+            if len(doc.shipment_quantity_per_size) == 0:
+                total_price = existing_details["old_value"] - calculate_price(
+                    get_size_from_prod_order(production_order))[production_order.product_name]
             else:
-                total_price = existing_details["old_value"] - calculate_price(get_size_from_prod_shipment_order(doc,production_order.product_name))[production_order.product_name]
+                total_price = existing_details["old_value"] - calculate_price(get_size_from_prod_shipment_order(
+                    doc, production_order.product_name))[production_order.product_name]
             final_quantity = existing_details["old_stock"]-quantity
             updateStock2(existing_details["stock_name"], final_quantity, existing_details["old_stock"], "Shipment Order", float(
-                total_price)/final_quantity,"product",{"old":existing_details["size_details"],"new_incoming":get_shipment_qty_size_detail(doc)})
-
+                total_price)/final_quantity, "product", {"old": existing_details["size_details"], "new_incoming": get_shipment_qty_size_detail(doc)})
 
 
 def get_total_quantity_from_shipment(order):
@@ -522,6 +766,7 @@ def get_total_quantity_from_shipment(order):
         if (size.quantity != None):
             total_quantity = total_quantity + int(size.quantity)
     return total_quantity
+
 
 def get_shipment_qty_size_detail(doc):
     result_dic = {}
@@ -540,7 +785,8 @@ def get_size_from_prod_order(order):
             [(size.size, int(size.quantity))])
     return size_order
 
-def get_size_from_prod_shipment_order(order,product_name):
+
+def get_size_from_prod_shipment_order(order, product_name):
     # this returns a dictionary of size quantities with product name
     # output of this function can be used in calculate_price function
     size_order = {}
@@ -549,10 +795,10 @@ def get_size_from_prod_shipment_order(order,product_name):
         size_order[product_name].update([(size.size, int(size.quantity))])
     return size_order
 
+
 @frappe.whitelist()
 def get_stock(item_type, ref):
     try:
         return frappe.get_all('Stock', filters={'item_type': item_type, 'internal_ref': ref}, fields=['quantity'])[0]
     except:
         return {'quantity': 0}
-

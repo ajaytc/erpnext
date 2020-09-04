@@ -1,0 +1,71 @@
+<div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
+    <div style="text-align: center;">{{address}}<br />
+    <h3>Direct Ship</h3>
+    </div>
+    <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
+    </div>
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{creation.date()}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{client_name}}</p>
+    <p>{{client_address}}</p>
+    </li>
+    <li><strong>Deliver to</strong>
+    <p id="destination">{{destination}}</p>
+    </li>
+    </ul>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; border: none; width: 102.021%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 20.8843%; border: none; height: 30px;"><strong>Product</strong></td>
+    <td style="width: 20.8843%; border: none; height: 30px;">
+    <p style="display: none;">{% if sizeNQty%}</p>
+    <strong>Size</strong><br />
+    <p style="display: none;">{%endif%}</p>
+    </td>
+    <td style="width: 20.8843%; border: none; height: 30px;"><strong>Quantities<br /></strong></td>
+    </tr>
+    </tbody>
+    </table>
+    <table style="border-collapse: collapse; width: 102.233%; border: none; height: 10px;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 21.5961%; border: none; height: 10px;">{{product.item_name}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{% if sizeNQty%}</p>
+    <p style="display: none;">{%for size_qty_dic in sizeNQty %}</p>
+    <table style="border-collapse: collapse; width: 100%; border: none; height: 10px;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 10px; padding-left: 10px;">{{size_qty_dic["size"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px; padding-left: 30px;">{{size_qty_dic["quantity"]}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%endfor%}</p>
+    <p style="display: none;">{%elif amount%}</p>
+    <table style="border-collapse: collapse; border: none; width: 100%; height: 10px;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{amount}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%endif%}</p>
+    <p>&nbsp;</p>

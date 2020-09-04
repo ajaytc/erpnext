@@ -23,6 +23,11 @@ def createShipmentOrder(data):
     brand = user.brand_name
     if (len(data['tracking_number'].strip())==0 and len(data['shipping_date'].strip())==0 and len(data['carrier_company'].strip())==0 ):
         return {"status":"error","message":"Incompleted data !"}
+    try:
+        shipCost=float(data['shipping_price'])
+    except :
+        return {"status":"error","message":"Invalid type Data !"}
+    
     
     shipmentOrder=frappe.get_doc({
         'doctype': 'Shipment Order',
@@ -30,7 +35,7 @@ def createShipmentOrder(data):
         'carrier_company':data['carrier_company'],
         'shipping_date':data['shipping_date'],
         'expected_delivery_date':data['expected_delivery_date'],
-        'shipping_price':data['shipping_price'],
+        'shipping_price':shipCost,
         'html_tracking_link':data['html_tracking_link'],
         'shipping_document':data['shipping_document'],
         'stock':data['stock'],

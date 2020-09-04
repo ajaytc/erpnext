@@ -516,7 +516,7 @@ def is_quantity_enough(size_qty_dic,item_code):
             break
     return enough
 
-def generate_dispatch_bulk_invoice(size_qty_dic,doc_data)
+def generate_dispatch_bulk_invoice(size_qty_dic,doc_data):
     invoice_data = create_invocie_data(size_qty_dic,doc_data)
     temp = frappe.get_all("Pdf Document", filters={"type": "Invoice"}, fields=["content", "type", "name"])
     if lem(temp)==0:

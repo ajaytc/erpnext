@@ -90,18 +90,21 @@ function getSizingDetailsNgeneratetable(stock) {
             if (!r.exc) {
                 let table = generateSizingTable(r.message.sizes)
                 // console.log(table)
-                if(r.message.sizes.length!=0){
+                if (r.message.sizes.length != 0) {
                     $('#sizeTable').html(table)
-                }else{
+                    $('#amountQty').val('')
+                    $('#quantitySec').hide()
+                } else {
                     $('#sizeTable').html('')
+                    $('#quantitySec').show()
                 }
-               
+
                 // $('.qty>td>input').change(priceUpdateCallback)
                 // getSupplierDetails($('#product').find('option:selected').val())
             }
         }
     });
-} 
+}
 
 // $('#plNinv').click(function () {
 
@@ -112,7 +115,7 @@ $("#directShip").on("hidden.bs.modal", function () {
 
     shipOrderName = $('#directShip').attr('data-shiporder')
 
-    if(shipOrderName){
+    if (shipOrderName) {
         frappe.call({
             method: 'erpnext.modehero.shipment_orders.deleteshipment',
             args: {
@@ -120,12 +123,13 @@ $("#directShip").on("hidden.bs.modal", function () {
             }, callback: function (r) {
                 if (!r.exc) {
                     console.log(r)
+                    response_message('','Created Shipment Order Deleted','green')
                     window.location.reload()
                 }
             }
         })
     }
-    
+
 });
 
 // $('#directShip').on('show.bs.modal', function (event) {
@@ -147,25 +151,48 @@ $("#directShip").on("hidden.bs.modal", function () {
 //         }
 //     });
 // })
+function response_message(title, message, color) {
+    frappe.msgprint({
+        title: __(title),
+        indicator: color,
+        message: __(message)
+    });
+}
 
+var needInv=false
 $('#plNinv').click(() => {
-    // var amount = $('.modal-body #quantity').val()
-    // var destination = $('.modal-body #destination').val()
-    // $('#prod_order_ref').hide()
-    client=$('#selected-client').val()
-    pos=$('#pos-select').val()
-    destination=''
+    needInv=true
+    shipOrderName = $('#directShip').attr('data-shiporder')
+    if(shipOrderName){
+        plNInvGen()
+    }else{
+        $('#pl-invoice-confirmation').modal('show')
+    }
     
-    if(pos){
-        destination=pos
-    }else if(client){
-        destination=client
+})
+
+$('#needShipmentBtn').click(()=>{
+    $('#shipment-order-modal').modal('show')
+})
+
+$('#noShipmentBtn').click(()=>{
+    plNInvGen()
+})
+function plNInvGen() {
+    client = $('#selected-client').val()
+    pos = $('#pos-select').val()
+    destination = ''
+
+    if (pos) {
+        destination = pos
+    } else if (client) {
+        destination = client
     }
 
     // console.log(amount)
     console.log(destination)
-    
 
+    
     let qtys = []
     let sizes = []
     let counter = 0
@@ -173,44 +200,62 @@ $('#plNinv').click(() => {
     $('.sizing').map(function () {
         sizes.push($(this).text())
     })
-
-    $('.qty>td>input').map(function () {
-        if ($(this).val() != "") {
-            allnull = false
-            qtys.push({
-                size: sizes[counter],
-                quantity: $(this).val()
-            })
-        }
-        counter++
-        // qtys.push($(this).val())
-    })
-
+    // regex = /^[0-9]*$/g;
+    if($('.sizing').length>0){
+        $('.qty>td>input').map(function () {
+            if ($(this).val() != "") {
+                qty = parseInt($(this).val())
+                allnull = false
+                qtys.push({
+                    size: sizes[counter],
+                    quantity: qty
+                })
     
-    if (allnull) {
-        frappe.throw(frappe._("Please fill quantities"))
+    
+            }
+            counter++
+            // qtys.push($(this).val())
+        })
+    
+    
+        if (allnull) {
+            frappe.throw(frappe._("Please fill quantities"))
+        }
+    }else{
+        amountQty=$('#amountQty').val()
     }
+   
+
+    shipOrderName=$('#directShip').attr('data-shiporder')
 
     frappe.call({
         method: 'erpnext.modehero.stock.directShipfromProductStockNInvoiceGen',
         args: {
-            data:{
-                stock_name:stock_name,
-                qtys:qtys,
-                old_stock:old_stock,
-                description:destination,
-                price:price
+            data: {
+                stock_name: stock_name,
+                qtys: qtys,
+                old_stock: old_stock,
+                amountQty:amountQty,
+                description: destination,
+                price: price,
+                client: client,
+                pos: pos,
+                shipOrderName:shipOrderName,
+
             }
-            
+
         },
         callback: function (r) {
-            if (!r.exc) {
+            if (r.message.status=='ok') {
                 console.log(r)
+                response_message('Success!!','Invoice and PL Generation Successfull!!','green')
                 window.location.reload()
+            } else {
+                response_message('Invoice Generation Failed!!', r.message.message)
             }
         }
     })
-})
+}
 
 
 $('#shipFromExisting').on('show.bs.modal', function (event) {
@@ -277,14 +322,15 @@ const purchaseUpdateCallback = (e) => {
         }
     });
 }
-
+var allnull
 function generateSizingTable(sizes) {
 
     let heads = '', inputs = ''
 
     sizes.map(s => {
+        allnull = true
         heads += `<th class="sizing" scope="col">${s}</th>`
-        inputs += `<td><input type="text" data-size="${s}" class="form-control"></td>`
+        inputs += `<td><input type="text" data-size="${s}" class="form-control sqty"></td>`
     })
 
     return `

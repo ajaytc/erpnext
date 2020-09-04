@@ -249,22 +249,25 @@ function submitProdItem(files) {
     // production price 
 
     if (!($('#prod_witout_size').is(':checked'))){
-        $('.price_row').map(function () {
-            let from = $(this).find("input[name='from']").val()
-            let to = $(this).find("input[name='to']").val()
-            let price = $(this).find("input[name='price']").val()
-    
-            prices[price] = {
-                from: from,
-                to: to,
-                price: price
-            }
-    
-        })
-
-        avg_price=$('#avg_price').val()
-
+        sizing=$("#sizing").val()
+    }else{
+        sizing=null
     }
+
+    $('.price_row').map(function () {
+        let from = $(this).find("input[name='from']").val()
+        let to = $(this).find("input[name='to']").val()
+        let price = $(this).find("input[name='price']").val()
+
+        prices[price] = {
+            from: from,
+            to: to,
+            price: price
+        }
+
+    })
+
+    avg_price=$('#avg_price').val()
 
 
 
@@ -325,7 +328,7 @@ function submitProdItem(files) {
                 // order: "{{frappe.form_dict.order}}",
                 item_name: $("#product_name").val(),
                 item_group: $("#product_catagory").val(),
-                sizing: $("#sizing").val(),
+                sizing:sizing,
                 avg_price:avg_price,
                 prices: prices,
                 fab_suppliers: fab_suppliers,
@@ -413,11 +416,11 @@ $('#prod_witout_size').change(function () {
     // $('#delivered').prop('disabled', false)
     checked=$('#prod_witout_size').is(':checked'); 
     if(checked){
-        $('#avg_price').prop('disabled', true)
-        $("#price_div *").prop("disabled",true);
+        $('#sizing').prop('disabled', true)
+        // $("#price_div *").prop("disabled",true);
     }else{
-        $('#avg_price').prop('disabled', false)
-        $('#price_div *').prop("disabled",false);
+        $('#sizing').prop('disabled', false)
+        // $('#price_div *').prop("disabled",false);
     }
 })
 

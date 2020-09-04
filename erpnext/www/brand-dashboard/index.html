@@ -100,11 +100,13 @@
                                     onchange="validateButton()" data-name="{{o.name}}">
                                 <span class="icon"></span>
                             </label></td>
-                        <td><a href="/shipment-order?name={{o.name}}">
+                        <td><a href="/shipment-order?name={{o.name}}{%if o.stock%}&f=1{%endif%}">
                                 {% if o.fabric_order_id %}{{frappe.get_doc('Fabric Order',o.fabric_order_id).fabric_ref}}
                                 {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_item}}
                                 {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_item}}
                                 {%elif o.internal_ref_prod_order%}{{frappe.get_doc('Production Order',o.internal_ref_prod_order).product_name}}
+                                {%elif o.stock%}{% set productName=frappe.get_doc('Stock',o.stock).product%}
+                                {{frappe.get_doc('Item',productName).item_name}}
                                 {% endif %}
                             </a>
                         </td>
@@ -114,6 +116,7 @@
                             {%elif o.trimming_order_id%}{{frappe.get_doc('Trimming Order',o.trimming_order_id).trimming_vendor}}
                             {%elif o.packaging_order_id%}{{frappe.get_doc('Packaging Order',o.packaging_order_id).packaging_vendor}}
                             {%elif o.internal_ref_prod_order%}{{frappe.get_doc('Production Order',o.internal_ref_prod_order).production_factory}}
+                            {%elif o.stock%}{{brand_name}}
                             {% endif %}
 
 
@@ -227,15 +230,16 @@
                                         <th><a href="/fabric-summary?order={{r[0]}}">{{r[0]}}</a></th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_fabric" data-reminder="{{r[10]}}" /></th>
+                                        <th><input type="checkbox" class="reminder_selected_fabric"
+                                                data-reminder="{{r[10]}}" /></th>
                                     </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mb-3 delete_reminder_button" >
-                            <button  data-remtype="fabric"  type="button" class="btn btn-primary delete_reminder">
+                        <div class="mb-3 delete_reminder_button">
+                            <button data-remtype="fabric" type="button" class="btn btn-primary delete_reminder">
                                 {{_("Delete")}}
                             </button>
                         </div>
@@ -308,14 +312,16 @@
                                         <th><a href="/trimming-summary?order={{r[0]}}">{{r[0]}}</a> </th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_trimming" data-reminder="{{r[10]}}" /></th>                                    </tr>
+                                        <th><input type="checkbox" class="reminder_selected_trimming"
+                                                data-reminder="{{r[10]}}" /></th>
+                                    </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mb-3 delete_reminder_button" >
-                            <button  data-remtype="trimming" type="button" class="btn btn-primary delete_reminder">
+                        <div class="mb-3 delete_reminder_button">
+                            <button data-remtype="trimming" type="button" class="btn btn-primary delete_reminder">
                                 {{_("Delete")}}
                             </button>
                         </div>
@@ -390,14 +396,16 @@
                                         <th><a href="/packaging-summary?order={{r[0]}}">{{r[0]}}</a> </th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_packaging" data-reminder="{{r[10]}}" /></th>                                      </tr>
+                                        <th><input type="checkbox" class="reminder_selected_packaging"
+                                                data-reminder="{{r[10]}}" /></th>
+                                    </tr>
                                     {% endfor %}
 
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mb-3 delete_reminder_button" >
-                            <button  data-remtype="packaging"  type="button" class="btn btn-primary delete_reminder">
+                        <div class="mb-3 delete_reminder_button">
+                            <button data-remtype="packaging" type="button" class="btn btn-primary delete_reminder">
                                 {{_("Delete")}}
                             </button>
                         </div>

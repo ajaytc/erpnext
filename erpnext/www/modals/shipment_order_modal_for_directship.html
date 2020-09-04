@@ -112,8 +112,11 @@
                     
                     if (r) {
                         if (r.message['status'] == "ok") {
-                            response_message('Successfull', 'Order created successfully', 'green')
+                            response_message('Successfull', 'Shipment Order created successfully', 'green')
                             $('#directShip').attr('data-shiporder',r.message['name'])
+                            if(needInv){
+                                plNInvGen()
+                            }
                             
                             $('#shipment-order-modal').modal('hide')
                             
