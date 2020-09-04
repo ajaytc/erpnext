@@ -78,12 +78,14 @@
                     <tr >
                         <td>
                             {{order[sent_history_index][row_index]["date"].strftime('%Y-%m-%d')}}
-                            {% if order[sent_history_index][row_index]["shipment_data"]==None %}
-                                <br>
-                                {% if ns.soi_name!=None %}
-                                    <input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}" />
-                                {% else %}
-                                    <input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}"  data-if="{{order[if_index]}}" />
+                            {% if order[is_tickable_index]==1 %}
+                                {% if order[sent_history_index][row_index]["shipment_data"]==None %}
+                                    <br>
+                                    {% if ns.soi_name!=None %}
+                                        <input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}" />
+                                    {% else %}
+                                        <input class="sent-tick" type="checkbox" data-dispatch="{{order[sent_history_index][row_index]['dispatch_name']}}"   data-location="{{location}}"  data-if="{{order[if_index]}}" />
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -110,17 +112,19 @@
                     {% endfor %}
                     <tr class="ship-row">
                         <td>
-                            {% if order[current_active_shipment_index] != None %}
-                                {% if ns.soi_name!=None %}
-                                    <input type="checkbox" class="not-sent-tick" data-ship_name="{{order[current_active_shipment_index].name}}"  data-ship_data="{{order[current_active_shipment_index]}}"   data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}"  />
+                            {% if order[is_tickable_index]==1 %}
+                                {% if order[current_active_shipment_index] != None %}
+                                    {% if ns.soi_name!=None %}
+                                        <input type="checkbox" class="not-sent-tick" data-ship_name="{{order[current_active_shipment_index].name}}"  data-ship_data="{{order[current_active_shipment_index]}}"   data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}"  />
+                                    {% else %}
+                                        <input type="checkbox" class="not-sent-tick" data-ship_name="{{order[current_active_shipment_index].name}}"  data-ship_data="{{order[current_active_shipment_index]}}"   data-location="{{location}}"  data-if="{{order[if_index]}}"  />
+                                    {% endif %}
                                 {% else %}
-                                    <input type="checkbox" class="not-sent-tick" data-ship_name="{{order[current_active_shipment_index].name}}"  data-ship_data="{{order[current_active_shipment_index]}}"   data-location="{{location}}"  data-if="{{order[if_index]}}"  />
-                                {% endif %}
-                            {% else %}
-                                {% if ns.soi_name!=None %}
-                                    <input type="checkbox" class="not-sent-tick"  data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}"  />
-                                {% else %}
-                                    <input type="checkbox" class="not-sent-tick"  data-location="{{location}}"  data-if="{{order[if_index]}}"  />
+                                    {% if ns.soi_name!=None %}
+                                        <input type="checkbox" class="not-sent-tick"  data-location="{{location}}" data-sales_order_item="{{ ns.soi_name}}" data-if="{{order[if_index]}}"  />
+                                    {% else %}
+                                        <input type="checkbox" class="not-sent-tick"  data-location="{{location}}"  data-if="{{order[if_index]}}"  />
+                                    {% endif %}
                                 {% endif %}
                             {% endif %}
                         </td>

@@ -50,6 +50,8 @@ def get_context(context):
     # 19 = current_active_shipment 
     context.current_active_shipment_index = 19
     # 20 = POS_or_DESTINY
+    # 21 = is_tickable
+    context.is_tickable_index = 21
 
     orders = list(orders)
     for i in range(len(orders)):
@@ -132,6 +134,7 @@ def  modify_order_list(orders,support_destination_data):
             order.append("pos")
             if len(order[15])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[15])
             result_obj[order[4]]["orders"].append(order)
+        order.append(is_editable(order))
     return result_obj
 
 def add_size_quantity_data(orders,item_support):
@@ -229,5 +232,14 @@ def format_to_js_conversion(doc):
     return doc_obj
 
 
-
-
+def is_editable(order):
+    if order[12]==None : 
+        return 0 
+    k = 0
+    try:
+        data = frappe.get_doc("Production Order",order[12])
+        if(data.shipment_date!=None and datashipment_date!="") or (data.carrier!=None and data.carrier!="") or (data.tracking_number!=None and data.tracking_number!="") :
+            k = 1
+    except Exception:
+        k = 0
+    return k
