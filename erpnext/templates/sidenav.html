@@ -44,6 +44,69 @@
             <a href="/purchase" class="list-group-item parent-1">
                 {{_("Purchase")}}
             </a>
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-clients"
+                aria-expanded="false" aria-controls="c-c-o-clients">
+                {{_("Orders")}}
+            </a>
+            <div id="c-c-o-clients" class="collapse" data-parent="#collapse3">
+                <div class="list-group">
+                    {% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
+                    {% for client in frappe.get_all("Customer",{"brand":brand},["customer_name","name"]) %}
+                        <a href="#" style="color:blue" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-{{loop.index}}"
+                        aria-expanded="false" aria-controls="c-c-o-c-{{loop.index}}">
+                            {{_(client.customer_name)}}
+                        </a>
+                        <div id="c-c-o-c-{{loop.index}}" class="collapse" data-parent="#c-c-o-clients">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-{{loop.index}}-pos"
+                                aria-expanded="false" aria-controls="c-c-o-c-{{loop.index}}-pos">
+                                    {{_("POS")}}
+                                </a>
+                                <div id="c-c-o-c-{{loop.index}}-pos" class="collapse" data-parent="#c-c-o-c-{{loop.index}}">
+                                    <div class="list-group">
+                                    {% set client_index = loop.index %}
+                                    {% for pos in frappe.get_all("Point Of Sales",{"parent_company":client.name},["point_of_sale","name"]) %}
+                                        <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-p-{{loop.index}}"
+                                        aria-expanded="false" aria-controls="c-c-o-c-p-{{loop.index}}">
+                                            {{_(pos.point_of_sale)}}
+                                        </a>
+                                        <!-- In the current situatioon there is no pos selection for client Orders -->
+                                        <div id="c-c-o-c-p-{{loop.index}}" class="collapse" data-parent="#c-c-o-c-{{client_index}}-pos">
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item">
+                                                    {{_("Canceled")}}
+                                                </a>
+                                                <a href="#" class="list-group-item">
+                                                    {{_("In Progress")}}
+                                                </a>
+                                                <a href="#" class="list-group-item">
+                                                    {{_("Package List")}}
+                                                </a>
+                                                <a href="#" class="list-group-item">
+                                                    {{_("Invoice")}}
+                                                </a>        
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                </div>  
+                                <a href="#" class="list-group-item">
+                                    {{_("Canceled")}}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    {{_("In Progress")}}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    {{_("Package List")}}
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    {{_("Invoice")}}
+                                </a>    
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c3a"
                 aria-expanded="false" aria-controls="c3a">
                 {{_("Manage")}}
