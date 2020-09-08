@@ -2,25 +2,53 @@
     <table class="table table-striped">
         <h2>{{product.item_name}} - {{_("IN")}}</h2>
         <thead>
+            {%if product.sizing%}
             <tr>
 
                 <th scope="col">{{_("DATE")}}</th>
-                <th scope="col">{{_("QUANTITY")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
+                {%for size,qty in sizingDic.items() %}
+                <th scope="col">{{size}}</th>
+                {%endfor%}
             </tr>
-        </thead>
-        <tbody>
-            {% for o in historyList %}
-            {%if o.in_out=='in' %}
-
+            {%else%}
             <tr>
 
-                <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
-                <th>{{o.quantity}}</th>
-            </tr>
-            {% endif %}
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
+                <th scope="col">{{_("Quantity")}}</th>
 
+            </tr>
+            {%endif%}
+        </thead>
+        <tbody>
+            {%if product.sizing%}
+            {% for historyName,historyData in stockHistoryDic.items() %}
+            <tr>
+                
+                {%if stockHistoryDic[historyName]['in_out']=='in' %}
+                <td> {{frappe.format(stockHistoryDic[historyName]['creation'], {'fieldtype': 'Date'})}}</td>
+                <td> {{stockHistoryDic[historyName]['order']}}</td>
+                {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
+                <td> {{qty}}</td>
+                {% endfor %}
+                {%endif%}
+            </tr>
 
             {% endfor %}
+            {%else%}
+            
+            {%for rec in stockHistoryRecsNoSize %}
+            {%if rec['in_out']=='in' %}
+            <tr>
+                <td> {{frappe.format(rec['creation'], {'fieldtype': 'Date'})}}</td>
+                <td> Test Order</td>
+                <td> {{rec['quantity']}}</td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+            {%endif%}
+        
         </tbody>
 
     </table>
@@ -28,31 +56,66 @@
 
 
 </div>
+
 <br>
 
 <div class="table-wrapper">
     <table class="table table-striped">
         <h2>{{product.item_name}} - {{_("OUT")}}</h2>
         <thead>
+            {%if product.sizing%}
             <tr>
 
                 <th scope="col">{{_("DATE")}}</th>
-                <th scope="col">{{_("QUANTITY")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
+                {%for size,qty in sizingDic.items() %}
+                <th scope="col">{{size}}</th>
+                {%endfor%}
             </tr>
-        </thead>
-        <tbody>
-            {% for o in historyList %}
-            {%if o.in_out=='out' %}
-
+            {%else%}
             <tr>
 
-                <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
-                <th>{{o.quantity}}</th>
-            </tr>
-            {% endif %}
+                <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
+                <th scope="col">{{_("Quantity")}}</th>
 
+            </tr>
+            {%endif%}
+        </thead>
+        <tbody>
+            {%if product.sizing%}
+            {% for historyName,historyData in stockHistoryDic.items() %}
+            <tr>
+                
+
+                {%if stockHistoryDic[historyName]['in_out']=='out' %}
+                <td> {{frappe.format(stockHistoryDic[historyName]['creation'], {'fieldtype': 'Date'})}}</td>
+                <td> {{stockHistoryDic[historyName]['order']}}</td>
+                {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
+                <td> {{qty}}</td>
+                {% endfor %}
+                {%endif%}
+
+
+                
+
+
+            </tr>
 
             {% endfor %}
+
+            {%else%}
+            
+            {%for rec in stockHistoryRecsNoSize %}
+            {%if rec['in_out']=='out' %}
+            <tr>
+                <td> {{frappe.format(rec['creation'], {'fieldtype': 'Date'})}}</td>
+                <td>{{rec['linked_order']}}</td>
+                <td> {{rec['quantity']}}</td>
+            </tr>
+            {%endif%}
+            {%endfor%}
+            {%endif%}
         </tbody>
 
     </table>
@@ -61,4 +124,43 @@
 
 </div>
 
-<h2>Total Value - {{stock.total_value}}</h2>
+<br>
+
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <h2>{{_("In Stock")}}</h2>
+        <thead>
+            {%if product.sizing%}
+            <tr>
+                {%for size,qty in sizingDic.items() %}
+                <th scope="col">{{size}}</th>
+                {%endfor%}
+            </tr>
+            {%else%}
+            <tr>
+                <th scope="col">{{_("Quantity")}}</th>
+
+            </tr>
+            {%endif%}
+        </thead>
+        <tbody>
+            {%if product.sizing%}
+            <tr>
+            {% for stockPerSizeDetail in stock.product_stock_per_size %}
+            
+                <td> {{stockPerSizeDetail.quantity}}</td>
+            {% endfor %}
+
+            </tr>
+
+            {%else%}
+            <tr>
+                <td> {{stock.quantity}}</td>
+                
+            </tr>
+            {%endif%}
+        </tbody>
+
+    </table>
+
+</div>

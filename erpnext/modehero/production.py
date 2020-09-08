@@ -99,16 +99,16 @@ def create_production_order(data):
             if existing_details['fabric_details']:
                 for fabric_detail in existing_details['fabric_details']:
                     updateStock2(fabric_detail['stock_name'], fabric_detail['old_stock']-fabric_detail['fab_quantity'],
-                                fabric_detail['old_stock'], "Production Fabric", fabric_detail['unit_price'],"fabric",None)
+                                fabric_detail['old_stock'], "Production Fabric", fabric_detail['unit_price'],"fabric",None,order)
 
             if existing_details['trimming_details']:
                 for trimming_detail in existing_details['trimming_details']:
                         updateStock2(trimming_detail['stock_name'], trimming_detail['old_stock']-trimming_detail['trim_quantity'],
-                                    trimming_detail['old_stock'], "Production Trimming", trimming_detail['unit_price'],"trimming",None)
+                                    trimming_detail['old_stock'], "Production Trimming", trimming_detail['unit_price'],"trimming",None,order)
             if existing_details['packaging_details']:
                 for packaging_detail in existing_details['packaging_details']:
                     updateStock2(packaging_detail['stock_name'], packaging_detail['old_stock']-packaging_detail['pack_quantity'],
-                                packaging_detail['old_stock'], "Production Packaging", packaging_detail['unit_price'],"packaging",None)
+                                packaging_detail['old_stock'], "Production Packaging", packaging_detail['unit_price'],"packaging",None,order)
 
         except :
             print("Stocks not updated")
@@ -184,10 +184,10 @@ def stockUpdateAfterFinish(order):
     total_quantity = int(order_quantity)+existing_details['old_stock']
     if existing_details["size_details"]==None:
         updateStock2(existing_details['stock_name'], total_quantity,
-                 existing_details['old_stock'], "Production", price*1.0/total_quantity,"product",None)
+                 existing_details['old_stock'], "Production", price*1.0/total_quantity,"product",None,order)
     else:
         updateStock2(existing_details['stock_name'], total_quantity,
-                 existing_details['old_stock'], "Production", price*1.0/total_quantity,"product",{"old":existing_details["size_details"],"new_incoming":size_order[order.product_name]})
+                 existing_details['old_stock'], "Production", price*1.0/total_quantity,"product",{"old":existing_details["size_details"],"new_incoming":size_order[order.product_name]},order)
 
 
 @frappe.whitelist()

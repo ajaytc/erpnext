@@ -25,7 +25,7 @@ from frappe.utils.print_format import report_to_pdf
 def directShip(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)-int(amount)
 
-    stockOut(stock_name, amount, new_stock, description, None)
+    stockOut(stock_name, amount, new_stock, description, None,None)
     updateQuantity(stock_name, new_stock, price, None)
 
 
@@ -67,14 +67,14 @@ def directShipfromProductStockNInvoiceGen(data):
             except:
                 return {'status': 'bad', 'message': 'Invalid Input!'}
         new_stock = int(old_stock)-int(amount)
-        stockOut(stock_name, amount, new_stock, description, qtys)
+        stockOut(stock_name, amount, new_stock, description, qtys,None)
         newSizeStocks = getNewSizewiseStock(stock_name, qtySizeDic)
         updateQuantity(stock_name, new_stock, price, newSizeStocks)
     elif(data['amountQty'] != ''):
         amount = int(data['amountQty'])
         qtys = None
         new_stock = int(old_stock)-int(amount)
-        stockOut(stock_name, amount, new_stock, description, qtys)
+        stockOut(stock_name, amount, new_stock, description, qtys,None)
         updateQuantity(stock_name, new_stock, price, None)
     elif(data['amountQty'] == ''):
         return {'status': 'bad', 'message': 'Please Fill Quantity!!'}
@@ -90,18 +90,12 @@ def directShipfromProductStockNInvoiceGen(data):
 def generatePlForDirectShip(data, product):
     # data = json.loads(data)
     client = frappe.get_doc('Customer', data['client'])
-    # stock = frappe.get_doc('Stock', data['stock_name'])
-    # product = frappe.get_doc('Item', stock.product)
-
     clientAddress = getClientAddress(client)
 
 
     brand_name = frappe.get_doc('User', frappe.session.user).brand_name
     destinationAddress,brand = getDestinationAddress(data)
 
-    # packProductDetails = data['packProductDetails']
-
-    # brand = user.brand_name
 
     templateDetails = {}
 
@@ -121,14 +115,11 @@ def generatePlForDirectShip(data, product):
     templateDetails['destination'] = destinationAddress
     templateDetails['product'] = product
 
-    # templateDetails['packProductDetails'] = packProductDetails
     temp = frappe.get_all("Pdf Document", filters={"type": "Direct Ship Packing List"}, fields=[
         "content", "type", "name"])
 
     generatedPl = frappe.render_template(temp[0]['content'], templateDetails)
     packingList = storePL(generatedPl, brand_name, client.customer_name)
-    # recordOnPieces(packingList, packProductDetails,True)
-
     return {'status': 'ok'}
 
 
@@ -301,7 +292,7 @@ def getNewSizewiseStock(stockName, qtysDic):
 def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
-    stockIn(stock_name, amount, new_stock, description, None)
+    stockIn(stock_name, amount, new_stock, description, None,None)
     updateQuantity(stock_name, new_stock, price, None)
 
 
@@ -568,7 +559,7 @@ def createNewPackagingStock(doc, method):
     frappe.db.commit()
 
 
-def stockIn(stock_name, amount, quantity, description, size_quantites):
+def stockIn(stock_name, amount, quantity, description, size_quantites,order):
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -577,7 +568,8 @@ def stockIn(stock_name, amount, quantity, description, size_quantites):
         "in_out": "in",
         "quantity": amount,
         "stock": quantity,
-        "description": description
+        "description": description,
+        "linked_order":order.name
     }
     if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
@@ -587,7 +579,7 @@ def stockIn(stock_name, amount, quantity, description, size_quantites):
     return doc
 
 
-def stockOut(stock_name, amount, quantity, description, size_quantites):
+def stockOut(stock_name, amount, quantity, description, size_quantites,order):
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -596,7 +588,8 @@ def stockOut(stock_name, amount, quantity, description, size_quantites):
         "in_out": "out",
         "quantity": amount,
         "stock": quantity,
-        "description": description
+        "description": description,
+        "linked_order":order.name
     }
     if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
@@ -622,7 +615,7 @@ def updateQuantity(stock_name, quantity, price, size_detail):
     frappe.db.commit()
 
 
-def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail):
+def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail,order):
     # size_detail is not None only for product stocks
     quantity = int(quantity)
     if(old_quantity == None):
@@ -636,20 +629,20 @@ def updateStock2(stock_name, quantity, old_quantity, description, price, item_ty
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
             stockIn(stock_name, amount, quantity,
-                    description, stock_history_sizeqty)
+                    description, stock_history_sizeqty,order)
             size_detail = get_final_size_quantities(size_detail, "in")
         else:
-            stockIn(stock_name, amount, quantity, description, None)
+            stockIn(stock_name, amount, quantity, description, None,order)
     elif old_quantity > quantity:
         amount = old_quantity-quantity
         if size_detail != None:
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
             stockOut(stock_name, amount, quantity,
-                     description, stock_history_sizeqty)
+                     description, stock_history_sizeqty,order)
             size_detail = get_final_size_quantities(size_detail, "out")
         else:
-            stockOut(stock_name, amount, quantity, description, None)
+            stockOut(stock_name, amount, quantity, description, None,order)
     else:
         pass
 
@@ -736,7 +729,7 @@ def get_size_sales_order(sales_order):
 
 # decrease item quantity from stock
 def updateShipmentorderStocks(doc, method):
-
+    #updateStock2 function modified to get triggering order as a parameter.since this invoked only from hooks.py and it is not used that modification not done
     # here if the production order has the searching inernal ref, that is considered as a product shipping ( underlying code is to reduce product stock)
     if doc.internal_ref_prod_order != None:
         production_order = frappe.get_doc(

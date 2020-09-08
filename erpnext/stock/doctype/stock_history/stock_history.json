@@ -9,7 +9,8 @@
   "quantity",
   "stock",
   "description",
-  "product_stock_history_per_size"
+  "product_stock_history_per_size",
+  "linked_order"
  ],
  "fields": [
   {
@@ -38,10 +39,15 @@
    "fieldtype": "Table",
    "label": "Product Stock History Per Size",
    "options": "Product Stock History Per Size"
+  },
+  {
+   "fieldname": "linked_order",
+   "fieldtype": "Data",
+   "label": "Order"
   }
  ],
  "links": [],
- "modified": "2020-08-28 12:43:07.289230",
+ "modified": "2020-09-05 22:09:40.244502",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Stock History",

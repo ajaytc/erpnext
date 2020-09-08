@@ -5,6 +5,7 @@
             <tr>
 
                 <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
                 <th scope="col">{{_("QUANTITY")}}</th>
             </tr>
         </thead>
@@ -13,6 +14,7 @@
             {%if o.in_out=='in' %}
             <tr>
                 <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.linked_order}}</th>
                 <th>{{o.quantity}}</th>
             </tr>
             {% endif %}
@@ -29,6 +31,7 @@
             <tr>
 
                 <th scope="col">{{_("DATE")}}</th>
+                <th scope="col">{{_("Order #")}}</th>
                 <th scope="col">{{_("QUANTITY")}}</th>
             </tr>
         </thead>
@@ -39,6 +42,7 @@
             <tr>
 
                 <th> {{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
+                <th>{{o.linked_order}}</th>
                 <th>{{o.quantity}}</th>
             </tr>
             {% endif %}
@@ -53,4 +57,43 @@
 
 </div>
 
-<h2>Total Value - {{stock.total_value}}</h2>
+<br>
+
+<div class="table-wrapper">
+    <table class="table table-striped">
+        <h2>{{_("In Stock")}}</h2>
+        <thead>
+            {%if product.sizing%}
+            <tr>
+                {%for size,qty in sizingDic.items() %}
+                <th scope="col">{{size}}</th>
+                {%endfor%}
+            </tr>
+            {%else%}
+            <tr>
+                <th scope="col">{{_("Quantity")}}</th>
+
+            </tr>
+            {%endif%}
+        </thead>
+        <tbody>
+            {%if product.sizing%}
+            <tr>
+            {% for stockPerSizeDetail in stock.product_stock_per_size %}
+            
+                <td> {{stockPerSizeDetail.quantity}}</td>
+            {% endfor %}
+
+            </tr>
+
+            {%else%}
+            <tr>
+                <td> {{stock.quantity}}</td>
+                
+            </tr>
+            {%endif%}
+        </tbody>
+
+    </table>
+
+</div>

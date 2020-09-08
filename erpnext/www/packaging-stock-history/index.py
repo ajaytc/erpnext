@@ -15,7 +15,8 @@ def get_context(context):
     context.product = frappe.get_doc(
         "Packaging Item", context.stock.internal_ref)
 
+    context.stock=frappe.get_doc('Stock',params.stock)
     context.historyList = frappe.get_all("Stock History", fields=[
-                                         "in_out,name,creation,quantity"], filters={"parent": context.stock.name})
+                                         "in_out,name,creation,quantity,linked_order"], filters={"parent": context.stock.name})
 
     return context
