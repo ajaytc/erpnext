@@ -78,7 +78,8 @@ $('#shipbutton').click(() => {
             amount,
             old_stock,
             description : destination,
-            price : unit_price
+            price : unit_price,
+            order_type:'directship-fabric'
         },
         callback: function (r) {
             if (!r.exc) {

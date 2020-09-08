@@ -18,10 +18,9 @@ def get_context(context):
         context.sizingSchema = frappe.get_doc(
             'Sizing Scheme', context.product.sizing)
 
-        context.sizingDic=getSizingDic(context)
-                                       'parent': context.stock.name})
+        context.sizingDic=getSizingDic(context)                                 
         context.historyList = frappe.db.sql(
-            """select shps.quantity,shps.size,sh.parent,sh.in_out,sh.creation,sh.name,sh.linked_order from `tabStock History` sh inner join `tabProduct Stock History Per Size` shps on sh.name=shps.parent where sh.parent=%s""", params.stock)
+            """select shps.quantity,shps.size,sh.parent,sh.in_out,sh.creation,sh.name,sh.linked_order,sh.order_type from `tabStock History` sh inner join `tabProduct Stock History Per Size` shps on sh.name=shps.parent where sh.parent=%s""", params.stock)
 
         context.stock=frappe.get_doc('Stock',params.stock)
     # shps.quantity=0
@@ -30,14 +29,16 @@ def get_context(context):
     # sh.in_out=3
     # sh.creation=4
     # sh.name=5
-    #sh.linked_order=6
+    # sh.linked_order=6
+    #sh.order_type=7
+
 
         context.stockHistoryDic= getStockHistoryFormattedDic(context)
       
     else:
         context.stockHistoryDicNOSize = {}
         context.stockHistoryRecsNoSize = frappe.get_list("Stock History", filters={
-            'parent': context.stock.name}, fields=["name", "creation", "quantity", "in_out","linked_order"])
+            'parent': context.stock.name}, fields=["name", "creation", "quantity", "in_out","linked_order","order_type"])
 
     return context
 
@@ -60,7 +61,8 @@ def getStockHistoryFormattedDic(context):
             stockHistoryDic[rec[5]] = {
                 'creation':rec[4],
                 'in_out':rec[3],
-                'order':rec[6]
+                'order':rec[6],
+                'order_type':rec[7]
             }
             sizingDic=getSizingDic(context)
             stockHistoryDic[rec[5]]['sizeNqty']=sizingDic

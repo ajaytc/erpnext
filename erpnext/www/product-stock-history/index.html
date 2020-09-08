@@ -28,7 +28,17 @@
                 
                 {%if stockHistoryDic[historyName]['in_out']=='in' %}
                 <td> {{frappe.format(stockHistoryDic[historyName]['creation'], {'fieldtype': 'Date'})}}</td>
-                <td> {{stockHistoryDic[historyName]['order']}}</td>
+                {% set url=""%}
+                {% if stockHistoryDic[historyName]['order_type']=="production"%}
+                {% set url="/production-summary?order="+stockHistoryDic[historyName]['order']%}
+                {% elif stockHistoryDic[historyName]['order_type']=="prototype" %}
+                {% set url="/prototype-summary?order="+stockHistoryDic[historyName]['order']%}
+                {% else %}
+                {% set url=""%}
+                {%endif%}
+                {{url}}
+
+                <td><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></td>
                 {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
                 <td> {{qty}}</td>
                 {% endfor %}
@@ -42,7 +52,17 @@
             {%if rec['in_out']=='in' %}
             <tr>
                 <td> {{frappe.format(rec['creation'], {'fieldtype': 'Date'})}}</td>
-                <td> Test Order</td>
+                {% set url=""%}
+                {% if rec['order_type']=="production"%}
+                {% set url="/production-summary?order="+rec['linked_order']%}
+                {% elif rec['order_type']=="prototype" %}
+                {% set url="/prototype-summary?order="+rec['linked_order']%}
+                {% else %}
+                {% set url=""%}
+                {%endif%}
+                {{url}}
+
+                <th><a href={{url}}>{{rec['linked_order']}}</a></th>
                 <td> {{rec['quantity']}}</td>
             </tr>
             {%endif%}
@@ -90,7 +110,18 @@
 
                 {%if stockHistoryDic[historyName]['in_out']=='out' %}
                 <td> {{frappe.format(stockHistoryDic[historyName]['creation'], {'fieldtype': 'Date'})}}</td>
-                <td> {{stockHistoryDic[historyName]['order']}}</td>
+                {% set url=""%}
+                {% if stockHistoryDic[historyName]['order_type']=="production"%}
+                {% set url="/production-summary?order="+stockHistoryDic[historyName]['order']%}
+                {% elif stockHistoryDic[historyName]['order_type']=="prototype" %}
+                {% set url="/prototype-summary?order="+stockHistoryDic[historyName]['order']%}
+                {% else %}
+                {% set url=""%}
+                {%endif%}
+                {{url}}
+
+                <th><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></th>
+                <!-- <td> {{stockHistoryDic[historyName]['order']}}</td> -->
                 {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
                 <td> {{qty}}</td>
                 {% endfor %}
@@ -110,7 +141,18 @@
             {%if rec['in_out']=='out' %}
             <tr>
                 <td> {{frappe.format(rec['creation'], {'fieldtype': 'Date'})}}</td>
-                <td>{{rec['linked_order']}}</td>
+                {% set url=""%}
+                {% if rec['order_type']=="production"%}
+                {% set url="/production-summary?order="+rec['order']%}
+                {% elif rec['order_type']=="prototype" %}
+                {% set url="/prototype-summary?order="+rec['order']%}
+                {% else %}
+                {% set url=""%}
+                {%endif%}
+                {{url}}
+
+                <th><a href={{url}}>{{rec['order']}}</a></th>
+                <!-- <td>{{rec['linked_order']}}</td> -->
                 <td> {{rec['quantity']}}</td>
             </tr>
             {%endif%}

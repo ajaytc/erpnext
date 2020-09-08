@@ -22,10 +22,10 @@ from frappe.utils.print_format import report_to_pdf
 
 
 @frappe.whitelist()
-def directShip(stock_name, amount, old_stock, description, price):
+def directShip(stock_name, amount, old_stock, description, price,order_type):
     new_stock = int(old_stock)-int(amount)
 
-    stockOut(stock_name, amount, new_stock, description, None,None)
+    stockOut(stock_name, amount, new_stock, description, None,None,order_type)
     updateQuantity(stock_name, new_stock, price, None)
 
 
@@ -67,14 +67,14 @@ def directShipfromProductStockNInvoiceGen(data):
             except:
                 return {'status': 'bad', 'message': 'Invalid Input!'}
         new_stock = int(old_stock)-int(amount)
-        stockOut(stock_name, amount, new_stock, description, qtys,None)
+        stockOut(stock_name, amount, new_stock, description, qtys,None,'directship-product')
         newSizeStocks = getNewSizewiseStock(stock_name, qtySizeDic)
         updateQuantity(stock_name, new_stock, price, newSizeStocks)
     elif(data['amountQty'] != ''):
         amount = int(data['amountQty'])
         qtys = None
         new_stock = int(old_stock)-int(amount)
-        stockOut(stock_name, amount, new_stock, description, qtys,None)
+        stockOut(stock_name, amount, new_stock, description, qtys,None,'directship-product')
         updateQuantity(stock_name, new_stock, price, None)
     elif(data['amountQty'] == ''):
         return {'status': 'bad', 'message': 'Please Fill Quantity!!'}
@@ -292,7 +292,7 @@ def getNewSizewiseStock(stockName, qtysDic):
 def shipFromExisting(stock_name, amount, old_stock, description, price):
     new_stock = int(old_stock)+int(amount)
 
-    stockIn(stock_name, amount, new_stock, description, None,None)
+    stockIn(stock_name, amount, new_stock, description, None,None,description)
     updateQuantity(stock_name, new_stock, price, None)
 
 
@@ -559,7 +559,7 @@ def createNewPackagingStock(doc, method):
     frappe.db.commit()
 
 
-def stockIn(stock_name, amount, quantity, description, size_quantites,order):
+def stockIn(stock_name, amount, quantity, description, size_quantites,order,order_type):
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -569,7 +569,9 @@ def stockIn(stock_name, amount, quantity, description, size_quantites,order):
         "quantity": amount,
         "stock": quantity,
         "description": description,
-        "linked_order":order.name
+        "linked_order":order.name,
+        "order_type":order_type
+
     }
     if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
@@ -579,7 +581,7 @@ def stockIn(stock_name, amount, quantity, description, size_quantites,order):
     return doc
 
 
-def stockOut(stock_name, amount, quantity, description, size_quantites,order):
+def stockOut(stock_name, amount, quantity, description, size_quantites,order,order_type):
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -589,7 +591,8 @@ def stockOut(stock_name, amount, quantity, description, size_quantites,order):
         "quantity": amount,
         "stock": quantity,
         "description": description,
-        "linked_order":order.name
+        "linked_order":order.name,
+        "order_type":order_type
     }
     if size_quantites != None:
         doc_dic["product_stock_history_per_size"] = size_quantites
@@ -615,7 +618,7 @@ def updateQuantity(stock_name, quantity, price, size_detail):
     frappe.db.commit()
 
 
-def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail,order):
+def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail,order,order_type):
     # size_detail is not None only for product stocks
     quantity = int(quantity)
     if(old_quantity == None):
@@ -629,20 +632,20 @@ def updateStock2(stock_name, quantity, old_quantity, description, price, item_ty
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
             stockIn(stock_name, amount, quantity,
-                    description, stock_history_sizeqty,order)
+                    description, stock_history_sizeqty,order,order_type)
             size_detail = get_final_size_quantities(size_detail, "in")
         else:
-            stockIn(stock_name, amount, quantity, description, None,order)
+            stockIn(stock_name, amount, quantity, description, None,order,order_type)
     elif old_quantity > quantity:
         amount = old_quantity-quantity
         if size_detail != None:
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
             stockOut(stock_name, amount, quantity,
-                     description, stock_history_sizeqty,order)
+                     description, stock_history_sizeqty,order,order_type)
             size_detail = get_final_size_quantities(size_detail, "out")
         else:
-            stockOut(stock_name, amount, quantity, description, None,order)
+            stockOut(stock_name, amount, quantity, description, None,order,order_type)
     else:
         pass
 
