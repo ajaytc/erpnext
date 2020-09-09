@@ -38,9 +38,7 @@
     </a>
     <div id="collapse3" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            {# <a href="#" class="list-group-item ">
-                {{_("Price List")}}
-            </a> #}
+
             <a href="/purchase" class="list-group-item parent-1">
                 {{_("Purchase")}}
             </a>
@@ -52,7 +50,8 @@
                 <div class="list-group">
                     {% set brand = frappe.get_doc('User', frappe.session.user).brand_name %}
                     {% for client in frappe.get_all("Customer",{"brand":brand},["customer_name","name"]) %}
-                        <a href="#" style="color:blue" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-{{loop.index}}"
+                        {% set client_index = loop.index %}
+                        <a href="#"  class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-{{loop.index}}"
                         aria-expanded="false" aria-controls="c-c-o-c-{{loop.index}}">
                             {{_(client.customer_name)}}
                         </a>
@@ -64,44 +63,83 @@
                                 </a>
                                 <div id="c-c-o-c-{{loop.index}}-pos" class="collapse" data-parent="#c-c-o-c-{{loop.index}}">
                                     <div class="list-group">
-                                    {% set client_index = loop.index %}
-                                    {% for pos in frappe.get_all("Point Of Sales",{"parent_company":client.name},["point_of_sale","name"]) %}
-                                        <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-p-{{loop.index}}"
-                                        aria-expanded="false" aria-controls="c-c-o-c-p-{{loop.index}}">
-                                            {{_(pos.point_of_sale)}}
-                                        </a>
-                                        <!-- In the current situatioon there is no pos selection for client Orders -->
-                                        <div id="c-c-o-c-p-{{loop.index}}" class="collapse" data-parent="#c-c-o-c-{{client_index}}-pos">
-                                            <div class="list-group">
-                                                <a href="#" class="list-group-item">
-                                                    {{_("Canceled")}}
-                                                </a>
-                                                <a href="#" class="list-group-item">
-                                                    {{_("In Progress")}}
-                                                </a>
-                                                <a href="#" class="list-group-item">
-                                                    {{_("Package List")}}
-                                                </a>
-                                                <a href="#" class="list-group-item">
-                                                    {{_("Invoice")}}
-                                                </a>        
+                                        {% for pos in frappe.get_all("Point Of Sales",{"parent_company":client.name},["point_of_sale","name"]) %}
+                                            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-p-{{loop.index}}"
+                                            aria-expanded="false" aria-controls="c-c-o-c-p-{{loop.index}}">
+                                                {{_(pos.point_of_sale)}}
+                                            </a>
+                                            <!-- In the current situatioon there is no pos selection for client Orders -->
+                                            <div id="c-c-o-c-p-{{loop.index}}" class="collapse" data-parent="#c-c-o-c-{{client_index}}-pos">
+                                                <div class="list-group">
+                                                    <a href="#" class="list-group-item">
+                                                        {{_("Canceled")}}
+                                                    </a>
+                                                    <a href="#" class="list-group-item">
+                                                        {{_("In Progress")}}
+                                                    </a>
+                                                    <a href="#" class="list-group-item">
+                                                        {{_("Package List")}}
+                                                    </a>
+                                                    <a href="#" class="list-group-item">
+                                                        {{_("Invoice")}}
+                                                    </a>        
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                        {% endfor %}
                                     </div>
                                 </div>  
-                                <a href="#" class="list-group-item">
+                                <a href="#"  class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-c-{{loop.index}}"
+                                aria-expanded="false" aria-controls="c-c-o-c-c-{{loop.index}}">
                                     {{_("Canceled")}}
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <div id="c-c-o-c-{{loop.index}}" class="collapse" data-parent="#c-c-o-clients">
+                                    <div class="list-group">
+                                        {% for canceled_order in frappe.get_all("Sales Order Item",{"owner":client.name,"docstatus":2},["parent"]) %}
+                                            <a href="/new-client-order?order={{canceled_order['parent']}}" class="list-group-item ">
+                                                {{canceled_order["parent"]}}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="#" class="list-group-item"  type="button" data-toggle="collapse" data-target="#c-c-o-c-ip-{{loop.index}}"
+                                aria-expanded="false" aria-controls="c-c-o-c-ip-{{loop.index}}">
                                     {{_("In Progress")}}
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <div id="c-c-o-ip-{{loop.index}}" class="collapse" data-parent="#c-c-o-clients">
+                                    <div class="list-group">
+                                        {% for in_process_order in frappe.get_all("Sales Order Item",{"owner":client.name,"docstatus":1},["parent"]) %}
+                                            <a href="/new-client-order?order={{in_process_order['parent']}}" class="list-group-item ">
+                                                {{in_process_order["parent"]}}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-pl-{{loop.index}}"
+                                aria-expanded="false" aria-controls="c-c-o-c-pl-{{loop.index}}">
                                     {{_("Package List")}}
                                 </a>
-                                <a href="#" class="list-group-item">
+                                <div id="c-c-o-pl-{{loop.index}}" class="collapse" data-parent="#c-c-o-clients">
+                                    <div class="list-group">
+                                        {% for pl in frappe.get_all("Packing List",{"client":client.name,"brand":brand},["creation","name"]) %}
+                                            <a class="list-group-item ">
+                                                {{pl["creation"].strftime('%Y-%m-%d')}}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c-c-o-c-invoice-{{loop.index}}"
+                                aria-expanded="false" aria-controls="c-c-o-c-invoice-{{loop.index}}">
                                     {{_("Invoice")}}
                                 </a>    
+                                <div id="c-c-o-invoice-{{loop.index}}" class="collapse" data-parent="#c-c-o-clients">
+                                    <div class="list-group">
+                                        {% for pl in frappe.get_all("Uniform Invoice",{"client":client.name,"brand":brand},["creation","name"]) %}
+                                            <a class="list-group-item ">
+                                                {{pl["creation"].strftime('%Y-%m-%d')}}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
