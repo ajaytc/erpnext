@@ -12,36 +12,54 @@ def get_context(context):
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
     roles = frappe.get_roles(frappe.session.user)
-
-    if ("System Manager" in roles):
-        context.user_type = "System"
-    elif ("Brand User" in roles):
-        context.user_type = "Brand"
-    elif ("Customer" in roles):
-        context.user_type = "Customer"
-    else:
-        frappe.throw(_("Not Permitted!"), frappe.PermissionError)
-
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    if (context.user_type == "Brand" or context.user_type == "System"):
-        orders = frappe.get_all('Sales Order', filters={'company': brand}, fields=['name', 'customer'])
-    else:
-        orders = frappe.get_list('Sales Order', filters={'company': brand, 'owner':frappe.session.user}, fields=['name', 'customer'])
-
+    params = frappe.form_dict
+    orders,context.user_type = get_orders(roles,brand,frappe.session.user,params)
     support_client_dic = collect_client_data(orders)
 
+    
     order_items = {}
     for o in orders:
-        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus','prod_order_ref'])
+        order_items[o["name"]] = []
+        if "destination" in params :
+            order_items[o["name"]] = frappe.get_list('Sales Order Item',filters={'parent':o["name"],'docstatus':['!=',0],'item_destination':params.destination},fields=['name','item_code','parent','creation','modified','is_modified','docstatus','prod_order_ref'])
+        else:
+            order_items[o["name"]] = frappe.get_list('Sales Order Item',filters={'parent':o["name"],'docstatus':['!=',0]},fields=['name','item_code','parent','creation','modified','is_modified','docstatus','prod_order_ref'])
 
-        for sales_order_item_index in range(len(order_items[o.name])):
-            order_items[o.name][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
+        for sales_order_item_index in range(len(order_items[o["name"]])):
+            order_items[o["name"]][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
+
     item_orders =  sort_item_doc(get_unique_items_orders(order_items))
 
     context.unique_items_orders = seperate_item_orders_by_production_orders(item_orders)
 
     return context
 
+def get_orders(roles,brand,session_user,params):
+    if ("System Manager" in roles):
+        user_type = "System"
+    elif ("Brand User" in roles):
+        user_type = "Brand"
+    elif ("Customer" in roles):
+        user_type = "Customer"
+    else:
+        frappe.throw(_("Not Permitted!"), frappe.PermissionError)
+
+    orders = []
+    if (user_type == "Brand" or user_type == "System") and ("destination" in params):
+        temps = []
+        destination = params.destination
+        orders_sql = frappe.db.sql("""select so.name,so.customer,soi.item_destination,soi.parent from `tabSales Order` so left join `tabSales Order Item`soi on soi.parent=so.name  where soi.item_destination=%s and so.company=%s """, (destination,brand))
+        for order in orders_sql:
+            if order[0] in temps: continue
+            temps.append(order[0])
+            orders.append({"name":order[0],"customer":order[1]})
+    elif(user_type == "Brand" or user_type == "System") and ("client" in params):
+        client = params.client
+        orders = frappe.get_all('Sales Order', filters={'company': brand, 'customer':client}, fields=['name', 'customer'])
+    else:
+        orders = frappe.get_all('Sales Order', filters={'company': brand, 'owner':session_user}, fields=['name', 'customer'])
+    return orders,user_type
 ## returns unique item objects
 def get_unique_items_orders(order_items):
     temp_codes = []
@@ -66,14 +84,14 @@ def collect_client_data(orders):
     temp_clients = []
     client_object = {}
     for order in orders:
-        if order.customer in temp_clients:
+        if order["customer"] in temp_clients:
             continue
-        temp_clients.append(order.customer)
-        cus_db_data = frappe.get_all('Customer',{'name':order.customer},['customer_name','name','city','country','email_address','phone'])
+        temp_clients.append(order["customer"])
+        cus_db_data = frappe.get_all('Customer',{'name':order["customer"]},['customer_name','name','city','country','email_address','phone'])
         if (len(cus_db_data)==0):
-            client_object[order.customer] = {'customer_name':None,'name':order.customer,'city':None,'country':None,'email_address':None,'phone':None}
+            client_object[order["customer"]] = {'customer_name':None,'name':order["customer"],'city':None,'country':None,'email_address':None,'phone':None}
             continue
-        client_object[order.customer] = cus_db_data[0]
+        client_object[order["customer"]] = cus_db_data[0]
     return client_object
 
 def seperate_item_orders_by_production_orders(item_orders):
