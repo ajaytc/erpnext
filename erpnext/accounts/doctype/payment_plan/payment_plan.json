@@ -1,0 +1,117 @@
+{
+ "actions": [],
+ "creation": "2020-09-09 20:24:28.735400",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "plan_name",
+  "annual_price",
+  "monthly_price",
+  "trial_days",
+  "no_of_clients",
+  "client",
+  "supply",
+  "pre_production",
+  "shipment",
+  "stock",
+  "snf",
+  "production"
+ ],
+ "fields": [
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Plan Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "annual_price",
+   "fieldtype": "Currency",
+   "label": "Annual Price"
+  },
+  {
+   "fieldname": "monthly_price",
+   "fieldtype": "Currency",
+   "label": "Monthly Price"
+  },
+  {
+   "fieldname": "trial_days",
+   "fieldtype": "Int",
+   "label": "Trial Days"
+  },
+  {
+   "fieldname": "no_of_clients",
+   "fieldtype": "Int",
+   "label": "Allowed no of Clients"
+  },
+  {
+   "default": "0",
+   "fieldname": "client",
+   "fieldtype": "Check",
+   "label": "Client"
+  },
+  {
+   "default": "0",
+   "fieldname": "supply",
+   "fieldtype": "Check",
+   "label": "Supply"
+  },
+  {
+   "default": "0",
+   "fieldname": "pre_production",
+   "fieldtype": "Check",
+   "label": "Pre Production"
+  },
+  {
+   "default": "0",
+   "fieldname": "shipment",
+   "fieldtype": "Check",
+   "label": "Shipment"
+  },
+  {
+   "default": "0",
+   "fieldname": "stock",
+   "fieldtype": "Check",
+   "label": "Stock"
+  },
+  {
+   "default": "0",
+   "fieldname": "snf",
+   "fieldtype": "Check",
+   "label": "S&F"
+  },
+  {
+   "default": "0",
+   "fieldname": "production",
+   "fieldtype": "Check",
+   "label": "Production"
+  }
+ ],
+ "links": [],
+ "modified": "2020-09-14 18:49:31.544963",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Payment Plan",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

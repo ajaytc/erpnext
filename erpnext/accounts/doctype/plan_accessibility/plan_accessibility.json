@@ -1,0 +1,36 @@
+{
+ "actions": [],
+ "creation": "2020-09-09 20:34:35.201617",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "plan_name",
+  "accessible_part"
+ ],
+ "fields": [
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Link",
+   "label": "Plan Name",
+   "options": "Payment Plan"
+  },
+  {
+   "fieldname": "accessible_part",
+   "fieldtype": "Data",
+   "label": "Accessible Part"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2020-09-09 20:34:53.914172",
+ "modified_by": "Administrator",
+ "module": "Accounts",
+ "name": "Plan Accessibility",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

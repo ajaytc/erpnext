@@ -1,0 +1,181 @@
+<style>
+    .planTr tr {
+        text-align: center;
+    }
+
+    .planTr input {
+        width: 20%;
+    }
+</style>
+<div id="container" class="container">
+    <div class="card" style="width: 107%;">
+        <div class="card-body">
+            <table class="table table-striped table-text-center planTr" id="paymentPlans">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        {% for plan in plans%}
+                        <th><label class="custom-checkbox">
+                                <input style="width: 40%;" class="planName" data-plan_name="{{plan.name}}"
+                                    value="{{plan.plan_name}}" type="text">
+
+                            </label></th>
+                        {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                        <td class="accessPart">{{_("Client")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.client==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("No of Accesses")}} </td>
+                        {% for plan in plans%}
+
+                        <td><label class="custom-checkbox">
+                                <input type="text" value="{{plan.no_of_clients}}">
+
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Supply")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.supply==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Pre Production")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.pre_production==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Production")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.production==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Shipment")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.shipment==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Stock")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.stock==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("S&F")}}</td>
+                        {% for plan in plans%}
+                        {%if plan.snf==1%}
+                        {% set checked=checked%}
+                        {%else%}
+                        {% set checked=""%}
+                        {%endif%}
+                        <td><label class="custom-checkbox ">
+                                <input type="checkbox" {{checked}}>
+                                <span class="icon"></span>
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Pricing-Month")}}</td>
+                        {% for plan in plans%}
+                        <td><label class="custom-checkbox">
+                                <input type="text" value="{{plan.monthly_price}}">
+
+                            </label></td>
+                        {%endfor%}
+                       
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Pricing-Annual")}}</td>
+                        {% for plan in plans%}
+                        <td><label class="custom-checkbox">
+                                <input type="text" value="{{plan.annual_price}}">
+
+                            </label></td>
+                        {%endfor%}
+                       
+                    </tr>
+                    <tr>
+                        <td class="accessPart">{{_("Days of Trial")}}</td>
+                        {% for plan in plans%}
+                        <td><label class="custom-checkbox">
+                                <input type="text" value="{{plan.trial_days}}">
+
+                            </label></td>
+                        {%endfor%}
+                        
+                    </tr>
+                </tbody>
+            </table>
+            <button id="submit" type="button" class="btn btn-primary ml-auto">
+                {{_("Deliver")}}
+            </button>
+        </div>
+    </div>
+</div>
