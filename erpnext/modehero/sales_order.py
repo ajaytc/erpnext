@@ -273,11 +273,14 @@ def modify_sales_item_orders(orders_object):
 @frappe.whitelist()
 def cancel_sales_item_orders(item_order_list):
     item_order_list = ast.literal_eval(item_order_list)
+    one_of_oder_name = ""
+    if len(item_order_list)>0 : one_of_oder_name = item_order_list[0]
     for item_order in item_order_list:
         order = frappe.get_doc('Sales Order Item', item_order)
         order.docstatus = 1
         order.save()
         order.docstatus = 2
+        order.group_no = one_of_oder_name
         order.save()
         frappe.db.commit()
         sendCancelNModifyNotificationEmail(order,'Product Cancelled')
@@ -499,17 +502,17 @@ def validate_sales_item_orders_n_create_production_order(orders_object,factory):
         order_dic = orders_object
     quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names = collect_sales_order_data_for_production_order(order_dic)
     production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory).name
-    update_sales_order_items(production_order_ref,order_dic)
+    update_sales_order_items(production_order_ref,order_dic,one_of_sales_order_item_names)
     return {'status': 'ok'}
 
-def update_sales_order_items(production_order_ref,order_dic):
+def update_sales_order_items(production_order_ref,order_dic,one_of_sales_order_item_names):
     for order in order_dic:
         frappe.db.set_value('Sales Order Item', order, {
             'docstatus': 1,
-            'prod_order_ref':production_order_ref
+            'prod_order_ref':production_order_ref,
+            'group_no':one_of_sales_order_item_names
         })
     frappe.db.commit()
-
 
 def collect_sales_order_data_for_production_order(order_dic):
     quantity_dic_for_production_order = {}

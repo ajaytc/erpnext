@@ -538,7 +538,7 @@ def is_quantity_enough(size_qty_dic,item_code):
     enough = True
     for stock in stock_doc.product_stock_per_size:
         for size in size_qty_dic:
-            if size==stock.size and  size_qty_dic[size]>stock.quantity:
+            if size==stock.size and  size_qty_dic[size]>int(stock.quantity):
                 enough = False
                 break
         if not enough :
@@ -618,15 +618,18 @@ def modify_stocks_dispatch_bulk(pl,inoice,doc_data):
     for size in doc_data["size_qty"]:
         quantity_array.append({"size":size,"quantity":doc_data["size_qty"][size]})
         amount = amount + int(doc_data["size_qty"][size])
-    stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array,'dispatch-bulk')
     is_bulk = 1
     sales_order = None
     shipment = None 
+    order_name = None
     if doc_data["sales_order_item"]!=None: 
         is_bulk=0
         sales_order = doc_data["sales_order_item"].name
+    else: 
+        order_name  = doc_data["production_order"]
     if doc_data["shipment_order"]!=None:
         shipment = doc_data["shipment_order"].name
+    stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array,order_name,'dispatch-bulk')
     data = {
         "is_bulk":is_bulk,
         "stock_history":stock_history.name,

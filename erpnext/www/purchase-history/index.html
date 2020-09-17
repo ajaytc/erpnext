@@ -17,8 +17,7 @@
             {{unique_items_orders[item]["item_name"]}}
         </a>
     </h3>
-    {% for prod_order in unique_items_orders[item]["orders"] %}
-        {{prod_order}}
+    {% for group_no in unique_items_orders[item]["orders"] %}
         {% set ns.is_set_status=false %}
         <div class="table-wrapper table-responsive mt-2">
             <table class="table table-sm table-striped">
@@ -44,7 +43,7 @@
                     </thead>
                     <tbody>
                         
-                        {% for order in unique_items_orders[item]["orders"][prod_order]["client_orders"] %}
+                        {% for order in unique_items_orders[item]["orders"][group_no]["client_orders"] %}
                             {% set ns.is_modified=false %}
                             {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
                             {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
@@ -70,7 +69,7 @@
                                                 {% if ns.is_modified %}
                                                     <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
                                                 {% endif %}
-                                                <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-prod_order="{{prod_order}}" data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                                                <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-group_no="{{group_no}}" data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
                                             </td>
                                         {% else %}
                                             <td>
@@ -81,16 +80,15 @@
                                             </td>
                                         {% endfor %}
                                     {% endfor %}
-                                    <!-- {{unique_items_orders[item]["orders"][prod_order]["prod_order_status"]}} -->
-                                    {% if ns.is_set_status==false and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]!=None %}
+                                    {% if ns.is_set_status==false  %}
                                         {% if order.docstatus==2 %}
                                             {% set ns.is_set_status=true %}
                                             <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]==0 %}
+                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==0 %}
                                             {% set ns.is_set_status=true %}
                                             <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
                                             <sub class="pending">Pending</sub> </td>
-                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][prod_order]["prod_order_status"]==1%}
+                                        {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==1%}
                                             {% set ns.is_set_status=true %}
                                             <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
                                             <sub class="production">Production</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>     
@@ -105,11 +103,11 @@
                             <td></td>
                             {% for size_col in sizing_list %}
                             <td>
-                                <div data-size ='{{size_col.size}}' data-item = '{{item}}' data-prod_order="{{prod_order}}" class ='sum-quantity'></div>
+                                <div data-size ='{{size_col.size}}' data-item = '{{item}}' data-group_no="{{group_no}}" class ='sum-quantity'></div>
                             </td>
                             {% endfor %}
                             <td>
-                                <div data-item = '{{item}}' data-prod_order="{{prod_order}}" class ='total-sum'></div>
+                                <div data-item = '{{item}}' data-group_no="{{group_no}}" class ='total-sum'></div>
                             </td>
                         </tr>
                     </tbody>
