@@ -582,6 +582,10 @@ def stockIn(stock_name, amount, quantity, description, size_quantites,order,orde
 
 
 def stockOut(stock_name, amount, quantity, description, size_quantites,order,order_type):
+    if(order != None):
+        linked_order=order.name
+    else:
+        linked_order=None
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -591,7 +595,7 @@ def stockOut(stock_name, amount, quantity, description, size_quantites,order,ord
         "quantity": amount,
         "stock": quantity,
         "description": description,
-        "linked_order":order.name,
+        "linked_order":linked_order,
         "order_type":order_type
     }
     if size_quantites != None:
