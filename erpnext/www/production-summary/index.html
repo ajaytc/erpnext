@@ -268,11 +268,7 @@
 
                         <p class="label">
                             {{_("Comments")}}
-                        </p>
-                        {{isProd}}
-                        {% if not isProd %}
-                        wfwefe
-                        {%endif%}
+                        </p>                        
 
                         <div>
                             <textarea name="" id="comments" style="width: 100%;" cols="30"
@@ -293,7 +289,7 @@
 
 </div>
 
-{% if isProd %}
+{% if (isProd or isBrand) %}
 <div class="sidebar right summaryside">
     <div class="sidebar-inner">
         <h5 class="mb-4 mt-0">
