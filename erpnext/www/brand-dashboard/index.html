@@ -70,7 +70,7 @@
 
         </h2>
         <button id="delivered" type="button" class="btn btn-primary ml-auto" disabled>
-            {{_("Deliver")}}
+            {{_("Delivered")}}
         </button>
     </div>
 
@@ -171,13 +171,12 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-
+                                        <th scope="col">{{("DELETE")}}</th>
                                         <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
                                         <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
-                                        <th scope="col">{{("DELETE")}}</th>
 
                                     </tr>
                                 </thead>
@@ -185,6 +184,8 @@
 
                                     {% for r in fabricReminders %}
                                     <tr>
+                                        <th><input type="checkbox" class="reminder_selected_fabric"
+                                            data-reminder="{{r[10]}}" /></th>
                                         <th>{{r[7]}}</th>
                                         {%if r[7]=='confirmation'%}
                                         <th>
@@ -230,8 +231,7 @@
                                         <th><a href="/fabric-summary?order={{r[0]}}">{{r[0]}}</a></th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_fabric"
-                                                data-reminder="{{r[10]}}" /></th>
+
                                     </tr>
                                     {% endfor %}
 
@@ -262,13 +262,12 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-
+                                        <th scope="col">{{("DELETE")}}</th>
                                         <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
                                         <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
-                                        <th scope="col">{{("DELETE")}}</th>
 
 
                                     </tr>
@@ -277,6 +276,8 @@
 
                                     {% for r in trimmingReminders %}
                                     <tr>
+                                        <th><input type="checkbox" class="reminder_selected_trimming"
+                                            data-reminder="{{r[10]}}" /></th>
                                         <th>{{r[7]}}</th>
                                         {%if r[7]=='confirmation'%}
                                         <th>
@@ -312,8 +313,7 @@
                                         <th><a href="/trimming-summary?order={{r[0]}}">{{r[0]}}</a> </th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_trimming"
-                                                data-reminder="{{r[10]}}" /></th>
+
                                     </tr>
                                     {% endfor %}
 
@@ -346,12 +346,12 @@
                                 <thead>
                                     <tr>
 
+                                        <th scope="col">{{("DELETE")}}</th>
                                         <th scope="col">{{("REMINDER")}}</th>
                                         <th scope="col">{{("DATE")}}</th>
                                         <th scope="col">{{("Order Number")}}</th>
                                         <th scope="col">{{("INTERNAL REF")}}</th>
                                         <th scope="col">{{("SUPPLIER")}}</th>
-                                        <th scope="col">{{("DELETE")}}</th>
 
 
                                     </tr>
@@ -360,8 +360,9 @@
 
                                     {% for r in packReminders %}
                                     <tr>
+                                        <th><input type="checkbox" class="reminder_selected_packaging"
+                                            data-reminder="{{r[10]}}" /></th>
                                         <th>{{r[7]}}</th>
-
                                         {%if r[7]=='confirmation'%}
                                         <th>
                                             {%if r[8]=='0'%}
@@ -396,8 +397,7 @@
                                         <th><a href="/packaging-summary?order={{r[0]}}">{{r[0]}}</a> </th>
                                         <th>{{r[9]}}</th>
                                         <th>{{r[1]}}</th>
-                                        <th><input type="checkbox" class="reminder_selected_packaging"
-                                                data-reminder="{{r[10]}}" /></th>
+
                                     </tr>
                                     {% endfor %}
 

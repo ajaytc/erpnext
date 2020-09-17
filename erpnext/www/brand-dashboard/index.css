@@ -1,3 +1,9 @@
+td{
+    min-width: 150px;
+}
+.reminder-dialog{
+    min-width: 80%;
+}
 .reminder-dialog {
     max-width: 50% !important;
 }

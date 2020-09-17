@@ -7,9 +7,9 @@
 <div id="order-section" data-item='{{unique_items_orders[item]["item_name"]}}'>
     <div >
         <h3 class="col-3" style="display: inline-block;">
-            <a class="font-weight-bold" href="/product-item?name={{item}}">
+            <p class="font-weight-bold" >
                 {{unique_items_orders[item]["item_name"]}}
-            </a>
+            </p>
         </h3>
         <div class="col-3" style="display: inline-block;">
             <select data-item_code="{{item}}"  class="form-control factory-select">
@@ -103,7 +103,7 @@
         <div  class="modify-hide-{{item}}">
             <button  data-item="{{item}}" type="button" class="btn btn-light select-button not-selected" style="display: inline-block;">Select</button>
             <button  onclick="set_modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify quantity</button>
-            <button  onclick="cancel('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Cancel</button>
+            <button  onclick="cancel('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Cancel order</button>
         </div>
         <div class="modify-show-{{item}} default-hide" >
             <button  onclick="modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify quantity</button>

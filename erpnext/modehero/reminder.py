@@ -233,6 +233,6 @@ def deleteReminder(reminderslist):
     for rem_name in reminderslist:
         temp_reminders.append(frappe.get_doc('Reminder',rem_name))
     for reminder in temp_reminders:
-        reminder.delete()
+        frappe.delete_doc('Reminder',reminder.name)
     frappe.db.commit()
     return {'status': 'ok', 'item': temp_reminders}
