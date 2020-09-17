@@ -822,7 +822,7 @@ function get_sum(itm_code,size){
 
 function add_validate_buttons(){
  $("#supply-button-section").append(
-    '<button  onclick="validate_product_and_supply()" type="button" class="btn btn-light" style="display: inline-block;">Validate produc and supply</button>\
+    '<button  onclick="validate_product_and_supply()" type="button" class="btn btn-light" style="display: inline-block;">Validate product and supply</button>\
     <button  onclick="validate_product_only()" type="button" class="btn btn-light" style="display: inline-block;">Validate product only</button>')
 }
 
