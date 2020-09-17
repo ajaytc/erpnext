@@ -1,100 +1,125 @@
 // A reference to Stripe.js initialized with your real test publishable API key.
 
-var stripe = Stripe("pk_test_51HPL2BGjxNLAb2efrsMrfkkv9IHc1fJen0khnTPiuA8ES3wHZJrSrDLOFxMHZzRAVsxZaxwR07WCf1tTG1Fny0JD00tafSKSpW");
 
 // The items the customer wants to buy
+var stripe = ''
+$(function () {
+  stripe = Stripe("pk_test_51HPL2BGjxNLAb2efrsMrfkkv9IHc1fJen0khnTPiuA8ES3wHZJrSrDLOFxMHZzRAVsxZaxwR07WCf1tTG1Fny0JD00tafSKSpW");
+  makeStripeIntent()
+});
 
 var purchase = {
-
   items: [{ id: "xl-tshirt" }]
-
 };
 
 // Disable the button until we have Stripe set up on the page
-
 document.querySelector("button").disabled = true;
 
-fetch("/create-payment-intent", {
 
-  method: "POST",
+function makeStripeIntent() {
+  frappe.call({
+    method: 'erpnext.modehero.payment_plan.create_payment',
+    args: {
+      data: purchase
+    },
+    callback: function (r) {
+      if (!r.exc) {
+        makeDom(r.message)
 
-  headers: {
-
-    "Content-Type": "application/json"
-
-  },
-
-  body: JSON.stringify(purchase)
-
-})
-
-  .then(function(result) {
-
-    return result.json();
-
+      } else {
+        console.log(r)
+      }
+    }
   })
+}
 
-  .then(function(data) {
 
-    var elements = stripe.elements();
+function makeDom(data) {
+  var elements = stripe.elements();
 
-    var style = {
+  var style = {
 
-      base: {
+    base: {
 
-        color: "#32325d",
+      color: "#32325d",
 
-        fontFamily: 'Arial, sans-serif',
+      fontFamily: 'Arial, sans-serif',
 
-        fontSmoothing: "antialiased",
+      fontSmoothing: "antialiased",
 
-        fontSize: "16px",
+      fontSize: "16px",
 
-        "::placeholder": {
-
-        }
-
-      },
-
-      invalid: {
-
-        fontFamily: 'Arial, sans-serif',
-
-        color: "#fa755a",
+      "::placeholder": {
 
       }
 
-    };
+    },
 
-    var card = elements.create("card", { style: style });
+    invalid: {
 
-    // Stripe injects an iframe into the DOM
+      fontFamily: 'Arial, sans-serif',
 
-    card.mount("#card-element");
+      color: "#fa755a",
 
-    card.on("change", function (event) {
+    }
 
-      // Disable the Pay button if there are no card details in the Element
+  };
 
-      document.querySelector("button").disabled = event.empty;
+  var card = elements.create("card", { style: style });
 
-      document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+  // Stripe injects an iframe into the DOM
 
-    });
+  card.mount("#card-element");
 
-    var form = document.getElementById("payment-form");
+  card.on("change", function (event) {
 
-    form.addEventListener("submit", function(event) {
+    // Disable the Pay button if there are no card details in the Element
 
-      event.preventDefault();
+    document.querySelector("button").disabled = event.empty;
 
-      // Complete payment when the submit button is clicked
-
-      payWithCard(stripe, card, data.clientSecret);
-
-    });
+    document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
 
   });
+
+  var form = document.getElementById("payment-form");
+
+  form.addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    // Complete payment when the submit button is clicked
+
+    payWithCard(stripe, card, data.clientSecret);
+
+  });
+
+}
+
+// fetch("/create-payment-intent", {
+
+//   method: "POST",
+
+//   headers: {
+
+//     "Content-Type": "application/json"
+
+//   },
+
+//   body: JSON.stringify(purchase)
+
+// })
+
+//   .then(function(result) {
+
+//     return result.json();
+
+//   })
+
+//   .then(function(data) {
+
+
+
+//   });
 
 // Calls stripe.confirmCardPayment
 
@@ -102,7 +127,7 @@ fetch("/create-payment-intent", {
 
 // prompt the user to enter authentication details without leaving your page.
 
-var payWithCard = function(stripe, card, clientSecret) {
+var payWithCard = function (stripe, card, clientSecret) {
 
   loading(true);
 
@@ -118,7 +143,7 @@ var payWithCard = function(stripe, card, clientSecret) {
 
     })
 
-    .then(function(result) {
+    .then(function (result) {
 
       if (result.error) {
 
@@ -142,7 +167,7 @@ var payWithCard = function(stripe, card, clientSecret) {
 
 // Shows a success message when the payment is complete
 
-var orderComplete = function(paymentIntentId) {
+var orderComplete = function (paymentIntentId) {
 
   loading(false);
 
@@ -166,7 +191,7 @@ var orderComplete = function(paymentIntentId) {
 
 // Show the customer the error from Stripe if their card fails to charge
 
-var showError = function(errorMsgText) {
+var showError = function (errorMsgText) {
 
   loading(false);
 
@@ -174,7 +199,7 @@ var showError = function(errorMsgText) {
 
   errorMsg.textContent = errorMsgText;
 
-  setTimeout(function() {
+  setTimeout(function () {
 
     errorMsg.textContent = "";
 
@@ -184,7 +209,7 @@ var showError = function(errorMsgText) {
 
 // Show a spinner on payment submission
 
-var loading = function(isLoading) {
+var loading = function (isLoading) {
 
   if (isLoading) {
 

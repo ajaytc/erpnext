@@ -2,6 +2,13 @@ import frappe
 import json
 import ast
 import datetime
+import stripe
+
+# This is your real test secret API key.
+
+stripe.api_key = "sk_test_51HPL2BGjxNLAb2efZFPiLxejZs31yp8LAVjxg3lzmoxerCjU7SZSr9SKzCBCkQMRjIMv4rQAHbl7wsEbqKr2nDUK00xtPJpeGl"
+
+
 
 
 @frappe.whitelist()
@@ -27,3 +34,29 @@ def savePaymentPlan(data):
             plan.save()
             frappe.db.commit()
     return {'status': 'ok', 'plan': plan}
+
+def calculate_order_amount(items):
+    
+    # Replace this constant with a calculation of the order's amount
+
+    # Calculate the order total on the server to prevent
+
+    # people from directly manipulating the amount on the client
+
+    return 1400
+
+@frappe.whitelist()
+def create_payment(data):
+    try:
+
+        data = json.loads(data)
+        intent = stripe.PaymentIntent.create(
+            amount=calculate_order_amount(data['items']),
+            currency='usd'
+        )
+        return{
+          'clientSecret': intent['client_secret']
+        }
+
+    except Exception as e:
+        return {'error':403}
