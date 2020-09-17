@@ -238,7 +238,7 @@ def is_editable(order):
     k = 0
     try:
         data = frappe.get_doc("Production Order",order[12])
-        if(data.shipment_date!=None and datashipment_date!="") or (data.carrier!=None and data.carrier!="") or (data.tracking_number!=None and data.tracking_number!="") :
+        if(data.shipment_date!=None and data.shipment_date!="") or (data.carrier!=None and data.carrier!="") or (data.tracking_number!=None and data.tracking_number!="") :
             k = 1
     except Exception:
         k = 0
