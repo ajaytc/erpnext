@@ -679,7 +679,8 @@ def create_pl_data_dispatch_bulk(doc_data):
     production_order = doc_data["production_order"]
     shipment_order = doc_data["shipment_order"]
     sales_order_item = doc_data["sales_order_item"]    
-    template_data["brand_address"] = brand.address1
+    template_data["brand_address"] = ""
+    if brand.address1 != None: template_data["brand_address"] = brand.address1
     template_data["creation"] = datetime.datetime.now()
     template_data["client_name"] = client.customer_name
     template_data["client_address"] = get_address(client)
@@ -704,7 +705,8 @@ def create_invocie_data_dispatch_bulk(doc_data):
     production_order = doc_data["production_order"]
     shipment_order = doc_data["shipment_order"]
     sales_order_item = doc_data["sales_order_item"]
-    template_data["brand_address"] = brand.address1
+    template_data["brand_address"] = ""
+    if brand.address1 != None: template_data["brand_address"] = brand.address1
     template_data["creation"] = datetime.datetime.now()
     template_data["client_name"] = client.customer_name
     template_data["client_address"] = get_address(client)
