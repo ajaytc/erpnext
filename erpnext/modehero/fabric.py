@@ -219,6 +219,15 @@ def create_fabric(data):
 def get_fabric(vendor):
     return frappe.get_all('Fabric', filters={'fabric_vendor': vendor}, fields=['name', 'fabric_ref'])
 
+@frappe.whitelist()
+def get_fabric_price(fabric_ref):
+    try:
+        price= frappe.get_all('Fabric', filters={'fabric_ref': fabric_ref}, fields=['name', 'price'])
+        return price[0]
+    except:
+        return None
+    
+
 
 @frappe.whitelist(allow_email_guest=True)
 def deleteDoc(data):

@@ -106,19 +106,38 @@ $('#vendor_list').click(function () {
 })
 
 $('#ref_list').click(function () {
-    console.log($(this).text())
+    reff=$(this).val()
+    getStock(reff)
+    getPrice(reff)
+    
+})
+
+function getPrice(reff) {
+    frappe.call({
+        method: 'erpnext.modehero.fabric.get_fabric_price',
+        args:{
+            fabric_ref:reff
+        },
+        callback: function (r) {
+            console.log(r)
+            $('#price_per_unit').val(r.message.price)
+        }
+    })
+}
+
+function getStock(reff) {
     frappe.call({
         method: 'erpnext.modehero.stock.get_stock',
         args: {
             item_type: 'fabric',
-            ref: $(this).text()
+            ref: reff
         },
         callback: function (r) {
             console.log(r)
             $('#stock').val(r.message.quantity)
         }
     })
-})
+}
 
-$('#vendor_list').trigger('click')
-$('#ref_list').trigger('click')
+// $('#vendor_list').trigger('click')
+// $('#ref_list').trigger('click')
