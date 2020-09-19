@@ -3,6 +3,7 @@ import json
 import ast
 import random
 from erpnext.modehero.production import create_production_order
+from erpnext.modehero.product import get_sizing_scheme
 from erpnext.modehero.supplier import get_supply_doc
 from erpnext.modehero.stock import get_stock
 from erpnext.modehero.fabric import create_fabric_order
@@ -10,13 +11,14 @@ from erpnext.modehero.trimming import create_trimming_order
 from erpnext.modehero.package import create_packaging_order
 from frappe.email.doctype.notification.notification import sendCustomEmail
 
+
 @frappe.whitelist()
 def create_sales_order(items, garmentlabel, internalref, profoma):
     prepared = []
     items = json.loads(items)
     for i in items:
         free_size_qty = None
-        if items[i]['free_size_qty'] != None:
+        if items[i]['free_size_qty'] != None and get_sizing_scheme(items[i]['item'])==None:
             free_size_qty = int(items[i]['free_size_qty']) if is_number(items[i]['free_size_qty']) else 0
         prepared.append({
             "item_name": items[i]['item'],
@@ -53,7 +55,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     order.insert(ignore_permissions=True)
 
     for i in order.items:
-        if i.free_size_qty != None:
+        if i.free_size_qty != None and get_sizing_scheme(i.item_code)==None:
             items[i.item_name]['quantities'] = {"Free Size":i.free_size_qty }
         quantities = items[i.item_name]['quantities']
         for s in quantities:

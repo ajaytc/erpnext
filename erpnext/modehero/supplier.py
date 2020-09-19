@@ -110,9 +110,9 @@ def get_supply_doc(supply_ref, supply_type):
         if supply_type == "fabric":
             return frappe.get_doc("Fabric", supply_ref)
         elif supply_type == "trimming":
-            return frappe.get_doc("Trimming", supply_ref)
+            return frappe.get_doc("Trimming Item", supply_ref)
         elif supply_type == "packaging":
-            return frappe.get_doc("Packaging", supply_ref)
+            return frappe.get_doc("Packaging Item", supply_ref)
         else:
             return None
     except:
