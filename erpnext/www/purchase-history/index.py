@@ -16,12 +16,12 @@ def get_context(context):
     params = frappe.form_dict
     orders,context.user_type = get_orders(roles,brand,frappe.session.user,params)
     support_client_dic = collect_client_data(orders)
-    order_items = add_sales_order_details(support_client_dic)
+    order_items = add_sales_order_details(support_client_dic,orders,params)
     item_orders =  sort_item_doc(get_unique_items_orders(order_items))
     context.unique_items_orders = seperate_item_orders_by_production_orders(item_orders)
     return context
 
-def add_sales_order_details(support_client_dic):
+def add_sales_order_details(support_client_dic,orders,params):
     order_items = {}
     for o in orders:
         order_items[o["name"]] = []

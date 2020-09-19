@@ -53,6 +53,13 @@ function generateSizingTable(sizes) {
 
     let heads = '', inputs = ''
 
+    //====================== This content is when no sizes for product ======================
+    if (sizes.length==0){
+        heads = `<th class="text-center" scope="col">Free Size</th>`
+        inputs = `<td><input type="text" data-size="" data-no_size="1" class="form-control px-0 text-center"></td>`
+    }
+    //====================== This content is when no sizes for product ======================
+
     sizes.map(s => {
         heads += `<th class="sizing text-center" scope="col">${s}</th>`
         inputs += `<td><input type="text" data-size="${s}" class="form-control px-0 text-center"></td>`
@@ -112,21 +119,29 @@ $('#submit').click(() => {
         $(this).find('.sizing').map(function () {
             sizes.push($(this).text())
         })
-        
-        $(this).find('.qty>td>input').map(function () {
-            if (($(this).val() != "") && (!isNaN($(this).val()))) {
-                qtys[sizes[counter++]] = $(this).val()
+        let free_size_qty = null
+        if (sizes.length==0){
+            if (($('.qty>td>input').val() != "") && (!isNaN($('.qty>td>input').val()))) {
+                free_size_qty = $('.qty>td>input').val()                
                 allnull = false
             }
-            else{
-                qtys[sizes[counter++]] = 0
-            }
-            // qtys.push($(this).val())
-        })
+        }else{      
+            $(this).find('.qty>td>input').map(function () {
+                if (($(this).val() != "") && (!isNaN($(this).val()))) {
+                    qtys[sizes[counter++]] = $(this).val()
+                    allnull = false
+                }
+                else{
+                    qtys[sizes[counter++]] = 0
+                }
+                // qtys.push($(this).val())
+            })
+        }
         products[product] = {
             item: product,
             destination,
-            quantities: qtys
+            quantities: qtys,
+            free_size_qty : free_size_qty
         }
     })
     console.log(products, garmentlabel)

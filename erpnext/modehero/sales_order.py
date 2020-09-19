@@ -15,6 +15,9 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     prepared = []
     items = json.loads(items)
     for i in items:
+        free_size_qty = None
+        if items[i]['free_size_qty'] != None:
+            free_size_qty = int(items[i]['free_size_qty']) if is_number(items[i]['free_size_qty']) else 0
         prepared.append({
             "item_name": items[i]['item'],
             "item_code": items[i]['item'],
@@ -23,7 +26,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             "warehouse": "",
             "uom": "pcs",
             "conversion_factor": 1,
-            "item_destination": items[i]['destination']
+            "item_destination": items[i]['destination'],
+            'free_size_qty': free_size_qty
         })
 
     user = frappe.get_doc('User', frappe.session.user)
