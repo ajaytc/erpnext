@@ -53,6 +53,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     order.insert(ignore_permissions=True)
 
     for i in order.items:
+        if i.free_size_qty != None:
+            items[i.item_name]['quantities'] = {"Free Size":i.free_size_qty }
         quantities = items[i.item_name]['quantities']
         for s in quantities:
             qty = quantities[s]

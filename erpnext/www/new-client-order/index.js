@@ -121,10 +121,12 @@ $('#submit').click(() => {
         })
         let free_size_qty = null
         if (sizes.length==0){
+    //====================== This content is when no sizes for product ======================
             if (($('.qty>td>input').val() != "") && (!isNaN($('.qty>td>input').val()))) {
                 free_size_qty = $('.qty>td>input').val()                
                 allnull = false
             }
+    //====================== This content is when no sizes for product ======================
         }else{      
             $(this).find('.qty>td>input').map(function () {
                 if (($(this).val() != "") && (!isNaN($(this).val()))) {
