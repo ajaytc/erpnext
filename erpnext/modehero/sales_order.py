@@ -273,7 +273,7 @@ def modify_sales_item_orders(orders_object):
             update_item_quantities(order,order_dic[order]["sizes"])
             order = frappe.get_doc('Sales Order Item', order)
             sendCancelNModifyNotificationEmail(order,'Modified')
-        except:
+        except Exception:
             status = "error"
             continue
     return {'status': status}
@@ -367,10 +367,7 @@ def create_supply_orders(supply_orders):
         is_completed = "ok"
         result_message = "All supply orders created sucessfully !"
     else:
-        result_message = "Supply order creation is not completed. From requested internal refs, only "
-        for ir in successfull_supply_order_internal_refs:
-            result_message = result_message + "  '"+ ir+"'  " 
-        result_message  = result_message + " internal refs' orders are created successfully !"
+        result_message = "Supply order creation unsuccessfull. From requested internal refs,"+ str(len(unsuccessfull_supply_order_internal_refs)) +" internal refs' orders are not created !"
     return { "status":is_completed, "message":result_message }
 
 def create_supply_order_by_category(supply_order_data):
@@ -404,7 +401,7 @@ def collect_data_for_supply_order(supply_data):
                     "price_per_unit":unit_price,
                     "production_factory":destination_ref,
                     "supply_group":supply_data[supply_ref]["supply_group"],
-                    "minimum_order_quanity":int(supply_doc.minimum_order_qty),
+                    "minimum_order_quanity":supply_doc.minimum_order_qty,
                     "total_price": float(unit_price)*int(order_count),
                     "internal_ref":data_dictionary["internal_ref"],
                     "quantity":order_count,
