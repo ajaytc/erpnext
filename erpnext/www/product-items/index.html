@@ -3,8 +3,8 @@
 <div class="col-sm-12 mt-4 pt-3">
     <label><h2>New Product</h2></label>
     <div class="card" style="width: 108%;">
-        <div class="card-body">
-            <div class="row" style="padding-bottom: 8%;">
+        <div class="card-body" style="padding-right: 2rem;">
+            <div class="row" style="padding-bottom: 2%;">
                 <div class="col-md-2">
                     <div class="form-group mb-1 pb-1">
                         <label>Product Name *</label>
@@ -36,7 +36,7 @@
                         <input class="form-control" id="avg_price" required name="average_price">
                     </div>
                     <div class="form-group mb-1 pb-1">
-                        <input type="checkbox" id="prod_witout_size">Product without size
+                        <input type="checkbox" id="prod_witout_size">  Product without size
                     </div>
                     
                 </div>
@@ -66,7 +66,7 @@
                         </tbody>
                     </table>
                     <div class="row" style="padding-left:3%;">
-                        <button type="button" id="del_row" style="display: none;"
+                        <button type="button" id="del_row" style="display: none;margin-right:2%"
                             class="btn btn-xs btn-danger grid-remove-rows">Delete Row</button>
                         <button type="button" id="add_row" class="btn btn-xs btn-default grid-add-row">Add Row</button>
                     </div>
@@ -75,7 +75,7 @@
 
                 <div class="col-md-2">
 
-                    <div class="form-group">
+                    <div class="form-group" style="padding-top: 4%;">
                         {{_("Tech Pack")}}
                         <div class="custom-file">
                             
@@ -127,7 +127,7 @@
             </div>
 
             <div class="row service" style='background-color: #dddddd;padding-top:3%'>
-                <div class="col-md-4 fab">
+                <div class="col-md-4 mb-5 fab">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3 pb-1">
@@ -142,7 +142,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label class="d-flex">{{_("Fabric ref")}} <span class="ml-auto text-nowrap text-12"><a
+                                <label style="width: 10rem;" class="d-flex">{{_("Fabric ref")}} <span class="ml-auto text-nowrap text-12"><a
                                             href="#" data-toggle="modal" data-target="#fabric_modal"
                                             class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
@@ -155,7 +155,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label>{{_("Fabric consumption")}}</label>
+                                <label style="width: 16rem;">{{_("Fabric consumption")}}</label>
                                 <input class="form-control" required="" name="fabric_con">
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                     <a type="button" id="addFab" style="color: lightskyblue;">Add Fabric +</a>
                 </div>
 
-                <div class="col-md-4 trim">
+                <div class="col-md-4 mb-5 trim">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3 pb-1">
@@ -178,7 +178,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label class="d-flex">{{_("Trimming ref")}} <span class="ml-auto text-nowrap text-12"><a
+                                <label style="width: 10rem;" class="d-flex">{{_("Trimming ref")}} <span class="ml-auto text-nowrap text-12"><a
                                             href="#" data-toggle="modal" data-target="#trimming_modal"
                                             class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
@@ -190,7 +190,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label>{{_("Trimming consumption")}}</label>
+                                <label style="width: 16rem;">{{_("Trimming consumption")}}</label>
                                 <input class="form-control" required="" name="trimming_con">
                             </div>
                         </div>
@@ -200,7 +200,7 @@
 
                 </div>
 
-                <div class="col-md-4 pack">
+                <div class="col-md-4 mb-5 pack">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-3 pb-1">
@@ -215,7 +215,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label class="d-flex">{{_("Packaging ref")}} <span
+                                <label style="width: 10rem;" class="d-flex">{{_("Packaging ref")}} <span
                                         class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
                                             data-target="#packaging_modal" class="add-supplier text-blue"
                                             data-group="fabric">{{_("Add new +")}}</a></span></label>
@@ -227,7 +227,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group mb-4 pb-1">
-                                <label>{{_("Packaging consumption")}}</label>
+                                <label style="width: 16rem;">{{_("Packaging consumption")}}</label>
                                 <input class="form-control" required="" name="packaging_con">
                             </div>
                         </div>
@@ -246,7 +246,7 @@
 
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="padding-left: 0.5%;">
             <button class="btn btn-primary mt-4" id="productSubmit">{{_("Submit")}}</button>
         </div>
     </div>

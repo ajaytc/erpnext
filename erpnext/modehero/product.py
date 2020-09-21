@@ -194,6 +194,12 @@ def get_priducts_of_category(category):
     return result
 
 @frappe.whitelist()
+def get_product_categories():
+    brand = frappe.get_doc('User', frappe.session.user).brand_name
+    result = frappe.get_all('Item Group',filters={'brand_name':brand},fields=['item_group_name','name'])
+    return result
+
+@frappe.whitelist()
 def get_product_item(product):
     product=frappe.get_doc('Item',product)
     return product
