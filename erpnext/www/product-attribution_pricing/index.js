@@ -1,13 +1,10 @@
 window.onload= (event)=>{
-    $(".default-option-price").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
-    $(".modifiable-row").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
-    $(".table-input-1").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
+    let numeric_list = [$(".modifiable-row"),$(".table-input-1.from"),$(".table-input-1.to")]
+    for (i=0;i<numeric_list.length;i++){
+        numeric_only_event(numeric_list[i])
+    }
+    float_values_allowance_for_input($(".default-option-price"))
+    float_values_allowance_for_div($(".table-input-1.price"))
 }
 
 $("#product-category-select").change(function(){
@@ -318,9 +315,9 @@ function add_row(){
     let markup_rows = "<tr class='row-data' id='tablerow-"+row_num.toString()+"'><td class='row-checkbox'><input class='checkbox-table-row' data-row_num='"+row_num.toString()+"' type='checkbox'/></td><td class='row-from'><div contenteditable='true' class='from editable table-input-"+row_num.toString()+"'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-"+row_num.toString()+"'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-"+row_num.toString()+"'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("+row_num.toString()+")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>"
     $(".table-body").append(markup_rows);
     $(".table-body").attr("data-row_count",row_num.toString());
-    $(".table-input-"+row_num.toString()).keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
+    numeric_only_event($(".table-input-"+row_num.toString()+".from"))
+    numeric_only_event($(".table-input-"+row_num.toString()+".to"))
+    float_values_allowance_for_div($(".table-input-"+row_num.toString()+".price"))
 }
 
 function delete_row(row_num){
@@ -332,9 +329,7 @@ function add_option(){
     let markup_options = '<div class="col-4"><div class="row option-inputs"><div class="col-9 option-block"><label >{{_("Option '+option_num.toString()+'")}}</label><input  type="text" class="form-control mt-2 option-option"></div><div class="col-2 price-block"><label >{{_("Price")}}</label><input id="option'+option_num.toString()+'-price" type="text" class="form-control mt-2 option-price"></div></div></div>'
     $("#options").append(markup_options);
     $(".option-block").attr("data-option_count",option_num.toString());
-    $("#option"+option_num.toString()+"-price").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
+    float_values_allowance_for_input($("#option"+option_num.toString()+"-price"))
 }
 
 function response_message(title, message, color) {
@@ -343,4 +338,34 @@ function response_message(title, message, color) {
         indicator: color,
         message: __(message)
     });
+}
+
+function numeric_only_event(element){
+    element.keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+    }).on('paste', function(event) {
+        event.preventDefault();
+    });
+}
+
+function float_values_allowance_for_input(element){
+    element.keypress(function(event) {
+        if (((event.which != 46 || (event.which == 46 && $(this).val() == '')) ||
+                $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    }).on('paste', function(event) {
+        event.preventDefault();
+    })
+}
+
+function float_values_allowance_for_div(element){
+    element.keypress(function(event) {
+        if (((event.which != 46 || (event.which == 46 && $(this).text() == '')) ||
+                $(this).text().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    }).on('paste', function(event) {
+        event.preventDefault();
+    })
 }
