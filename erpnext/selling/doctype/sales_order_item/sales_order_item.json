@@ -91,7 +91,8 @@
   "item_tax_rate",
   "is_modified",
   "prod_order_ref",
-  "group_no"
+  "group_no",
+  "free_size_qty"
  ],
  "fields": [
   {
@@ -786,12 +787,17 @@
    "fieldname": "group_no",
    "fieldtype": "Data",
    "label": "Group Number"
+  },
+  {
+   "fieldname": "free_size_qty",
+   "fieldtype": "Data",
+   "label": "Free Size Quantity"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-09-17 23:12:45.860307",
+ "modified": "2020-09-19 20:19:46.695881",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",

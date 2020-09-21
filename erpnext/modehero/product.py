@@ -204,4 +204,9 @@ def get_product_item(product):
     product=frappe.get_doc('Item',product)
     return product
 
-
+def get_sizing_scheme(itemcode):
+    sizing = frappe.get_all('Item', filters={'item_code': itemcode}, fields=['sizing'])
+    if len(sizing)==0:
+        return "error"
+    return sizing[0].sizing
+    

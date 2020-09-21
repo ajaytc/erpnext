@@ -17,6 +17,7 @@ td{
 .client-modal-link{
     cursor: pointer;
     font-weight: bold;
+    color:#3B3DBF !important;
 }
 #order-section{
     margin-bottom: 40px;
@@ -33,4 +34,12 @@ td{
 
 #supply-button-section{
     margin-top: 45px;
+}
+
+.selected{
+    background-color:#8a7c7c !important;
+}
+
+.not-selected{
+    background-color:#fff !important;
 }

@@ -3,6 +3,7 @@ import json
 import ast
 import random
 from erpnext.modehero.production import create_production_order
+from erpnext.modehero.product import get_sizing_scheme
 from erpnext.modehero.supplier import get_supply_doc
 from erpnext.modehero.stock import get_stock
 from erpnext.modehero.fabric import create_fabric_order
@@ -10,11 +11,15 @@ from erpnext.modehero.trimming import create_trimming_order
 from erpnext.modehero.package import create_packaging_order
 from frappe.email.doctype.notification.notification import sendCustomEmail
 
+
 @frappe.whitelist()
 def create_sales_order(items, garmentlabel, internalref, profoma):
     prepared = []
     items = json.loads(items)
     for i in items:
+        free_size_qty = None
+        if items[i]['free_size_qty'] != None and get_sizing_scheme(items[i]['item'])==None:
+            free_size_qty = int(items[i]['free_size_qty']) if is_number(items[i]['free_size_qty']) else 0
         prepared.append({
             "item_name": items[i]['item'],
             "item_code": items[i]['item'],
@@ -23,7 +28,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             "warehouse": "",
             "uom": "pcs",
             "conversion_factor": 1,
-            "item_destination": items[i]['destination']
+            "item_destination": items[i]['destination'],
+            'free_size_qty': free_size_qty
         })
 
     user = frappe.get_doc('User', frappe.session.user)
@@ -49,6 +55,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     order.insert(ignore_permissions=True)
 
     for i in order.items:
+        if i.free_size_qty != None and get_sizing_scheme(i.item_code)==None:
+            items[i.item_name]['quantities'] = {"Free Size":i.free_size_qty }
         quantities = items[i.item_name]['quantities']
         for s in quantities:
             qty = quantities[s]
@@ -265,7 +273,7 @@ def modify_sales_item_orders(orders_object):
             update_item_quantities(order,order_dic[order]["sizes"])
             order = frappe.get_doc('Sales Order Item', order)
             sendCancelNModifyNotificationEmail(order,'Modified')
-        except:
+        except Exception:
             status = "error"
             continue
     return {'status': status}
@@ -359,10 +367,7 @@ def create_supply_orders(supply_orders):
         is_completed = "ok"
         result_message = "All supply orders created sucessfully !"
     else:
-        result_message = "Supply order creation is not completed. From requested internal refs, only "
-        for ir in successfull_supply_order_internal_refs:
-            result_message = result_message + "  '"+ ir+"'  " 
-        result_message  = result_message + " internal refs' orders are created successfully !"
+        result_message = "Supply order creation unsuccessfull. From requested internal refs,"+ str(len(unsuccessfull_supply_order_internal_refs)) +" internal refs' orders are not created !"
     return { "status":is_completed, "message":result_message }
 
 def create_supply_order_by_category(supply_order_data):
@@ -396,7 +401,7 @@ def collect_data_for_supply_order(supply_data):
                     "price_per_unit":unit_price,
                     "production_factory":destination_ref,
                     "supply_group":supply_data[supply_ref]["supply_group"],
-                    "minimum_order_quanity":int(supply_doc.minimum_order_qty),
+                    "minimum_order_quanity":supply_doc.minimum_order_qty,
                     "total_price": float(unit_price)*int(order_count),
                     "internal_ref":data_dictionary["internal_ref"],
                     "quantity":order_count,

@@ -33,4 +33,5 @@ th{
 .client-modal-link{
     cursor: pointer;
     font-weight: bold;
+    color:#3B3DBF !important;
 }

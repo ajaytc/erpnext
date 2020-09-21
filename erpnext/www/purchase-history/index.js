@@ -1,5 +1,4 @@
 window.onload = function(){
-    $(".client-modal-link").css("color","#3B3DBF");
     $('.sum-quantity').each(function(){
         let item = $(this).attr('data-item');
         let size = $(this).attr('data-size');

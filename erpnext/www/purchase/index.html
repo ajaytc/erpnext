@@ -4,7 +4,12 @@
 <h2  onload="ss()">{{_("Purchase")}}</h2>
 {% set ns = namespace(universal_order_item_count=0) %}
 {% for item in unique_items_orders %}
+{% set sizing = unique_items_orders[item]["item_sizing"] %}
+{% if sizing!=None %}
 <div id="order-section" data-item='{{unique_items_orders[item]["item_name"]}}'>
+{% else %}
+<div id="order-section" data-item='{{unique_items_orders[item]["item_name"]}}' data-is_free_size="1"> 
+{% endif %}
     <div >
         <h3 class="col-3" style="display: inline-block;">
             <p class="font-weight-bold" >
@@ -22,9 +27,12 @@
     </div>
     <div class="table-wrapper table-responsive mt-2">
         <table class="table table-sm table-striped">
-            {% set sizing = unique_items_orders[item]["item_sizing"] %}
             {% if sizing!="" %}
+            {% if sizing!=None %}
             {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
+            {% else %}
+            {% set sizing_list = [{"size":"Free Size"}] %}
+            {% endif %}
             <thead>
                     <th class="modify-show-{{item}} default-hide" colspan='1' scope='colgroup' ><input type="checkbox" data-item_code='{{item}}' data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders sales-order-section" /></th>
                     <th colspan='1' scope='colgroup' >Order Date</th>
@@ -50,38 +58,38 @@
                     {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                     <tr  data-client_name="{{order['customer_details'].customer_name}}"  data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}">
                         <td class="modify-show-{{item}} default-hide"><input type="checkbox"   data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox sales-order-section" /></td>
-                                <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                                <td>
-                                    {{order["sales_order_name"]}}<br>
-                                    <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
-                                </td>
+                        <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
+                        <td>
+                            {{order["sales_order_name"]}}<br>
+                            <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
+                        </td>
 
-                                {% if order.is_modified|string() == "1"%}
-                                <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
-                                {% set ns.is_modified = true %}
-                                {% else %}
-                                <td></td>
-                                {% endif %}
-                                
-                                {% for size_col in sizing_list %}
-                                    {% for item_qnty in quantities if item_qnty.size==size_col.size%}
-                                        <td>
-                                            {% if ns.is_modified %}
-                                            <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
-                                            {% endif %}
-                                            <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
-                                        </td>
-                                    {% else %}
-                                        <td>
-                                            {% if ns.is_modified %}
-                                            <sub class = "modified-qty">0</sub><br>
-                                            {% endif %}
-                                            <div data-current_qty ='0'>0</div>
-                                        </td>
-                                    {% endfor %}
-                                {% endfor %}
-                                <td></td>
-                            </tr>
+                        {% if order.is_modified|string() == "1"%}
+                        <td>Modified<br>{{order.modified.strftime('%Y-%m-%d')}}</td>
+                        {% set ns.is_modified = true %}
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        
+                        {% for size_col in sizing_list %}
+                            {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                                <td>
+                                    {% if ns.is_modified %}
+                                    <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
+                                    {% endif %}
+                                    <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                                </td>
+                            {% else %}
+                                <td>
+                                    {% if ns.is_modified %}
+                                    <sub class = "modified-qty">0</sub><br>
+                                    {% endif %}
+                                    <div data-current_qty ='0'>0</div>
+                                </td>
+                            {% endfor %}
+                        {% endfor %}
+                        <td></td>
+                    </tr>
                     {% endfor %}
                     <tr class="sumation-row">
                         <td class="modify-show-{{item}} default-hide"></td>
@@ -149,7 +157,6 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

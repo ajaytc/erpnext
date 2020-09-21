@@ -28,7 +28,6 @@ var REMINDER_INPUTS = {}
 var SUPPLY_TYPES = ["fabric","trimming","packaging"]
 
 window.onload = function(){
-    $(".client-modal-link").css("color","#3B3DBF");
     $('.sum-quantity').each(function(){
         let item = $(this).attr('data-item');
         let size = $(this).attr('data-size');
@@ -48,10 +47,10 @@ $(".select-button").click(async function(){
     if ($(this).hasClass("not-selected")){
         let is_selected = await select(item).then()
         if (is_selected){
-            $(this).removeClass("not-selected").addClass("selected").css("background-color", "#8a7c7c")
+            $(this).removeClass("not-selected").addClass("selected")
         }
     }else if ($(this).hasClass("selected")){
-        $(this).removeClass("selecte").addClass("not-selected").css("background-color", "#ddd")
+        $(this).removeClass("selected").addClass("not-selected")
         remove_item(item)
         delete SELECTED_ITEM_FACTORY_DETAILS[item]
         delete SALES_ORDER_DETAILS[item]
@@ -140,9 +139,7 @@ $("input[type='checkbox'].sales-order-section").change(function(){
     }
     if ($(this).is(':checked')){
         $("."+ $(this).attr('data-order_count')+"-qnty-content-class").each(function(){
-            $(this).attr('contenteditable','true').keypress(function(e) {
-                if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-            });
+            numeric_only_event($(this).attr('contenteditable','true'))
             $(this).addClass("background-ash");
         })
     }
@@ -529,10 +526,7 @@ function remove_item(item){
             $(".supply-block[data-supply|='"+supply+"']").remove()
         }
     }
-    
-    $(".numeric-editable").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
+    numeric_only_event($(".numeric-editable"))
 }
 
 async function set_supply_order_section(item,order){
@@ -579,9 +573,7 @@ async function change_supplier_division(item,order,total_order_count){
         let tbody_element = $(".supply-block[data-supply|='"+supply_detail.name+"'] > .table-wrapper > table > .tbody-supply-order-section")
         await add_supply_block_table_body(tbody_element,supply_detail,supply_type,supplieres[i],item,order,total_order_count)
     }
-    $(".numeric-editable").keypress(function(e) {
-        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-    });
+    numeric_only_event($(".numeric-editable"))
 }
 
 async function create_supply_table_head(supply_detail){
@@ -600,9 +592,9 @@ async function add_supply_block_table_body(tbody_element,supply_detail,supply_ty
     //     return null
     // }
     let moq = supply_detail.minimum_order_qty
-    // if (moq==null){
-    //     return null
-    // }
+    if (!moq){
+        moq = 0
+    }
     let destination = order.factory
     let vendor = item_supplier_obj.supplier
     let markup = '\
@@ -831,5 +823,11 @@ function response_message(title, message, color) {
         title: __(title),
         indicator: color,
         message: __(message)
+    });
+}
+
+function numeric_only_event(element){
+    element.keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
 }

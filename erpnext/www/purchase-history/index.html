@@ -24,8 +24,11 @@
                 {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
                 {% if sizing|length!=0 %}
                     {% set sizing = sizing[0].sizing %}
+                    {% if sizing!=None %}
                     {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
-                    <thead>
+                    {% else %}
+                    {% set sizing_list = [{"size":"Free Size"}] %}
+                    {% endif %}                    <thead>
                         <th colspan='1' scope='colgroup' >Order Date</th>
                         <th colspan='1' scope='colgroup' >Order Detail</th>
                         <th colspan='1' scope='colgroup' ></th>
