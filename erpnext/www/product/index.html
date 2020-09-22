@@ -148,9 +148,10 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="row service" style='background-color: #dddddd;padding-top:3%'>
                 <div class="col-md-4 mb-5 fab">
+                    {%if suppliers['Fabric']%}
                     {% for supplier in suppliers['Fabric']%}
                     <div class="fab-block">
                         <div class="row">
@@ -196,9 +197,53 @@
                         <hr>
                     </div>
                     {%endfor%}
+                    {%else%}
+                    <div class="fab-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Fabric supplier")}}</label>
+                                    <select class="form-control fab_sup" required name="fabric_sup">
+                                         <option value=""></option>
+                                        {% for fab_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Fabric'},fields=["name"]) %}
+                                        <option value="{{fab_sup.name}}">{{fab_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Fabric ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#fabric_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="fab_ref_list" required name="fabric_ref">
+                                        
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Fabric consumption")}}</label>
+                                    <input class="form-control" required=""
+                                        name="fabric_con">
+                                </div>
+                            </div>
+                        </div>
+                        <a type="button" class="addFab" style="color: lightskyblue;">Add Fabric +</a>
+                        <a type="button" class="delFab" style="color: red;margin-left:2%;">Delete x</a>
+                        <hr>
+                    </div>
+                    {%endif%}
+                    
                 </div>
 
                 <div class="col-md-4 mb-5 trim">
+                    {%if suppliers['Trimming']%}
                     {% for supplier in suppliers['Trimming'] %}
                     <div class="trim-block">
                         <div class="row">
@@ -243,15 +288,57 @@
                         <hr>
                     </div>
                     {%endfor%}
+                    {%else%}
+                    <div class="trim-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Trimming Supplier")}}</label>
+                                    <select class="form-control trim_sup" required name="trimming_sup">
+                                       
+                                        <option value=""></option>
+                                        {% for trim_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Trimming'}) %}
+                                        <option value="{{trim_sup.name}}">{{trim_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Trimming ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#trimming_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="trim_ref_list" required name="trimming_ref">
+                                        
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Trimming consumption")}}</label>
+                                    <input class="form-control" required=""
+                                        name="trimming_con">
+                                </div>
+                            </div>
+                        </div>
+                        <a type="button" style="color: lightskyblue;" class="addTrim">Add Trimming +</a>
+                        <a type="button" class="delTrim" style="color: red;margin-left:2%;">Delete x</a>
+                        <hr>
+                    </div>
+                    {%endif%}
+
 
 
                 </div>
 
                 <div class="col-md-4 mb-5 pack">
+                    {%if suppliers['Packaging']%}
                     {%for supplier in suppliers['Packaging']%}
                     <div class="pack-block">
-
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3 pb-1">
@@ -296,6 +383,49 @@
                         <hr>
                     </div>
                     {%endfor%}
+                    {%else%}
+                    <div class="pack-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Packaging Supplier")}}</label>
+                                    <select class="form-control pack_sup" required name="packaging_sup">
+                                        <option value=""></option>
+                                        {% for pack_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Packaging'}) %}
+                                        <option value="{{pack_sup.name}}">{{pack_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Packaging ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#packaging_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="pack_ref_list" required name="packaging_ref">
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Packaging consumption")}}</label>
+                                    <input class="form-control" required=""
+                                        name="packaging_con">
+                                </div>
+                            </div>
+                        </div>
+
+                        <a type="button" style="color: lightskyblue;" class="addPack">Add Packaging +</a>
+                        <a type="button" class="delPack" style="color: red;margin-left:2%;">Delete x</a>
+
+                        <hr>
+                    </div>
+                    {%endif%}
+
                 </div>
                 <hr>
                 <hr>
