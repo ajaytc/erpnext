@@ -268,7 +268,7 @@ def generateInvoice(data):
 
 
 
-    temp = frappe.get_all("Pdf Document", filters={"type": "Invoice"}, fields=[
+    temp = frappe.get_all("Pdf Document", filters={"type": "Uniform Invoice"}, fields=[
         "content", "type", "name"])
 
     generatedInv = frappe.render_template(

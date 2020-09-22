@@ -109,9 +109,21 @@
     </a>
     <div id="collapseOne" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
-            <a href="/supply-list" class="list-group-item ">
+            <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1aa"
+                aria-expanded="false" aria-controls="c1aa">
                 {{_("Supplier List")}}
             </a>
+            <div id="c1aa" class="collapse" data-parent="#collapseOne">
+                <div class="list-group">
+                    <a href="/supply?new=1" class="list-group-item ">
+                        {{_("New")}}
+                    </a>
+                    <a href="/supply-list" class="list-group-item ">
+                        {{_("List")}}
+                    </a>
+                </div>
+            </div>
+            
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c1a"
                 aria-expanded="false" aria-controls="c1a">
                 {{_("Fabric")}}
@@ -132,13 +144,13 @@
                         <div class="list-group">
                             <a href="/supply-list?type=Fabric" class="list-group-item form-modal" data-toggle=""
                                 data-group="fabric" data-target="#form_modal">
-                                {{_("Fabric vendor")}}
+                                {{_("Supplier")}}
                             </a>
                             <a href="/fabric-item" class="list-group-item ">
-                                {{_("Fabric Item")}}
+                                {{_("Item")}}
                             </a>
                             <a href="/color" class="list-group-item ">
-                                {{_("Fabric Color")}}
+                                {{_("Color")}}
                             </a>
                             <a href="/composition" class="list-group-item ">
                                 {{_("Composition")}}
@@ -169,16 +181,16 @@
                         <div class="list-group">
                             <a href="/supply-list?type=Trimming" class="list-group-item form-modal" data-toggle=""
                                 data-group="trimming" data-target="#form_modal">
-                                {{_("Trimming vendor")}}
+                                {{_("Supplier")}}
                             </a>
                             <a href="/trimming-item" class="list-group-item ">
-                                {{_("Trimming Item")}}
+                                {{_("Item")}}
                             </a>
                             <!-- <a href="/trimming-size" class="list-group-item ">
                                 {{_("Trimming Size")}}
                             </a> -->
                             <a href="/trimming-category" class="list-group-item ">
-                                {{_("Trimming Category")}}
+                                {{_("Category")}}
                             </a>
                         </div>
                     </div>
@@ -203,16 +215,16 @@
                         <div class="list-group">
                             <a href="/supply-list?type=Packaging" class="list-group-item form-modal" data-toggle=""
                                 data-group="packaging" data-target="#form_modal">
-                                {{_("Packaging vendor")}}
+                                {{_("Supplier")}}
                             </a>
                             <a href="/packaging-item" class="list-group-item ">
-                                {{_("Packaging Item")}}
+                                {{_("Item")}}
                             </a>
                             <a href="/packaging-material" class="list-group-item ">
-                                {{_("Packaging Material")}}
+                                {{_("Material")}}
                             </a>
                             <a href="/packaging-size" class="list-group-item ">
-                                {{_("Packaging Size")}}
+                                {{_("Size")}}
                             </a>
                         </div>
                     </div>
@@ -304,7 +316,7 @@
             <div id="c4a" class="collapse" data-parent="#collapse4">
                 <div class="list-group">
                     <a href="#" class="list-group-item"  data-toggle="collapse" aria-expanded="false" data-target="#new_product" aria-controls="new_product">
-                        {{_("Products")}}
+                        {{_("Product")}}
                     </a>
 
                     <div id="new_product"  class="collapse" data-parent="#c4a">
@@ -319,13 +331,13 @@
                         </div>
                     </div>
                     <a href="/production-factory" class="list-group-item ">
-                        {{_("Factory List")}}
+                        {{_("Factory")}}
                     </a>
                     <a href="/product-category" class="list-group-item ">
-                        {{_("Create new Product Category")}}
+                        {{_("Category")}}
                     </a>
                     <a href="/sizing-scheme" class="list-group-item ">
-                        {{_("Create new sizing scheme")}}
+                        {{_("Sizing")}}
                     </a>
                 </div>
             </div>
@@ -363,7 +375,7 @@
     <div id="collapse6" class="collapse" data-parent="#accordionMenu">
         <div class="list-group">
             <a href="/stock-products" class="list-group-item ">
-                {{_("Product Stock")}}
+                {{_("Product")}}
             </a>
             <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#c6a"
                 aria-expanded="false" aria-controls="c6a">
@@ -372,13 +384,13 @@
             <div id="c6a" class="collapse" data-parent="#collapse6">
                 <div class="list-group">
                     <a href="/stock-fabric" class="list-group-item ">
-                        {{_("Fabric Stock")}}
+                        {{_("Fabric")}}
                     </a>
                     <a href="/stock-trimming" class="list-group-item ">
-                        {{_("Trimming Stock")}}
+                        {{_("Trimming")}}
                     </a>
                     <a href="/stock-packaging" class="list-group-item ">
-                        {{_("Packaging Stock")}}
+                        {{_("Packaging")}}
                     </a>
                 </div>
             </div>
