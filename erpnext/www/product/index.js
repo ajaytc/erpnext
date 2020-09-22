@@ -36,9 +36,6 @@ $('.checkRec').change(function () {
 
 
 
-
-
-
 $('.fab_sup').click(function () {
     var el = $(this)
     frappe.call({
@@ -60,6 +57,7 @@ $('.fab_sup').click(function () {
         }
     })
 })
+
 
 
 $('.trim_sup').click(function () {
@@ -106,38 +104,43 @@ $('.pack_sup').click(function () {
     })
 })
 
-// $(".grid-add-row").click(function () {
 
-//     var markup = "<tr><td><input type='checkbox' class='checkRec'></td><td><input type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='From'></td><td><input type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='To'></td><td><input type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='Price'></td></tr>";
-//     $("table tbody").append(markup);
-// });
+$('.addFab').click(function () {
+    cloneOb=$('.fab-block').first().clone(true)
+    cloneOb.find('input').val('')
+    cloneOb.find('select').val('')
+    cloneOb.appendTo(".fab")
+    
+})
 
-var fabRowCount = 1;
-var trimRowCount = 1;
-var packRowCount = 1;
+$('.delFab').click(function () {
+    $(this).parent().remove()
+ 
+})
+$('.delTrim').click(function () {
+    $(this).parent().remove()
+    
+})
 
+$('.delPack').click(function () {
+    $(this).parent().remove()
+    
+})
 
-
-
-
-
-
-$('#addFab').click(function () {
-    $('.fab-block').first().clone(true).appendTo(".fab")
+$('.addTrim').click(function () {
+    cloneOb=$('.trim-block').first().clone(true)
+    cloneOb.find('input').val('')
+    cloneOb.find('select').val('')
+    cloneOb.appendTo(".trim")
     
 })
 
 
-
-$('#addTrim').click(function () {
-    $('.trim-block').first().clone(true).appendTo(".trim")
-    
-})
-
-
-
-$('#addPack').click(function () {
-    $('.pack-block').first().clone(true).appendTo(".pack")
+$('.addPack').click(function () {
+    cloneOb=$('.pack-block').first().clone(true)
+    cloneOb.find('input').val('')
+    cloneOb.find('select').val('')
+    cloneOb.appendTo(".pack")
     
 })
 
@@ -242,6 +245,40 @@ function submitProdItem(files) {
     
     // suppliers
 
+    // $('.service').map(function () {
+
+    //     // fabric suppliers
+    //     let fabric_supplier = $(this).find("select[name='fabric_sup']").val()
+    //     let fabric_ref = $(this).find("select[name='fabric_ref']").val()
+    //     let fabric_con = $(this).find("input[name='fabric_con']").val()
+
+    //     fab_suppliers[Math.random()] = {
+    //         fabric_supplier: fabric_supplier,
+    //         fabric_ref: fabric_ref,
+    //         fabric_con: fabric_con
+    //     }
+
+    //     // trimming suppliers
+    //     let trim_supplier = $(this).find("select[name='trimming_sup']").val()
+    //     let trim_ref = $(this).find("select[name='trimming_ref']").val()
+    //     let trim_con = $(this).find("input[name='trimming_con']").val()
+
+    //     trim_suppliers[Math.random()] = {
+    //         trim_supplier: trim_supplier,
+    //         trim_ref: trim_ref,
+    //         trim_con: trim_con
+    //     }
+
+    //     // packaging suppliers
+    //     let pack_supplier = $(this).find("select[name='packaging_sup']").val()
+    //     let pack_ref = $(this).find("select[name='packaging_ref']").val()
+    //     let pack_con = $(this).find("input[name='packaging_con']").val()
+
+    //     pack_suppliers[Math.random()] = {
+    //         pack_supplier: pack_supplier,
+    //         pack_ref: pack_ref,
+    //         pack_con: pack_con
+    //     }
 
     $('.fab .fab-block').map(function () {
         let fabric_supplier = $(this).find("select[name='fabric_sup']").val()
@@ -295,12 +332,13 @@ function submitProdItem(files) {
     console.log(pack_suppliers)
 
     frappe.call({
-        method: "erpnext.modehero.product.create_product_item",
+        method: "erpnext.modehero.product.update_product_item",
         args: {
             data: {
                 // order: "{{frappe.form_dict.order}}",
                 item_name: $("#product_name").val(),
                 item_group: $("#product_catagory").val(),
+                item_code:$("#product_name").attr('data-name'),
                 sizing:sizing,
                 avg_price:avg_price,
                 prices: prices,
@@ -396,4 +434,6 @@ $('#prod_witout_size').change(function () {
         // $('#price_div *').prop("disabled",false);
     }
 })
+
+
 
