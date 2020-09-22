@@ -38,7 +38,8 @@
   "final_destination",
   "destination_type",
   "factory_email",
-  "fac_country"
+  "fac_country",
+  "free_size_qty"
  ],
  "fields": [
   {
@@ -213,10 +214,15 @@
    "fieldname": "destination_type",
    "fieldtype": "Data",
    "label": "Destination Type"
+  },
+  {
+   "fieldname": "free_size_qty",
+   "fieldtype": "Data",
+   "label": "Free Size Quantity"
   }
  ],
  "links": [],
- "modified": "2020-08-31 06:55:53.752821",
+ "modified": "2020-09-22 16:33:29.593540",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Order",

@@ -510,8 +510,8 @@ def validate_sales_item_orders_n_create_production_order(orders_object,factory):
         order_dic = json.loads(orders_object)
     else:
         order_dic = orders_object
-    quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names = collect_sales_order_data_for_production_order(order_dic)
-    production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory).name
+    quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names,free_size_qty= collect_sales_order_data_for_production_order(order_dic)
+    production_order_ref = makeProductionOrder(item,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory,free_size_qty).name
     update_sales_order_items(production_order_ref,order_dic,one_of_sales_order_item_names)
     return {'status': 'ok'}
 
@@ -538,16 +538,20 @@ def collect_sales_order_data_for_production_order(order_dic):
             item=sales_order_item.item_code
         elif(item!=sales_order_item.item_code):
             return {'status':'Different products error'}
-
-        item_quantites = frappe.get_all('Quantity Per Size',filters={'order_id':order},fields=['name','size','quantity'])
+        free_size_qty = None
+        if sales_order_item.free_size_qty!=None and sales_order_item.first_free_size_qty!=None:
+            free_size_qty = int(sales_order_item.free_size_qty) if is_number(sales_order_item.free_size_qty) else None
+            item_quantites = []
+        else:
+            item_quantites = frappe.get_all('Quantity Per Size',filters={'order_id':order},fields=['name','size','quantity'])
         for quantity in item_quantites:
             if (quantity['size'] not in quantity_dic_for_production_order):
                 quantity_dic_for_production_order[quantity['size']] = 0
             quantity_dic_for_production_order[quantity['size']] = quantity_dic_for_production_order[quantity['size']] + int(quantity['quantity'])
         destinations_comment = destinations_comment + str(order_dic[order]["client_name"])+" : "+str(sales_order_item.item_destination)+" \n "
-    return quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names
+    return quantity_dic_for_production_order,item,destinations_comment,one_of_sales_order_item_names,free_size_qty
     
-def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory):
+def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_comment,quantity_dic_for_production_order,factory,free_size_qty):
 
     item=frappe.get_doc("Item",item_name)
     fabSuppliers={}
@@ -593,6 +597,7 @@ def makeProductionOrder(item_name,one_of_sales_order_item_names,destinations_com
         'trim_suppliers':trimSuppliers,
         'pack_suppliers':packSuppliers,
         'comment':destinations_comment,
+        'free_size_qty':free_size_qty,
         'destination_type':None
     }
 

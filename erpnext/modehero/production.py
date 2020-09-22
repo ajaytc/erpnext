@@ -27,7 +27,7 @@ def create_production_order(data):
     json_fab_suppliers = data['fab_suppliers']
     json_trim_suppliers = data['trim_suppliers']
     json_pack_suppliers = data['pack_suppliers']
-
+    
     fab_refs = []
     trim_refs = []
     pack_refs = []
@@ -72,7 +72,7 @@ def create_production_order(data):
                 })
 
     production_factory=frappe.get_doc("Production Factory",data['production_factory'])
-
+    free_size_qty = data['free_size_qty'] if "free_size_qty" in data else None
     order = frappe.get_doc({
         'doctype': 'Production Order',
         'product_category': data['product_category'],
@@ -86,6 +86,7 @@ def create_production_order(data):
         'suppliers': order_suppliers,
         'factory_email':production_factory.email_address,
         'comment': data['comment'],
+        'free_size_qty':free_size_qty,
         'brand': brand
     })
     order.insert(ignore_permissions=True)
