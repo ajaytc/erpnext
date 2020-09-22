@@ -269,9 +269,15 @@ def modify_sales_item_orders(orders_object):
     status = "ok"
     for order in order_dic:
         try:
-            update_item_quantities(order,order_dic[order]["sizes"])
-            order = frappe.get_doc('Sales Order Item', order)
-            sendCancelNModifyNotificationEmail(order,'Modified')
+            order_doc = frappe.get_doc('Sales Order Item', order)
+            if order_doc.free_size_qty!=None and order_doc.first_free_size_qty!=None:
+                order_doc.free_size_qty = order_dic[order]["sizes"]["Free Size"]
+                order_doc.is_modified = 1
+                order_doc.save()
+                frappe.db.commit()
+            else:
+                update_item_quantities(order,order_dic[order]["sizes"])
+            sendCancelNModifyNotificationEmail(order_doc,'Modified')
         except Exception:
             status = "error"
             continue

@@ -22,7 +22,7 @@ def get_context(context):
 
     order_items = {}
     for o in orders:
-        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':0},fields=['name','item_code','parent','creation','is_modified','modified'])
+        order_items[o.name] = frappe.get_list('Sales Order Item',filters={'parent':o.name,'docstatus':0},fields=['first_free_size_qty','free_size_qty','name','item_code','parent','creation','is_modified','modified'])
         for sales_order_item_index in range(len(order_items[o.name])):
             order_items[o.name][sales_order_item_index]["customer_details"] = support_client_dic[o.customer]
             order_items[o.name][sales_order_item_index]["sales_order_name"] = o.name

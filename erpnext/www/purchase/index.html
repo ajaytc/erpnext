@@ -54,7 +54,11 @@
                 <tbody>
                     {% for order in unique_items_orders[item]["orders"] %}
                     {% set ns.is_modified=false %}
-                    {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
+                    {% if sizing==None %}
+                        {% set quantities = [{'size':'Free Size','quantity':order.free_size_qty,'first_quantity':order.first_free_size_qty}] %}
+                    {% else %}
+                        {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
+                    {% endif %}
                     {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
                     <tr  data-client_name="{{order['customer_details'].customer_name}}"  data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}">
                         <td class="modify-show-{{item}} default-hide"><input type="checkbox"   data-order_count = '{{ns.universal_order_item_count}}' data-item_code = "{{item}}"  data-order = "{{order.name}}"  class="sales-order-checkbox sales-order-section" /></td>
