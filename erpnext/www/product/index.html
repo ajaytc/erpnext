@@ -1,0 +1,318 @@
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Product Item','url':'#'}]) }}
+
+<div class="col-sm-12 mt-4 pt-3">
+    <label>
+        <h2>{{product.item_name}}</h2>
+    </label>
+    <div class="card" style="width: 108%;">
+        <div class="card-body" style="padding-right: 2rem;">
+            <div class="row" style="padding-bottom: 2%;">
+                <div class="col-md-2">
+                    <div class="form-group mb-1 pb-1">
+                        <label>Product Name *</label>
+                        <input class="form-control" id="product_name" value="{{product.item_name}}" data-name="{{product.name}}" required
+                            name="internal_ref">
+                    </div>
+
+                    <div class="form-group mb-1 pb-1">
+                        <label>Product Category *</label>
+
+                        <select class="form-control" id="product_catagory" value="{{product.item_group}}" required
+                            name="product_cat">
+                            <option selected hidden value="{{product.item_group}}">{{product.item_group}}
+                            </option>
+                            {% for item_cat in frappe.get_all('Item Group',filters={'brand_name':brand}) %}
+                            <option value="{{item_cat.name}}">{{item_cat.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-1 pb-1">
+                        {%if product.sizing==None%}
+                        {%set sizingAttr=disabled%}
+                        {%else%}
+                        {%set sizingAttr=''%}
+                        {%endif%}
+                        <label>Sizing</label>
+
+                        <select class="form-control" id="sizing" name="sizing_field" {{sizingAttr}}>
+                            <option selected hidden value="{{product.sizing}}">{{product.sizing}}</option>
+                            {% for sizing in frappe.get_all('Sizing Scheme',filters={'brand':brand}) %}
+                            <option value="{{sizing.name}}">{{sizing.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-1 pb-1">
+                        <label>Average Wholesale Price</label>
+
+                        <input class="form-control" id="avg_price" value="{{product.avg_price}}" required
+                            name="average_price">
+                    </div>
+                    <div class="form-group mb-1 pb-1">
+                        
+                        {%if sizingAttr==disabled%}
+                        <input type="checkbox" id="prod_witout_size" checked> Product without size
+                        {%else%}
+                        <input type="checkbox" id="prod_witout_size"> Product without size
+                        {%endif%}
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-8" id="price_div">
+                    <label>Production Price</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in product.production_price%}
+                            <tr class="price_row">
+                                <td><input type='checkbox' class='checkRec'></td>
+                                <td><input name="from" type='text' value="{{p.from}}"
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='From'>
+                                </td>
+                                <td><input name="to" type='text' value="{{p.to}}"
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='To'></td>
+                                <td><input name="price" type='text' value="{{p.price}}"
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='Price'>
+                                </td>
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                    <div class="row" style="padding-left:3%;">
+                        <button type="button" id="del_row" style="display: none;margin-right:2%"
+                            class="btn btn-xs btn-danger grid-remove-rows">Delete Row</button>
+                        <button type="button" id="add_row" class="btn btn-xs btn-default grid-add-row">Add Row</button>
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <div class="form-group" style="padding-top: 4%;">
+                        {{_("Tech Pack")}}
+                        <div class="custom-file">
+
+                            <input type="file" class="custom-file-input" name="tech_pack" id="tech_pack">
+
+                            <label id="tech_pack-label" class="custom-file-label" for="tech_pack">{{product.tech_pack}}
+
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{_("Picture")}}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="picture" id="picture">
+
+                            <label id="picture-label" class="custom-file-label" for="picture">{{product.picture}}
+
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{_("Pattern")}}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="pattern" id="pattern">
+
+                            <label id="pattern-label" class="custom-file-label" for="pattern">{{product.pattern}}
+
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{_("Bar codes")}}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="bar_codes" id="barcode">
+
+                            <label id="bar_codes-label" class="custom-file-label" for="barcode">{{product.barcode}}
+
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row service" style='background-color: #dddddd;padding-top:3%'>
+                <div class="col-md-4 mb-5 fab">
+                    {% for supplier in suppliers['Fabric']%}
+                    <div class="fab-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Fabric supplier")}}</label>
+                                    <select class="form-control fab_sup" required name="fabric_sup">
+                                        <option selected hidden value="{{supplier.supplier}}">
+                                            {{supplier.supplier}}</option>
+                                        <!-- <option value=""></option> -->
+                                        {% for fab_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Fabric'},fields=["name"]) %}
+                                        <option value="{{fab_sup.name}}">{{fab_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Fabric ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#fabric_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="fab_ref_list" required name="fabric_ref">
+                                        <option selected hidden value="{{supplier.fabric_ref}}">
+                                            {{supplier.fabric_ref}}</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Fabric consumption")}}</label>
+                                    <input class="form-control" required="" value="{{supplier.fabric_consumption}}"
+                                        name="fabric_con">
+                                </div>
+                            </div>
+                        </div>
+                        <a type="button" class="addFab" style="color: lightskyblue;">Add Fabric +</a>
+                        <a type="button" class="delFab" style="color: red;margin-left:2%;">Delete x</a>
+                        <hr>
+                    </div>
+                    {%endfor%}
+                </div>
+
+                <div class="col-md-4 mb-5 trim">
+                    {% for supplier in suppliers['Trimming'] %}
+                    <div class="trim-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Trimming Supplier")}}</label>
+                                    <select class="form-control trim_sup" required name="trimming_sup">
+                                        <option selected hidden value="{{supplier.supplier}}">
+                                            {{supplier.supplier}}</option>
+                                        <option value=""></option>
+                                        {% for trim_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Trimming'}) %}
+                                        <option value="{{trim_sup.name}}">{{trim_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Trimming ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#trimming_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="trim_ref_list" required name="trimming_ref">
+                                        <option selected hidden value="{{supplier.trimming_ref}}">
+                                            {{supplier.trimming_ref}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Trimming consumption")}}</label>
+                                    <input class="form-control" required="" value="{{supplier.trimming_consumption}}"
+                                        name="trimming_con">
+                                </div>
+                            </div>
+                        </div>
+                        <a type="button" style="color: lightskyblue;" class="addTrim">Add Trimming +</a>
+                        <a type="button" class="delTrim" style="color: red;margin-left:2%;">Delete x</a>
+                        <hr>
+                    </div>
+                    {%endfor%}
+
+
+                </div>
+
+                <div class="col-md-4 mb-5 pack">
+                    {%for supplier in suppliers['Packaging']%}
+                    <div class="pack-block">
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 pb-1">
+                                    <label>{{_("Packaging Supplier")}}</label>
+                                    <select class="form-control pack_sup" required name="packaging_sup">
+                                        <option selected hidden value="{{supplier.supplier}}">
+                                            {{supplier.supplier}}</option>
+                                        <option value=""></option>
+                                        {% for pack_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Packaging'}) %}
+                                        <option value="{{pack_sup.name}}">{{pack_sup.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 10rem;" class="d-flex">{{_("Packaging ref")}} <span
+                                            class="ml-auto text-nowrap text-12"><a href="#" data-toggle="modal"
+                                                data-target="#packaging_modal" class="add-supplier text-blue"
+                                                data-group="fabric">{{_("Add new +")}}</a></span></label>
+                                    <select class="form-control" id="pack_ref_list" required name="packaging_ref">
+                                        <option selected hidden value="{{supplier.packaging_ref}}">
+                                            {{supplier.packaging_ref}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4 pb-1">
+                                    <label style="width: 16rem;">{{_("Packaging consumption")}}</label>
+                                    <input class="form-control" required="" value="{{supplier.packaging_consumption}}"
+                                        name="packaging_con">
+                                </div>
+                            </div>
+                        </div>
+
+                        <a type="button" style="color: lightskyblue;" class="addPack">Add Packaging +</a>
+                        <a type="button" class="delPack" style="color: red;margin-left:2%;">Delete x</a>
+
+                        <hr>
+                    </div>
+                    {%endfor%}
+                </div>
+                <hr>
+                <hr>
+                <br>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="form-group" style="padding-left: 0.5%;">
+            <button class="btn btn-primary mt-4" id="productSubmit">{{_("Submit")}}</button>
+        </div>
+    </div>
+</div>
+
+{% include 'erpnext/www/modals/fabric_modal.html' %}
+{% include 'erpnext/www/modals/trimming_modal.html' %}
+{% include 'erpnext/www/modals/packaging_modal.html' %}

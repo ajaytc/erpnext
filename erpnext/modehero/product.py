@@ -188,6 +188,151 @@ def create_product_item(data):
     print(data)
 
 @frappe.whitelist()
+def update_product_item(data):
+    data = json.loads(data)
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+
+    product_item=frappe.get_doc("Item",data['item_code'])
+
+    json_prices = data['prices']
+    json_fab_suppliers = data['fab_suppliers']
+    json_trim_suppliers = data['trim_suppliers']
+    json_pack_suppliers = data['pack_suppliers']
+    prices = []
+    item_suppliers = []
+
+    for key in json_prices:
+        prices.append({
+            'from': json_prices[key]['from'],
+            'to': json_prices[key]['to'],
+            'price': json_prices[key]['price']
+        })
+
+    for key in json_fab_suppliers:
+        if(json_fab_suppliers[key] != {}):
+            if(json_fab_suppliers[key]['fabric_ref'] != None):
+                item_suppliers.append({
+                    'supplier': json_fab_suppliers[key]['fabric_supplier'],
+                    'supplier_group': 'Fabric',
+                    'fabric_consumption': json_fab_suppliers[key]['fabric_con'],
+                    'fabric_ref': json_fab_suppliers[key]['fabric_ref']
+                })
+
+    for key in json_trim_suppliers:
+        if(json_trim_suppliers[key] != {}):
+            if(json_trim_suppliers[key]['trim_ref'] != None):
+                item_suppliers.append({
+                    'supplier': json_trim_suppliers[key]['trim_supplier'],
+                    'supplier_group': 'Trimming',
+                    'trimming_consumption': json_trim_suppliers[key]['trim_con'],
+                    'trimming_ref': json_trim_suppliers[key]['trim_ref']
+
+                })
+
+    for key in json_pack_suppliers:
+        if(json_pack_suppliers[key] != {}):
+            if(json_pack_suppliers[key]['pack_ref'] != None):
+                item_suppliers.append({
+                    'supplier': json_pack_suppliers[key]['pack_supplier'],
+                    'supplier_group': 'Packaging',
+                    'packaging_consumption': json_pack_suppliers[key]['pack_con'],
+                    'packaging_ref': json_pack_suppliers[key]['pack_ref']
+                })
+
+    tech_pack = ""
+    picture = ""
+    pattern = ""
+    barcode = ""
+    avg_price=0
+
+
+    if("tech_pack" in data):
+        tech_pack = data['tech_pack']
+    else:
+        tech_pack = None
+    if('picture' in data):
+        picture = data['picture']
+    else:
+        picture = None
+    if('pattern' in data):
+        pattern = data['pattern']
+    else:
+        pattern = None
+    if('barcode' in data):
+        barcode = data['barcode']
+    else:
+        barcode = None
+    if(data['avg_price']==''):
+        avg_price=0
+    else:
+        avg_price=data['avg_price']
+    if(prices==[]):
+        prices=None
+
+    if(data['item_name'] == None):
+        if(data['item_group'] == None):
+            return {'message': 'Product name and Product Category not filled'}
+        else:
+            return {'message': 'Product name not filled'}
+    elif(data['item_group'] == None):
+        return {'message': 'Product Category not filled'}
+    else:
+
+        # product_item.item_code=data['item_code']
+        product_item.item_name=data['item_name']
+        product_item.item_group=data['item_group']
+        product_item.sizing=data['sizing']
+        product_item.avg_price=avg_price
+        # product_item.production_price=prices
+        # product_item.supplier=item_suppliers
+        product_item.tech_pack=tech_pack
+        product_item.picture=picture
+        product_item.pattern=pattern
+        product_item.barcode=barcode
+
+        # product_item.save(ignore_permissions=True)
+        product_item=updatePrices(product_item,prices)
+        product_item=updateSuppliers(product_item,item_suppliers)
+        product_item.save(ignore_permissions=True)
+        frappe.db.commit()
+        return {'message': 'Product Updated Successfully', 'product': product_item}
+
+def updatePrices(item,prices):
+    frappe.db.sql("""DELETE from `tabPrices for Quantity` where parent=%s""",item.name)
+
+    
+    # item.production_price=prices
+    # return item
+
+    for price in prices:
+        item.append("production_price",price)
+    
+    return item
+
+       
+      
+def updateSuppliers(item,suppliers):
+    frappe.db.sql("""DELETE from `tabItem Supplier` where parent=%s""",item.name)
+
+    for supplier in suppliers:
+        item.append("supplier",supplier)
+    
+    return item
+
+@frappe.whitelist()   
+def deleteProduct(data):
+    data = json.loads(data)
+
+    for product in data['products']:
+        frappe.delete_doc('Item',product)
+    
+    return {'message': 'Product Updated Successfully', 'deleted_products': data['products']}
+
+
+
+
+@frappe.whitelist()
 def get_priducts_of_category(category):
     brand = frappe.get_doc('User', frappe.session.user).brand_name
     result = frappe.get_all('Item',filters={'item_group':category,'brand':brand},fields=['item_name','name'])
