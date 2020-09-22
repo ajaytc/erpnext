@@ -21,7 +21,7 @@
  "is_standard": 1,
  "login_required": 1,
  "max_attachment_size": 0,
- "modified": "2020-09-17 21:32:34.832949",
+ "modified": "2020-09-22 17:10:49.210048",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "packaging-item",
@@ -182,7 +182,7 @@
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "miminum_order_qty",
+   "fieldname": "minimum_order_qty",
    "fieldtype": "Int",
    "hidden": 0,
    "label": "Minimum Order Quantity",
