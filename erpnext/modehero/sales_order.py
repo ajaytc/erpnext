@@ -29,7 +29,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             "uom": "pcs",
             "conversion_factor": 1,
             "item_destination": items[i]['destination'],
-            'free_size_qty': free_size_qty
+            "free_size_qty": free_size_qty,
+            "first_free_size_qty":free_size_qty
         })
 
     user = frappe.get_doc('User', frappe.session.user)
@@ -55,8 +56,6 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     order.insert(ignore_permissions=True)
 
     for i in order.items:
-        if i.free_size_qty != None and get_sizing_scheme(i.item_code)==None:
-            items[i.item_name]['quantities'] = {"Free Size":i.free_size_qty }
         quantities = items[i.item_name]['quantities']
         for s in quantities:
             qty = quantities[s]

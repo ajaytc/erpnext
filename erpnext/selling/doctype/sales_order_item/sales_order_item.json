@@ -92,7 +92,8 @@
   "is_modified",
   "prod_order_ref",
   "group_no",
-  "free_size_qty"
+  "free_size_qty",
+  "first_free_size_qty"
  ],
  "fields": [
   {
@@ -792,12 +793,17 @@
    "fieldname": "free_size_qty",
    "fieldtype": "Data",
    "label": "Free Size Quantity"
+  },
+  {
+   "fieldname": "first_free_size_qty",
+   "fieldtype": "Data",
+   "label": "First Free Size Quantity"
   }
  ],
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2020-09-19 20:19:46.695881",
+ "modified": "2020-09-22 09:55:27.991208",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order Item",

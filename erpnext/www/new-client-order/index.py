@@ -35,8 +35,12 @@ def get_context(context):
         context.order = frappe.get_doc('Sales Order', params.order)
         context.qtys = {}
         for i in context.order.items:
-            context.qtys[i.name] = frappe.get_all(
-                'Quantity Per Size', filters={'order_id': i.name}, order_by='creation asc')
+            if i.free_size_qty!=None and i.first_free_size_qty!=None:
+                context.free_size_product = True
+                context.qtys[i.name] = [{"size":"Free Size","modified_quantity":i.free_size_qty,"quantity":i.first_free_size_qty}]
+            else:
+                context.qtys[i.name] = frappe.get_all(
+                    'Quantity Per Size', filters={'order_id': i.name}, order_by='creation asc')
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles

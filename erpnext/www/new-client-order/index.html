@@ -244,28 +244,41 @@
                     <thead>
                         <tr class="sizing">
                             <th scope="col">{{_("Sizing")}}</th>
-                            {% for s in qtys[o.name] %}
-                            <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['size']}}</th>
-                            {% endfor %}
+                            {% if free_size_product %}
+                                <th scope="col">{{qtys[o.name][0]["size"]}}</th>
+                            {% else %}
+                                {% for s in qtys[o.name] %}
+                                <th scope="col">{{frappe.get_doc('Quantity Per Size',s)['size']}}</th>
+                                {% endfor %}
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="qty">
                             <th scope="row">{{_("Quantity")}}</th>
-                            {% for s in qtys[o.name] %}
-                            <td scope="col" data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}">
-                                {{frappe.get_doc('Quantity Per Size',s)['quantity']}}</td>
-                            {% endfor %}
+                            {% if free_size_product %}
+                                <td scope="col">{{qtys[o.name][0]["quantity"]}}</td>
+                            {% else %}
+                                {% for s in qtys[o.name] %}
+                                <td scope="col" data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}">
+                                    {{frappe.get_doc('Quantity Per Size',s)['quantity']}}</td>
+                                {% endfor %}
+                            {% endif %}
                         </tr>
                         <tr>
                             <th scope="row">{{_("Modified quantity")}}</th>
-                            {% for s in qtys[o.name] %}
-                            <td><input type="text" class="form-control modified-qty"
-                                    data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}"
+                            {% if free_size_product %}
+                                <td><input type="text" class="form-control modified-qty"
                                     {% if isCustomer and not isBrand %}disabled{% endif %}
-                                    value="{{frappe.get_doc('Quantity Per Size',s)['quantity']}}"></td>
-                            {% endfor %}
-
+                                    value="{{qtys[o.name][0]['modified_quantity']}}"></td>
+                            {% else %}
+                                {% for s in qtys[o.name] %}
+                                <td><input type="text" class="form-control modified-qty"
+                                        data-size="{{frappe.get_doc('Quantity Per Size',s)['size']}}"
+                                        {% if isCustomer and not isBrand %}disabled{% endif %}
+                                        value="{{frappe.get_doc('Quantity Per Size',s)['quantity']}}"></td>
+                                {% endfor %}
+                            {% endif %}
                         </tr>
                     </tbody>
                 </table>
