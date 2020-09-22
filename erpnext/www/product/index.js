@@ -243,42 +243,6 @@ function submitProdItem(files) {
 
 
     
-    // suppliers
-
-    // $('.service').map(function () {
-
-    //     // fabric suppliers
-    //     let fabric_supplier = $(this).find("select[name='fabric_sup']").val()
-    //     let fabric_ref = $(this).find("select[name='fabric_ref']").val()
-    //     let fabric_con = $(this).find("input[name='fabric_con']").val()
-
-    //     fab_suppliers[Math.random()] = {
-    //         fabric_supplier: fabric_supplier,
-    //         fabric_ref: fabric_ref,
-    //         fabric_con: fabric_con
-    //     }
-
-    //     // trimming suppliers
-    //     let trim_supplier = $(this).find("select[name='trimming_sup']").val()
-    //     let trim_ref = $(this).find("select[name='trimming_ref']").val()
-    //     let trim_con = $(this).find("input[name='trimming_con']").val()
-
-    //     trim_suppliers[Math.random()] = {
-    //         trim_supplier: trim_supplier,
-    //         trim_ref: trim_ref,
-    //         trim_con: trim_con
-    //     }
-
-    //     // packaging suppliers
-    //     let pack_supplier = $(this).find("select[name='packaging_sup']").val()
-    //     let pack_ref = $(this).find("select[name='packaging_ref']").val()
-    //     let pack_con = $(this).find("input[name='packaging_con']").val()
-
-    //     pack_suppliers[Math.random()] = {
-    //         pack_supplier: pack_supplier,
-    //         pack_ref: pack_ref,
-    //         pack_con: pack_con
-    //     }
 
     $('.fab .fab-block').map(function () {
         let fabric_supplier = $(this).find("select[name='fabric_sup']").val()
