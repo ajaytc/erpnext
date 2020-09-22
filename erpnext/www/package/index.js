@@ -1,5 +1,7 @@
 $(".quantity").keypress(function(e) {
     if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+}).on('paste', function(event) {
+    event.preventDefault();
 });
 
 var CLIENT = null;
@@ -169,6 +171,8 @@ function add_products(){
     bind_item_select_events(current_count,items_per_row);
     $(".quantity").keypress(function(e) {
         if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+    }).on('paste', function(event) {
+        event.preventDefault();
     });
 }
 

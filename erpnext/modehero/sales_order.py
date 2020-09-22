@@ -29,7 +29,8 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
             "uom": "pcs",
             "conversion_factor": 1,
             "item_destination": items[i]['destination'],
-            'free_size_qty': free_size_qty
+            "free_size_qty": free_size_qty,
+            "first_free_size_qty":free_size_qty
         })
 
     user = frappe.get_doc('User', frappe.session.user)
@@ -55,8 +56,6 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
     order.insert(ignore_permissions=True)
 
     for i in order.items:
-        if i.free_size_qty != None and get_sizing_scheme(i.item_code)==None:
-            items[i.item_name]['quantities'] = {"Free Size":i.free_size_qty }
         quantities = items[i.item_name]['quantities']
         for s in quantities:
             qty = quantities[s]
@@ -270,9 +269,15 @@ def modify_sales_item_orders(orders_object):
     status = "ok"
     for order in order_dic:
         try:
-            update_item_quantities(order,order_dic[order]["sizes"])
-            order = frappe.get_doc('Sales Order Item', order)
-            sendCancelNModifyNotificationEmail(order,'Modified')
+            order_doc = frappe.get_doc('Sales Order Item', order)
+            if order_doc.free_size_qty!=None and order_doc.first_free_size_qty!=None:
+                order_doc.free_size_qty = order_dic[order]["sizes"]["Free Size"]
+                order_doc.is_modified = 1
+                order_doc.save()
+                frappe.db.commit()
+            else:
+                update_item_quantities(order,order_dic[order]["sizes"])
+            sendCancelNModifyNotificationEmail(order_doc,'Modified')
         except Exception:
             status = "error"
             continue

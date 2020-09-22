@@ -28,6 +28,7 @@ def modify_pricing(form_data,name):
         for wp_dic in form_data["wholesale_price"]:
             for key in wp_dic : 
                 if key=="price" : wp_dic[key]=float(wp_dic[key]) 
+                else : wp_dic[key]=int(wp_dic[key]) 
         for op in form_data["pricing_options"]:
             op["price"] = float(op["price"])
     except ValueError:
@@ -111,6 +112,7 @@ def set_pricing(form_data):
         for wp_dic in form_data["wholesale_price"]:
             for key in wp_dic : 
                 if key=="price" : wp_dic[key]=float(wp_dic[key]) 
+                else : wp_dic[key]=int(wp_dic[key]) 
         for op in form_data["pricing_options"]:
             op["price"] = float(op["price"])
     except ValueError:
