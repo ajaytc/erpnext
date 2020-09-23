@@ -36,6 +36,9 @@ $('#deleteBtn').click(function () {
             callback: function (r) {
                 if (!r.exc) {
                     console.log(r)
+                    $('input[name="productChecked"]:checked').each(function () {
+                        $(this).prop("checked",false)
+                    });
                     location.reload();
 
                 } else {

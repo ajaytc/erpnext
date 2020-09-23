@@ -385,6 +385,13 @@ function createOrder(product, qtys) {
                         message: __('Production order ' + order.name + ' created successfully')
                     });
                 }
+                $('input').each(function () {
+                    $(this).val("")
+                });
+                $('select').each(function () {
+                    $(this).val("")
+                });
+                location.reload();
             }
         }
     })

@@ -114,17 +114,21 @@ $('.addFab').click(function () {
 })
 
 $('.delFab').click(function () {
-    $(this).parent().remove()
- 
+    if($('.delFab').length>1){
+        $(this).parent().remove()
+    }
 })
+
 $('.delTrim').click(function () {
-    $(this).parent().remove()
-    
+    if($('.delTrim').length>1){
+        $(this).parent().remove()
+    } 
 })
 
 $('.delPack').click(function () {
-    $(this).parent().remove()
-    
+    if($('.delPack').length>1){
+        $(this).parent().remove()
+    }
 })
 
 $('.addTrim').click(function () {

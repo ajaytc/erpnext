@@ -2,9 +2,9 @@
     <div class="col-sm-12 d-flex align-items-center mt-4">
         
         <!-- <button class="btn btn-primary ml-auto" >New</button> -->
-        <!-- <button id="deleteBtn" type="button" class="btn btn-primary ml-auto" style="margin-left: 74% !important;margin-bottom: 1%;" disabled>
+        <button id="deleteBtn" type="button" class="btn btn-primary ml-auto" style="margin-left: 74% !important;margin-bottom: 1%;" disabled>
             {{_("Delete")}}
-        </button> -->
+        </button>
         <button id="newBtn" type="button" onclick="window.location.href='/product-items'" class="btn btn-primary ml-auto" style="margin-bottom: 1%;">
             {{_("New")}}
         </button>
@@ -15,7 +15,7 @@
         <table class="table table-striped" id="allProducts">
             <thead>
                 <tr>
-                    <!-- <th></th> -->
+                    <th></th>
                     <th scope="col" id="cat_col" class="fa">{{_("Product Name")}}</th>
                     <th scope="col">{{_("Product Category")}}</th>
                 </tr>
@@ -23,11 +23,11 @@
             <tbody>
                 {% for product in products %}
                 <tr data-product="{{product.name}}">
-                    <!-- <td><label class="custom-checkbox">
+                    <td><label class="custom-checkbox">
                         <input type="checkbox" class="deleteSelection" name="productChecked"
                             onchange="validateButton()">
                         <span class="icon"></span>
-                    </label></td> -->
+                    </label></td>
                     <td class="product" style="cursor: pointer;">{{product.item_name}}</td>
                     <td>{{product.item_group}}</td>
                 </tr>

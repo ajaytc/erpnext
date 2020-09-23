@@ -119,7 +119,23 @@ var packRowCount = 1;
 
 
 
+$('.delFab').click(function () {
+    if($('.delFab').length>1){
+        $(this).parent().remove()
+    }
+})
 
+$('.delTrim').click(function () {
+    if($('.delTrim').length>1){
+        $(this).parent().remove()
+    } 
+})
+
+$('.delPack').click(function () {
+    if($('.delPack').length>1){
+        $(this).parent().remove()
+    }
+})
 
 
 $('#addFab').click(function () {

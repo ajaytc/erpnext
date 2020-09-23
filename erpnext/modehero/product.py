@@ -325,11 +325,10 @@ def deleteProduct(data):
     data = json.loads(data)
 
     for product in data['products']:
-        frappe.delete_doc('Item',product)
+        frappe.delete_doc('Item',product,force=1,for_reload=True)
+        frappe.db.commit()
     
     return {'message': 'Product Updated Successfully', 'deleted_products': data['products']}
-
-
 
 
 @frappe.whitelist()

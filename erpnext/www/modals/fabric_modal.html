@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Fabric vendor")}}</label>
                                 <select class="form-control" required name="vendor">
-                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric'}) %}
+                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric','brand':brand}) %}
                                     <option>{{vendor.name}}</option>
                                     {% endfor %}
                                 </select>

@@ -209,6 +209,13 @@ function createOrder(product, qtys, techpack, pattern, picture) {
                         message: __('Prototype order ' + order.name + ' created successfully')
                     });
                 }
+                $('input').each(function () {
+                    $(this).val("")
+                });
+                $('select').each(function () {
+                    $(this).val("")
+                });
+                location.reload();
             }
         }
     })

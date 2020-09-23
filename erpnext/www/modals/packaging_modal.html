@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Packaging vendor")}}</label>
                                 <select class="form-control" required name="vendor">
-                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging'}) %}
+                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging','brand':brand}) %}
                                     <option>{{vendor.name}}</option>
                                     {% endfor %}
                                 </select>
@@ -31,9 +31,8 @@
                                     {{_("Color")}}
                                     <a class="text-orange ml-auto" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
-
                                 <select class="form-control" required name="color">
-                                    {% for color in frappe.get_all('Color',filters={}) %}
+                                    {% for color in frappe.get_all('Color',filters={})%}
                                     <option>{{color.name}}</option>
                                     {% endfor %}
                                 </select>
@@ -48,7 +47,7 @@
                                     <a class="text-orange ml-auto" href="/packaging-material?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="material">
-                                    {% for material in frappe.get_all('Packaging Material',filters={}) %}
+                                    {% for material in frappe.get_all('Packaging Material',filters={})%}
                                     <option>{{material.name}}</option>
                                     {% endfor %}
                                 </select>

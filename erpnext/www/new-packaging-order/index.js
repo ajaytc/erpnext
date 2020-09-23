@@ -63,6 +63,13 @@ function create_fabric_order(data) {
                         message: __('Packaging order created successfully')
                     });
                 }
+                $('input').each(function () {
+                    $(this).val("")
+                });
+                $('select').each(function () {
+                    $(this).val("")
+                });
+                location.reload();
             }
         }
     })
