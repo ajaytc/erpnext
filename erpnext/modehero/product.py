@@ -89,11 +89,14 @@ def create_product_item(data):
     item_suppliers = []
 
     for key in json_prices:
-        prices.append({
-            'from': json_prices[key]['from'],
-            'to': json_prices[key]['to'],
-            'price': json_prices[key]['price']
-        })
+        if(json_prices[key]['from']=='' and json_prices[key]['to']==''):
+            prices=None
+        else:
+            prices.append({
+                'from': json_prices[key]['from'],
+                'to': json_prices[key]['to'],
+                'price': json_prices[key]['price']
+            })
 
     for key in json_fab_suppliers:
         if(json_fab_suppliers[key] != {}):

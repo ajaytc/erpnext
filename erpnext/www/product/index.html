@@ -73,6 +73,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% if product.production_price %}
                             {% for p in product.production_price%}
                             <tr class="price_row">
                                 <td><input type='checkbox' class='checkRec'></td>
@@ -86,6 +87,19 @@
                                 </td>
                             </tr>
                             {%endfor%}
+                            {%else%}
+                            <tr class="price_row">
+                                <td><input type='checkbox' class='checkRec'></td>
+                                <td><input name="from" type='text' 
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='From'>
+                                </td>
+                                <td><input name="to" type='text'
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='To'></td>
+                                <td><input name="price" type='text' 
+                                        class='input-with-feedback form-control bold in  put-sm' placeholder='Price'>
+                                </td>
+                            </tr>
+                            {%endif%}
                         </tbody>
                     </table>
                     <div class="row" style="padding-left:3%;">

@@ -243,7 +243,7 @@ function submitProdItem(files) {
         let to = $(this).find("input[name='to']").val()
         let price = $(this).find("input[name='price']").val()
 
-        prices[price] = {
+        prices[Math.random()] = {
             from: from,
             to: to,
             price: price

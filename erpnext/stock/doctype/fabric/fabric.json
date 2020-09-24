@@ -16,7 +16,6 @@
   "brand",
   "fabric_way",
   "fabric_image",
-  "supplier_ref",
   "other_info",
   "minimum_order_qty",
   "price"
@@ -84,11 +83,6 @@
    "options": "Warp\nWeft\nBias"
   },
   {
-   "fieldname": "supplier_ref",
-   "fieldtype": "Data",
-   "label": "Supplier Ref"
-  },
-  {
    "fieldname": "fabric_image",
    "fieldtype": "Attach Image",
    "label": "Fabric Image"
@@ -110,7 +104,7 @@
   }
  ],
  "links": [],
- "modified": "2020-08-05 06:19:54.447156",
+ "modified": "2020-09-24 15:14:09.192266",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",
