@@ -482,13 +482,15 @@ def get_product_details_from_order(order, order_type):
     if production_stock == None or len(production_stock) == 0:
         return None
     production_stock = frappe.get_doc("Stock", production_stock[0].name)
-    # this is for develeopment perposes
+    # this is for product with no sizes
     if len(production_stock.product_stock_per_size) == 0:
-        return None
-    # this is for develeopment perposes
+        size_details = None
+    else:
+        size_details = production_stock.product_stock_per_size
+    # this is for product with no sizes
     if order_type == "prototype":
         return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value, "size_details": None}
-    return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value, "size_details": production_stock.product_stock_per_size}
+    return {'stock_name': production_stock.name, 'old_stock': production_stock.quantity, 'old_value': production_stock.total_value, "size_details": size_details}
 
 
 def createNewProductStock(doc, method):
@@ -609,8 +611,7 @@ def stockOut(stock_name, amount, quantity, description, size_quantites,order,ord
 def updateQuantity(stock_name, quantity, price, size_detail):
     total_value = float(quantity)*float(price)
     stock_doc = frappe.get_doc("Stock", stock_name)
-    if len(stock_doc.product_stock_per_size) == 0:
-        return None
+
     if size_detail != None:
         for x in range(len(stock_doc.product_stock_per_size)):
             for y in range(len(size_detail)):

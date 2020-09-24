@@ -5,7 +5,7 @@ import frappe.www.list
 import datetime
 
 no_cache = 1
-
+free_size_name = "Free Size"
 
 def get_context(context):
     if frappe.session.user == 'Guest':
@@ -143,10 +143,17 @@ def add_size_quantity_data(orders,item_support):
         orders[i].append(item_support[orders[i][5]]["sizes"])
         orders[i].append(item_support[orders[i][5]]["current_stock_sizes_quantities"])
         try:
-            if orders[i][0]!=None:
-                orders[i].append(frappe.get_all('Quantity Per Size',{'order_id':orders[i][0]},['size','quantity']))
-            elif orders[i][1]!=None:
-                orders[i].append(frappe.get_all('Production Quantity Per Size',{'parent':orders[i][1]},['size','quantity']))
+            if orders[i][15]!=None:
+                if orders[i][0]!=None:
+                    orders[i].append(frappe.get_all('Quantity Per Size',{'order_id':orders[i][0]},['size','quantity']))
+                elif orders[i][1]!=None:
+                    orders[i].append(frappe.get_all('Production Quantity Per Size',{'parent':orders[i][1]},['size','quantity']))
+            else:
+                orders[i][15] = [{"size":free_size_name}]
+                if orders[i][1]!=None:
+                    orders[i].append([{"size":free_size_name,"quantity":frappe.get_doc('Production Order',orders[i][1]).free_size_qty}])
+                else:
+                    orders[i].append([{"size":free_size_name,"quantity":frappe.get_doc('Sales Order Item',orders[i][0]).free_size_qty}])
         except Exception:
             orders[i].append(None)
     return orders
@@ -162,8 +169,11 @@ def add_sent_data(orders,brand):
         for sent_data in sent_history_data_list:
             sent_data_doc = frappe.get_doc("Stock History",sent_data.stock_history)
             temp_list = []
-            for qps in sent_data_doc.product_stock_history_per_size:
-                temp_list.append({"size":qps.size,"quantity":qps.quantity})
+            if len(sent_data_doc.product_stock_history_per_size)==0:
+                temp_list.append({"size":free_size_name,"quantity":sent_data_doc.quantity})
+            else:
+                for qps in sent_data_doc.product_stock_history_per_size:
+                    temp_list.append({"size":qps.size,"quantity":qps.quantity})
             if sent_data.shipment_order!=None:
                 try:
                     required_data = ["name","tracking_number","carrier_company","shipping_date","expected_delivery_date","shipping_price","shipping_document","html_tracking_link"]
@@ -205,14 +215,15 @@ def get_item_details(item):
     try:
         item_doc = frappe.get_doc("Item",item)
         resul_obj["item_name"] = item_doc.item_name 
+        sqlist = []
         if item_doc.sizing==None:
             resul_obj["sizes"] = None
+            sqlist.append({"size":free_size_name,"quantity":frappe.get_doc("Stock",frappe.get_all("Stock",filters={"parent":item})[0].name).quantity})
         else:
             resul_obj["sizes"] = frappe.get_all('Sizing', filters={'parent': item_doc.sizing}, fields=['size'],order_by='idx')
-        c = frappe.get_doc("Stock",frappe.get_all("Stock",filters={"parent":item})[0].name).product_stock_per_size
-        sqlist = []
-        for sq in c:
-            sqlist.append({"size":sq.size,"quantity":sq.quantity})
+            c = frappe.get_doc("Stock",frappe.get_all("Stock",filters={"parent":item})[0].name).product_stock_per_size
+            for sq in c:
+                sqlist.append({"size":sq.size,"quantity":sq.quantity})
         resul_obj["current_stock_sizes_quantities"] = sqlist
     except Exception:
         resul_obj["sizes"] = None

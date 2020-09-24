@@ -1,10 +1,7 @@
 
 window.onload = function(){
-    $(".ship-quantity-box").each(function(){
-        $(this).keypress(function(e) {
-            if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
-        });
-    })
+    numeric_only_event($(".ship-quantity-box"))
+    float_values_allowance_for_input($("#shipment-order-shipping-price"))
 }
 
 $(".add-shipment-info").click(function(){
@@ -236,5 +233,24 @@ function response_message(title, message, color) {
         title: __(title),
         indicator: color,
         message: __(message)
+    });
+}
+
+function float_values_allowance_for_input(element){
+    element.keypress(function(event) {
+        if (((event.which != 46 || (event.which == 46 && $(this).val() == '')) ||
+                $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    }).on('paste', function(event) {
+        event.preventDefault();
+    })
+}
+
+function numeric_only_event(element){
+    element.keypress(function(e) {
+        if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
+    }).on('paste', function(event) {
+        event.preventDefault();
     });
 }

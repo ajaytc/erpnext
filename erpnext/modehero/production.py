@@ -4,7 +4,7 @@ import ast
 import datetime
 from erpnext.modehero.stock import updateStock2, get_details_fabric_from_order, get_details_trimming_from_order, get_product_details_from_order, get_details_packaging_from_order,stockOut
 from frappe.email.doctype.notification.notification import sendCustomEmail
-
+free_size_name = "Free Size"
 @frappe.whitelist()
 def create_production_order(data):
 
@@ -215,11 +215,15 @@ def submit_production_summary_info(data):
 def get_total_quantity(order):
     # this functio returns total quantity of the order collecting all size quantities
     total_quantity = 0
-    for size in order.quantity_per_size:
-        if (size.quantity != None):
-            total_quantity = total_quantity + int(size.quantity)
-    return total_quantity
-
+    try:
+        if order.free_size_qty!=None:
+            return int(order.free_size_qty)
+        for size in order.quantity_per_size:
+            if (size.quantity != None):
+                total_quantity = total_quantity + int(size.quantity)
+        return total_quantity
+    except ValueError:
+        return None
 
 def get_order_quantities(order):
     # this function returns quantity details under fabric/trimming/packaging
@@ -329,9 +333,12 @@ def get_size_order(order):
     # output of this function can be used in calculate_price function
     size_order = {}
     size_order.update([(order.product_name, {})])
-    for size in order.quantity_per_size:
-        size_order[order.product_name].update(
-            [(size.size, int(size.quantity))])
+    if order.free_size_qty != None:
+        size_order[order.product_name].update([("",order.free_size_qty)])
+    else:
+        for size in order.quantity_per_size:
+            size_order[order.product_name].update(
+                [(size.size, int(size.quantity))])
     return size_order
 
 
@@ -468,12 +475,13 @@ def generateMultiplePLInvoice(data):
         if doc_data["production_order"] == None or doc_data["client"] == None or doc_data["destination"] == None:
             continue
         size_qty_dic = order["size_qty"]
+        is_completed = False
         try:
             for size in size_qty_dic:
                 size_qty_dic[size] = int(size_qty_dic[size])
+            size_qty_dic, is_completed = check_dispatch_order_situation(doc_data["production_order"],doc_data["sales_order_item"],size_qty_dic)
         except ValueError:
             continue
-        size_qty_dic, is_completed = check_dispatch_order_situation(doc_data["production_order"],doc_data["sales_order_item"],size_qty_dic)
         if not is_quantity_enough(size_qty_dic,doc_data["production_order"].product_name) or all(x == 0 for x in size_qty_dic.values()) :
             continue
         doc_data["brand"] = brand_doc
@@ -537,27 +545,31 @@ def is_quantity_enough(size_qty_dic,item_code):
     if stock_doc==None:
         return False
     enough = True
-    for stock in stock_doc.product_stock_per_size:
-        for size in size_qty_dic:
-            if size==stock.size and  size_qty_dic[size]>int(stock.quantity):
-                enough = False
+    if len(stock_doc.product_stock_per_size)>0:
+        for stock in stock_doc.product_stock_per_size:
+            for size in size_qty_dic:
+                if size==stock.size and  size_qty_dic[size]>int(stock.quantity):
+                    enough = False
+                    break
+            if not enough :
                 break
-        if not enough :
-            break
+    elif free_size_name in size_qty_dic:
+        if stock_doc.quantity<size_qty_dic[free_size_name]:
+            enough = False
+    else:
+        enough = False
     return enough
 
 def check_dispatch_order_situation(po,soi,size_qty):
-    if soi!=None:
-        filter_param = {"is_bulk":0,"sales_order":soi.name}
-        requested_quantity = frappe.get_all("Quantity Per Size",{"order_id":soi.name},["size","quantity"])
-    else:
-        filter_param = {"is_bulk":1,"bulk_order":po.name}
-        requested_quantity = po.quantity_per_size
-    history_list = frappe.get_all("Dispatch Bulk Stock History",filter_param,["stock_history"])
+    requested_quantity,history_list = get_requested_n_requested_qty(soi,po)
     stock_history_list = []
     for history_movement in history_list:
         stock_history = check_and_get_doc("Stock History",{"name":history_movement.stock_history})
-        if stock_history!=None : stock_history_list.append(stock_history.product_stock_history_per_size)
+        if stock_history!=None : 
+            if len(stock_history.product_stock_history_per_size)>0:
+                stock_history_list.append(stock_history.product_stock_history_per_size)
+            else:
+                stock_history_list.append([{"quantity":int(stock_history.quantity),"size":free_size_name}])
     for history in stock_history_list:
         for history_qps in history:
             for qps in requested_quantity:
@@ -569,17 +581,38 @@ def check_dispatch_order_situation(po,soi,size_qty):
     is_completed = True
     for size in size_qty:
         for sq in required_quantity:
-            if size!=sq.size:
+            if size!=sq["size"]:
                 continue
-            if size_qty[size]<int(sq.quantity):
+            if size_qty[size]<int(sq["quantity"]):
                 is_completed=False
             else:
-                size_qty[size] = int(sq.quantity)
+                size_qty[size] = int(sq["quantity"])
             break
         else:
             size_qty[size] = 0
     return size_qty,is_completed
 
+def get_requested_n_requested_qty(soi,po):
+    if po.free_size_qty!=None and soi!=None:
+        filter_param = {"is_bulk":0,"sales_order":soi.name}
+        requested_quantity = [{"quantity":int(po.free_size_qty),"size":free_size_name}]
+    elif po.free_size_qty==None and soi!=None:
+        filter_param = {"is_bulk":0,"sales_order":soi.name}
+        requested_quantity = convert_obj_to_size_quantity_dic(frappe.get_all("Quantity Per Size",{"order_id":soi.name},["size","quantity"]))
+    elif po.free_size_qty==None:
+        filter_param = {"is_bulk":1,"bulk_order":po.name}
+        requested_quantity = convert_obj_to_size_quantity_dic(po.quantity_per_size)
+    else:
+        filter_param = {"is_bulk":1,"bulk_order":po.name}
+        requested_quantity = [{"quantity":int(po.free_size_qty),"size":free_size_name}]
+    history_list = frappe.get_all("Dispatch Bulk Stock History",filter_param,["stock_history"])
+    return requested_quantity,history_list
+
+def convert_obj_to_size_quantity_dic(obj_list):
+    result = []
+    for obj in obj_list:
+        result.append({"size":obj.size,"quantity":obj.quantity})
+    return result
 def generate_dispatch_bulk_pl(doc_data):
     pl_data = create_pl_data_dispatch_bulk(doc_data)
     temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order Packing List"}, fields=["content", "type", "name"])
@@ -630,7 +663,10 @@ def modify_stocks_dispatch_bulk(pl,inoice,doc_data):
         order_name  = doc_data["production_order"]
     if doc_data["shipment_order"]!=None:
         shipment = doc_data["shipment_order"].name
-    stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array,order_name,'dispatch-bulk')
+    if doc_data["production_order"].free_size_qty!=None:
+        stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",None,order_name,'dispatch-bulk')
+    else:
+        stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array,order_name,'dispatch-bulk')
     data = {
         "is_bulk":is_bulk,
         "stock_history":stock_history.name,
@@ -730,7 +766,8 @@ def create_invocie_data_dispatch_bulk(doc_data):
     template_data["vat_rate"] = 1
     if brand.tax_id==None: pass 
     elif is_number(brand.tax_id): template_data["vat_rate"] = float(brand.tax_id)
-    template_data["vatAmount"] = template_data["vat_rate"] * template_data["totalAmount"]
+    template_data["totalCost"] = template_data["totalAmount"]
+    template_data["vatAmount"] = template_data["vat_rate"] * template_data["totalAmount"] / 100
     template_data["totalPay"] = template_data["vatAmount"] + template_data["totalAmount"]
 
     return template_data
