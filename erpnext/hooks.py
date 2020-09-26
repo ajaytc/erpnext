@@ -346,6 +346,7 @@ scheduler_events = {
     ],
     "daily": [
         "erpnext.modehero.user.auto_deactivate",
+        "erpnext.modehero.user.auto_deactivate_brands",
         "erpnext.modehero.reminder.cron_order_reminder",
         "erpnext.stock.reorder_item.reorder_item",
         "erpnext.support.doctype.issue.issue.auto_close_tickets",

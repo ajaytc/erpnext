@@ -49,7 +49,7 @@
 
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Supply")}}</td>
@@ -64,7 +64,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Pre Production")}}</td>
@@ -79,7 +79,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Production")}}</td>
@@ -94,7 +94,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Shipment")}}</td>
@@ -109,7 +109,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Stock")}}</td>
@@ -124,7 +124,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("S&F")}}</td>
@@ -139,7 +139,7 @@
                                 <span class="icon"></span>
                             </label></td>
                         {%endfor%}
-                        
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Pricing-Month")}}</td>
@@ -149,7 +149,7 @@
 
                             </label></td>
                         {%endfor%}
-                       
+
                     </tr>
                     <tr>
                         <td class="accessPart">{{_("Pricing-Annual")}}</td>
@@ -159,20 +159,14 @@
 
                             </label></td>
                         {%endfor%}
-                       
-                    </tr>
-                    <tr>
-                        <td class="accessPart">{{_("Days of Trial")}}</td>
-                        {% for plan in plans%}
-                        <td><label class="custom-checkbox">
-                                <input type="text" value="{{plan.trial_days}}">
 
-                            </label></td>
-                        {%endfor%}
-                        
                     </tr>
+                    
                 </tbody>
             </table>
+            <label>{{_("Trial Period")}}</label>
+            <input class="form-control" id="trial_period" style="width: 20%;" value="{{trial_period}}" required>
+            <br>
             <button id="submit" type="button" class="btn btn-primary ml-auto">
                 {{_("Deliver")}}
             </button>

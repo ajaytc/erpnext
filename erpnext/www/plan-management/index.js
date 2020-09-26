@@ -25,11 +25,13 @@ $('#submit').click(function () {
         }
         
     })
+    trial_period=$('#trial_period').val()
 
     frappe.call({
         method: 'erpnext.modehero.payment_plan.savePaymentPlan',
         args: {
-            data: data
+            data: data,
+            trial_period:trial_period
         },
         callback: function (r) {
             if (!r.exc) {

@@ -5,7 +5,7 @@
 var stripe = ''
 $(function () {
   stripe = Stripe("pk_test_51HPL2BGjxNLAb2efrsMrfkkv9IHc1fJen0khnTPiuA8ES3wHZJrSrDLOFxMHZzRAVsxZaxwR07WCf1tTG1Fny0JD00tafSKSpW");
-  makeStripeIntent()
+  makeDom()
 });
 
 var purchase = {
@@ -20,11 +20,14 @@ function makeStripeIntent() {
   frappe.call({
     method: 'erpnext.modehero.payment_plan.create_payment',
     args: {
-      data: purchase
+      data: {
+        plan_name: '{{plan.name}}',
+        plan_period: '{{plan_period}}'
+      }
     },
     callback: function (r) {
       if (!r.exc) {
-        makeDom(r.message)
+        payWithCard(stripe, card, r.message.clientSecret);
 
       } else {
         console.log(r)
@@ -33,8 +36,29 @@ function makeStripeIntent() {
   })
 }
 
+function subscriptionComplete() {
+  frappe.call({
+    method: 'erpnext.modehero.payment_plan.completeSubscription',
+    args: {
+      data: {
+        plan_name: '{{plan.name}}',
+        plan_period: '{{plan_period}}'
+      }
+    },
+    callback: function (r) {
+      if (!r.exc) {
+        
 
-function makeDom(data) {
+      } else {
+        console.log(r)
+      }
+    }
+  })
+}
+
+var card = '';
+
+function makeDom() {
   var elements = stripe.elements();
 
   var style = {
@@ -65,7 +89,7 @@ function makeDom(data) {
 
   };
 
-  var card = elements.create("card", { style: style });
+  card = elements.create("card", { style: style });
 
   // Stripe injects an iframe into the DOM
 
@@ -81,45 +105,16 @@ function makeDom(data) {
 
   });
 
-  var form = document.getElementById("payment-form");
-
-  form.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-    // Complete payment when the submit button is clicked
-
-    payWithCard(stripe, card, data.clientSecret);
-
-  });
 
 }
 
-// fetch("/create-payment-intent", {
+$('#submit').click(function (event) {
+  event.preventDefault();
+  makeStripeIntent()
 
-//   method: "POST",
-
-//   headers: {
-
-//     "Content-Type": "application/json"
-
-//   },
-
-//   body: JSON.stringify(purchase)
-
-// })
-
-//   .then(function(result) {
-
-//     return result.json();
-
-//   })
-
-//   .then(function(data) {
+})
 
 
-
-//   });
 
 // Calls stripe.confirmCardPayment
 
@@ -163,6 +158,8 @@ var payWithCard = function (stripe, card, clientSecret) {
 
 };
 
+
+
 /* ------- UI helpers ------- */
 
 // Shows a success message when the payment is complete
@@ -171,21 +168,13 @@ var orderComplete = function (paymentIntentId) {
 
   loading(false);
 
-  document
-
-    .querySelector(".result-message a")
-
-    .setAttribute(
-
-      "href",
-
-      "https://dashboard.stripe.com/test/payments/" + paymentIntentId
-
-    );
 
   document.querySelector(".result-message").classList.remove("hidden");
 
   document.querySelector("button").disabled = true;
+  subscriptionComplete()
+  makeDom()
+
 
 };
 
@@ -232,3 +221,14 @@ var loading = function (isLoading) {
   }
 
 };
+
+
+
+
+// brandName = frappe.get_doc(
+//   'User', frappe.session.user).brand_name
+// if(frappe.get_doc('Company', brandName).enabled == 1):
+//   home_page = role_home_page[role][-1]
+//   break
+// elif(frappe.get_doc('Company', brandName).enabled == 0):
+//   home_page = role_home_page['Disabled Brand User'][-1]

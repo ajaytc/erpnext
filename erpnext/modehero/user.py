@@ -58,6 +58,24 @@ def auto_deactivate():
                 print('disable user', user.name)
     return {'status': 'ok'}
 
+def auto_deactivate_brands():
+    print('running brands deactivation cron')
+    brands = frappe.get_all('Company')
+    dateformat = '%d-%m-%Y'
+    for brand_name in brands:
+        brand = frappe.get_doc('Company', brand_name)
+        if brand.enabled == '1':
+            spent_duration = datetime.now() - datetime.strptime(frappe.format(brand.subscribed_date, 'Date'), dateformat)
+            if(brand.subscription_period=='Monthly'):
+                allowed_duration=30
+            elif(brand.subscription_period=='Annually'):
+                allowed_duration=365
+            if spent_duration.days > allowed_duration:
+                brand.enabled = 0
+                brand.save()
+                print('disable user', brand.name)
+    return {'status': 'ok'}
+
 
 @frappe.whitelist()
 def test_deactivate():

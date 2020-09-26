@@ -91,7 +91,7 @@
   }
  ],
  "links": [],
- "modified": "2020-09-14 18:49:31.544963",
+ "modified": "2020-09-26 14:43:34.492820",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Payment Plan",
@@ -106,6 +106,30 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Website Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
    "share": 1,
    "write": 1
   }
