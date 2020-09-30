@@ -224,11 +224,3 @@ var loading = function (isLoading) {
 
 
 
-
-// brandName = frappe.get_doc(
-//   'User', frappe.session.user).brand_name
-// if(frappe.get_doc('Company', brandName).enabled == 1):
-//   home_page = role_home_page[role][-1]
-//   break
-// elif(frappe.get_doc('Company', brandName).enabled == 0):
-//   home_page = role_home_page['Disabled Brand User'][-1]
