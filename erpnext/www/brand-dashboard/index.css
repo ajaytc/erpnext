@@ -1,5 +1,6 @@
 td{
-    min-width: 150px;
+    min-width: 2rem;
+    
 }
 .reminder-dialog{
     min-width: 80%;

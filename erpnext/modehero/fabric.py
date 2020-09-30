@@ -217,12 +217,16 @@ def create_fabric(data):
 
 @frappe.whitelist()
 def get_fabric(vendor):
-    return frappe.get_all('Fabric', filters={'fabric_vendor': vendor}, fields=['name', 'fabric_ref'])
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    return frappe.get_all('Fabric', filters={'fabric_vendor': vendor,'brand':brand}, fields=['name', 'fabric_ref'])
 
 @frappe.whitelist()
 def get_fabric_price(fabric_ref):
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
     try:
-        price= frappe.get_all('Fabric', filters={'fabric_ref': fabric_ref}, fields=['name', 'price'])
+        price= frappe.get_all('Fabric', filters={'fabric_ref': fabric_ref,'brand':brand}, fields=['name', 'price'])
         return price[0]
     except:
         return None

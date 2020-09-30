@@ -93,6 +93,7 @@ $('.price').change(function () {
 
 function getOptions(data) {
     let str = '';
+    str += `<option value=''>---+---</option>`
     data.map(i => {
         str += `<option value='${i.name}'>${i.fabric_ref}</option>`
     })
@@ -112,7 +113,7 @@ $('#vendor_list').click(function () {
     })
 })
 
-$('#ref_list').click(function () {
+$('#ref_list').change(function () {
     reff=$(this).val()
     getStock(reff)
     getPrice(reff)

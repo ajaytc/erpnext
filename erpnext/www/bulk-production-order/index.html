@@ -75,7 +75,7 @@
                                 <a href="#" data-toggle="modal" data-target="#factory_modal"
                                     class="add-supplier text-teal ml-auto">Add
                                     new +</a></label>
-                            {{dropdown(frappe.get_list('Production Factory'),'factory_list','factory_list')}}
+                            {{dropdown(frappe.get_list('Production Factory',filters={'brand':brand}),'factory_list','factory_list')}}
                         </div>
                     </div>
                     <div class="col-4">
@@ -270,7 +270,7 @@
                 <label for="">{{_("Comments")}}</label>
                 <br>
 
-                <textarea name="" id="comment" cols="30" rows="10"></textarea>
+                <textarea name="" id="comment" cols="30" rows="5"></textarea>
             </div>
         </div>
 

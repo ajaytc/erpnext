@@ -19,6 +19,8 @@ def get_context(context):
     context.production_facories = frappe.get_list(
         'Production Factory', filters={'brand': brand}, fields=['name'])
 
+    context.fab_suppliers=frappe.get_list('Supplier',filters={'supplier_group':'Fabric','brand':brand},fields=['name'])
+
     # context.parents = [
     #     {"name": frappe._("Home"), "route": "/"},
     # ]

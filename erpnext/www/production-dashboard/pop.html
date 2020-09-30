@@ -17,7 +17,7 @@
                 <td><a href="/production-summary?order={{o.name}}">{{o.internal_ref}}</a></td>
                 <td>{{frappe.db.get_value('Item',o.product_name,'item_name')}}</td>
                 <td>{{o.product_category}}</td>
-                <td>{{o.creation}}</td>
+                <td>{{o.creation.date()}}</td>
                 <td>{{o.expected_work_date}}</td>
             </tr>
             {% endfor %}

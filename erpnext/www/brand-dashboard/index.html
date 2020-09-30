@@ -133,7 +133,7 @@
                         <td>{{o.carrier_company}}</td>
                         <td>
                             {%if o.html_tracking_link != None%}
-                            <a href="{{o.html_tracking_link}}">{{o.tracking_number}}</a></td>
+                            <a href="{{o.html_tracking_link}}" target="_blank">{{o.tracking_number}}</a></td>
                         {%else%}
                         {{o.tracking_number}}</td>
                         {%endif%}

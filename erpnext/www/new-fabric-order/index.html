@@ -29,7 +29,7 @@
                       data-toggle="modal" data-target="#form_modal" class="add-supplier text-yellow"
                       data-group="fabric">{{_("Add new +")}}</a></span></label>
                 <select class="form-control" id="vendor_list" required name="fabric_vendor">
-                  {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric'}) %}
+                  {% for vendor in fab_suppliers %}
                   <option>{{vendor.name}}</option>
                   {% endfor %}
                 </select>
