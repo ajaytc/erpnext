@@ -64,17 +64,29 @@ def auto_deactivate_brands():
     dateformat = '%d-%m-%Y'
     for brand_name in brands:
         brand = frappe.get_doc('Company', brand_name)
-        if brand.enabled == '1':
-            spent_duration = datetime.now() - datetime.strptime(frappe.format(brand.subscribed_date, 'Date'), dateformat)
-            if(brand.subscription_period=='Monthly'):
-                allowed_duration=30
-            elif(brand.subscription_period=='Annually'):
-                allowed_duration=365
-            if spent_duration.days > allowed_duration:
-                brand.enabled = 0
-                brand.save()
-                print('disable user', brand.name)
+        if(inTrialPeriod(brand)):
+            continue
+        else:
+            if(brand.enabled == '1'):
+                spent_duration = datetime.now() - datetime.strptime(frappe.format(brand.subscribed_date, 'Date'), dateformat)
+                if(brand.subscription_period=='Monthly'):
+                    allowed_duration=30
+                elif(brand.subscription_period=='Annually'):
+                    allowed_duration=365
+                if spent_duration.days > allowed_duration:
+                    brand.enabled = 0
+                    brand.save()
+                    print('disable user', brand.name)
     return {'status': 'ok'}
+
+def inTrialPeriod(brand):
+    dateformat = '%d-%m-%Y'
+    spent_duration=datetime.now() - datetime.strptime(frappe.format(brand.creation, 'Date'), dateformat)
+    trial_period=frappe.get_all("System Data",filters={'type':'brand-trial-period'})
+    if(spent_duration.days<=trial_period):
+        return True
+    else:
+        return False
 
 
 @frappe.whitelist()

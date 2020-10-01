@@ -239,11 +239,15 @@ def generateInvoice(data):
 
     packProductDetails = data['packProductDetails']
     packProductDetails,totalCost=getProductPrices(data)
+    if(brand[0].tax_id):
+        vat=int(brand[0].tax_id)
+    else:
+        vat=0
 
     # brand = user.brand_name
 
     templateDetails = {}
-    vatRate=int(brand[0].tax_id)
+    vatRate=vat
     shipmentCost=int(data['shipment_cost'])
     totalAmount=int(totalCost)+int(shipmentCost)
     vatAmount=(totalAmount/100)*int(vatRate)

@@ -126,8 +126,7 @@
    "fieldtype": "Data",
    "label": "Abbr",
    "oldfieldname": "abbr",
-   "oldfieldtype": "Data",
-   "reqd": 1
+   "oldfieldtype": "Data"
   },
   {
    "depends_on": "eval:!doc.__islocal && in_list(frappe.user_roles, \"System Manager\")",
@@ -304,75 +303,65 @@
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_bank_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Bank Account",
    "no_copy": 1,
    "oldfieldname": "default_bank_account",
-   "oldfieldtype": "Link",
-   "options": "Account"
+   "oldfieldtype": "Link"
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_cash_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Cash Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_receivable_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Receivable Account",
    "no_copy": 1,
    "oldfieldname": "receivables_group",
-   "oldfieldtype": "Link",
-   "options": "Account"
+   "oldfieldtype": "Link"
   },
   {
    "fieldname": "round_off_account",
-   "fieldtype": "Link",
-   "label": "Round Off Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Round Off Account"
   },
   {
    "fieldname": "round_off_cost_center",
-   "fieldtype": "Link",
-   "label": "Round Off Cost Center",
-   "options": "Cost Center"
+   "fieldtype": "Data",
+   "label": "Round Off Cost Center"
   },
   {
    "fieldname": "write_off_account",
-   "fieldtype": "Link",
-   "label": "Write Off Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Write Off Account"
   },
   {
    "fieldname": "discount_allowed_account",
-   "fieldtype": "Link",
-   "label": "Discount Allowed Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Discount Allowed Account"
   },
   {
    "fieldname": "discount_received_account",
-   "fieldtype": "Link",
-   "label": "Discount Received Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Discount Received Account"
   },
   {
    "fieldname": "exchange_gain_loss_account",
-   "fieldtype": "Link",
-   "label": "Exchange Gain / Loss Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Exchange Gain / Loss Account"
   },
   {
    "fieldname": "unrealized_exchange_gain_loss_account",
-   "fieldtype": "Link",
-   "label": "Unrealized Exchange Gain/Loss Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Unrealized Exchange Gain/Loss Account"
   },
   {
    "fieldname": "column_break0",
@@ -390,74 +379,66 @@
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_payable_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Payable Account",
    "no_copy": 1,
    "oldfieldname": "payables_group",
-   "oldfieldtype": "Link",
-   "options": "Account"
+   "oldfieldtype": "Link"
   },
   {
    "fieldname": "default_employee_advance_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Default Employee Advance Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_expense_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Cost of Goods Sold Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_income_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Income Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_deferred_revenue_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Deferred Revenue Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_deferred_expense_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Deferred Expense Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_payroll_payable_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Payroll Payable Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "default_expense_claim_payable_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Expense Claim Payable Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "section_break_22",
@@ -466,11 +447,10 @@
   {
    "depends_on": "eval:!doc.__islocal",
    "fieldname": "cost_center",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Default Cost Center",
-   "no_copy": 1,
-   "options": "Cost Center"
+   "no_copy": 1
   },
   {
    "fieldname": "column_break_26",
@@ -505,17 +485,15 @@
   },
   {
    "fieldname": "default_inventory_account",
-   "fieldtype": "Link",
-   "label": "Default Inventory Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Default Inventory Account"
   },
   {
    "fieldname": "stock_adjustment_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Stock Adjustment Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "column_break_32",
@@ -523,19 +501,17 @@
   },
   {
    "fieldname": "stock_received_but_not_billed",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Stock Received But Not Billed",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "expenses_included_in_valuation",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "ignore_user_permissions": 1,
    "label": "Expenses Included In Valuation",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "collapsible": 1,
@@ -545,17 +521,15 @@
   },
   {
    "fieldname": "accumulated_depreciation_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Accumulated Depreciation Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "depreciation_expense_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Depreciation Expense Account",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "series_for_depreciation_entry",
@@ -564,9 +538,8 @@
   },
   {
    "fieldname": "expenses_included_in_asset_valuation",
-   "fieldtype": "Link",
-   "label": "Expenses Included In Asset Valuation",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Expenses Included In Asset Valuation"
   },
   {
    "fieldname": "column_break_40",
@@ -574,29 +547,25 @@
   },
   {
    "fieldname": "disposal_account",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Gain/Loss Account on Asset Disposal",
-   "no_copy": 1,
-   "options": "Account"
+   "no_copy": 1
   },
   {
    "fieldname": "depreciation_cost_center",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Asset Depreciation Cost Center",
-   "no_copy": 1,
-   "options": "Cost Center"
+   "no_copy": 1
   },
   {
    "fieldname": "capital_work_in_progress_account",
-   "fieldtype": "Link",
-   "label": "Capital Work In Progress Account",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Capital Work In Progress Account"
   },
   {
    "fieldname": "asset_received_but_not_billed",
-   "fieldtype": "Link",
-   "label": "Asset Received But Not Billed",
-   "options": "Account"
+   "fieldtype": "Data",
+   "label": "Asset Received But Not Billed"
   },
   {
    "collapsible": 1,
@@ -754,7 +723,7 @@
  "idx": 1,
  "image_field": "company_logo",
  "links": [],
- "modified": "2020-09-26 09:23:20.678714",
+ "modified": "2020-10-01 11:24:55.446686",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

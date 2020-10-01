@@ -61,8 +61,8 @@ class Company(NestedSet):
 		if not self.abbr.strip():
 			frappe.throw(_("Abbreviation is mandatory"))
 
-		if frappe.db.sql("select abbr from tabCompany where name!=%s and abbr=%s", (self.name, self.abbr)):
-			frappe.throw(_("Abbreviation already used for another company"))
+		# if frappe.db.sql("select abbr from tabCompany where name!=%s and abbr=%s", (self.name, self.abbr)):
+		# 	frappe.throw(_("Abbreviation already used for another company"))
 
 	def create_default_tax_template(self):
 		from erpnext.setup.setup_wizard.operations.taxes_setup import create_sales_tax
@@ -101,8 +101,8 @@ class Company(NestedSet):
 				where company=%s and docstatus<2 limit 1""", self.name):
 			if not frappe.local.flags.ignore_chart_of_accounts:
 				frappe.flags.country_change = True
-				self.create_default_accounts()
-				self.create_default_warehouses()
+				# self.create_default_accounts()
+				# self.create_default_warehouses()
 
 		if frappe.flags.country_change:
 			install_country_fixtures(self.name)
@@ -112,8 +112,8 @@ class Company(NestedSet):
 			from erpnext.setup.setup_wizard.operations.install_fixtures import install_post_company_fixtures
 			install_post_company_fixtures(frappe._dict({'company_name': self.name}))
 
-		if not frappe.db.get_value("Cost Center", {"is_group": 0, "company": self.name}):
-			self.create_default_cost_center()
+		# if not frappe.db.get_value("Cost Center", {"is_group": 0, "company": self.name}):
+			# self.create_default_cost_center()
 
 		if not frappe.local.flags.ignore_chart_of_accounts:
 			self.set_default_accounts()
