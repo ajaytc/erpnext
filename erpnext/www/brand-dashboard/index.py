@@ -22,13 +22,13 @@ def get_context(context):
 
 
     context.fabricReminders = frappe.db.sql(
-        'select r.order,o.fabric_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabFabric Order` o on r.order=o.name')
+        'select r.order,o.fabric_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabFabric Order` o on r.order=o.name where brand=%s',brand)
 
     context.trimmingReminders = frappe.db.sql(
-        'select r.order,o.trimming_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabTrimming Order` o on r.order=o.name')
+        'select r.order,o.trimming_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabTrimming Order` o on r.order=o.name where brand=%s',brand)
 
     context.packReminders = frappe.db.sql(
-        'select r.order,o.packaging_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabPackaging Order` o on r.order=o.name')
+        'select r.order,o.packaging_vendor,o.confirmation_reminder,o.profoma_reminder,o.payment_reminder,o.shipment_reminder,o.reception_reminder,r.type,r.seen,o.internal_ref,r.name from `tabReminder` r inner join `tabPackaging Order` o on r.order=o.name where brand=%s',brand)
 
     context.fabCount = frappe.db.sql(
         "SELECT COUNT(name) FROM tabReminder WHERE seen='0' and order_type='fabric'")
