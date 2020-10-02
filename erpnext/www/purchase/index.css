@@ -5,7 +5,7 @@
     border-top:1px solid rgb(219, 210, 210);
 }
 .background-ash{
-    background-color: rgb(213, 218, 226);
+    background-color: rgb(225, 229, 235);
     text-align: center;
 }
 th{
@@ -30,6 +30,7 @@ td{
     font-weight: bold;
     border-radius: 5px;
     background-color: rgb(157, 179, 155);
+    font-size: 11px;
 }
 
 #supply-button-section{
@@ -42,4 +43,12 @@ td{
 
 .not-selected{
     background-color:#fff !important;
+}
+.thead-supply-table>tr>th{
+    font-size: 12px;
+    padding: 4px;
+}
+.tbody-supply-order-section>tr>td{
+    font-size: 11px;
+    padding: 4px;
 }
