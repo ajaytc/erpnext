@@ -53,11 +53,7 @@
  ],
  "links": [],
  "max_attachments": 1,
-<<<<<<< HEAD
  "modified": "2020-10-02 12:01:47.786314",
-=======
- "modified": "2020-10-02 08:13:00.482401",
->>>>>>> 5782344db49992242c52e43c00eb0b28b836b607
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Sizing Scheme",
