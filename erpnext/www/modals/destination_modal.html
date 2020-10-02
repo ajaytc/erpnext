@@ -1,3 +1,23 @@
+{% macro dropdown(items,class,id,typetwo) %}
+<div class="form-group">
+
+    <select class="form-control {{class}}" id="{{id}}">
+        <option value=""></option>
+        {% for i in items %}
+        {% if typetwo %}
+        <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.name %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% elif i.fabric_ref %}
+        <option value="{{i.fabric_ref}}">{{i.fabric_ref}}</option>
+        {% else %}
+        <option value="{{i}}">{{i}}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
 <div class="modal fade" id="destination_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -11,12 +31,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="create_factory">
+                <form id="create_destination">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Destination name")}}</label>
                                 <input class="form-control" required name="name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-form-label">{{_("Customer")}}</label>
+                                {{dropdown(frappe.get_list('Customer',filters={'brand':brand}),'customers','customer_list')}}
                             </div>
                         </div>
                     </div>
@@ -76,7 +104,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-primary">{{_("Add")}}</button>
+                                <button id="addDest" class="btn btn-primary">{{_("Add")}}</button>
                             </div>
                         </div>
                     </div>
@@ -89,13 +117,15 @@
 <script type="text/javascript" src="/assets/frappe/js/lib/jquery/jquery.min.js"></script>
 <script>
 
-    $('#create_factory').submit(function (e) {
+    $('#addDest').click(function (e) {
         e.preventDefault();
-        var $inputs = $('#create_factory :input');
+        var $inputs = $('#create_destination :input');
         var values = {};
         $inputs.each(function () {
             values[this.name] = $(this).val();
         });
+
+        values['customer']=$('#customer_list').val()
 
         validation_report = validate_factory_form(values)
         if (validation_report.status != "ok") {
@@ -106,12 +136,12 @@
             });
             return null
         }
-        create_factory(values)
+        create_destination(values)
     });
 
-    function create_factory(data) {
+    function create_destination(data) {
         frappe.call({
-            method: 'erpnext.modehero.factory.create_factory',
+            method: 'erpnext.modehero.destination.create_destination',
             args: {
                 data: {
                     email: data.email,
@@ -121,22 +151,23 @@
                     phone_number: data.phone,
                     city: data.city,
                     zip_code: data.zip,
-                    name: data.name
+                    name: data.name,
+                    customer:data.customer
                 }
             },
             callback: function (r) {
                 if (!r.exc) {
                     console.log(r)
-                    let factory = r.message.factory
-                    if (factory && factory.name) {
+                    let destination = r.message.destination
+                    if (destination && destination.name) {
                         frappe.msgprint({
                             title: __('Notification'),
                             indicator: 'green',
-                            message: __('Destination ' + factory.name + ' created successfully')
+                            message: __('Destination ' + destination.name + ' created successfully')
                         });
-                        $('#factory_modal').modal('toggle');
+                        $('#destination_modal').modal('toggle');
                         $('#factory_list').append(`<option>${factory.name}</option>`)
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 }
             }

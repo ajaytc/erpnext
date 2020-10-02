@@ -22,6 +22,8 @@ def get_context(context):
     # if(True or len(client) == 0):
     # frappe.throw("No customers for user")
 
+    pos=frappe.get_list('Point Of Sales',filters={'brand':context.brand},fields=['name','point_of_sale'])
+
     if(len(client) > 0):
         context.destinations = frappe.get_list(
             "Destination", filters={"client_name": client[0].name})

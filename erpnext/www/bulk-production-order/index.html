@@ -88,8 +88,8 @@
                             <div class="form-group">
                                 <select class="form-control destination_list" id="destination_list">
                                     <option value=""></option>
-                                    {{dropdown2(frappe.get_list('Destination'))}}
-                                    {{dropdown2(frappe.get_list('Point Of Sales',filters={'brand':brand},fields=['name','point_of_sale']),true)}}
+                                    {{dropdown2(frappe.get_all('Destination',filters={'brand':brand}))}}
+                                    {{dropdown2(frappe.get_all('Point Of Sales',filters={'brand':brand},fields=['name','point_of_sale']),true)}}
                                 </select>
                             </div>
                         </div>
