@@ -21,8 +21,8 @@ def get_context(context):
 
     context.vendors = frappe.get_list("Supplier")
 
-    query = """select t.internal_ref, t.item_category, t.color, s.quantity, s.localization, s.total_value, s.name, t.unit_price from `tabStock` s left join `tabTrimming Item` t on t.name = s.internal_ref where s.item_type=%s"""
+    query = """select t.internal_ref, t.item_category, t.color, s.quantity, s.localization, s.total_value, s.name, t.unit_price from `tabStock` s left join `tabTrimming Item` t on t.name = s.internal_ref where s.item_type=%s and t.brand=%s"""
 
-    context.trimming = frappe.db.sql(query,"trimming")
+    context.trimming = frappe.db.sql(query,("trimming",brand))
 
     return context

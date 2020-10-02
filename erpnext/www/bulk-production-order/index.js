@@ -361,10 +361,10 @@ function createOrder(product, qtys) {
         method: 'erpnext.modehero.production.create_production_order',
         args: {
             data: {
-                product_category: $('#category_list>option:selected').text(),
+                product_category: $('#category_list>option:selected').val(),
                 internal_ref: $('#internal-ref').val(),
                 product_name: product,
-                production_factory: $('#factory_list>option:selected').text(),
+                production_factory: $('#factory_list>option:selected').val(),
                 final_destination:$('#destination_list>option:selected').val(),
                 destination_type:$('#destination_list>option:selected').attr('data-type'),
                 quantity: qtys,

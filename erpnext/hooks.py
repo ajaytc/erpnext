@@ -296,6 +296,7 @@ doc_events = {
         "after_insert": "erpnext.modehero.stock.createNewProductStock"
     },
     "Fabric": {
+        "before_insert": "erpnext.modehero.fabric.test1",
         "after_insert": "erpnext.modehero.stock.createNewFabricStock"
     },
     "Trimming Item": {

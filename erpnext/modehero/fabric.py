@@ -241,7 +241,7 @@ def get_fabric_color():
         for x in colors:
             result.append({
                 'label': x.color_name,
-                'value': x.name
+                'value': x.color_name
             })
         return result
     except:
@@ -257,7 +257,7 @@ def get_fabric_composition():
         for x in compositions:
             result.append({
                 'label': x.composition_name,
-                'value': x.name
+                'value': x.composition_name
             })
         return result
     except:
@@ -273,11 +273,15 @@ def get_fabric_width():
         for x in width:
             result.append({
                 'label': x.width,
-                'value': x.name
+                'value': x.width
             })
         return result
     except:
         return None
+
+def test1(doc,method):
+    k=doc.owner
+
     
 
 
