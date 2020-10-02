@@ -5,7 +5,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "width"
+  "width",
+  "brand"
  ],
  "fields": [
   {
@@ -14,10 +15,16 @@
    "in_list_view": 1,
    "label": "Width",
    "reqd": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-07-07 12:58:13.860423",
+ "modified": "2020-10-02 19:45:08.224398",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Width",

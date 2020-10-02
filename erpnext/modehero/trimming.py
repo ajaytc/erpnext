@@ -262,9 +262,24 @@ def get_trimming_category():
         for x in category:
             result.append({
                 'label': x.category_name,
-                'value': x.name
+                'value': x.category_name
             })
         return result
     except:
         return None
+
+def set_relevent_attributes_for_trimming_save(doc,method):
+    brand=doc.brand
+    category=frappe.get_list("Trimming Category",filters={"brand":brand,"category_name":doc.item_category})
+    colors=frappe.get_list("Color",filters={"brand":brand,"color_name":doc.color})
+    if(len(category)>0):
+        doc.item_category=category[0].name
+    if(len(colors)>0):
+        doc.color=colors[0].name
+
+    return doc
     
+@frappe.whitelist()
+def get_category_name(category):
+    category = frappe.get_doc('Trimming Category',category).category_name
+    return category

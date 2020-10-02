@@ -1,12 +1,12 @@
 {
  "actions": [],
- "autoname": "field:category_name",
  "creation": "2020-04-03 18:12:28.558871",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "category_name"
+  "category_name",
+  "brand"
  ],
  "fields": [
   {
@@ -14,12 +14,17 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Category Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-04-03 18:14:07.680183",
+ "modified": "2020-10-02 21:20:54.628837",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Trimming Category",

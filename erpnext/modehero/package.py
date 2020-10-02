@@ -281,3 +281,27 @@ def changeDocStatus(packOrder):
     if(packOrder.carrier != '' or packOrder.tracking_number != '' or packOrder.shipment_date != None):
         packOrder.docstatus = 3
     return packOrder
+
+def set_relevent_attributes_for_packaging_save(doc,method):
+    brand=doc.brand
+    materials=frappe.get_all("Packaging Material",filters={"brand":brand,"material_name":doc.packaging_material})
+    colors=frappe.get_all("Color",filters={"brand":brand,"color_name":doc.color})
+    sizes=frappe.get_all("Packaging Size",filters={"brand":brand,"size_name":doc.packaging_size})
+    if(len(materials)>0):
+        doc.packaging_material=materials[0].name
+    if(len(colors)>0):
+        doc.color=colors[0].name
+    if(len(sizes)>0):
+        doc.packaging_size=sizes[0].name
+    
+    return doc
+
+@frappe.whitelist()
+def get_size_name(size):
+    size = frappe.get_doc('Packaging Size',size).size_name
+    return size
+
+@frappe.whitelist()
+def get_material_name(material):
+    material = frappe.get_doc('Packaging Material',material).material_name
+    return material

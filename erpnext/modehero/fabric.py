@@ -279,10 +279,35 @@ def get_fabric_width():
     except:
         return None
 
-def test1(doc,method):
-    k=doc.owner
+def set_relevent_attributes_for_fabric_save(doc,method):
+    brand=doc.brand
+    compositions=frappe.get_list("Composition",filters={"brand":brand,"composition_name":doc.composition})
+    colors=frappe.get_list("Color",filters={"brand":brand,"color_name":doc.color})
+    widths=frappe.get_list("Width",filters={"brand":brand,"width":doc.width})
+    if(len(compositions)>0):
+        doc.composition=compositions[0].name
+    if(len(colors)>0):
+        doc.color=colors[0].name
+    if(len(widths)>0):
+        doc.width=widths[0].name
+
+    return doc
 
     
+@frappe.whitelist()
+def get_composition_name(composition):
+    composition = frappe.get_doc('Composition',composition).composition_name
+    return composition
+
+@frappe.whitelist()
+def get_width_name(width):
+    width = frappe.get_doc('Width',width).width
+    return width
+
+@frappe.whitelist()
+def get_color_name(color):
+    color = frappe.get_doc('Color',color).color_name
+    return color
 
 
 @frappe.whitelist(allow_email_guest=True)

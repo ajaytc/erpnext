@@ -72,7 +72,7 @@ function priceUpdateCallback(e) {
     }
 }
 
-$('#product').click(productUpdateCallback)
+$('#product').change(productUpdateCallback)
 $('#product').trigger('click');
 function generateSizingTable(sizes) {
 

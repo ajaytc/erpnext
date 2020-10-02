@@ -7,7 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "size_name",
-  "size"
+  "size",
+  "brand"
  ],
  "fields": [
   {
@@ -23,10 +24,16 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Size"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-05-12 11:40:55.385524",
+ "modified": "2020-10-02 19:49:52.757936",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Packaging Size",

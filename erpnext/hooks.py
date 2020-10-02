@@ -296,13 +296,18 @@ doc_events = {
         "after_insert": "erpnext.modehero.stock.createNewProductStock"
     },
     "Fabric": {
-        "before_insert": "erpnext.modehero.fabric.test1",
+        "before_save":"erpnext.modehero.fabric.set_relevent_attributes_for_fabric_save",
+        "before_insert": "erpnext.modehero.fabric.set_relevent_attributes_for_fabric_save",
         "after_insert": "erpnext.modehero.stock.createNewFabricStock"
     },
     "Trimming Item": {
+        "before_save":"erpnext.modehero.trimming.set_relevent_attributes_for_trimming_save",
+        "before_insert": "erpnext.modehero.trimming.set_relevent_attributes_for_trimming_save",
         "after_insert": "erpnext.modehero.stock.createNewTrimmingStock"
     },
     "Packaging Item": {
+        "before_save":"erpnext.modehero.package.set_relevent_attributes_for_packaging_save",
+        "before_insert": "erpnext.modehero.package.set_relevent_attributes_for_packaging_save",
         "after_insert": "erpnext.modehero.stock.createNewPackagingStock"
     },
     # "Shipment Order": {

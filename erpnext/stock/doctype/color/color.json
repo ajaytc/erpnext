@@ -5,7 +5,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "color_name"
+  "color_name",
+  "brand"
  ],
  "fields": [
   {
@@ -14,10 +15,16 @@
    "in_list_view": 1,
    "label": "Color Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-10-02 11:14:18.597506",
+ "modified": "2020-10-02 19:44:00.625206",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Color",

@@ -145,7 +145,10 @@ def generateInvoiceForDirectShip(data, qtySizeDic, product, amount):
    
 
     templateDetails = {}
-    vatRate = int(brand.tax_id)
+    if(brand.tax_id):
+        vatRate = int(brand.tax_id)
+    else:
+        vatRate=0
 
     totalAmount = int(totalCost)+int(shipmentCost)
     vatAmount = (totalAmount/100)*int(vatRate)

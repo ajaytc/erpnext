@@ -27,6 +27,8 @@
                 {% for i in items %}
                 {% if typetwo %}
                 <option value="{{i.name}}">{{i.item_name}}</option>
+                {% elif i.point_of_sale %}
+                <option value="{{i.name}}">{{i.point_of_sale}}</option>
                 {% elif i.factory_name %}
                 <option value="{{i.name}}">{{i.factory_name}}</option>
                 {% elif i.name %}

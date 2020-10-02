@@ -43,13 +43,15 @@
   },
   {
    "fieldname": "packaging_material",
-   "fieldtype": "Data",
-   "label": "Material"
+   "fieldtype": "Link",
+   "label": "Material",
+   "options": "Packaging Material"
   },
   {
    "fieldname": "packaging_size",
-   "fieldtype": "Data",
-   "label": "Size"
+   "fieldtype": "Link",
+   "label": "Size",
+   "options": "Packaging Size"
   },
   {
    "fieldname": "other_info",
@@ -111,7 +113,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2020-10-02 18:34:03.420333",
+ "modified": "2020-10-02 20:36:24.914059",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Packaging Item",
