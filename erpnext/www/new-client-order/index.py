@@ -18,7 +18,7 @@ def get_context(context):
 
         context.garmentlabel = frappe.get_list("Garment Label")
 
-        client = frappe.get_list("Customer", filters={
+        client = frappe.get_all("Customer", filters={
                                  "user": frappe.session.user})
         # if(True or len(client) == 0):
         # frappe.throw("No customers for user")

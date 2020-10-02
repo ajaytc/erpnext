@@ -133,7 +133,7 @@ function get_priced_items(client,category){
     frappe.call({
         method: 'erpnext.modehero.product.get_priced_products',
         args: {
-            client,client,
+            client:client,
             category:category
         },
         callback: function (r) {

@@ -35,7 +35,7 @@ def create_sales_order(items, garmentlabel, internalref, profoma):
 
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
-    customer = frappe.get_list(
+    customer = frappe.get_all(
         'Customer', filters={'user': frappe.session.user})
     if(len(customer) > 0):
         customer = customer[0]['name']

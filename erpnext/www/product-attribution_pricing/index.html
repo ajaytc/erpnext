@@ -24,8 +24,11 @@
                     <label>{{_("Client")}}</label>
                     <select class="form-control clientname-select" id="client-name-select">
                         {% if  clients|length == 0 %}
-                        <option  value="" disabled selected>No Client Available</option>
+                        <option  value="" disabled selected>---:---</option>
                         {% else %}
+                        {% if not modifiable %}
+                            <option  value="" disabled selected>---:---</option>
+                        {% endif %}
                         {% for c in clients %}
                         <option value="{{c.name}}">{{c.customer_name}}</option>
                         {% endfor %}
@@ -36,9 +39,11 @@
                     <label>{{_("Product Category")}}</label>
                     <select class="form-control" id="product-category-select">
                         {% if  product_cats|length == 0 %}
-                        <option  value="" disabled selected>No Product Category Available</option>
+                        <option  value="" disabled selected>---:---</option>
                         {% else %}
-                        {% for pc in product_cats %}
+                        {% if not modifiable %}
+                            <option  value="" disabled selected>---:---</option>
+                        {% endif %}                        {% for pc in product_cats %}
                         <option value="{{pc.name}}">{{pc.name}}</option>
                         {% endfor %}
                         {%endif%}
@@ -49,8 +54,11 @@
                     <div class="form-group">
                         <select class="form-control" id="product-select" >
                             {% if  item_list|length == 0 %}
-                            <option  value="" disabled selected>No Product Available</option>
+                            <option  value="" disabled selected>---:---</option>
                             {% else %}
+                            {%  if not modifiable %}
+                                <option  value="" disabled selected>---:---</option>
+                            {% endif %}
                             {% for i in item_list %}
                             <option value="{{i.name}}">{{i.item_name}}</option>
                             {% endfor %}
