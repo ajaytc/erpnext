@@ -1,6 +1,6 @@
 var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                         <table class="table table-sm table-striped">\
-                            <thead>\
+                            <thead class="thead-supply-table">\
                                 <th></th>\
                                 <th>Destination</th>\
                                 <th>Product</th>\
