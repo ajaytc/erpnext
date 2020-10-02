@@ -1,3 +1,8 @@
+window.onload = (event)=>{
+    sort_select($("#sizing"))
+    sort_select($("#product_catagory"))
+}
+
 $(".grid-add-row").click(function () {
 
     // var markup = "<tr class='price_row'><td><input type='checkbox' class='checkRec'></td><td><input name='from' type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='From'></td><td><input name='to' type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='To'></td><td><input name='price' type='text' class='input-with-feedback form-control bold in  put-sm' placeholder='Price'></td></tr>";
@@ -413,3 +418,14 @@ $('#prod_witout_size').change(function () {
     }
 })
 
+function sort_select(select_element){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {      
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
+    })
+}

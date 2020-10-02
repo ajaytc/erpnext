@@ -19,6 +19,7 @@
 <div class="form-group">
 
     <select class="form-control {{class}}" id="{{id}}">
+        <option  value="" selected disabled>---:---</option>
         <option value=""></option>
         {% for i in items %}
         {% if typetwo %}
@@ -69,7 +70,7 @@
                             <label for="" class="d-flex">{{_("Product Category")}}
                             </label>
                             <select class="form-control destination_list" id="category_list">
-                                <option value=""></option>
+                                <option  value="" selected disabled>---:---</option>
                             {{dropdown2(categories,false,true)}}
                             </select>
                         </div>
@@ -93,7 +94,7 @@
                                     new +</a></label>
                             <div class="form-group">
                                 <select class="form-control destination_list" id="destination_list">
-                                    <option value=""></option>
+                                    <option  value="" selected disabled>---:---</option>
                                     {{dropdown2(frappe.get_all('Destination',filters={'brand':brand}))}}
                                     {{dropdown2(frappe.get_all('Point Of Sales',filters={'brand':brand},fields=['name','point_of_sale']),true)}}
                                 </select>
@@ -106,8 +107,9 @@
                         <div class="m-3">
                             <label for="product">{{_("Product Name")}}</label>
                             <div class="form-group">
-                                <select class="form-control" id="product"></select>
-                                <option value=""></option>
+                                <select class="form-control" id="product">
+                                    <option  value="" selected disabled>---:---</option>
+                                </select>
                             </div>
 
                         </div>
@@ -152,7 +154,7 @@
                             <div class='m-3'>
                                 <label for="">{{_('Fabric status')}}</label>
                                 <select id='fabric-status' type='text' class='form-control'>
-                                    <option value=''></option>
+                                    <option  value="" selected disabled>---:---</option>
                                     <option value='On stock at factory'>On stock at factory</option>
                                     <option value='To be sent later'>To be sent later</option>
                                     <option value='Shipped - see comments'>Shipped - see comments</option>
@@ -199,7 +201,7 @@
                             <div class='m-3'>
                                 <label for="">{{_('Trimming status')}}</label>
                                 <select id='trimming-status' type='text' class='form-control '>
-                                    <option value=''></option>
+                                    <option  value="" selected disabled>---:---</option>
                                     <option value='On stock at factory'>On stock at factory</option>
                                     <option value='To be sent later'>To be sent later</option>
                                     <option value='Shipped - see comments'>Shipped - see comments</option>
@@ -247,7 +249,7 @@
                             <div class='m-3'>
                                 <label for="">{{_('Packaging status')}}</label>
                                 <select id='packaging-status' type='text' class='form-control'>
-                                    <option value=''></option>
+                                    <option  value="" selected disabled>---:---</option>
                                     <option value='On stock at factory'>On stock at factory</option>
                                     <option value='To be sent later'>To be sent later</option>
                                     <option value='Shipped - see comments'>Shipped - see comments</option>

@@ -1,6 +1,10 @@
+window.onload = (event)=>{
+    sort_select($("#client-name-select"))
+}
+
 function generateOptions(values, val_key, txt_key) {
     let html = ''
-    html += `<option value="">---:---</option>`
+    html += `<option  value="" selected disabled>---:---</option>`
     values.map(v => {
         html += `<option value="${v[val_key]}">${v[txt_key]}</option>`
     })
@@ -25,6 +29,7 @@ function makePOSList(el) {
             if (!r.exc) {
                 console.log(r.message)
                 $('#pos-select').html(generateOptions(r.message, 'name', 'point_of_sale'))
+                sort_select($("#pos-select"))
             }
         }
     })
@@ -41,6 +46,7 @@ function makePackageList(el) {
             if (!r.exc) {
                 console.log(r.message)
                 $('#package-select').html(generateOptions(r.message, 'name', 'package_name'))
+                sort_select($("#package-select"))
             }
         }
     })
@@ -226,4 +232,16 @@ function giveError() {
         message: __('Please fill all mandetory fields')
     });
 
+}
+
+function sort_select(select_element){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {      
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
+    })
 }

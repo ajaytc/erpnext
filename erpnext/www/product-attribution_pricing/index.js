@@ -5,6 +5,8 @@ window.onload= (event)=>{
     }
     float_values_allowance_for_input($(".default-option-price"))
     float_values_allowance_for_div($(".table-input-1.price"))
+    sort_select($("#client-name-select"))
+    sort_select($("#product-category-select"))
 }
 
 $("#product-category-select").change(function(){
@@ -117,6 +119,7 @@ function set_products_at_select_change(){
                         is_empty = false
                     }
                 }
+                sort_select($("#product-select"))
                 if (is_empty){
                     set_disable_option()
                 }
@@ -367,5 +370,17 @@ function float_values_allowance_for_div(element){
         }
     }).on('paste', function(event) {
         event.preventDefault();
+    })
+}
+
+function sort_select(select_element){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {       
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
     })
 }

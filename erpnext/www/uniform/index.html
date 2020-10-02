@@ -6,7 +6,7 @@
 <div class="form-group">
 
     <select class="form-control {{class}}" id="{{id}}">
-        <option value=""></option>
+        <option  value="" selected disabled>---:---</option>
         {% for i in items %}
         {% if typetwo %}
         <option value="{{i.name}}">{{i.item_name}}</option>
@@ -30,7 +30,7 @@
                 <div class="col-3">
                     <label>{{_("Client")}}</label>
                     <select class="form-control clientname-select" id="client-name-select">
-                        <option value="" disabled selected>Select a client</option>
+                        <option  value="" selected disabled>---:---</option>
                         {% for client in clients %}
                         <option value="{{client[0]}}">{{client[0]}}</option>
                         {% endfor %}
@@ -40,14 +40,14 @@
                 <div class="col-3">
                     <label>{{_("Point of Sale")}}</label>
                     <select class="form-control" id="pos-select">
-                        <option value="">---:---</option>
+                        <option  value="" selected disabled>---:---</option>
                     </select>
                     <!-- <input id="point-of-sale" type="text" class="form-control"> -->
                 </div>
                 <div class="col-3">
                     <label>{{_("Package")}}</label>
                     <select class="form-control" id="package-select">
-                        <option value="">---:---</option>
+                        <option  value="" selected disabled>---:---</option>
                     </select>
                 </div>
             </div>

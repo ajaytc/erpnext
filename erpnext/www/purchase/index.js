@@ -33,13 +33,14 @@ window.onload = function(){
         let size = $(this).attr('data-size');
         let sum = get_sum(item,size);
         $(this).text(sum);
-    });
+    })
     $('.total-sum').each(function(){
         let item = $(this).attr('data-item');
         let total_sum = get_total_sum(item);
         $(this).text("Total : "+total_sum.toString());
-    });
+    })
     $(".default-hide").hide().find('input').prop('disabled', true)
+    sort_select( $(".factory-select"))
 }
 
 $(".select-button").click(async function(){
@@ -830,4 +831,16 @@ function numeric_only_event(element){
     element.keypress(function(e) {
         if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
     });
+}
+
+function sort_select(select_element){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {      
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
+    })
 }
