@@ -216,6 +216,43 @@ def create_packaging(data):
 def get_item(vendor):
     return frappe.get_all('Packaging Item', filters={'packaging_vendor': vendor}, fields=['name', 'internal_ref'])
 
+@frappe.whitelist()
+def get_packaging_material():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        material= frappe.get_list('Packaging Material',fields=['name', 'material_name'])
+        result = []
+        for x in material:
+            result.append({
+                'label': x.material_name,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
+    
+@frappe.whitelist()
+def get_packaging_size():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        size= frappe.get_list('Packaging Size',fields=['name', 'size_name'])
+        result = []
+        for x in size:
+            result.append({
+                'label': x.size_name,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
+    
+
+
+
+
+
 @frappe.whitelist(allow_email_guest=True)
 def deleteDoc(data):
     data = json.loads(data)

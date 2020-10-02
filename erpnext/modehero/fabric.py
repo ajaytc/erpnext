@@ -230,6 +230,54 @@ def get_fabric_price(fabric_ref):
         return price[0]
     except:
         return None
+
+@frappe.whitelist()
+def get_fabric_color():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        colors= frappe.get_list('Color',fields=['name', 'color_name'])
+        result = []
+        for x in colors:
+            result.append({
+                'label': x.color_name,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
+    
+@frappe.whitelist()
+def get_fabric_composition():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        compositions= frappe.get_list('Composition',fields=['name', 'composition_name'])
+        result = []
+        for x in compositions:
+            result.append({
+                'label': x.composition_name,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
+
+@frappe.whitelist()
+def get_fabric_width():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        width= frappe.get_list('Width',fields=['name', 'width'])
+        result = []
+        for x in width:
+            result.append({
+                'label': x.width,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
     
 
 

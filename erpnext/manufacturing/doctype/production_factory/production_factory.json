@@ -1,6 +1,5 @@
 {
  "actions": [],
- "autoname": "format:{factory_name}",
  "creation": "2020-04-07 17:47:45.176755",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -115,7 +114,7 @@
   }
  ],
  "links": [],
- "modified": "2020-08-12 12:10:44.201899",
+ "modified": "2020-10-02 11:49:43.998449",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

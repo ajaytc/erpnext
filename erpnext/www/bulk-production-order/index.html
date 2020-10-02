@@ -23,6 +23,8 @@
         {% for i in items %}
         {% if typetwo %}
         <option value="{{i.name}}">{{i.item_name}}</option>
+        {% elif i.factory_name %}
+        <option value="{{i.name}}">{{i.factory_name}}</option>
         {% elif i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
         {% elif i.fabric_ref %}
@@ -35,12 +37,14 @@
 </div>
 {% endmacro %}
 
-{% macro dropdown2(items,isPos) %}
+{% macro dropdown2(items,isPos,isCategory) %}
 
 
 {% for i in items %}
 {% if isPos %}
 <option value="{{i.name}}" data-type=1>{{i.point_of_sale}}</option>
+{% elif isCategory %}
+<option value="{{i.name}}" data-type=0>{{i.item_group_name}}</option>
 {% elif i.name %}
 <option value="{{i.name}}" data-type=0>{{i.name}}</option>
 {% elif i.fabric_ref %}
@@ -64,8 +68,10 @@
                         <div class="m-3">
                             <label for="" class="d-flex">{{_("Product Category")}}
                             </label>
-
-                            {{dropdown(categories,'','category_list')}}
+                            <select class="form-control destination_list" id="category_list">
+                                <option value=""></option>
+                            {{dropdown2(categories,false,true)}}
+                            </select>
                         </div>
                     </div>
                     <div class="col-4">
@@ -75,7 +81,7 @@
                                 <a href="#" data-toggle="modal" data-target="#factory_modal"
                                     class="add-supplier text-teal ml-auto">Add
                                     new +</a></label>
-                            {{dropdown(frappe.get_list('Production Factory',filters={'brand':brand}),'factory_list','factory_list')}}
+                            {{dropdown(frappe.get_list('Production Factory',filters={'brand':brand},fields=["name","factory_name"]),'factory_list','factory_list')}}
                         </div>
                     </div>
                     <div class="col-4">

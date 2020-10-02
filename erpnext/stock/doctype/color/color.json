@@ -1,6 +1,5 @@
 {
  "actions": [],
- "autoname": "field:color_name",
  "creation": "2020-04-03 17:00:12.040082",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,12 +13,11 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Color Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-05-22 13:32:31.222780",
+ "modified": "2020-10-02 11:14:18.597506",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Color",

@@ -1,6 +1,5 @@
 {
  "actions": [],
- "autoname": "field:composition_name",
  "creation": "2020-04-03 17:01:16.490351",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,12 +13,11 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Composition",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2020-05-12 16:15:55.116817",
+ "modified": "2020-10-02 11:14:37.678603",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Composition",

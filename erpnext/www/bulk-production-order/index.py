@@ -31,7 +31,7 @@ def get_context(context):
         context.destinations = []
 
     context.categories = frappe.get_list(
-        'Item Group', filters={'brand_name': context.brand})
+        'Item Group', filters={'brand_name': context.brand},fields=["name","item_group_name"])
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles

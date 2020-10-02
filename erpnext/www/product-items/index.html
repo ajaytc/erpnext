@@ -15,8 +15,8 @@
                         <label>Product Category *</label>
 
                         <select class="form-control" id="product_catagory" required name="product_cat">
-                            {% for item_cat in frappe.get_all('Item Group',filters={'brand_name':brand}) %}
-                            <option value="{{item_cat.name}}">{{item_cat.name}}</option>
+                            {% for item_cat in frappe.get_all('Item Group',filters={'brand_name':brand},fields=["name","item_group_name"]) %}
+                            <option value="{{item_cat.name}}">{{item_cat.item_group_name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -24,8 +24,8 @@
                         <label>Sizing</label>
 
                         <select class="form-control" id="sizing" name="sizing_field">
-                            {% for sizing in frappe.get_all('Sizing Scheme',filters={'brand':brand}) %}
-                            <option value="{{sizing.name}}">{{sizing.name}}</option>
+                            {% for sizing in frappe.get_all('Sizing Scheme',filters={'brand':brand},fields=["name","sizing_scheme_name"]) %}
+                            <option value="{{sizing.name}}">{{sizing.sizing_scheme_name}}</option>
                             {% endfor %}
                         </select>
                     </div>

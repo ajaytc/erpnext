@@ -251,3 +251,20 @@ def changeDocStatus(trimOrder):
     if(trimOrder.carrier != '' or trimOrder.tracking_number != '' or trimOrder.shipment_date != None):
         trimOrder.docstatus = 3
     return trimOrder
+
+@frappe.whitelist()
+def get_trimming_category():
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        category= frappe.get_list('Trimming Category',fields=['name', 'category_name'])
+        result = []
+        for x in category:
+            result.append({
+                'label': x.category_name,
+                'value': x.name
+            })
+        return result
+    except:
+        return None
+    
