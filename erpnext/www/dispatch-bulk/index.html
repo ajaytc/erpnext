@@ -63,11 +63,13 @@
                         <td></td>
                         <td>Stock</td>
                         {% for size_col in order[sizes_scheme_index] %}
-                            {% for stock_qty in order[stock_qty_index] if stock_qty.size==size_col.size %}
-                                <td>{{stock_qty.quantity}}</td>
-                            {% else %}
-                                <td>-</td>
-                            {% endfor %}
+                            {% if order[stock_qty_index]!=None %}
+                                {% for stock_qty in order[stock_qty_index] if stock_qty.size==size_col.size %}
+                                    <td>{{stock_qty.quantity}}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endfor %}
+                            {%endif%}
                         {% endfor %}
                         {% for empty_i in range (presenting_order_data[location]["max_col_span"]-order[sizes_scheme_index]|length) %}
                             <td></td>
