@@ -19,7 +19,8 @@
   "column_break_12",
   "email_address",
   "phone",
-  "contact"
+  "contact",
+  "brand"
  ],
  "fields": [
   {
@@ -95,10 +96,16 @@
    "fieldname": "contact",
    "fieldtype": "Data",
    "label": "Contact Name"
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Company"
   }
  ],
  "links": [],
- "modified": "2020-05-13 11:14:17.748479",
+ "modified": "2020-10-01 21:13:40.717580",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Destination",
