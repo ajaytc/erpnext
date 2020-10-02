@@ -11,6 +11,11 @@ var fabCount = ''
 var trimCount = ''
 var packCount = ''
 
+window.onload = (event)=>{
+    let select_elements = [$("#packaging-status"),$("#trimming-status"),$("#fabric-status"),$("#product"),$("#destination_list"),$("#category_list")]
+    select_elements.forEach(sort_select);
+}
+
 function clearNResetFields() {
     $('.extra').remove()
 
@@ -233,7 +238,7 @@ function generateSizingTable(sizes) {
 const cleartable = () => $('.table-section').html('')
 
 function generateOptions(values) {
-    let html = `<option value="">--+--</option>`
+    let html = `<option  value="" selected disabled>---:---</option>`
     values.map(v => {
         html += `<option value="${v.name}">${v.item_name}</option>`
     })
@@ -251,6 +256,7 @@ $('#category_list').change(function () {
             if (!r.exc) {
                 console.log(r.message)
                 $('#product').html(generateOptions(r.message))
+                sort_select($('#product'))
             }
         }
     })
@@ -572,3 +578,14 @@ $('.pack_sup').click(function () {
     })
 })
 
+function sort_select(select_element,index=null){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {      
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
+    })
+}

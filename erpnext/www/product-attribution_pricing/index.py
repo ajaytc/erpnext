@@ -22,19 +22,20 @@ def get_context(context):
             context.newable = True
         context.clients = frappe.get_all('Customer', filters={'brand': brand}, fields=['name','customer_name'])
         context.product_cats = frappe.get_all('Item Group', filters={'brand_name': brand}, fields=['name','item_group_name'])
-        if (len(context.product_cats)!=0 and len(context.clients)!=0 ):
-            priced_items_for_first_product = frappe.get_all('Client Pricing',filters={'item_group':context.product_cats[0].name,'brand':brand,'client':context.clients[0].name},fields=['item_code'])
-            item_list = frappe.get_all('Item', filters={'item_group':context.product_cats[0].name, 'brand':brand}, fields=['item_name','name'])
-            temp_list = []
-            for x in priced_items_for_first_product:
-                temp_list.append(x.item_code)
-            temp_showing_items = []
-            for x in item_list:
-                if (x.name not in temp_list):
-                    temp_showing_items.append(x)
-            context.item_list = temp_showing_items
-        else:
-            context.item_list=[]
+        # if (len(context.product_cats)!=0 and len(context.clients)!=0 ):
+        #     priced_items_for_first_product = frappe.get_all('Client Pricing',filters={'item_group':context.product_cats[0].name,'brand':brand,'client':context.clients[0].name},fields=['item_code'])
+        #     item_list = frappe.get_all('Item', filters={'item_group':context.product_cats[0].name, 'brand':brand}, fields=['item_name','name'])
+        #     temp_list = []
+        #     for x in priced_items_for_first_product:
+        #         temp_list.append(x.item_code)
+        #     temp_showing_items = []
+        #     for x in item_list:
+        #         if (x.name not in temp_list):
+        #             temp_showing_items.append(x)
+        #     context.item_list = temp_showing_items
+        # else:
+        #     context.item_list=[]
+        context.item_list=[]
     else:
         context.modifiable = True
         context.attribution_pricing = frappe.get_doc('Client Pricing', params.attribution_pricing)

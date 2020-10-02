@@ -1,3 +1,6 @@
+window.onload = (event)=>{
+    sort_select($("#client-name-select"))
+}
 $(".quantity").keypress(function(e) {
     if (isNaN(String.fromCharCode(e.which)) || e.which == 32) e.preventDefault();
 }).on('paste', function(event) {
@@ -286,4 +289,16 @@ function response_message(title, message, color) {
         indicator: color,
         message: __(message)
     });
+}
+
+function sort_select(select_element){
+    select_element.each(function(){
+        let options = $(this).children("option[value!='']")
+        options.detach().sort(function(a,b) {      
+            let at = $(a).text().toLowerCase();
+            let bt = $(b).text().toLowerCase();         
+            return (at > bt)?1:((at < bt)?-1:0);            
+        });
+        options.appendTo($(this)); 
+    })
 }
