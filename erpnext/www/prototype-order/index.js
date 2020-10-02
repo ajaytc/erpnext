@@ -187,12 +187,12 @@ function createOrder(product, qtys, techpack, pattern, picture) {
                 comment: $('#comment').val(),
                 fabric_consumption: $('#fabric-consumption').val(),
                 trimming_consumption: $('#trimming-consumption').val(),
-                product_category: $('#category_list>option:selected').text(),
-                fabric_ref: $('#fabric_list>option:selected').text(),
+                product_category: $('#category_list>option:selected').val(),
+                fabric_ref: $('#fabric_list>option:selected').val(),
                 product,
-                destination: $('#destination_list').find('option:selected').text(),
-                trimming_item: $('#trimming_list>option:selected').text(),
-                production_factory: $('#factory_list>option:selected').text(),
+                destination: $('#destination_list').find('option:selected').val(),
+                trimming_item: $('#trimming_list>option:selected').val(),
+                production_factory: $('#factory_list>option:selected').val(),
                 quantity: qtys,
                 price: $('#price').val()
             }

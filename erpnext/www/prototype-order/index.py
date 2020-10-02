@@ -22,11 +22,18 @@ def get_context(context):
     # if(True or len(client) == 0):
     # frappe.throw("No customers for user")
 
-    if(len(client) > 0):
-        context.destinations = frappe.get_list(
-            "Destination", filters={"client_name": client[0].name})
-    else:
-        context.destinations = []
+    # if(len(client) > 0):
+    #     context.destinations = frappe.get_list(
+    #         "Destination", filters={"client_name": client[0].name})
+    # else:
+    #     context.destinations = []
+    dests=frappe.get_all('Destination',filters={'brand':brand})
+    pos= frappe.get_all('Point Of Sales',filters={'brand':brand},fields=['name','point_of_sale'])
+    context.destinations=[]
+    context.destinations.extend(dests)
+    context.destinations.extend(pos)
+    
+   
 
     context.categories = frappe.get_list(
         'Item Group', filters={'brand_name': brand},fields=["name","item_group_name"])

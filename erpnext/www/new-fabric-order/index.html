@@ -72,7 +72,7 @@
                       +</a></span></label>
                 <select class="form-control" id="factory_list" required name="production_factory">
                   {% for production_factory  in production_facories %}
-                  <option>{{production_factory.name}}</option>
+                  <option value="{{production_factory.name}}">{{production_factory.factory_name}}</option>
                   {% endfor %}
                 </select>
               </div>

@@ -17,7 +17,7 @@ def get_context(context):
         'Fabric', filters={'brand': brand}, fields=['fabric_ref'])
 
     context.production_facories = frappe.get_list(
-        'Production Factory', filters={'brand': brand}, fields=['name'])
+        'Production Factory', filters={'brand': brand}, fields=['name',"factory_name"])
 
     context.fab_suppliers=frappe.get_list('Supplier',filters={'supplier_group':'Fabric','brand':brand},fields=['name'])
 
