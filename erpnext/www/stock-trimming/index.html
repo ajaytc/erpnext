@@ -52,7 +52,9 @@
 <div class="form-group">
   <select class="form-control {{class}}" id="{{id}}">
     {% for i in items %}
-    {% if i.name %}
+    {% if i.destination_name!=None %}
+    <option value="{{i.name}}">{{i.destination_name}}</option>
+    {% elif i.name %}
     <option value="{{i.name}}">{{i.name}}</option>
     {% else %}
     <option value="{{i}}">{{i}}</option>
