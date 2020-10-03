@@ -29,7 +29,7 @@
                         <span class="icon"></span>
                     </label></td>
                     <td class="product" style="cursor: pointer;">{{product.item_name}}</td>
-                    <td>{{product.item_group}}</td>
+                    <td>{{frappe.get_doc('Item Group',product.item_group).item_group_name}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
