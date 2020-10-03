@@ -246,7 +246,7 @@ function generateOptions(values) {
 }
 
 $('#category_list').change(function () {
-    let category = $(this).find('option:selected').text()
+    let category = $(this).find('option:selected').val()
     frappe.call({
         method: 'erpnext.modehero.product.get_products_of_category',
         args: {
