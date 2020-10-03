@@ -40,7 +40,6 @@
   {
    "fieldname": "color",
    "fieldtype": "Link",
-   "in_list_view": 1,
    "label": "Color",
    "options": "Color",
    "reqd": 1
@@ -104,7 +103,7 @@
   }
  ],
  "links": [],
- "modified": "2020-09-24 16:29:57.449347",
+ "modified": "2020-10-03 06:01:16.118724",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Fabric",
