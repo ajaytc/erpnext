@@ -250,8 +250,7 @@ def getDestinationAddress(data):
         if(pos.address_line_2 != None):
             destinationAddress = destinationAddress+pos.address_line_2
         else:
-            destinationAddress = destinationAddress.replace(
-                destinationAddress[len(destinationAddress)-1], '.')
+            destinationAddress = ""
     else:
         destinationAddress = brand[0].address1
 
