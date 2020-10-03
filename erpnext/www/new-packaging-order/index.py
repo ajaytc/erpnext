@@ -8,15 +8,15 @@ no_cache = 1
 
 
 def get_context(context):
-    brand = frappe.get_doc("User", frappe.session.user).brand_name
+    context.brand = frappe.get_doc("User", frappe.session.user).brand_name
 
     context.product_names = frappe.get_list(
-        'Item', filters={'brand': brand}, fields=['item_name','item_code' ])
+        'Item', filters={'brand': context.brand}, fields=['item_name','item_code' ])
         
     context.packaging_items = frappe.get_list(
-        'Packaging Item', filters={'brand': brand}, fields=['name'])
+        'Packaging Item', filters={'brand': context.brand}, fields=['name'])
 
     context.production_facories = frappe.get_list(
-        'Production Factory', filters={'brand': brand}, fields=['name'])
+        'Production Factory', filters={'brand': context.brand}, fields=['name','factory_name'])
 
     return context

@@ -23,7 +23,7 @@
                   data-toggle="modal" data-target="#form_modal" class="add-supplier text-green"
                   data-group="trimming">{{_("Add new +")}}</a></span></label>
             <select class="form-control" id="vendor_list" required name="trimming_vendor">
-              {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming'}) %}
+              {% for vendor in frappe.get_list('Supplier',filters={'supplier_group':'Trimming','brand':brand}) %}
               <option>{{vendor.name}}</option>
               {% endfor %}
             </select>
@@ -67,7 +67,7 @@
                   +</a></span></label>
             <select class="form-control" id="factory_list" required name="production_factory">
               {% for production_factory  in production_facories %}
-              <option>{{production_factory.name}}</option>
+              <option value="{{production_factory.name}}">{{production_factory.factory_name}}</option>
               {% endfor %}
             </select>
           </div>
