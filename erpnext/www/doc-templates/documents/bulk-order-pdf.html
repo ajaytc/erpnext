@@ -2,9 +2,12 @@
     <div style="text-align: center;">
     <h2>Bulk Production Order</h2>
     <img style="max-width: 150px;" src="{{brand_logo}}" alt="Logo" /></div>
-    <div style="text-align: center;">{{address}}<br />
-    <h3>&nbsp;</h3>
+    <div style="text-align: center;">
+    <p style="display: none;">{%if address%}</p>
+    <div style="text-align: center;">{{address}}</div>
+    <p style="display: none;">{%endif%}</p>
     </div>
+    <h3>&nbsp;</h3>
     </div>
     <div style="text-align: right; padding-right: 2%;">
     <div>

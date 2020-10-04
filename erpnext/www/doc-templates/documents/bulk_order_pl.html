@@ -1,8 +1,8 @@
 <div>
     <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
-    <div style="text-align: center;">{{brand_address}}<br />
-    <h3>&nbsp;</h3>
-    </div>
+    <p style="display: none;">{%if brand_address%}</p>
+    <div style="text-align: center;">{{brand_address}}</div>
+    <p style="display: none;">{%endif%}</p>
     <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
     </div>
     <div style="text-align: right; padding-right: 2%;">

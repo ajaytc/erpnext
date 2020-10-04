@@ -207,6 +207,7 @@ $('#uniformSubmit').click(function () {
                         indicator: 'green',
                         message: __('Uniform order created successfully')
                     });
+                    window.location.href = "/uniform-in-production"; 
                 } else {
                     frappe.msgprint({
                         title: __('Notification'),

@@ -1,115 +1,113 @@
 <div>
-    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" />
-    </div>
-    <div style="text-align: center;">{{brand_address}}<br />
-        <h3>&nbsp;</h3>
-    </div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
+    <p style="display: none;">{%if brand_address%}</p>
+    <div style="text-align: center;">{{brand_address}}</div>
+    <p style="display: none;">{%endif%}</p>
     <div style="text-align: center;"><span style="font-size: 14pt;">INVOICE #</span></div>
-</div>
-<div style="text-align: right; padding-right: 2%;">
-    <div>
-        <ul style="list-style-type: none;">
-            <ul style="list-style-type: none;">
-                <li><span id="date"> {{creation.date()}} </span></li>
-            </ul>
-        </ul>
-        <br />
-        <ul style="list-style-type: none;">
-            <li><strong>Invoiced To<br /></strong>
-                <p>{{client_name}}</p>
-                <p>{{client_address}}</p>
-            </li>
-            <li><strong>Delivered To</strong> <p>{{destination}}</p></li>
-        </ul>
     </div>
-</div>
-<p>&nbsp;</p>
-<table style="border-collapse: collapse; width: 102.021%;" border="1">
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{creation.date()}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{client_name}}</p>
+    <p>{{client_address}}</p>
+    </li>
+    <li><strong>Delivered To</strong>
+    <p>{{destination}}</p>
+    </li>
+    </ul>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; width: 102.021%;" border="1">
     <tbody>
-        <tr style="height: 10px;">
-            <td style="width: 18.9011%; border: none; height: 30px;"><strong>Product</strong><br /><strong>Order
-                    Number<br /></strong></td>
-            <td style="width: 18.9011%; border: none; height: 30px;"><strong>Internal Reference<br /></strong></td>
-            <td style="width: 18.9011%; border: none; height: 30px;"><strong>Unit</strong></td>
-            <td style="width: 24.1203%; height: 30px;"><strong>Price</strong></td>
-            <td style="width: 15.7032%; height: 30px;"><strong>Amount</strong></td>
-        </tr>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Product</strong><br /><strong>Order Number<br /></strong></td>
+    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Internal Reference<br /></strong></td>
+    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Unit</strong></td>
+    <td style="width: 24.1203%; height: 30px;"><strong>Price</strong></td>
+    <td style="width: 15.7032%; height: 30px;"><strong>Amount</strong></td>
+    </tr>
     </tbody>
-</table>
-<p style="display: none;">{% for product in order_details %}</p>
-<table style="border-collapse: collapse; width: 102.233%; height: 10px;" border="1">
+    </table>
+    <p style="display: none;">{% for product in order_details %}</p>
+    <table style="border-collapse: collapse; width: 102.233%; height: 10px;" border="1">
     <tbody>
-        <tr style="height: 10px;">
-            <td style="width: 23.2628%; border: none; height: 10px;">{{order_details[product]["product_name"]}}</td>
-            <td style="width: 14.5394%; border: none; height: 10px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
-            <td style="width: 21.1239%; height: 10px;">&nbsp;</td>
-        </tr>
+    <tr style="height: 10px;">
+    <td style="width: 23.2628%; border: none; height: 10px;">{{order_details[product]["product_name"]}}</td>
+    <td style="width: 14.5394%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 21.1239%; height: 10px;">&nbsp;</td>
+    </tr>
     </tbody>
-</table>
-<p style="display: none;">{%for order_dic in order_details[product]["order_list"] %}</p>
-<table style="border-collapse: collapse; width: 100%; height: 10px;" border="1">
+    </table>
+    <p style="display: none;">{%for order_dic in order_details[product]["order_list"] %}</p>
+    <table style="border-collapse: collapse; width: 100%; height: 10px;" border="1">
     <tbody>
-        <tr style="height: 10px;">
-            <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["order"]}}</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["internal_ref"]}}</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["quantity"]}}</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["price_per_unit"]}}</td>
-            <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["total"]}}</td>
-        </tr>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["order"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["internal_ref"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["quantity"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["price_per_unit"]}}</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["total"]}}</td>
+    </tr>
     </tbody>
-</table>
-<p style="display: none;">{%endfor%}</p>
-<p>&nbsp;</p>
-<p style="display: none;">{%endfor%}</p>
-<hr />
-<table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    </table>
+    <p style="display: none;">{%endfor%}</p>
+    <p>&nbsp;</p>
+    <p style="display: none;">{%endfor%}</p>
+    <hr />
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
     <tbody>
-        <tr style="height: 22px;">
-            <td style="width: 18.9011%; border: none; height: 22px;"><span style="font-size: 10pt;">TOTAL</span></td>
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">{{totalCost}}</td>
-        </tr>
-        <tr style="height: 22px;">
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">Transport</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">{{shipment_cost}}</td>
-        </tr>
-        <tr style="height: 22px;">
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">Total</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
-            <td style="width: 18.9011%; border: none; height: 22px;">{{totalAmount}}</td>
-        </tr>
-        <tr>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">VAT Rate%</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">{{vat_rate}}</td>
-        </tr>
-        <tr>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">VAT Amount</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {{vatAmount}}</td>
-        </tr>
-        <tr>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">Total to pay EUR</td>
-            <td style="width: 18.9011%; border: none;">&nbsp;</td>
-            <td style="width: 18.9011%; border: none;">{{totalPay}}</td>
-        </tr>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; border: none; height: 22px;"><span style="font-size: 10pt;">TOTAL</span></td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">{{totalCost}}</td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">Transport</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">{{shipment_cost}}</td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">Total</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">{{totalAmount}}</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">VAT Rate%</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">{{vat_rate}}</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">VAT Amount</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{vatAmount}}</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">Total to pay EUR</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">{{totalPay}}</td>
+    </tr>
     </tbody>
-</table>
-<p>&nbsp;</p>
+    </table>
+    <p>&nbsp;</p>

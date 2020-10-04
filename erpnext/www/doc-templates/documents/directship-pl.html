@@ -1,6 +1,9 @@
 <div>
     <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
-    <div style="text-align: center;">{{address}}<br />
+    <p style="display: none;">{%if address%}</p>
+    <div style="text-align: center;">{{address}}</div>
+    <p style="display: none;">{%endif%}</p>
+    <div style="text-align: center;">
     <h3>Direct Ship</h3>
     </div>
     <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
