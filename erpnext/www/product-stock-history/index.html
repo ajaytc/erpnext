@@ -36,7 +36,7 @@
                 {% else %}
                 {% set url=""%}
                 {%endif%}
-                {{url}}
+                
 
                 <td><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></td>
                 {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}

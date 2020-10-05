@@ -383,6 +383,7 @@ function submitProductionSummary(files) {
                     indicator: 'green',
                     message: __('Production order ' + "{{order.name}}" + ' summary created successfully')
                 });
+                location.reload()
 
             } else {
                 frappe.msgprint({
