@@ -238,14 +238,14 @@ function collect_options(){
 function collect_wholesale_prices(){
     let is_partial_input = false;
     let wholesale_prices = [];
-    if (!check_any_checkbox_selected()){
-        response_message('Unsuccessfull', 'Inputs Incompleted!', 'red');
-        return "false"
-    }
+    // if (!check_any_checkbox_selected()){
+    //     response_message('Unsuccessfull', 'Inputs Incompleted!', 'red');
+    //     return "false"
+    // }
     $(".row-data").each(function(){
-        if (!$(this).children(".row-checkbox").children(".checkbox-table-row").is(':checked')){
-            return true;
-        }
+        // if (!$(this).children(".row-checkbox").children(".checkbox-table-row").is(':checked')){
+        //     return true;
+        // }
         let from_data = $(this).children(".row-from").children(".from").text();
         let to_data = $(this).children(".row-to").children(".to").text();
         let price_data = $(this).children(".row-price").children(".price").text();
@@ -315,7 +315,9 @@ function check_any_checkbox_selected(){
 
 function add_row(){
     let row_num = parseInt($(".table-body").attr("data-row_count"))+1
-    let markup_rows = "<tr class='row-data' id='tablerow-"+row_num.toString()+"'><td class='row-checkbox'><input class='checkbox-table-row' data-row_num='"+row_num.toString()+"' type='checkbox'/></td><td class='row-from'><div contenteditable='true' class='from editable table-input-"+row_num.toString()+"'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-"+row_num.toString()+"'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-"+row_num.toString()+"'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("+row_num.toString()+")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>"
+    // let markup_rows = "<tr class='row-data' id='tablerow-"+row_num.toString()+"'><td class='row-checkbox'><input class='checkbox-table-row' data-row_num='"+row_num.toString()+"' type='checkbox'/></td><td class='row-from'><div contenteditable='true' class='from editable table-input-"+row_num.toString()+"'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-"+row_num.toString()+"'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-"+row_num.toString()+"'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("+row_num.toString()+")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>"
+    let markup_rows = "<tr class='row-data' id='tablerow-"+row_num.toString()+"'><td class='row-from'><div contenteditable='true' class='from editable table-input-"+row_num.toString()+"'></div></td><td class='row-to'><div contenteditable='true' class='to editable table-input-"+row_num.toString()+"'></div></td><td class='row-price'><div contenteditable='true' class='price editable table-input-"+row_num.toString()+"'></div></td><td class='dropdown'><a class='caret dropdown-toggle' data-toggle='dropdown'></a><ul class='dropdown-menu'><li><button  onclick='delete_row("+row_num.toString()+")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button></li></ul></td></tr>"
+
     $(".table-body").append(markup_rows);
     $(".table-body").attr("data-row_count",row_num.toString());
     numeric_only_event($(".table-input-"+row_num.toString()+".from"))

@@ -29,7 +29,7 @@
                     {% for ap in active_products %}
                     <tr>
                         <td><input type="checkbox" class="selected-active-product" data-active-product="{{ap.name}}" /></td>
-                        <td>{{ap.client}}</td>
+                        <td>{{ap.customer_name}}</td>
                         <td>{{ap.season}}</td>
                         <td data-itemgroup='{{ap.item_group}}'>{{ap.item_group_name}}</td>
                         <td data-item_code='{{ap.item_code}}'>{{ap.item_name}}</td>

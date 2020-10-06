@@ -164,7 +164,7 @@ def set_pricing(form_data):
 #     return wholesale_dict['from']
 
 def is_already_set(client,item_code,brand):
-    existing_data = frappe.get_all('Client Pricing',filters={'client':client,'item_code':item_code,'brand':brand})
+    existing_data = frappe.get_all('Client Pricing',filters={'client':client,'item_code':item_code,'brand':brand,'docstatus':0})
     if len(existing_data)==0:
         return False
     return True

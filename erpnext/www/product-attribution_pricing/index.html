@@ -70,7 +70,7 @@
                     <label>{{_("Wholesale Price")}}</label>
                     <table class="table table-bordered">
                         <thead>
-                            <th style="width: 15%;"><input id="select-all-check" type="checkbox" value="option1"></th>
+                            <!-- <th style="width: 15%;"><input id="select-all-check" type="checkbox" value="option1"></th> -->
                             <th style="width: 25%;">From</th>
                             <th style="width: 25%;">To</th>
                             <th style="width: 25%;">Price</th>
@@ -80,9 +80,9 @@
                         <tbody class="table-body" data-row_cont="{{attribution_pricing.wholesale_price|length}}">
                             {% for n in range(attribution_pricing.wholesale_price|length) %}
                             <tr class='row-data' id='tablerow-{{n+1}}'>
-                                <td class='row-checkbox'>
+                                <!-- <td class='row-checkbox'>
                                     <input class='checkbox-table-row' data-row_num='{{n+1}}' type='checkbox' checked/>
-                                </td>
+                                </td> -->
                                 <td class='row-from'>
                                     <div contenteditable='true'  class='from editable modifiable-row table-input-{{n+1}}'>{{attribution_pricing.wholesale_price[n].from_quantity}}</div>
                                 </td>
@@ -106,9 +106,9 @@
                         {% else %}
                         <tbody class="table-body" data-row_cont="1">
                             <tr class='row-data' id='tablerow-1'>
-                                <td class='row-checkbox'>
+                                <!-- <td class='row-checkbox'>
                                     <input class='checkbox-table-row' data-row_num='1' type='checkbox'/>
-                                </td>
+                                </td> -->
                                 <td class='row-from'>
                                     <div contenteditable='true' class='from editable table-input-1'></div>
                                 </td>

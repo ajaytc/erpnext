@@ -31,7 +31,7 @@ def create_package(data):
 @frappe.whitelist()
 def get_priced_products(client,category):
     brand = frappe.get_doc('User', frappe.session.user).brand_name
-    result = frappe.get_all('Client Pricing',filters={'item_group':category,'brand':brand,'client':client},fields=['item_code'])
+    result = frappe.get_all('Client Pricing',filters={'item_group':category,'brand':brand,'client':client,'docstatus':0},fields=['item_code'])
     return result
 
 @frappe.whitelist()
