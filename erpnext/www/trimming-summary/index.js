@@ -50,7 +50,7 @@ $("#proofSubmit").click(function () {
             message: __(
               "Trimming Order " +
                 "{{trimOrder.name}}'s" +
-                " payment proof submitted successfully"
+                "details updated successfully"
             ),
           });
         }

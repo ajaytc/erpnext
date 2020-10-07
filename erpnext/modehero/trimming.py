@@ -219,7 +219,7 @@ def create_trimming(data):
 
 @frappe.whitelist()
 def get_item(vendor):
-    return frappe.get_all('Trimming Item', filters={'trimming_vendor': vendor}, fields=['name', 'internal_ref'])
+    return frappe.get_all('Trimming Item', filters={'trimming_vendor': vendor}, fields=['name', 'trimming_ref'])
 
 
 

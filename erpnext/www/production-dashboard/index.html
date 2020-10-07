@@ -1,5 +1,5 @@
 {% if isBrand%}
-{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Porudction Order List','url':'/production-dashboard'}]) }}
+{{ breadcrumb([{'label':'Home','url':'/'},{'label':'Production','url':'/'},{'label':'Production Order List','url':'/production-dashboard'}]) }}
 <h2>{{_("Production Orders")}}</h2>
 <div class="col-12">
     <ul class="page-links">
@@ -17,15 +17,15 @@
 </div>
 {% endif %}
 <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link active" id="pre-pro-on-pro" data-toggle="tab" href="#ppop" role="tab" aria-controls="home"
             aria-selected="false">{{_("Pre-Production On Process")}}</a>
-    </li>
-    <li class="nav-item">
+    </li> -->
+    <!-- <li class="nav-item">
         <a class="nav-link" id="pre-pro-fin" data-toggle="tab" href="#ppf" role="tab" aria-controls="profile"
             aria-selected="true">{{_("Pre-Production Finished")}}</a>
-    </li>
-    <li class="nav-item">
+    </li> -->
+    <li class="nav-item active">
         <a class="nav-link" id="pro-on-pro" data-toggle="tab" href="#pop" role="tab" aria-controls="contact"
             aria-selected="false">{{_("Production On Process")}}</a>
     </li>
@@ -35,12 +35,12 @@
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane show active" id="ppop" role="tabpanel" aria-labelledby="ppop-tab">
+    <!-- <div class="tab-pane show active" id="ppop" role="tabpanel" aria-labelledby="ppop-tab">
         {% include 'erpnext/www/production-dashboard/ppop.html' %}
     </div>
     <div class="tab-pane" id="ppf" role="ppf" aria-labelledby="profile-tab">
-        {% include 'erpnext/www/production-dashboard/ppf.html' %}</div>
-    <div class="tab-pane" id="pop" role="tabpanel" aria-labelledby="contact-tab">
+        {% include 'erpnext/www/production-dashboard/ppf.html' %}</div> -->
+    <div class="tab-pane show active" id="pop" role="tabpanel" aria-labelledby="contact-tab">
         {% include 'erpnext/www/production-dashboard/pop.html' %}
     </div>
     <div class="tab-pane" id="pf" role="tabpanel" aria-labelledby="contact-tab">

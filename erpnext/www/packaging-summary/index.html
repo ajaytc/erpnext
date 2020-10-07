@@ -87,7 +87,7 @@
                             <li>
                                 <span>{{_("Color")}}</span>
                                 <span id="order-color">
-                                    {{packItem.color}}
+                                    {{frappe.get_doc("Color",packItem.color).color_name}}
                                 </span>
 
                             </li>

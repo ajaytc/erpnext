@@ -88,7 +88,7 @@
                             <li>
                                 <span>{{_("Color")}}</span>
                                 <span id="order-color">
-                                    {{trimmingItem.color}}
+                                    {{frappe.get_doc("Color",trimmingItem.color).color_name }}
                                 </span>
                             </li>
                             <li>
@@ -110,7 +110,9 @@
 
                                 <span>{{_("Other info")}}</span>
                                 <span id="order-otherInfo">
+                                    {%if trimmingItem.other_info %}
                                     {{trimmingItem.other_info}}
+                                    {%endif%}
                                 </span>
                             </li>
                         </ul>

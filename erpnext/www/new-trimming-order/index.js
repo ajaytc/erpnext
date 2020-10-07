@@ -90,6 +90,19 @@ function getOptions(data) {
     return str
 }
 
+function getOptions2(data) {
+    let str = '';
+    
+    data.map(i => {
+        if(i.trimming_ref!=null){
+            str += `<option value='${i.name}'>${i.trimming_ref}</option>`
+        }
+       
+    })
+    return str
+}
+
+
 $('#vendor_list').click(function () {
     frappe.call({
         method: 'erpnext.modehero.trimming.get_item',
@@ -98,7 +111,7 @@ $('#vendor_list').click(function () {
         },
         callback: function (r) {
             console.log(r)
-            $('#ref_list').html(getOptions(r.message))
+            $('#ref_list').html(getOptions2(r.message))
         }
     })
 })

@@ -40,7 +40,7 @@ def get_context(context):
     context.creation=context.trimOrder.creation
     context.supplier_name=context.supplier.name
     context.supplier_address=context.supplier.address1
-    context.destination=context.trimOrder.destination
+    context.destination=getDestination(context) 
     if(context.trimmingItem.trimming_image != None):
         context.item_pic=getBase64Img(context.trimmingItem.trimming_image)
     else:
@@ -72,3 +72,9 @@ def getPdfDoc(context):
     rendered_doc=frappe.render_template(temp[0]['content'],context)
     
     return rendered_doc
+
+def getDestination(context):
+    dest=context.trimOrder.destination
+    destination=frappe.get_doc("Production Factory",dest).factory_name
+
+    return destination

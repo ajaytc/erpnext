@@ -56,12 +56,20 @@
                     {%endfor%}
                     
                     {%endfor%}
-                    <button type="button" class="btn btn-primary ml-auto">
-                        {{_("Stock")}}
-                    </button>
-                    <button type="button" id="recieved" class="btn btn-primary ml-auto recievedBtn">
-                        {{_("Recieved")}}
-                    </button>
+                    <div class="row">
+                        <div class="col-2">
+                            <button type="button" class="btn btn-primary ml-auto">
+                                {{_("Stock")}}
+                            </button>
+                        </div>
+                        <div class="col-2" style="padding-left: 0rem;">
+                            <button type="button" id="recieved" class="btn btn-primary ml-auto recievedBtn">
+                                {{_("Received")}}
+                            </button>
+                        </div>
+                        
+                    </div>
+                    
 
                 </tbody>
             </table>
