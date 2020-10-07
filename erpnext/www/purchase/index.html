@@ -18,7 +18,7 @@
         </h3>
         <div class="col-3" style="display: inline-block;">
             <select data-item_code="{{item}}"  class="form-control factory-select">
-                <option value="" selected disabled>Select Factory</option>
+                <option value="" selected disabled>{{_("Select Factory")}}</option>
                 {% for factory in factories %}
                 <option data-factory_name="{{factory.factory_name}}" value="{{factory.name}}">{{factory.factory_name}}</option>
                 {% endfor %}
@@ -35,10 +35,10 @@
             {% endif %}
             <thead>
                     <th class="modify-show-{{item}} default-hide" colspan='1' scope='colgroup' ><input type="checkbox" data-item_code='{{item}}' data-check_type="select-all" onclick="select_all_chekbox('{{item}}')" class="select-all-sales-orders sales-order-section" /></th>
-                    <th colspan='1' scope='colgroup' >Order Date</th>
-                    <th colspan='1' scope='colgroup' >Order Detail</th>
+                    <th colspan='1' scope='colgroup' >{{_("Order Date")}}</th>
+                    <th colspan='1' scope='colgroup' >{{_("Order Detail")}}</th>
                     <th colspan='1' scope='colgroup' ></th>
-                    <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
+                    <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >{{_("Sizing")}}</th>
                     <th colspan='1' scope='colgroup' ></th>
                 </thead>
                 <thead>
@@ -113,13 +113,13 @@
             {% endif %} 
         </table>
         <div  class="modify-hide-{{item}}">
-            <button  data-item="{{item}}" type="button" class="btn btn-light select-button not-selected" style="display: inline-block;">Select</button>
-            <button  onclick="set_modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify quantity</button>
-            <button  onclick="cancel('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Cancel order</button>
+            <button  data-item="{{item}}" type="button" class="btn btn-light select-button not-selected" style="display: inline-block;">{{_("Select")}}</button>
+            <button  onclick="set_modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">{{_("Modify quantity")}}</button>
+            <button  onclick="cancel('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">{{_("Cancel order")}}</button>
         </div>
         <div class="modify-show-{{item}} default-hide" >
-            <button  onclick="modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Modify quantity</button>
-            <button  onclick="cancel_modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">Cancel modify</button>
+            <button  onclick="modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">{{_("Modify quantity")}}</button>
+            <button  onclick="cancel_modify('{{item}}')" type="button" class="btn btn-light" style="display: inline-block;">{{_("Cancel modify")}}</button>
         </div>
     </div>
     {% endfor %}
@@ -135,13 +135,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h5>Country :<p id="modal-country"></p> </h5>
-                <h5>City : <p id="modal-city"></p></h5>
-                <h5>Email :<p id="modal-email"></p></h5>
-                <h5>Phone : <p id="modal-phone"></p></h5>
+                <h5>{{_("Country")}} :<p id="modal-country"></p> </h5>
+                <h5>{{_("City")}} : <p id="modal-city"></p></h5>
+                <h5>{{_("Email")}} :<p id="modal-email"></p></h5>
+                <h5>{{_("Phone")}} : <p id="modal-phone"></p></h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
             </div>
         </div>
     </div>
@@ -169,8 +169,8 @@
                 {% include 'erpnext/www/reminders.html' %}
             </div>
             <div class="modal-footer">
-                <button id="add-reminder-button" type="button" class="btn btn-secondary" data-dismiss="modal">Add</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="add-reminder-button" type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Add")}}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
             </div>
         </div>
     </div>
@@ -191,8 +191,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="product-only-confirmation-button" type="button" class="btn btn-secondary" data-dismiss="modal">Confirm</button>
-                <button type="button" id="cancel-confirmation-modal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="product-only-confirmation-button" type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Confirm")}}</button>
+                <button type="button" id="cancel-confirmation-modal" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
             </div>
         </div>
     </div>

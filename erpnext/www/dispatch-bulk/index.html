@@ -15,12 +15,12 @@
     <div class="table-wrapper table-responsive mt-2">
         <table class="table">
             <thead>
-                <th colspan='1' scope='colgroup' >Order Date</th>
-                <th colspan='1' scope='colgroup' >Order Detail</th>
+                <th colspan='1' scope='colgroup' >{{_("Order Date")}}</th>
+                <th colspan='1' scope='colgroup' >{{_("Order Detail")}}</th>
                 <th colspan='1' scope='colgroup' ></th>
                 <th colspan='1' scope='colgroup' ></th>
-                <th colspan='{{presenting_order_data[location]["max_col_span"]}}' scope='colgroup' >Sizing</th>
-                <th colspan='1' scope='colgroup' >Status</th>
+                <th colspan='{{presenting_order_data[location]["max_col_span"]}}' scope='colgroup' >{{_("Sizing")}}</th>
+                <th colspan='1' scope='colgroup' >{{_("Status")}}</th>
             </thead>
             <tbody>
                 {% for order in presenting_order_data[location]["orders"] %}
@@ -61,7 +61,7 @@
                     </tr>
                     <tr >
                         <td></td>
-                        <td>Stock</td>
+                        <td>{{_("Stock")}}</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             {% if order[stock_qty_index]!=None %}
                                 {% for stock_qty in order[stock_qty_index] if stock_qty.size==size_col.size %}
@@ -91,7 +91,7 @@
                                 {% endif %}
                             {% endif %}
                         </td>
-                        <td>Sent</td>
+                        <td>{{_("Sent")}}</td>
                         {% for size_col in order[sizes_scheme_index] %}
                             {% for ship_qty in order[sent_history_index][row_index]["quantity_per_size"] if ship_qty.size==size_col.size %}
                                 <td>{{ship_qty.quantity}}</td>
@@ -171,11 +171,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Do you want to create a shipment</p>
+                <p>{{_("Do you want to create a shipment ?")}}</p>
             </div>
             <div class="modal-footer">
-                <button id="yes-shipment-confirm-pli" type="button" class="btn btn-secondary" data-dismiss="modal">Yes</button>
-                <button type="button" id="no-shipment-confirm-pli" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button id="yes-shipment-confirm-pli" type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Yes")}}</button>
+                <button type="button" id="no-shipment-confirm-pli" class="btn btn-secondary" data-dismiss="modal">{{_("No")}}</button>
             </div>
         </div>
     </div>

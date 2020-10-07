@@ -71,9 +71,9 @@
                     <table class="table table-bordered">
                         <thead>
                             <!-- <th style="width: 15%;"><input id="select-all-check" type="checkbox" value="option1"></th> -->
-                            <th style="width: 25%;">From</th>
-                            <th style="width: 25%;">To</th>
-                            <th style="width: 25%;">Price</th>
+                            <th style="width: 25%;">{{_("From")}}</th>
+                            <th style="width: 25%;">{{_("To")}}</th>
+                            <th style="width: 25%;">{{_("Price")}}</th>
                             <th style="width: 10%;"></th>
                         </thead>
                         {% if modifiable %}
@@ -96,7 +96,7 @@
                                     <a class='caret dropdown-toggle' data-toggle='dropdown'></a>
                                     <ul class='dropdown-menu'>
                                         <li>
-                                            <button  onclick='delete_row("{{n+1}}")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button>
+                                            <button  onclick='delete_row("{{n+1}}")' type='button' class='btn btn-light' style='display: inline-block;'>{{_("Delete Row")}}</button>
                                         </li>
                                     </ul>
                                 </td>
@@ -122,7 +122,7 @@
                                     <a class='caret dropdown-toggle' data-toggle='dropdown'></a>
                                     <ul class='dropdown-menu'>
                                         <li>
-                                            <button  onclick='delete_row("1")' type='button' class='btn btn-light' style='display: inline-block;'>Delete Row</button>
+                                            <button  onclick='delete_row("1")' type='button' class='btn btn-light' style='display: inline-block;'>{{_("Delete Row")}}</button>
                                         </li>
                                     </ul>
                                 </td>
@@ -130,7 +130,7 @@
                         </tbody>
                         {% endif %}
                     </table>
-                    <button  onclick="add_row()" type="button" class="btn btn-light" style="display: inline-block;">Add Row</button>
+                    <button  onclick="add_row()" type="button" class="btn btn-light" style="display: inline-block;">{{_("Add Row")}}</button>
                     <div style="border-bottom:1px solid rgb(219, 210, 210); padding-top: 12px;"></div>
                 </div>
                 <div class="col-3">
@@ -168,7 +168,7 @@
                             <div class="col-4">
                                 <div class="row option-inputs">
                                     <div class="col-9 option-block">
-                                        <label >Option {{k+1}}</label>
+                                        <label >{{_("Option")}} {{k+1}}</label>
                                         <input value='{{attribution_pricing.pricing_options[k].option}}'  type="text" class="form-control mt-2 option-option">
                                     </div>
                                     <div class="col-2 price-block">
@@ -190,7 +190,7 @@
                             <div class="col-4">
                                 <div class="row option-inputs">
                                     <div class="col-9 option-block">
-                                        <label >Option {{k+1}}</label>
+                                        <label >{{_("Option")}} {{k+1}}</label>
                                         <input  type="text" class="form-control mt-2 option-option">
                                     </div>
                                     <div class="col-2 price-block">

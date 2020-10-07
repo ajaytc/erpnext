@@ -29,11 +29,11 @@
                     {% else %}
                     {% set sizing_list = [{"size":"Free Size"}] %}
                     {% endif %}                    <thead>
-                        <th colspan='1' scope='colgroup' >Order Date</th>
-                        <th colspan='1' scope='colgroup' >Order Detail</th>
+                        <th colspan='1' scope='colgroup' >{{_("Order Date")}}</th>
+                        <th colspan='1' scope='colgroup' >{{_("Order Detail")}}</th>
                         <th colspan='1' scope='colgroup' ></th>
-                        <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >Sizing</th>
-                        <th colspan='1' scope='colgroup'>Status</th>
+                        <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >{{_("Sizing")}}</th>
+                        <th colspan='1' scope='colgroup'>{{_("Status")}}</th>
                     </thead>
                     <thead>
                         <th  scope="col"></th>
@@ -129,13 +129,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h5>Country :<p id="modal-country"></p> </h5>
-                <h5>City : <p id="modal-city"></p></h5>
-                <h5>Email :<p id="modal-email"></p></h5>
-                <h5>Phone : <p id="modal-phone"></p></h5>
+                <h5>{{_("Country")}} :<p id="modal-country"></p> </h5>
+                <h5>{{_("City")}} : <p id="modal-city"></p></h5>
+                <h5>{{_("Email")}} :<p id="modal-email"></p></h5>
+                <h5>{{_("Phone")}} : <p id="modal-phone"></p></h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
             </div>
         </div>
     </div>
