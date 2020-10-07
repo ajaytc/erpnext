@@ -45,7 +45,7 @@ def get_context(context):
     else:
         context.item_pic=''
     context.item_ref=context.fabricOrder.fabric_ref
-    context.color=context.fabric.color
+    context.color=frappe.get_doc("Color",context.fabric.color).color_name
     context.size=None
     context.order_type='Fabric'
     context.quantity=context.fabricOrder.quantity

@@ -1,17 +1,17 @@
-$(function() {
-  if("{{fabricOrder.confirmation_doc}}"=='None'){
+$(function () {
+  if ("{{fabricOrder.confirmation_doc}}" == 'None') {
     $('#conf_del').hide()
-  }else{
+  } else {
     $('#conf_del').show()
   }
-  if("{{fabricOrder.profoma}}"=='None'){
+  if ("{{fabricOrder.profoma}}" == 'None') {
     $('#profoma_del').hide()
-  }else{
+  } else {
     $('#profoma_del').show()
   }
-  if("{{fabricOrder.invoice}}"=='None'){
+  if ("{{fabricOrder.invoice}}" == 'None') {
     $('#invoice_del').hide()
-  }else{
+  } else {
     $('#invoice_del').show()
   }
 });
@@ -31,11 +31,11 @@ $("#proofSubmit").click(function () {
           order: "{{frappe.form_dict.order}}",
           payment_proof: res,
           comment: $("#proofComment").val(),
-          confirmation_reminder:$.trim($("#conf_reminder").text()),
-          proforma_reminder:$.trim($("#prof_reminder").text()),
-          payment_reminder:$.trim($("#paym_reminder").text()),
-          shipment_reminder:$.trim($("#shipment_reminder").text()),
-          reception_reminder:$.trim($("#recep_reminder").text())
+          confirmation_reminder: $.trim($("#conf_reminder").text()),
+          proforma_reminder: $.trim($("#prof_reminder").text()),
+          payment_reminder: $.trim($("#paym_reminder").text()),
+          shipment_reminder: $.trim($("#shipment_reminder").text()),
+          reception_reminder: $.trim($("#recep_reminder").text())
         },
       },
       callback: function (r) {
@@ -47,8 +47,8 @@ $("#proofSubmit").click(function () {
             indicator: "green",
             message: __(
               "Fabric Order " +
-                "{{fabricOrder.name}}'s" +
-                " payment proof submitted successfully"
+              "{{fabricOrder.name}}'s" +
+              " details updated successfully"
             ),
           });
         }
@@ -162,8 +162,8 @@ function submitVendorSummary(files) {
           indicator: "green",
           message: __(
             "Fabric order " +
-              "{{fabricOrder.name}}" +
-              " summary created successfully"
+            "{{fabricOrder.name}}" +
+            " summary created successfully"
           ),
         });
         location.reload()
@@ -231,74 +231,74 @@ $("#invoice").change(function () {
 
 
 $('#pdf_doc').click(function () {
-    
-  let page=$('#doc').html()
+
+  let page = $('#doc').html()
   render_pdf(page)
 })
 
 function render_pdf(html) {
   var formData = new FormData();
 
-//Push the HTML content into an element
-  formData.append("html",html);
+  //Push the HTML content into an element
+  formData.append("html", html);
   // if (opts.orientation) {
-// 	formData.append("orientation", opts.orientation);
-// }
-var blob = new Blob([], { type: "text/xml"});
-formData.append("blob", blob);
+  // 	formData.append("orientation", opts.orientation);
+  // }
+  var blob = new Blob([], { type: "text/xml" });
+  formData.append("blob", blob);
 
-var xhr = new XMLHttpRequest();
-$(".row").css("opacity",0.5);
-xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
-xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
-xhr.responseType = "arraybuffer";
+  var xhr = new XMLHttpRequest();
+  $(".row").css("opacity", 0.5);
+  xhr.open("POST", '/api/method/frappe.utils.print_format.report_to_pdf');
+  xhr.setRequestHeader("X-Frappe-CSRF-Token", frappe.csrf_token);
+  xhr.responseType = "arraybuffer";
 
-xhr.onload = function(success) {
-  if (this.status === 200) {
-    $(".row").css("opacity",1);
-    var blob = new Blob([success.currentTarget.response], {type: "application/pdf"});
-          var objectUrl = URL.createObjectURL(blob);
-          window.open(objectUrl);
-          // target=`<a href="${objectUrl}">${objectUrl}</a>`
-          // $('#order_doc').html(target)
+  xhr.onload = function (success) {
+    if (this.status === 200) {
+      $(".row").css("opacity", 1);
+      var blob = new Blob([success.currentTarget.response], { type: "application/pdf" });
+      var objectUrl = URL.createObjectURL(blob);
+      window.open(objectUrl);
+      // target=`<a href="${objectUrl}">${objectUrl}</a>`
+      // $('#order_doc').html(target)
 
-    
-    //Open report in a new window
-    // window.open(objectUrl);
-  }
-  else{
-    frappe.msgprint({
-      title: __("Notification"),
-      indicator: "red",
-      message: __(
-        "Not Permitted"
-      ),
-    });
-    $(".row").css("opacity",1);
-  }
+
+      //Open report in a new window
+      // window.open(objectUrl);
+    }
+    else {
+      frappe.msgprint({
+        title: __("Notification"),
+        indicator: "red",
+        message: __(
+          "Not Permitted"
+        ),
+      });
+      $(".row").css("opacity", 1);
+    }
   };
-  
+
   xhr.send(formData);
 }
 
-$('#conf_del').click(function (){
+$('#conf_del').click(function () {
   deleteFile('confirmation_doc')
 })
 
-$('#profoma_del').click(function (){
+$('#profoma_del').click(function () {
   deleteFile('profoma')
 })
-$('#invoice_del').click(function (){
+$('#invoice_del').click(function () {
   deleteFile('invoice')
 })
 
-function deleteFile(file_type){
+function deleteFile(file_type) {
   frappe.call({
     method: "erpnext.modehero.fabric.deleteDoc",
     args: {
       data: {
         order: "{{frappe.form_dict.order}}",
-        doc_type:file_type
+        doc_type: file_type
       },
     },
     callback: function (r) {
@@ -308,13 +308,13 @@ function deleteFile(file_type){
           title: __("Notification"),
           indicator: "green",
           message: __(
-            file_type+" successfully deleted"
+            file_type + " successfully deleted"
           )
         });
         location.reload()
       }
     }
   })
-  
+
 
 }

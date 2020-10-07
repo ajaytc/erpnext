@@ -49,7 +49,7 @@ $("#proofSubmit").click(function () {
             message: __(
               "Packaging Order " +
                 "{{packOrder.name}}'s" +
-                " payment proof submitted successfully"
+                " details updated successfully"
             ),
           });
         }

@@ -85,7 +85,7 @@
                             <li>
                                 <span>{{_("Color")}}</span>
                                 <span id="order-color">
-                                    {{fabric.color}}
+                                    {{frappe.get_doc("Color",fabric.color).color_name}}
                                 </span>
                             </li>
                             <li>
@@ -363,7 +363,7 @@
 {%endif%}
 
 <div id="full">
-    <div id="doc" style="display: none;">
+    <div id="doc" style="">
         {{template}}
     </div>
 </div>
