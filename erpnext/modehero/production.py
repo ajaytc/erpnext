@@ -573,9 +573,9 @@ def check_dispatch_order_situation(po,soi,size_qty):
     for history in stock_history_list:
         for history_qps in history:
             for qps in requested_quantity:
-                if qps.size==history_qps.size:
-                    qps.quantity  = qps.quantity - history_qps.quntity
-                    if qps.quntity<0:qps.quntity = 0
+                if qps['size']==history_qps.size:
+                    qps['quantity']  = qps['quantity'] - int(history_qps.quantity)
+                    if qps['quantity']<0:qps['quantity'] = 0
                     break
     required_quantity = requested_quantity
     is_completed = True

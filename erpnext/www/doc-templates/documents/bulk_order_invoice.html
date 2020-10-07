@@ -37,26 +37,26 @@
     </tbody>
     </table>
     <p style="display: none;">{% for product in order_details %}</p>
-    <table style="border-collapse: collapse; width: 102.233%; height: 10px;" border="1">
+    <table style="border-collapse: collapse; width: 102.154%; height: 10px;" border="1">
     <tbody>
     <tr style="height: 10px;">
     <td style="width: 23.2628%; border: none; height: 10px;">{{order_details[product]["product_name"]}}</td>
     <td style="width: 14.5394%; border: none; height: 10px;">&nbsp;</td>
     <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">&nbsp;</td>
-    <td style="width: 21.1239%; height: 10px;">&nbsp;</td>
+    <td style="width: 24.0629%; border: none; height: 10px;">&nbsp;</td>
+    <td style="width: 15.8851%; height: 10px;">&nbsp;</td>
     </tr>
     </tbody>
     </table>
     <p style="display: none;">{%for order_dic in order_details[product]["order_list"] %}</p>
-    <table style="border-collapse: collapse; width: 100%; height: 10px;" border="1">
+    <table style="border-collapse: collapse; width: 102.046%; height: 36px;" border="1">
     <tbody>
     <tr style="height: 10px;">
     <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["order"]}}</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["internal_ref"]}}</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["quantity"]}}</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["price_per_unit"]}}</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">{{order_dic["total"]}}</td>
+    <td style="width: 18.4385%; border: none; height: 10px;">{{order_dic["internal_ref"]}}</td>
+    <td style="width: 19.2095%; border: none; height: 10px;">{{order_dic["quantity"]}}</td>
+    <td style="width: 25.2709%; border: none; height: 10px;">{{order_dic["price_per_unit"]}}</td>
+    <td style="width: 13.1503%; border: none; height: 10px;">{{order_dic["total"]}}</td>
     </tr>
     </tbody>
     </table>
@@ -99,7 +99,7 @@
     <td style="width: 18.9011%; border: none;">&nbsp;</td>
     <td style="width: 18.9011%; border: none;">VAT Amount</td>
     <td style="width: 18.9011%; border: none;">&nbsp;</td>
-    <td style="width: 18.9011%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{vatAmount}}</td>
+    <td style="width: 18.9011%; border: none;">{{vatAmount}}</td>
     </tr>
     <tr>
     <td style="width: 18.9011%; border: none;">&nbsp;</td>
