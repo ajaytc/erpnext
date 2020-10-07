@@ -16,7 +16,7 @@
 
                         <select class="form-control" id="product_catagory" required name="product_cat">
                             <option  value="" selected disabled>---:---</option>
-                            {% for item_cat in frappe.get_all('Item Group',filters={'brand_name':brand},fields=["name","item_group_name"]) %}
+                            {% for item_cat in frappe.get_list('Item Group',filters={'brand_name':brand},fields=["name","item_group_name"]) %}
                             <option value="{{item_cat.name}}">{{item_cat.item_group_name}}</option>
                             {% endfor %}
                         </select>

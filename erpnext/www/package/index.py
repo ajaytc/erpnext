@@ -38,14 +38,14 @@ def fill_suport_dics(pricing_details):
     item_codes = {}
     for pricing in pricing_details:
         if pricing.item_code not in item_codes:
-            temp_itemname = frappe.get_all('Item', filters={'name':pricing.item_code}, fields=['item_name'])
+            temp_itemname = frappe.get_list('Item', filters={'name':pricing.item_code}, fields=['item_name'])
             if len(temp_itemname)!=0:
                 item_codes[pricing.item_code] = temp_itemname[0].item_name
             else:
                 item_codes[pricing.item_code] = pricing.item_code
 
         if pricing.item_group not in item_groups:
-            temp_itemgroup = frappe.get_all('Item Group', filters={'name':pricing.item_group}, fields=['item_group_name'])
+            temp_itemgroup = frappe.get_list('Item Group', filters={'name':pricing.item_group}, fields=['item_group_name'])
             if len(temp_itemgroup)!=0:
                 item_groups[pricing.item_group] = temp_itemgroup[0].item_group_name
             else:

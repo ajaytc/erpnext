@@ -21,7 +21,7 @@ def get_context(context):
         if ('new' in params):
             context.newable = True
         context.clients = frappe.get_all('Customer', filters={'brand': brand}, fields=['name','customer_name'])
-        context.product_cats = frappe.get_all('Item Group', filters={'brand_name': brand}, fields=['name','item_group_name'])
+        context.product_cats = frappe.get_list('Item Group', filters={'brand_name': brand}, fields=['name','item_group_name'])
         # if (len(context.product_cats)!=0 and len(context.clients)!=0 ):
         #     priced_items_for_first_product = frappe.get_all('Client Pricing',filters={'item_group':context.product_cats[0].name,'brand':brand,'client':context.clients[0].name},fields=['item_code'])
         #     item_list = frappe.get_all('Item', filters={'item_group':context.product_cats[0].name, 'brand':brand}, fields=['item_name','name'])
@@ -40,7 +40,7 @@ def get_context(context):
         context.modifiable = True
         context.attribution_pricing = frappe.get_doc('Client Pricing', params.attribution_pricing)
         context.clients = frappe.get_all('Customer', filters={'brand': brand,'name':context.attribution_pricing.client}, fields=['name','customer_name'])
-        context.product_cats = frappe.get_all('Item Group', filters={'brand_name': brand,'name':context.attribution_pricing.item_group}, fields=['name','item_group_name'])
-        context.item_list = frappe.get_all('Item', filters={'brand': brand,'name':context.attribution_pricing.item_code}, fields=['name','item_name'])
+        context.product_cats = frappe.get_list('Item Group', filters={'brand_name': brand,'name':context.attribution_pricing.item_group}, fields=['name','item_group_name'])
+        context.item_list = frappe.get_list('Item', filters={'brand': brand,'name':context.attribution_pricing.item_code}, fields=['name','item_name'])
         
     return context

@@ -132,7 +132,7 @@ def  modify_order_list(orders,support_destination_data):
             if order[4] not in result_obj:
                 result_obj[order[4]]={"show_name":support_destination_data["poss"][order[4]]["name"],"orders":[],"max_col_span":0}
             order.append("pos")
-            if len(order[15])>result_obj[client_id]["max_col_span"]: result_obj[client_id]["max_col_span"]=len(order[15])
+            if len(order[15])>result_obj[order[4]]["max_col_span"]: result_obj[order[4]]["max_col_span"]=len(order[15])
             result_obj[order[4]]["orders"].append(order)
         order.append(is_editable(order))
     return result_obj
