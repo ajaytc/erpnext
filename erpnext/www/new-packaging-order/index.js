@@ -84,6 +84,7 @@ $('.price').change(function () {
 
 function getOptions(data) {
     let str = '';
+    str += `<option disabled selected value=''>---+---</option>`
     data.map(i => {
         str += `<option value='${i.name}'>${i.internal_ref}</option>`
     })

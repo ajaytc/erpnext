@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create a new <span id='form_group_name'></span> vendor
+                <h5 class="modal-title" id="exampleModalLabel">{{_("Create a new")}} <span id='form_group_name'></span> {{_("vendor")}}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label class="col-form-label">Vendor name</label>
+                                <label class="col-form-label">{{_("Vendor name")}}</label>
                                 <input id="supply_name" class="form-control" required name="supply_name">
                             </div>
                         </div>
@@ -22,13 +22,13 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Contact</label>
+                                <label>{{_("Contact")}}</label>
                                 <input id="suply_contact" class="form-control" name="supply_contact">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Phone number</label>
+                                <label>{{_("Phone number")}}</label>
                                 <input id="suply_phone" class="form-control" name="supply_phone">
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Email</label>
+                                <label>{{_("Email")}}</label>
                                 <input id="suply_email" class="form-control" required name="supply_email">
                             </div>
                         </div>
@@ -60,13 +60,13 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label>City</label>
+                                <label>{{_("City")}}</label>
                                 <input id="suply_city" class="form-control" name="supply_city">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Zip code</label>
+                                <label>{{_("Zip code")}}</label>
                                 <input id="suply_zip" class="form-control" name="supply_zip">
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Country</label>
+                                <label>{{_("Country")}}</label>
                                 <select id="supply_country" class="form-control" name="supply_country">
                                     {% for c in frappe.get_all('Country',fields=['country_name'])%}
                                     <option>{{c.country_name}}</option>
