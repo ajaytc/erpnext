@@ -22,15 +22,18 @@
             </thead>
             <tbody>
                 {% for product in products %}
-                <tr data-product="{{product.name}}">
-                    <td><label class="custom-checkbox">
-                        <input type="checkbox" class="deleteSelection" name="productChecked"
-                            onchange="validateButton()">
-                        <span class="icon"></span>
-                    </label></td>
-                    <td class="product" style="cursor: pointer;">{{product.item_name}}</td>
-                    <td>{{frappe.get_doc('Item Group',product.item_group).item_group_name}}</td>
-                </tr>
+                {% set product_cat = frappe.get_list('Item Group',{'name':product.item_group},["item_group_name"]) %}
+                    {% if product_cat|length >0 %}
+                        <tr data-product="{{product.name}}">
+                            <td><label class="custom-checkbox">
+                                <input type="checkbox" class="deleteSelection" name="productChecked"
+                                    onchange="validateButton()">
+                                <span class="icon"></span>
+                            </label></td>
+                            <td class="product" style="cursor: pointer;">{{product.item_name}}</td>
+                            <td>{{product_cat[0]["item_group_name"]}}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
