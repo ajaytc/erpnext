@@ -20,8 +20,7 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Sizing Scheme Name",
-   "reqd": 1,
-   "unique": 1
+   "reqd": 1
   },
   {
    "fieldname": "brand",
@@ -53,7 +52,7 @@
  ],
  "links": [],
  "max_attachments": 1,
- "modified": "2020-10-02 12:01:47.786314",
+ "modified": "2020-10-08 07:06:48.467163",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Sizing Scheme",
