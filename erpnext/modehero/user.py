@@ -58,32 +58,33 @@ def auto_deactivate():
                 print('disable user', user.name)
     return {'status': 'ok'}
 
+@frappe.whitelist()
 def auto_deactivate_brands():
     print('running brands deactivation cron')
     brands = frappe.get_all('Company')
-    dateformat = '%d-%m-%Y'
+    dateformat = '%d/%m/%Y'
     for brand_name in brands:
         brand = frappe.get_doc('Company', brand_name)
         if(inTrialPeriod(brand)):
             continue
         else:
-            if(brand.enabled == '1'):
-                spent_duration = datetime.now() - datetime.strptime(frappe.format(brand.subscribed_date, 'Date'), dateformat)
-                if(brand.subscription_period=='Monthly'):
-                    allowed_duration=30
-                elif(brand.subscription_period=='Annually'):
-                    allowed_duration=365
-                if spent_duration.days > allowed_duration:
+            if(brand.enabled == 1):
+                if(brand.subscription_end_date!=None):
+                    if(datetime.strptime(frappe.format(brand.subscription_end_date, 'Date'), dateformat)<= datetime.now()):
+                        brand.enabled = 0
+                        brand.save()
+                        print('disable user', brand.name)
+                else:
                     brand.enabled = 0
                     brand.save()
                     print('disable user', brand.name)
     return {'status': 'ok'}
 
 def inTrialPeriod(brand):
-    dateformat = '%d-%m-%Y'
+    dateformat = '%d/%m/%Y'
     spent_duration=datetime.now() - datetime.strptime(frappe.format(brand.creation, 'Date'), dateformat)
-    trial_period=frappe.get_all("System Data",filters={'type':'brand-trial-period'})
-    if(spent_duration.days<=trial_period):
+    trial_period=frappe.get_all("System Data",filters={'type':'brand-trial-period'},fields=['value'])
+    if(spent_duration.days<=int(trial_period[0]['value'])):
         return True
     else:
         return False
@@ -92,3 +93,25 @@ def inTrialPeriod(brand):
 @frappe.whitelist()
 def test_deactivate():
     return auto_deactivate()
+
+
+def haveAccess(module):
+    brandName=frappe.get_doc('User', frappe.session.user).brand_name
+    brand=frappe.get_doc("Company",brandName)
+    subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
+    subscribedPlanDict=subscribedPlan.__dict__
+    if(brand.enabled==1):
+        if(inTrialPeriod(brand)):
+            return True
+        else:
+            if(subscribedPlanDict[module]==1):
+                return True
+            else:
+                return False
+    else:
+        return False
+    
+
+
+
+

@@ -47,7 +47,11 @@ function subscriptionComplete() {
     },
     callback: function (r) {
       if (!r.exc) {
-        
+        frappe.msgprint({
+          title: __('Notification'),
+          indicator: 'green',
+          message: __('Payment Completed Successfully')
+      });
 
       } else {
         console.log(r)
@@ -224,3 +228,16 @@ var loading = function (isLoading) {
 
 
 
+$('#testdisable').click(function () {
+  frappe.call({
+    method: 'erpnext.modehero.user.auto_deactivate_brands',
+    callback: function (r) {
+        if (!r.exc) {
+            
+
+        } else {
+            console.log(r)
+        }
+    }
+})
+})

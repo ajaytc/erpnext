@@ -104,7 +104,8 @@
   "enabled",
   "subscription_period",
   "subscribed_date",
-  "subscribed_plan"
+  "subscribed_plan",
+  "subscription_end_date"
  ],
  "fields": [
   {
@@ -717,13 +718,18 @@
    "fieldtype": "Link",
    "label": "Subscribed Plan",
    "options": "Payment Plan"
+  },
+  {
+   "fieldname": "subscription_end_date",
+   "fieldtype": "Date",
+   "label": "Subscription Expire Date"
   }
  ],
  "icon": "fa fa-building",
  "idx": 1,
  "image_field": "company_logo",
  "links": [],
- "modified": "2020-10-01 11:24:55.446686",
+ "modified": "2020-10-08 08:20:47.630313",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

@@ -528,6 +528,11 @@
             
         </div>
     </div>
+    {% if 'Administrator' not in roles %}
+    <a href="/subscription" class="list-group-item " type="button">
+        <i class="custom-icon icon-document"></i> {{_("Subscription")}}
+    </a>
+    {%endif%}
     {# <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
         aria-expanded="false" aria-controls="collapse7">
         <i class="custom-icon icon-list"></i> {{_("Invoice Packing List")}}
