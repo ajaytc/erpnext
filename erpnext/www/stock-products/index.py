@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 import frappe.www.list
+from erpnext.modehero.user import haveAccess
 
 no_cache = 1
 
@@ -16,6 +17,10 @@ def get_context(context):
     if frappe.session.user == 'Guest':
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
+    module = 'stock'
+    if(not haveAccess(module)):
+        frappe.throw(_("You have not subscribed to this service"),
+                     frappe.PermissionError)
 
     context.show_sidebar = False
 

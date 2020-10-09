@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 import frappe.www.list
+from erpnext.modehero.user import haveAccess
 
 no_cache = 1
 
@@ -22,13 +23,30 @@ def get_context(context):
     context.isManufacture = "Manufacturing User" in context.roles
     brand = frappe.get_doc("User", frappe.session.user).brand_name
 
-    context.preprod_onprocess = frappe.get_all(
-        'Prototype Order', filters={'docstatus': 0, 'brand': brand}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'expected_work_date'])
-    context.preprod_finished = frappe.get_all(
-        'Prototype Order', filters={'docstatus': 5, 'brand': brand}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
-    context.prod_onprocess = frappe.get_all(
-        'Production Order', filters={'docstatus': 0, 'brand': brand}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'expected_work_date'])
-    context.prod_finished = frappe.get_all(
-        'Production Order', filters={'docstatus': 1, 'brand': brand}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
+    if(context.isBrand):
+        module = 'production'
+        if(not haveAccess(module)):
+            frappe.throw(
+                _("You have not subscribed to this service"), frappe.PermissionError)
+        
+        context.preprod_onprocess = frappe.get_all(
+            'Prototype Order', filters={'docstatus': 0, 'brand': brand}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'expected_work_date'])
+        context.preprod_finished = frappe.get_all(
+            'Prototype Order', filters={'docstatus': 5, 'brand': brand}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
+        context.prod_onprocess = frappe.get_all(
+            'Production Order', filters={'docstatus': 0, 'brand': brand}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'expected_work_date'])
+        context.prod_finished = frappe.get_all(
+            'Production Order', filters={'docstatus': 1, 'brand': brand}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
+    if(context.isManufacture):
+        factory_name=frappe.get_all('Production Factory',filters={'user':frappe.session.user},fields=['name'])
+        context.preprod_onprocess = frappe.get_all(
+            'Prototype Order', filters={'docstatus': 0, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'expected_work_date'])
+        context.preprod_finished = frappe.get_all(
+            'Prototype Order', filters={'docstatus': 5, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
+        context.prod_onprocess = frappe.get_all(
+            'Production Order', filters={'docstatus': 0, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'expected_work_date'])
+        context.prod_finished = frappe.get_all(
+            'Production Order', filters={'docstatus': 1, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
+   
 
     return context

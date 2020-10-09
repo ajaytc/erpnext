@@ -16,9 +16,7 @@ def get_context(context):
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
     
-    if(not haveAccess(module)):
-        frappe.throw(
-            _("You have not subscribed to this service"), frappe.PermissionError)
+    
 
     context.roles = frappe.get_roles(frappe.session.user)
 
@@ -49,6 +47,9 @@ def get_context(context):
 
     # if brand access the dashboard
     if(context.isSupplier==False):
+        if(not haveAccess(module)):
+            frappe.throw(
+            _("You have not subscribed to this service"), frappe.PermissionError)
         if context.isFabric:
             context.orderType = 'Fabric Order'
             context.neworders = frappe.get_all(

@@ -119,5 +119,5 @@ $('#ref_list').click(function () {
     })
 })
 
-$('#vendor_list').trigger('click')
-$('#ref_list').trigger('click')
+// $('#vendor_list').trigger('click')
+// $('#ref_list').trigger('click')

@@ -3,14 +3,19 @@ import frappe
 from frappe import _
 import frappe.www.list
 import datetime
+from erpnext.modehero.user import haveAccess
 
 no_cache = 1
 
 
 def get_context(context):
+    module='client'
     if frappe.session.user == 'Guest':
         frappe.throw(
             _("You need to be logged in to access this page"), frappe.PermissionError)
+    if(not haveAccess(module)):
+        frappe.throw(
+            _("You have not subscribed to this service"), frappe.PermissionError)
     roles = frappe.get_roles(frappe.session.user)
 
     if ("Administrator" not in roles) and ("Brand User" not in roles):

@@ -3,11 +3,15 @@ import frappe
 from frappe import _
 import frappe.www.list
 import datetime
-
+from erpnext.modehero.user import haveAccess
 no_cache = 1
 
 
 def get_context(context):
+    module = 'pre_production'
+    if(not haveAccess(module)):
+        frappe.throw(
+            _("You have not subscribed to this service"), frappe.PermissionError)
     params = frappe.form_dict
     # context.sizes = frappe.get_list(
     #     "Sizing", fields=["size"], order_by='idx')
