@@ -89,6 +89,16 @@ def completeSubscription(data):
     brand.subscription_period = data['plan_period']
     brand.subscribed_date = datetime.now()
     brand.subscribed_plan = data['plan_name']
+    paymentPlan=frappe.get_doc('Payment Plan',data['plan_name'])
+    brand.client=paymentPlan.client
+    brand.supply=paymentPlan.supply
+    brand.production=paymentPlan.production
+    brand.pre_production=paymentPlan.pre_production
+    brand.shipment=paymentPlan.shipment
+    brand.stock=paymentPlan.stock
+    brand.snf=paymentPlan.snf
+    brand.no_of_clients=paymentPlan.no_of_clients
+
     brand.enabled = 1
     brand.save()
     frappe.db.commit()

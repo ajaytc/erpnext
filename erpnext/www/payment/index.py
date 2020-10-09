@@ -2,6 +2,7 @@ import frappe
 import json
 import ast
 import datetime
+from frappe import _
 
 def get_context(context):
     if frappe.session.user == 'Guest':

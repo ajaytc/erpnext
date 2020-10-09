@@ -2,7 +2,20 @@
 <!-- <link rel="stylesheet" href="global.css" /> -->
 <script src="https://js.stripe.com/v3/"></script>
 <!-- <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script> -->
-<h2>Subscription Plans</h2>
+<h2 style="padding-top: 6%;">Subscription Plans</h2>
+{%if paymentPlan%}
+<div class="subdiv">
+    
+    <div class="card bg-primary text-white subscribedCard" style="width: 50%;">
+        <div class="card-body"> <strong>You have been subscribed!!</strong> </div>
+        
+        <p class="subdiv">{{_("Subscribed Payment Plan")}} - <span>{{paymentPlan.plan_name}}</span> </p>
+        <p class="subdiv">{{_("Subscribed until")}} - <span>{{brand.subscription_end_date}}</span> </p>
+
+    </div>
+
+</div>
+{%endif%}
 <div id="container" class="container">
     <div class="card" style="width: 107%;">
         <div class="card-body">

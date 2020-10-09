@@ -13,6 +13,11 @@ def get_context(context):
             _("You need to be logged in to access this page"), frappe.PermissionError)
     roles = frappe.get_roles(frappe.session.user)
 
+    brandName=frappe.get_doc('User', frappe.session.user).brand_name
+    context.brand=frappe.get_doc("Company",brandName)
+    context.paymentPlan=frappe.get_doc("Payment Plan",context.brand.subscribed_plan)
+
+
     if ("Brand User" not in roles):
         frappe.throw(_("Not Permitted!"), frappe.PermissionError)
 

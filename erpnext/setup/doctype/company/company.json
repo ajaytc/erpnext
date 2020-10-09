@@ -105,7 +105,15 @@
   "subscription_period",
   "subscribed_date",
   "subscribed_plan",
-  "subscription_end_date"
+  "subscription_end_date",
+  "client",
+  "supply",
+  "pre_production",
+  "production",
+  "shipment",
+  "snf",
+  "stock",
+  "no_of_clients"
  ],
  "fields": [
   {
@@ -723,13 +731,60 @@
    "fieldname": "subscription_end_date",
    "fieldtype": "Date",
    "label": "Subscription Expire Date"
+  },
+  {
+   "default": "0",
+   "fieldname": "client",
+   "fieldtype": "Check",
+   "label": "Client"
+  },
+  {
+   "default": "0",
+   "fieldname": "supply",
+   "fieldtype": "Check",
+   "label": "Supply"
+  },
+  {
+   "default": "0",
+   "fieldname": "pre_production",
+   "fieldtype": "Check",
+   "label": "Pre Production"
+  },
+  {
+   "default": "0",
+   "fieldname": "production",
+   "fieldtype": "Check",
+   "label": "Producton"
+  },
+  {
+   "default": "0",
+   "fieldname": "shipment",
+   "fieldtype": "Check",
+   "label": "Shipment"
+  },
+  {
+   "default": "0",
+   "fieldname": "snf",
+   "fieldtype": "Check",
+   "label": "SNF"
+  },
+  {
+   "default": "0",
+   "fieldname": "stock",
+   "fieldtype": "Check",
+   "label": "Stock"
+  },
+  {
+   "fieldname": "no_of_clients",
+   "fieldtype": "Int",
+   "label": "No of Clients"
   }
  ],
  "icon": "fa fa-building",
  "idx": 1,
  "image_field": "company_logo",
  "links": [],
- "modified": "2020-10-08 08:20:47.630313",
+ "modified": "2020-10-09 15:39:11.247073",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

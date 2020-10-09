@@ -325,3 +325,13 @@
       }
   
     }
+
+    .subscribedCard{
+      width: 50%;
+      
+    }
+
+    .subdiv{
+      padding-left: 15px;
+      padding-bottom: 10px;
+    }

@@ -96,17 +96,16 @@ def test_deactivate():
 
 
 def haveAccess(module):
-    modules=['client','supply','pre_production','production','shipment','stock']
     brandName=frappe.get_doc('User', frappe.session.user).brand_name
     brand=frappe.get_doc("Company",brandName)
-    subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
+    # subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
 
-    subscribedPlanDict=subscribedPlan.__dict__
+    brandDict=brand.__dict__
     if(brand.enabled==1):
         if(inTrialPeriod(brand)):
             return True
         else:
-            if(subscribedPlanDict[module]==1):
+            if(brandDict[module]==1):
                 return True
             else:
                 return False
@@ -115,17 +114,21 @@ def haveAccess(module):
     
 
 def getAccessList():
-    modules=['client','supply','pre_production','production','shipment','stock']
-    brandName=frappe.get_doc('User', frappe.session.user).brand_name
-    brand=frappe.get_doc("Company",brandName)
-    subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
-    subscribedPlanDict=subscribedPlan.__dict__
-    accessingModules=[]
+    if(frappe.session.user!='Guest'):
+        modules=['client','supply','pre_production','production','shipment','stock','snf']
+        brandName=frappe.get_doc('User', frappe.session.user).brand_name
+        brand=frappe.get_doc("Company",brandName)
+        # subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
+        brandDict=brand.__dict__
+        accessingModules=[]
 
-    for mod in modules:
-        if(subscribedPlanDict[mod]==1):
-            accessingModules.append(mod)
+        if( not inTrialPeriod(brand)):
+            accessingModules=modules
+        else:
+            for mod in modules:
+                if(brandDict[mod]==1):
+                    accessingModules.append(mod)
 
-    return accessingModules
+        return accessingModules
 
 
