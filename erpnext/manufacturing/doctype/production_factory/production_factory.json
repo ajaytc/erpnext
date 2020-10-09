@@ -20,7 +20,11 @@
   "country",
   "brand",
   "user",
-  "assigned_brands"
+  "assigned_brands",
+  "is_official",
+  "enabled",
+  "subscribed_date",
+  "subscription_end_date"
  ],
  "fields": [
   {
@@ -111,10 +115,32 @@
    "fieldtype": "Table",
    "label": "Assigned Brands",
    "options": "Brand Factory"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_official",
+   "fieldtype": "Check",
+   "label": "Is Official"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "subscribed_date",
+   "fieldtype": "Date",
+   "label": "Subscribed Date"
+  },
+  {
+   "fieldname": "subscription_end_date",
+   "fieldtype": "Data",
+   "label": "Subscription End Date"
   }
  ],
  "links": [],
- "modified": "2020-10-02 11:49:43.998449",
+ "modified": "2020-10-09 16:59:13.460954",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

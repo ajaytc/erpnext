@@ -65,7 +65,11 @@
   "email",
   "brand",
   "user",
-  "assigned_brands"
+  "assigned_brands",
+  "is_official",
+  "enabled",
+  "subscribed_date",
+  "subscription_end_date"
  ],
  "fields": [
   {
@@ -428,13 +432,35 @@
    "fieldtype": "Table",
    "label": "Assigned Brands",
    "options": "Brand Suppliers"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_official",
+   "fieldtype": "Check",
+   "label": "Is Ofiifical"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "subscribed_date",
+   "fieldtype": "Date",
+   "label": "Subscribed date"
+  },
+  {
+   "fieldname": "subscription_end_date",
+   "fieldtype": "Date",
+   "label": "Subscription End Date"
   }
  ],
  "icon": "fa fa-user",
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-08-12 11:51:47.285575",
+ "modified": "2020-10-09 16:59:30.931074",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
