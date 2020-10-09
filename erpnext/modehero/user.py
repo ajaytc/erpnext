@@ -96,9 +96,11 @@ def test_deactivate():
 
 
 def haveAccess(module):
+    modules=['client','supply','pre_production','production','shipment','stock']
     brandName=frappe.get_doc('User', frappe.session.user).brand_name
     brand=frappe.get_doc("Company",brandName)
     subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
+
     subscribedPlanDict=subscribedPlan.__dict__
     if(brand.enabled==1):
         if(inTrialPeriod(brand)):
@@ -112,6 +114,18 @@ def haveAccess(module):
         return False
     
 
+def getAccessList():
+    modules=['client','supply','pre_production','production','shipment','stock']
+    brandName=frappe.get_doc('User', frappe.session.user).brand_name
+    brand=frappe.get_doc("Company",brandName)
+    subscribedPlan=frappe.get_doc("Payment Plan",brand.subscribed_plan)
+    subscribedPlanDict=subscribedPlan.__dict__
+    accessingModules=[]
 
+    for mod in modules:
+        if(subscribedPlanDict[mod]==1):
+            accessingModules.append(mod)
+
+    return accessingModules
 
 
