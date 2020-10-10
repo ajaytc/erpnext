@@ -151,7 +151,7 @@ def get_official_suppliers(group):
 
 @frappe.whitelist()
 def get_official_supplier_data(supplier_name):
-    official_facs = frappe.get_all("Supplier",{"name":supplier_name,"is_official":1,"supplier_group":None},["name","contact","email","address1","adress2","phone","city","country","zip_code","tax_id","supplier_group"])
+    official_facs = frappe.get_all("Supplier",{"name":supplier_name,"is_official":1},["name","contact","email","address1","adress2","phone","city","country","zip_code","tax_id","supplier_group"])
     if len(official_facs)==0:
         return {"status":"error"}
     return {"status":"ok","data":official_facs[0]}
