@@ -53,3 +53,12 @@ def get_official_factory_data(factory_name):
     if len(official_facs)==0:
         return {"status":"error"}
     return {"status":"ok","data":official_facs[0]}
+
+def get_factories_by_brand(brand):
+    result = []
+    all_facts = frappe.get_all('Brand Factory',{'brand':brand},['name','parent'] )
+    for fact in all_facts:
+        factory = frappe.get_all("Production Factory",{"name":fact["parent"]},["is_official","name"])
+        if len(factory)>0:
+            result.append(factory[0])
+    return result

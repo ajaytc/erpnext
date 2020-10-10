@@ -182,3 +182,12 @@ def get_official_supplier_list(group):
         return result
     except:
         return []
+
+def get_sups_by_brand(brand,sup_type):
+    result = []
+    all_sups = frappe.get_all('Brand Suppliers',{'brand':brand},['name','parent'] )
+    for sup in all_sups:
+        supplier = frappe.get_all("Supplier",{"name":sup["parent"],"supplier_group":sup_type},["is_official","name"])
+        if len(supplier)>0:
+            result.append(supplier[0])
+    return result

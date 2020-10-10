@@ -24,8 +24,12 @@
                   data-group="trimming">{{_("Add new +")}}</a></span></label>
             <select class="form-control" id="vendor_list" required name="trimming_vendor">
               <option disabled selected value=''>---+---</option>
-              {% for vendor in frappe.get_list('Supplier',filters={'supplier_group':'Trimming','brand':brand}) %}
-              <option>{{vendor.name}}</option>
+              {% for vendor in trim_suppliers %}
+              <option>{{vendor.name}}
+                {% if vendor["is_official"]==1 %}
+                  &#xf05d;
+                {% endif %}
+              </option>
               {% endfor %}
             </select>
           </div>
@@ -70,7 +74,11 @@
             <select class="form-control" id="factory_list" required name="production_factory">
               <option disabled selected value=''>---+---</option>
               {% for production_factory  in production_facories %}
-              <option value="{{production_factory.name}}">{{production_factory.factory_name}}</option>
+              <option value="{{production_factory.name}}">{{production_factory.name}}
+                {% if production_factory["is_official"]==1 %}
+                &#xf05d;
+              {% endif %}
+              </option>
               {% endfor %}
             </select>
           </div>

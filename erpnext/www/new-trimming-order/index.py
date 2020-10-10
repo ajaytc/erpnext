@@ -4,6 +4,10 @@ from frappe import _
 import frappe.www.list
 import datetime
 from erpnext.modehero.user import haveAccess
+from erpnext.modehero.supplier import get_sups_by_brand
+from erpnext.modehero.factory import get_factories_by_brand
+
+
 
 no_cache = 1
 
@@ -21,7 +25,6 @@ def get_context(context):
     context.trimming_items = frappe.get_list(
         'Trimming Item', filters={'brand': context.brand}, fields=['name'])
 
-    context.production_facories = frappe.get_list(
-        'Production Factory', filters={'brand': context.brand}, fields=['name',"factory_name"])
-
+    context.production_facories = get_factories_by_brand(context.brand)
+    context.trim_suppliers= get_sups_by_brand(context.brand,"Trimming")
     return context
