@@ -72,7 +72,9 @@
    "fieldname": "email_address",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Email Address"
+   "label": "Email Address",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "phone",
@@ -140,7 +142,7 @@
   }
  ],
  "links": [],
- "modified": "2020-10-09 16:59:13.460954",
+ "modified": "2020-10-10 09:32:53.469385",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

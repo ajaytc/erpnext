@@ -1,5 +1,7 @@
 import frappe
 import json
+import random
+import string
 from datetime import date, datetime
 
 
@@ -8,10 +10,18 @@ def get_brand(user):
     return frappe.get_doc('User', user).brand_name
 
 
+
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
+    # print("Random string of length", length, "is:", result_str)
+
 def signup(doc, method):
 
     if (doc.doctype == "Customer"):
         roles = [{"role": "Customer"}]
+        user_type='client'
         email = doc.email_address
         first_name = doc.customer_name
 
@@ -20,21 +30,29 @@ def signup(doc, method):
         first_name = doc.supplier_name
         if (doc.supplier_group == "Packaging"):
             roles = [{"role": "Packaging Vendor"}]
+            user_type='packaging_supplier'
         elif (doc.supplier_group == "Fabric"):
             roles = [{"role": "Fabric Vendor"}]
+            user_type='fabric_supplier'
         elif (doc.supplier_group == "Trimming"):
             roles = [{"role": "Trimming Vendor"}]
+            user_type='trimming_supplier'
     elif (doc.doctype == "Production Factory"):
         roles = [{"role": "Manufacturing User"}]
+        user_type='factory'
         email = doc.email_address
         first_name = doc.factory_name
+
+    brandName=getBrandName()
 
     user = frappe.get_doc({
         "doctype": "User",
         "enabled": 1,
-        "new_password": doc.password,
+        "new_password": get_random_string(12),
         "user_type": "Website User",
         "email": email,
+        "type":user_type,
+        "brand_name":brandName,
         "first_name": first_name,
         "roles": roles
     })
@@ -43,6 +61,14 @@ def signup(doc, method):
     user.flags.ignore_password_policy = True
     user.insert()
 
+def getBrandName():
+    roles=frappe.get_roles(frappe.session.user)
+    if('Administrator' in roles):
+        brandName=None
+    else:
+        brandName=frappe.get_doc("User",frappe.session.user).brand_name
+    
+    return brandName
 
 def auto_deactivate():
     print('running user deactivation cron')
@@ -114,7 +140,8 @@ def haveAccess(module):
     
 
 def getAccessList():
-    if(frappe.session.user!='Guest'):
+    # brandName=frappe.get_doc('User', frappe.session.user).brand_name
+    if(frappe.get_doc('User', frappe.session.user).type=='brand'):
         modules=['client','supply','pre_production','production','shipment','stock','snf']
         brandName=frappe.get_doc('User', frappe.session.user).brand_name
         brand=frappe.get_doc("Company",brandName)
@@ -122,7 +149,7 @@ def getAccessList():
         brandDict=brand.__dict__
         accessingModules=[]
 
-        if( not inTrialPeriod(brand)):
+        if(inTrialPeriod(brand)):
             accessingModules=modules
         else:
             for mod in modules:

@@ -38,7 +38,7 @@ def get_context(context):
         context.prod_finished = frappe.get_all(
             'Production Order', filters={'docstatus': 1, 'brand': brand}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
     if(context.isManufacture):
-        factory_name=frappe.get_all('Production Factory',filters={'user':frappe.session.user},fields=['name'])
+        factory_name=frappe.get_all('Production Factory',filters={'email_address':frappe.session.user},fields=['name'])
         context.preprod_onprocess = frappe.get_all(
             'Prototype Order', filters={'docstatus': 0, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'expected_work_date'])
         context.preprod_finished = frappe.get_all(

@@ -91,7 +91,7 @@ def get_context(context):
 
     else:
         # if supplier access the dashboard
-        vendor_name=frappe.get_all('Supplier',filters={'user':user.name},fields=['name'])
+        vendor_name=frappe.get_all('Supplier',filters={'email':user.name},fields=['name'])
         if context.isFabric:
             context.orderType = 'Fabric Order'
             context.neworders = frappe.get_all(

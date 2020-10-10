@@ -316,15 +316,15 @@ doc_events = {
     #         "erpnext.modehero.stock.updateShipmentorderStocks"
     #         ]
     # },
-    # "Customer":{
-    #     "after_insert": "erpnext.modehero.user.signup"
-    # },
-    # "Supplier":{
-    #     "after_insert": "erpnext.modehero.user.signup"
-    # },
-    # "Production Factory":{
-    #     "after_insert": "erpnext.modehero.user.signup"
-    # },
+    "Customer":{
+        "after_insert": "erpnext.modehero.user.signup"
+    },
+    "Supplier":{
+        "after_insert": "erpnext.modehero.user.signup"
+    },
+    "Production Factory":{
+        "after_insert": "erpnext.modehero.user.signup"
+    },
 
 }
 
