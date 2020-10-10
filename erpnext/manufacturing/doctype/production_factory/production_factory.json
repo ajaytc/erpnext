@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "field:factory_name",
  "creation": "2020-04-07 17:47:45.176755",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -35,7 +36,8 @@
    "fieldname": "factory_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Factory Name"
+   "label": "Factory Name",
+   "unique": 1
   },
   {
    "fieldname": "column_break_1",
@@ -142,7 +144,7 @@
   }
  ],
  "links": [],
- "modified": "2020-10-10 09:32:53.469385",
+ "modified": "2020-10-10 17:26:57.306558",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Production Factory",

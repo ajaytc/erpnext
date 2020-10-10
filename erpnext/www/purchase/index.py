@@ -33,7 +33,7 @@ def get_context(context):
             order_items[o.name][sales_order_item_index]["sales_order_name"] = o.name
     
     context.unique_items_orders = sort_item_doc(get_unique_items_orders(order_items))
-    context.factories = frappe.get_list('Production Factory',filters={'brand':brand},fields=['name','factory_name'])
+    context.factories = frappe.get_list('Brand Factory',filters={'brand':brand},fields=['parent'])
     return context
 
 ## returns unique item objects

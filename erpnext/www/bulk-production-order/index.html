@@ -23,8 +23,15 @@
         {% for i in items %}
         {% if typetwo %}
         <option value="{{i.name}}">{{i.item_name}}</option>
-        {% elif i.factory_name %}
-        <option value="{{i.name}}">{{i.factory_name}}</option>
+        {% elif i.factory %}
+        {% set factory = frappe.get_all("Production Factory",{"name":i.parent},["is_official"]) %}
+        <option value="{{i.name}}">{{i.parent}}
+            {% if factory|length>0 %}
+                {% if factory[0]["is_official"]==1 %}
+                    &#xf05d;
+                {% endif %}
+            {% endif %}
+        </option>
         {% elif i.name %}
         <option value="{{i.name}}">{{i.name}}</option>
         {% elif i.fabric_ref %}
@@ -81,7 +88,7 @@
                                 <a href="#" data-toggle="modal" data-target="#factory_modal"
                                     class="add-supplier text-teal ml-auto">Add
                                     new +</a></label>
-                            {{dropdown(frappe.get_list('Production Factory',filters={'brand':brand},fields=["name","factory_name"]),'factory_list','factory_list')}}
+                            {{dropdown(frappe.get_list('Brand Factory',filters={'brand':brand},fields=["factory","parent"]),'factory_list','factory_list')}}
                         </div>
                     </div>
                     <div class="col-4">

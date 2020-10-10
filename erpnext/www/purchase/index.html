@@ -17,10 +17,17 @@
             </p>
         </h3>
         <div class="col-3" style="display: inline-block;">
-            <select data-item_code="{{item}}"  class="form-control factory-select">
+            <select data-item_code="{{item}}"  class="form-control factory-select ppp">
                 <option value="" selected disabled>{{_("Select Factory")}}</option>
                 {% for factory in factories %}
-                <option data-factory_name="{{factory.factory_name}}" value="{{factory.name}}">{{factory.factory_name}}</option>
+                {% set factory_doc = frappe.get_all("Production Factory",{"name":factory.parent},["is_official"]) %}
+                <option  data-factory_name="{{factory.parent}}" value="{{factory.parent}}">{{factory.parent}} 
+                    {% if factory_doc|length==1 %}
+                        {% if factory_doc[0]["is_official"]==1 %}
+                            &#xf05d;
+                        {% endif %}
+                    {% endif %}
+                </option>
                 {% endfor %}
             </select>
         </div>

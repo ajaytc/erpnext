@@ -395,7 +395,7 @@ def collect_data_for_supply_order(supply_data):
             for vendor_ref in supply_data[supply_ref]["destinations"][destination_ref]:
                 count = count + 1
                 order_count =  str(supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]["order_count"]).strip()
-                if not(len(supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]["internal_ref"].strip())!=0 and len(destination_ref.strip())!=0  and supply_doc!=None and order_count.isnumeric() ):
+                if not(len(supply_data[supply_ref]["destinations"][destination_ref][vendor_ref]["internal_ref"].strip())!=0 and len(destination_ref.strip())!=0 and is_vendor_allowed(vendor_ref)  and supply_doc!=None and order_count.isnumeric() ):
                     continue
                 unit_price = str(supply_doc.unit_price).strip()
                 if not(is_number(unit_price)):
@@ -477,6 +477,8 @@ def validate_products_only(order_bloc_object):
     successfull_items = []
     result_message=""
     for item in order_bloc_object_dic:
+        if not(is_allowed_factory(order_bloc_object_dic[item]["factory"])):
+            continue
         try:
             result = validate_sales_item_orders_n_create_production_order(order_bloc_object_dic[item]["order"],order_bloc_object_dic[item]["factory"])
             successfull_items.append(item)
@@ -486,10 +488,10 @@ def validate_products_only(order_bloc_object):
         result_message = "Sales orders validated and production order created successfully !"
         return {"status":"ok", "message":result_message}
     else:
-        result_message = "Sales orders valdiation and prouction order creation is not completed. Only "
-        for item in successfull_items:
-            result_message = result_message + " '"+item+"' "
-        result_message = result_message + " item's sales orders validated and production orders created successfully !"
+        result_message = "Sales orders valdiation and prouction order creation is not completed. "
+        # for item in successfull_items:
+        #     result_message = result_message + " '"+item+"' "
+        # result_message = result_message + " item's sales orders validated and production orders created successfully !"
         return {"status":"error" , "message":result_message}
         
 
@@ -621,3 +623,15 @@ def get_total_products(order_list):
             total = total + int(quantty["quantity"])
     return total
 
+def is_vendor_allowed(vendor_ref) :
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    if len(frappe.get_all("Brand Suppliers",{"parent":vendor_ref,"brand":brand}))!=0:
+        return True
+    return False
+def is_allowed_factory(factory):
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    if len(frappe.get_all("Brand Factory",{"parent":factory,"brand":brand}))!=0:
+        return True
+    return False

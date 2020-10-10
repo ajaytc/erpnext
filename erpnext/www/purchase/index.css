@@ -52,3 +52,7 @@ td{
     font-size: 11px;
     padding: 4px;
 }
+option {
+    font-family: 'FontAwesome', 'Poppins'
+  }
+  
