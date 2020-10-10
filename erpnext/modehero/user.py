@@ -141,7 +141,7 @@ def haveAccess(module):
 
 def getAccessList():
     # brandName=frappe.get_doc('User', frappe.session.user).brand_name
-    if(frappe.get_doc('User', frappe.session.user).type=='brand'):
+    if(frappe.get_doc('User', frappe.session.user).type=='brand' or frappe.get_doc('User', frappe.session.user).type=='Administrator' ):
         modules=['client','supply','pre_production','production','shipment','stock','snf']
         brandName=frappe.get_doc('User', frappe.session.user).brand_name
         brand=frappe.get_doc("Company",brandName)
