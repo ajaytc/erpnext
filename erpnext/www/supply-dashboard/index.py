@@ -94,7 +94,7 @@ def get_context(context):
         if(not haveAccessForSupplier(module)):
             frappe.throw(
             _("You have not subscribed to this service"), frappe.PermissionError)
-        vendor_name=frappe.get_all('Supplier',filters={'user':user.name},fields=['name'])
+        vendor_name=frappe.get_all('Supplier',filters={'email':user.name},fields=['name'])
         if context.isFabric:
             context.orderType = 'Fabric Order'
             context.neworders = frappe.get_all(

@@ -40,7 +40,7 @@ def get_context(context):
         if(not haveAccessForFactory(module)):
             frappe.throw(
                 _("You have not subscribed to this service"), frappe.PermissionError)
-        factory_name=frappe.get_all('Production Factory',filters={'user':frappe.session.user},fields=['name'])
+        factory_name=frappe.get_all('Production Factory',filters={'email_address':frappe.session.user},fields=['name'])
         context.preprod_onprocess = frappe.get_all(
             'Prototype Order', filters={'docstatus': 0, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product', 'product_category', 'creation', 'expected_work_date'])
         context.preprod_finished = frappe.get_all(

@@ -408,7 +408,8 @@
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "brand",
@@ -460,7 +461,7 @@
  "idx": 370,
  "image_field": "image",
  "links": [],
- "modified": "2020-10-09 16:59:30.931074",
+ "modified": "2020-10-10 08:48:24.782023",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
