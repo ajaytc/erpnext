@@ -40,8 +40,8 @@
                                     <a class="ml-auto text-yellow" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="color">
-                                    {% for color in frappe.get_all('Color',filters={}) %}
-                                    <option>{{color.name}}</option>
+                                    {% for color in frappe.get_list('Color',fields=['name','color_name']) %}
+                                    <option value="{{color.name}}">{{color.color_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

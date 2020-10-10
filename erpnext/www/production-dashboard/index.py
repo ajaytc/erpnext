@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 import frappe.www.list
-from erpnext.modehero.user import haveAccess,haveAccessForFactory
+from erpnext.modehero.user import haveAccess, haveAccessForFactory
 
 no_cache = 1
 
