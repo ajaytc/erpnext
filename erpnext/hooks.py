@@ -319,12 +319,18 @@ doc_events = {
     # "Customer":{
     #     "after_insert": "erpnext.modehero.user.signup"
     # },
-    # "Supplier":{
-    #     "after_insert": "erpnext.modehero.user.signup"
-    # },
-    # "Production Factory":{
-    #     "after_insert": "erpnext.modehero.user.signup"
-    # },
+    "Supplier":{
+        "after_insert": [
+            # "erpnext.modehero.user.signup",
+            "erpnext.modehero.supplier.add_brand_supplier"
+        ]
+    },
+    "Production Factory":{
+        "after_insert": [
+            # "erpnext.modehero.user.signup",
+            "erpnext.modehero.factory.add_brand_factory"
+        ]
+    },
 
 }
 
@@ -353,6 +359,7 @@ scheduler_events = {
     "daily": [
         "erpnext.modehero.user.auto_deactivate",
         "erpnext.modehero.user.auto_deactivate_brands",
+        "erpnext.modehero.user.auto_deactivate_snf",
         "erpnext.modehero.reminder.cron_order_reminder",
         "erpnext.stock.reorder_item.reorder_item",
         "erpnext.support.doctype.issue.issue.auto_close_tickets",

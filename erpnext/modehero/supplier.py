@@ -117,3 +117,41 @@ def get_supply_doc(supply_ref, supply_type):
             return None
     except:
         return None
+
+def add_brand_supplier(doc,method):
+    child_dic = {
+                    "factory":doc.name,
+                    "brand": doc.brand
+                }
+    doc.append("assigned_brands",child_dic)
+    doc.save()
+    frappe.db.commit()
+
+@frappe.whitelist()
+def get_official_suppliers(group):
+    if group == "fabric":
+        query = {'is_official': 1,"supplier_group":"Fabric"}
+    elif group=="trimming":
+        query = {'is_official': 1,"supplier_group":"Trimming"}
+    elif group=="packaging":
+        query = {'is_official': 1,"supplier_group":"Packaging"}
+    else:
+        query = {'is_official': 1}
+    try:
+        suppliers = frappe.get_all('Supplier', filters=query, fields=['name'])
+        result = []
+        for x in suppliers:
+            result.append({
+                'label': x.name,
+                'value': x.name
+            })
+        return result
+    except:
+        return []
+
+@frappe.whitelist()
+def get_official_supplier_data(supplier_name):
+    official_facs = frappe.get_all("Supplier",{"name":supplier_name,"is_official":1,"supplier_group":None},["name","contact","email","address1","adress2","phone","city","country","zip_code","tax_id","supplier_group"])
+    if len(official_facs)==0:
+        return {"status":"error"}
+    return {"status":"ok","data":official_facs[0]}

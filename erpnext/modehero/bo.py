@@ -58,7 +58,7 @@ def add_subscription_to_snf(dates,snf_type,snf_name):
     end_date = dates["end_date"]
     if snf_name=="" or snf_name==None or snf_type=="" or snf_type==None or  not(is_date(end_date)) or not(is_date(start_date)):
         return {"status":"error"}
-    elif datetime.datetime.strptime(start_date, '%Y-%m-%d')>datetime.datetime.strptime(end_date, '%Y-%m-%d'):
+    elif not compare_dates(start_date,end_date):
         return {"status":"error"}
     is_completed = True
     if snf_type=="Factory":
@@ -73,6 +73,15 @@ def add_subscription_to_snf(dates,snf_type,snf_name):
     if not is_completed:
         return {"status":"error"}
     return {"status":"ok"}
+
+def compare_dates(first , second):
+    try:
+        if datetime.datetime.strptime(first, '%Y-%m-%d')>datetime.datetime.strptime(second, '%Y-%m-%d'):
+            return False
+    except Exception:
+        print ("=====>Date Format Error<=====")
+        return False
+    return True
 
 def collect_list_as_string_commas(list1):
     temp = ""

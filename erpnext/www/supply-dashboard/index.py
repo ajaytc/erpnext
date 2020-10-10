@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 import frappe.www.list
-from erpnext.modehero.user import haveAccess
+from erpnext.modehero.user import haveAccess,haveAccessForSupplier
 
 no_cache = 1
 
@@ -91,6 +91,9 @@ def get_context(context):
 
     else:
         # if supplier access the dashboard
+        if(not haveAccessForSupplier(module)):
+            frappe.throw(
+            _("You have not subscribed to this service"), frappe.PermissionError)
         vendor_name=frappe.get_all('Supplier',filters={'user':user.name},fields=['name'])
         if context.isFabric:
             context.orderType = 'Fabric Order'

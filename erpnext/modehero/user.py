@@ -80,9 +80,54 @@ def auto_deactivate_brands():
                     print('disable user', brand.name)
     return {'status': 'ok'}
 
-def inTrialPeriod(brand):
+@frappe.whitelist()
+def auto_deactivate_snf():
+    print('running snf deactivation cron')
+    suppliers = frappe.get_all('Suppplier')
+    factories = frappe.get_all('Production Factory')
+    deactive_factories(factories)
+    deactive_suppliers(suppliers)
+    return {'status': 'ok'}
+
+def deactive_factories(factories):
     dateformat = '%d/%m/%Y'
-    spent_duration=datetime.now() - datetime.strptime(frappe.format(brand.creation, 'Date'), dateformat)
+    for factory_name in factories:
+        factory = frappe.get_doc('Production Factory', factory_name)
+        if(inTrialPeriod(factory)):
+            continue
+        else:
+            if(factory.enabled == 1):
+                if(factory.subscription_end_date!=None):
+                    if(datetime.strptime(frappe.format(factory.subscription_end_date, 'Date'), dateformat)<= datetime.now()):
+                        factory.enabled = 0
+                        factory.save()
+                        print('disable user', factory.name)
+                else:
+                    factory.enabled = 0
+                    factory.save()
+                    print('disable user', factory.name)
+
+def deactive_suppliers(suppliers):
+    dateformat = '%d/%m/%Y'
+    for supplier_name in suppliers:
+        supplier = frappe.get_doc('Supplier', supplier_name)
+        if(inTrialPeriod(supplier)):
+            continue
+        else:
+            if(supplier.enabled == 1):
+                if(supplier.subscription_end_date!=None):
+                    if(datetime.strptime(frappe.format(supplier.subscription_end_date, 'Date'), dateformat)<= datetime.now()):
+                        supplier.enabled = 0
+                        supplier.save()
+                        print('disable user', supplier.name)
+                else:
+                    supplier.enabled = 0
+                    supplier.save()
+                    print('disable user', supplier.name)
+
+def inTrialPeriod(doc):
+    dateformat = '%d/%m/%Y'
+    spent_duration=datetime.now() - datetime.strptime(frappe.format(doc.creation, 'Date'), dateformat)
     trial_period=frappe.get_all("System Data",filters={'type':'brand-trial-period'},fields=['value'])
     if(spent_duration.days<=int(trial_period[0]['value'])):
         return True
@@ -109,6 +154,32 @@ def haveAccess(module):
                 return True
             else:
                 return False
+    else:
+        return False
+
+def haveAccessForSupplier(module):
+    suppliers = frappe.get_all("Supplier",{"email":frappe.session.user})
+    if len(suppliers)!=1:
+        return False
+    supplier=frappe.get_doc("Supplier",suppliers[0]["name"])
+    supplierDict=supplier.__dict__
+    if(inTrialPeriod(supplier)):
+        return True
+    elif(supplier.enabled==1):
+        return True
+    else:
+        return False
+
+def haveAccessForFactory(module):
+    factories = frappe.get_all("Production Factory",{"email":frappe.session.user})
+    if len(suppliers)!=1:
+        return False
+    factory=frappe.get_doc("Production Factory",factories[0]["name"])
+    factoryDict=factory.__dict__
+    if(inTrialPeriod(factory)):
+        return True
+    elif(factory.enabled==1):
+        return True
     else:
         return False
     
