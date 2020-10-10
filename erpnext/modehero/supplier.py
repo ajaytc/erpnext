@@ -92,16 +92,24 @@ def get_supplier(suppier_ref):
 def get_type_wise_suppliers(supplierType):
     try:
         brand = frappe.get_doc('User', frappe.session.user).brand_name
-        suppliers = frappe.get_all('Supplier', filters={'brand': brand,'supplier_group':supplierType}, fields=['name'])
+        suppliers = frappe.get_all('Supplier', filters={'brand': brand,'supplier_group':supplierType})
+        officialSuppliers=frappe.get_all('Supplier',filters={'is_official':1,'supplier_group':supplierType})
+        suppliers.extend(officialSuppliers)
+        allUnique=[]
+
+        for supp in suppliers:
+            if(supp.name not in allUnique):
+                allUnique.append(supp.name)
+
         result = []
-        for x in suppliers:
+        for x in allUnique:
             result.append({
-                'label': x.name,
-                'value': x.name
+                'label': x,
+                'value': x
             })
         return result
-    except:
-        return None
+    except Exception as e:
+        print(e)
 
 
 @frappe.whitelist()
@@ -155,3 +163,22 @@ def get_official_supplier_data(supplier_name):
     if len(official_facs)==0:
         return {"status":"error"}
     return {"status":"ok","data":official_facs[0]}
+
+@frappe.whitelist()
+def get_official_supplier_list(group):
+    if group == "fabric":
+        query = {'is_official': 1,"supplier_group":"Fabric"}
+    elif group=="trimming":
+        query = {'is_official': 1,"supplier_group":"Trimming"}
+    elif group=="packaging":
+        query = {'is_official': 1,"supplier_group":"Packaging"}
+    else:
+        query = {'is_official': 1}
+    try:
+        suppliers = frappe.get_all('Supplier', filters=query, fields=['name'])
+        result = []
+        for x in suppliers:
+            result.append(x.name)
+        return result
+    except:
+        return []
