@@ -92,17 +92,15 @@ def get_supplier(suppier_ref):
 def get_type_wise_suppliers(supplierType):
     try:
         brand = frappe.get_doc('User', frappe.session.user).brand_name
-        suppliers = frappe.get_all('Supplier', filters={'brand': brand,'supplier_group':supplierType})
-        officialSuppliers=frappe.get_all('Supplier',filters={'is_official':1,'supplier_group':supplierType})
-        suppliers.extend(officialSuppliers)
-        allUnique=[]
-
-        for supp in suppliers:
-            if(supp.name not in allUnique):
-                allUnique.append(supp.name)
+        suppliers = frappe.get_all('Brand Suppliers', filters={'brand': brand},fields=['parent'])
+        allsupps=[]
+        for sup in suppliers:
+            supplier = frappe.get_doc("Supplier",sup['parent'])
+            if (supplier.supplier_group==supplierType):
+                allsupps.append(supplier.supplier_name)
 
         result = []
-        for x in allUnique:
+        for x in allsupps:
             result.append({
                 'label': x,
                 'value': x
