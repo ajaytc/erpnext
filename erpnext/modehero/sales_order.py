@@ -477,7 +477,7 @@ def validate_products_only(order_bloc_object):
     successfull_items = []
     result_message=""
     for item in order_bloc_object_dic:
-        if not(is_allowed_factory(order_bloc_object_dic[item]["factory"])):
+        if not(is_allowed_factory(order_bloc_object_dic[item]["factory"])) or not(is_allowed_product(item)):
             continue
         try:
             result = validate_sales_item_orders_n_create_production_order(order_bloc_object_dic[item]["order"],order_bloc_object_dic[item]["factory"])
@@ -633,5 +633,11 @@ def is_allowed_factory(factory):
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
     if len(frappe.get_all("Brand Factory",{"parent":factory,"brand":brand}))!=0:
+        return True
+    return False
+def is_allowed_product(item):
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    if len(frappe.get_all("Item",{"name":item,"brand":brand}))!=0:
         return True
     return False
