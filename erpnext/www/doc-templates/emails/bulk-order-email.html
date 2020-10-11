@@ -1,46 +1,37 @@
+<p>{% if doc.fac_country!='France'%} You have a new order from {{doc.brand}} {% endif %} {%if doc.fac_country=='France'%} Vous avez une nouvelle commande de {{doc.brand}} {%endif %}</p>
 
-<!-- subject -->
-
-<p>{% if doc.fac_country!='France'%}</p>
-<p>You have a new order from {{doc.brand}}</p>
-<p>{% endif %}</p>
-<p>{%if doc.fac_country=='France'%}</p>
-<p>Vous avez une nouvelle commande de {{doc.brand}}</p>
-<p>{%endif %}</p>
-
-<!-- body -->
 <div id="body">
     <div>
-        <div style="text-align: center;"><img style="max-width: 150px;"
-                src="https://blog.modehero.com/wp-content/uploads/2020/04/logo-mode-hero-moyen.png" alt="Logo" /></div>
-        {% if doc.fac_country!='France'%}
-        <div style="text-align: left;">Dear {{doc.production_factory}}</div>
-        <div style="text-align: left;">
-            <p dir="ltr">You have received a new order from your Client {{doc.brand}} to manage it please follow this
-                link to your <a href="production-summary?order={{doc.name}}" aria-invalid="true">order</a></p>
-            <p dir="ltr">Do you know ? in subscribing to ModeHero you can manage easily all your orders and benefit from
-                many more advantages know more here (underline is a link to the subcription page)</p>
-        </div>
-        <div style="text-align: left;">This is an automatic message do not reply to this email your answer won&rsquo;t
-            be received by your client.</div>
-        <div style="text-align: left;">&nbsp;</div>
-        <div style="text-align: left;">ModeHero Team</div>
-        <div style="text-align: left;">&nbsp;</div>
-        {% endif %}
-        <div style="text-align: left;">&nbsp;</div>
-        {%if doc.fac_country=='France'%}
-        <div style="text-align: left;">Cher {{doc.production_factory}}</div>
-        <div style="text-align: left;">
-            <p dir="ltr">Vous avez re&ccedil;u une nouvelle commande de votre Client {{doc.brand}} pour la g&eacute;rer
-                suivez ce <a href="production-summary?order={{doc.name}}" aria-invalid="true">lien</a>.</p>
-            <p dir="ltr">Le saviez-vous? En vous abonnant &agrave; ModeHero vous pouvez g&eacute;rer toutes vos
-                commandes facilement et b&eacute;n&eacute;ficier de bien d&rsquo;autres avantages pour en savoir plus
-                c&rsquo;est ici.</p>
-            <p dir="ltr">Cette notification a &eacute;t&eacute; envoy&eacute;e par une messagerie automatique n&rsquo;y
-                r&eacute;pondez pas votre r&eacute;ponse ne sera pas re&ccedil;ue par votre client.</p>
-            <p dir="ltr">L&rsquo;&eacute;quipe ModeHero</p>
-            {% endif %}
-            <p dir="ltr">&nbsp;</p>
-        </div>
+    <div style="text-align: center;"><img style="max-width: 150px;" src="https://blog.modehero.com/wp-content/uploads/2020/04/logo-mode-hero-moyen.png" alt="Logo" /></div>
+    <p style="display: none;">{% if doc.fac_country!='France'%}</p>
+    <div style="text-align: left;">Dear {{doc.production_factory}}</div>
+    <p>{%if not isSubscribed%}</p>
+    <div style="text-align: left;">
+    <p dir="ltr">You have received a new order from your Client {{doc.brand}} to manage it please follow this link to your <a href="production-summary?order={{doc.name}}" aria-invalid="true">order</a></p>
+    <p dir="ltr">Do you know ? in subscribing to ModeHero you can manage easily all your orders and benefit from many more advantages know more here (underline is a link to the subcription page)</p>
     </div>
-</div>
+    <p>{%else%}</p>
+    <p dir="ltr">You have received a new order from your Client {{doc.brand}} to manage it connect to your <a href="{{dashboard_link}}" aria-invalid="true">ModeHero dashboard.</a></p>
+    <p>{%endif%}</p>
+    <div style="text-align: left;">This is an automatic message do not reply to this email your answer won&rsquo;t be received by your client.</div>
+    <div style="text-align: left;">&nbsp;</div>
+    <div style="text-align: left;">ModeHero Team</div>
+    <div style="text-align: left;">&nbsp;</div>
+    <p style="display: none;">{% endif %}</p>
+    <div style="text-align: left;">&nbsp;</div>
+    <p style="display: none;">{%if doc.fac_country=='France'%}</p>
+    <div style="text-align: left;">Cher {{doc.production_factory}}</div>
+    <p>{%if not isSubscribed%}</p>
+    <div style="text-align: left;">
+    <p dir="ltr">Vous avez re&ccedil;u une nouvelle commande de votre Client {{doc.brand}} pour la g&eacute;rer suivez ce <a href="production-summary?order={{doc.name}}" aria-invalid="true">lien</a>.</p>
+    <p dir="ltr">Le saviez-vous? En vous abonnant &agrave; ModeHero vous pouvez g&eacute;rer toutes vos commandes facilement et b&eacute;n&eacute;ficier de bien d&rsquo;autres avantages pour en savoir plus c&rsquo;est ici.</p>
+    <p>{%else%}</p>
+    <p dir="ltr">Vous avez re&ccedil;u une nouvelle commande de votre Client {{doc.brand}}pour la g&eacute;rer veuillez vous rendre sur le <a href="{{dashboard_link}}" aria-invalid="true">dashboard ModeHero.</a></p>
+    <p>{%endif%}</p>
+    <p dir="ltr">Cette notification a &eacute;t&eacute; envoy&eacute;e par une messagerie automatique n&rsquo;y r&eacute;pondez pas votre r&eacute;ponse ne sera pas re&ccedil;ue par votre client.</p>
+    <p dir="ltr">L&rsquo;&eacute;quipe ModeHero</p>
+    <p style="display: none;">{% endif %}</p>
+    <p dir="ltr">&nbsp;</p>
+    </div>
+    </div>
+    </div>
