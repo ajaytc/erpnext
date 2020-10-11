@@ -29,7 +29,7 @@
                 {%if isSupplier%}
                 <td>{{o['brand']}}</td>
                 {%endif%}
-                <td>{{frappe.db.get_value('Item',o['product_name'],'item_group')}}</td>
+                <td>{{o['item_ref']}}</td>
                 <td>{{frappe.format(o['creation'], {'fieldtype': 'Date'})}}</td>
                 <td>{{frappe.format(o['ex_work_date'], {'fieldtype': 'Date'})}}</td>
                 {%if o.destination%}
