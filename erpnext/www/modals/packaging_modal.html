@@ -10,6 +10,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% set brand_suppliers = frappe.get_all('Brand Suppliers',{'brand':brand},['name','parent'] ) %}
             <div class="modal-body">
                 <form id="create_packaging">
                     <div class="row">
@@ -17,8 +18,15 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Packaging vendor")}}</label>
                                 <select class="form-control" required name="vendor">
-                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Packaging','brand':brand}) %}
-                                    <option>{{vendor.name}}</option>
+                                    {% for pack_sup in brand_suppliers %}
+                                        {% set supplier = frappe.get_all("Supplier",{"name":pack_sup["parent"],"supplier_group":"Packaging"},["is_official","supplier_group"]) %}
+                                        {% if supplier|length>0 %}
+                                            <option value="{{pack_sup.parent}}">{{pack_sup.parent}}
+                                                {% if supplier[0]["is_official"]==1 %}
+                                                    &#xf05d;
+                                                {% endif %}
+                                            </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -32,8 +40,8 @@
                                     <a class="text-orange ml-auto" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="color">
-                                    {% for color in frappe.get_all('Color',filters={})%}
-                                    <option>{{color.name}}</option>
+                                    {% for color in frappe.get_list('Color',{"brand":brand},['name','color_name']) %}
+                                    <option value="{{color.name}}">{{color.color_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -47,8 +55,8 @@
                                     <a class="text-orange ml-auto" href="/packaging-material?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="material">
-                                    {% for material in frappe.get_all('Packaging Material',filters={})%}
-                                    <option>{{material.name}}</option>
+                                    {% for material in frappe.get_all('Packaging Material',{"brand":brand},["material_name","name"])%}
+                                    <option value="{{material.name}}">{{material.material_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -62,8 +70,8 @@
                                     <a class="text-orange ml-auto" href="/packaging-size?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="size">
-                                    {% for item in frappe.get_all('Packaging Size',filters={}) %}
-                                    <option>{{item.name}}</option>
+                                    {% for item in frappe.get_all('Packaging Size',{"brand":brand},["size","name"]) %}
+                                    <option value="{{item.name}}">{{item.size}}</option>
                                     {% endfor %}
                                 </select>
                             </div>

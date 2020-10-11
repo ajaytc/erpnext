@@ -10,6 +10,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% set brand_suppliers = frappe.get_all('Brand Suppliers',{'brand':brand},['name','parent'] ) %}
             <div class="modal-body">
                 <form id="create_trimming">
                     <div class="row">
@@ -17,8 +18,15 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Trimming vendor")}}</label>
                                 <select class="form-control" required name="vendor">
-                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Trimming','brand':brand}) %}
-                                    <option>{{vendor.name}}</option>
+                                    {% for trim_sup in brand_suppliers %}
+                                        {% set supplier = frappe.get_all("Supplier",{"name":trim_sup["parent"],"supplier_group":"Trimming"},["is_official","supplier_group"]) %}
+                                        {% if supplier|length>0 %}
+                                            <option value="{{trim_sup.parent}}">{{trim_sup.parent}}
+                                                {% if supplier[0]["is_official"]==1 %}
+                                                    &#xf05d;
+                                                {% endif %}
+                                            </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -29,8 +37,8 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Item category")}}</label>
                                 <select class="form-control" required name="item_category">
-                                    {% for category in frappe.get_all('Trimming Category',filters={}) %}
-                                    <option>{{category.name}}</option>
+                                    {% for category in frappe.get_all('Trimming Category',{"brand":brand},["name","category_name"]) %}
+                                    <option value="{{category.name}}">{{category.category_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -44,8 +52,8 @@
                                     <a class="text-green ml-auto" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="color">
-                                    {% for color in frappe.get_all('Color',filters={}) %}
-                                    <option>{{color.name}}</option>
+                                    {% for color in frappe.get_list('Color',{"brand":brand},['name','color_name']) %}
+                                    <option value="{{color.name}}">{{color.color_name}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -56,13 +64,8 @@
                             <div class="form-group">
                                 <label class="d-flex">
                                     {{_("Material")}}
-                                    <a class="text-green ml-auto" href="/trimming-material?new=1">{{_("Add new")}}</a>
                                 </label>
-                                <select class="form-control" required name="material">
-                                    {% for material in frappe.get_all('Trimming Material',filters={}) %}
-                                    <option>{{material.name}}</option>
-                                    {% endfor %}
-                                </select>
+                                <input class="form-control" required name="material">
                             </div>
                         </div>
                     </div>
@@ -104,7 +107,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-green">{{_("Add")}}</button>
+                                <button type="submit" class="btn btn-green">{{_("Create")}}</button>
                             </div>
                         </div>
                     </div>

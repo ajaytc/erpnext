@@ -10,6 +10,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% set brand_suppliers = frappe.get_all('Brand Suppliers',{'brand':brand},['name','parent'] ) %}
             <div class="modal-body">
                 <form id="create_fabric">
                     <div class="row">
@@ -17,8 +18,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">{{_("Fabric vendor")}}</label>
                                 <select class="form-control" required name="vendor">
-                                    {% for vendor in frappe.get_all('Supplier',filters={'supplier_group':'Fabric','brand':brand}) %}
-                                    <option>{{vendor.name}}</option>
+                                    {% for fab_sup in brand_suppliers %}
+                                        {% set supplier = frappe.get_all("Supplier",{"name":fab_sup["parent"],"supplier_group":"Fabric"},["is_official","supplier_group"]) %}
+                                        {% if supplier|length>0 %}
+                                            <option value="{{fab_sup.parent}}">
+                                                {{fab_sup.parent}}
+                                                {% if supplier[0]["is_official"]==1 %}
+                                                    &#xf05d;
+                                                {% endif %}
+                                            </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
@@ -40,7 +49,7 @@
                                     <a class="ml-auto text-yellow" href="/color?new=1">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="color">
-                                    {% for color in frappe.get_list('Color',fields=['name','color_name']) %}
+                                    {% for color in frappe.get_list('Color',{"brand":brand},['name','color_name']) %}
                                     <option value="{{color.name}}">{{color.color_name}}</option>
                                     {% endfor %}
                                 </select>
@@ -55,8 +64,8 @@
                                     <a href="/fabric-width?new=1" class="text-yellow ml-auto">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="width">
-                                    {% for color in frappe.get_all('Width',filters={}) %}
-                                    <option>{{color.name}}</option>
+                                    {% for width in frappe.get_all('Width',{"brand":brand},["width","name"]) %}
+                                    <option value="{{width.name}}">{{width.width}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -70,7 +79,7 @@
                                     <a href="/composition?new=1" class="text-yellow ml-auto">{{_("Add new")}}</a>
                                 </label>
                                 <select class="form-control" required name="composition">
-                                    {% for c in frappe.get_all('Composition',filters={},fields=['name','composition_name']) %}
+                                    {% for c in frappe.get_all('Composition',filters={"brand":brand},fields=['name','composition_name']) %}
                                     <option value="{{c.name}}">{{c.composition_name}}</option>
                                     {% endfor %}
                                 </select>
@@ -105,6 +114,8 @@
     });
 
     function create_fabric(data) {
+        // console.log(data)
+        // return null
         frappe.call({
             method: 'erpnext.modehero.fabric.create_fabric',
             args: {
