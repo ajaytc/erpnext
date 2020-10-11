@@ -167,7 +167,6 @@ $("#product-only-confirmation-button").click(function(){
                     return null;
                 }
                 response_message('Unsuccessfull',r.message['message'], 'red')
-                window.location.reload()
                 return null
             }
             response_message('Unsuccessfull', 'Orders validated unsuccessfully', 'red')
@@ -190,7 +189,6 @@ $("#product-supply-confirmation-button").click(function(){
                     return null;
                 }
                 response_message('Unsuccessfull',r.message['message'], 'red')
-                window.location.reload()
                 return null
             }
             response_message('Unsuccessfull', 'Orders validated unsuccessfully.', 'red')
@@ -253,7 +251,6 @@ function modify(item){
                     return null;
                 }
                 response_message('Unsuccessfull', 'Orders not updated successfully !', 'red')
-                window.location.reload()
                 return null
             }
             response_message('Unsuccessfull', 'Orders updated unsuccessfully !', 'red')
@@ -309,7 +306,6 @@ function cancel(item){
                     return null;
                 }
                 response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
-                window.location.reload()
                 return null
             }
             response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')

@@ -531,6 +531,7 @@ def collect_sales_order_data_for_production_order(order_dic):
     item = None
     destinations_comment = ""
     one_of_sales_order_item_names = ""
+    free_size_qty = None
     for order in order_dic:
         if (one_of_sales_order_item_names==""):
             one_of_sales_order_item_names = order
@@ -540,9 +541,10 @@ def collect_sales_order_data_for_production_order(order_dic):
             item=sales_order_item.item_code
         elif(item!=sales_order_item.item_code):
             return {'status':'Different products error'}
-        free_size_qty = None
         if sales_order_item.free_size_qty!=None and sales_order_item.first_free_size_qty!=None:
-            free_size_qty = int(sales_order_item.free_size_qty) if is_number(sales_order_item.free_size_qty) else None
+            if free_size_qty==None:
+                free_size_qty = 0  
+            free_size_qty = free_size_qty + int(sales_order_item.free_size_qty) if is_number(sales_order_item.free_size_qty) else 0
             item_quantites = []
         else:
             item_quantites = frappe.get_all('Quantity Per Size',filters={'order_id':order},fields=['name','size','quantity'])

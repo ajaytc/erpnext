@@ -45,6 +45,7 @@
     </tbody>
     </table>
     <p style="display: none;">{%for size in order_details[product]["size_qty"] %}</p>
+    
     <div style="float: left; margin-right: 25px; border: none; height: 10px;">| {{size}}<br />| {{order_details[product]["size_qty"][size]}}</div>
     <p style="display: none;">{%endfor%}</p>
     <p>&nbsp;</p>
