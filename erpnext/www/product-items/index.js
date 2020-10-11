@@ -402,7 +402,7 @@ $("#pattern").change(function () {
 });
 
 $("#barcode").change(function () {
-    $("#barcode-label").html($(this).prop("files")[0].name);
+    $("#bar_codes-label").html($(this).prop("files")[0].name);
 });
 
 

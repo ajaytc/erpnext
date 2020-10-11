@@ -19,6 +19,7 @@
 
                         <select class="form-control" id="product_catagory" selected="{{frappe.get_doc('Item Group',product.item_group).item_group_name}}" required
                             name="product_cat">
+                            <option  value="" selected disabled>---:---</option>
                             {% for item_cat in frappe.get_all('Item Group',filters={'brand_name':brand},fields=["name","item_group_name"]) %}
                             {%if product.item_group==item_cat.name%}
                             {%set selected='selected'%}
@@ -38,10 +39,9 @@
                         {%set sizingAttr=''%}
                         {%endif%}
                         <label>Sizing</label>
-
+                        {%if product.sizing!=None%}
                         <select class="form-control" id="sizing" name="sizing_field" selected="{{frappe.get_doc('Sizing Scheme',product.sizing).sizing_scheme_name}}" {{sizingAttr}}>
-                            <!-- <option selected hidden value="{{product.sizing}}">{{product.sizing}}</option> -->
-                            
+                            <option  value="" selected disabled>---:---</option>
                             {% for sizing in frappe.get_all('Sizing Scheme',filters={'brand':brand},fields=["name","sizing_scheme_name"]) %}
                             {%if product.sizing==sizing.name%}
                             {%set selected='selected'%}
@@ -51,6 +51,15 @@
                             <option value="{{sizing.name}}" {{selected}} >{{sizing.sizing_scheme_name}}</option>
                             {% endfor %}
                         </select>
+                        {%else%}
+                        <select class="form-control" id="sizing" name="sizing_field" {{sizingAttr}}>
+                            <option  value="" selected disabled>---:---</option>
+                            {% for sizing in frappe.get_all('Sizing Scheme',filters={'brand':brand},fields=["name","sizing_scheme_name"]) %}
+                            <option value="{{sizing.name}}">{{sizing.sizing_scheme_name}}</option>
+                            {% endfor %}
+                        </select>
+                        {%endif%}
+
                     </div>
 
                     <div class="form-group mb-1 pb-1">
