@@ -228,5 +228,6 @@ def getAccessList():
                     accessingModules.append(mod)
 
         return accessingModules
+    return []
 
 
