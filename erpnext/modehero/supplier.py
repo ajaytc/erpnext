@@ -137,11 +137,11 @@ def add_brand_supplier(doc,method):
 
 @frappe.whitelist()
 def get_official_suppliers(group):
-    if group == "fabric":
+    if group == "Fabric":
         query = {'is_official': 1,"supplier_group":"Fabric"}
-    elif group=="trimming":
+    elif group=="Trimming":
         query = {'is_official': 1,"supplier_group":"Trimming"}
-    elif group=="packaging":
+    elif group=="Packaging":
         query = {'is_official': 1,"supplier_group":"Packaging"}
     else:
         query = {'is_official': 1}
