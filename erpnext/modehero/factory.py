@@ -40,8 +40,8 @@ def get_official_factories():
         result = []
         for x in suppliers:
             result.append({
-                'label': x.factory_name,
-                'value': x.factory_name
+                'label': x.name,
+                'value': x.name
             })
         return result
     except:

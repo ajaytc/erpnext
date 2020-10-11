@@ -25,8 +25,8 @@
         <option value="{{i.name}}">{{i.item_name}}</option>
         {% elif i.factory %}
         {% set factory = frappe.get_all("Production Factory",{"name":i.parent},["is_official"]) %}
-        <option value="{{i.name}}">{{i.parent}}
-            {% if factory|length>0 %}
+        {% if factory|length>0 %}
+            <option value="{{i.parent}}">{{i.parent}}
                 {% if factory[0]["is_official"]==1 %}
                     &#xf05d;
                 {% endif %}

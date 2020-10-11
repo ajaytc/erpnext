@@ -21,8 +21,8 @@
                 <option value="" selected disabled>{{_("Select Factory")}}</option>
                 {% for factory in factories %}
                 {% set factory_doc = frappe.get_all("Production Factory",{"name":factory.parent},["is_official"]) %}
-                <option  data-factory_name="{{factory.parent}}" value="{{factory.parent}}">{{factory.parent}} 
-                    {% if factory_doc|length==1 %}
+                {% if factory_doc|length==1 %}
+                    <option  data-factory_name="{{factory.parent}}" value="{{factory.parent}}">{{factory.parent}} 
                         {% if factory_doc[0]["is_official"]==1 %}
                             &#xf05d;
                         {% endif %}
