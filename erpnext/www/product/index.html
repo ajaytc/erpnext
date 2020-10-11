@@ -174,6 +174,7 @@
                 </div>
             </div>
             
+            {% set brand_suppliers = frappe.get_all('Brand Suppliers',{'brand':brand},['name','parent'] ) %}
             <div class="row service" style='background-color: #dddddd;padding-top:3%'>
                 <div class="col-md-4 mb-5 fab">
                     {%if suppliers['Fabric']%}
@@ -186,9 +187,16 @@
                                     <select class="form-control fab_sup" required name="fabric_sup">
                                         <option selected hidden value="{{supplier.supplier}}">
                                             {{supplier.supplier}}</option>
-                                        <!-- <option value=""></option> -->
-                                        {% for fab_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Fabric'},fields=["name"]) %}
-                                        <option value="{{fab_sup.name}}">{{fab_sup.name}}</option>
+                                        {% for fab_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":fab_sup["parent"],"supplier_group":"Fabric"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{fab_sup.parent}}">
+                                                    {{fab_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -229,9 +237,17 @@
                                 <div class="form-group mb-3 pb-1">
                                     <label>{{_("Fabric supplier")}}</label>
                                     <select class="form-control fab_sup" required name="fabric_sup">
-                                         <option value=""></option>
-                                        {% for fab_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Fabric'},fields=["name"]) %}
-                                        <option value="{{fab_sup.name}}">{{fab_sup.name}}</option>
+                                        <option  value="" selected disabled>---:---</option>
+                                        {% for fab_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":fab_sup["parent"],"supplier_group":"Fabric"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{fab_sup.parent}}">
+                                                    {{fab_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -278,9 +294,15 @@
                                     <select class="form-control trim_sup" required name="trimming_sup">
                                         <option selected hidden value="{{supplier.supplier}}">
                                             {{supplier.supplier}}</option>
-                                        <option value=""></option>
-                                        {% for trim_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Trimming'}) %}
-                                        <option value="{{trim_sup.name}}">{{trim_sup.name}}</option>
+                                        {% for trim_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":trim_sup["parent"],"supplier_group":"Trimming"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{trim_sup.parent}}">{{trim_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -320,10 +342,16 @@
                                 <div class="form-group mb-3 pb-1">
                                     <label>{{_("Trimming Supplier")}}</label>
                                     <select class="form-control trim_sup" required name="trimming_sup">
-                                       
-                                        <option value=""></option>
-                                        {% for trim_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Trimming'}) %}
-                                        <option value="{{trim_sup.name}}">{{trim_sup.name}}</option>
+                                        <option  value="" selected disabled>---:---</option>
+                                        {% for trim_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":trim_sup["parent"],"supplier_group":"Trimming"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{trim_sup.parent}}">{{trim_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -371,9 +399,15 @@
                                     <select class="form-control pack_sup" required name="packaging_sup">
                                         <option selected hidden value="{{supplier.supplier}}">
                                             {{supplier.supplier}}</option>
-                                        <option value=""></option>
-                                        {% for pack_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Packaging'}) %}
-                                        <option value="{{pack_sup.name}}">{{pack_sup.name}}</option>
+                                        {% for pack_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":pack_sup["parent"],"supplier_group":"Packaging"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{pack_sup.parent}}">{{pack_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -415,9 +449,16 @@
                                 <div class="form-group mb-3 pb-1">
                                     <label>{{_("Packaging Supplier")}}</label>
                                     <select class="form-control pack_sup" required name="packaging_sup">
-                                        <option value=""></option>
-                                        {% for pack_sup in frappe.get_all('Supplier',filters={'brand':brand,'supplier_group':'Packaging'}) %}
-                                        <option value="{{pack_sup.name}}">{{pack_sup.name}}</option>
+                                        <option  value="" selected disabled>---:---</option>
+                                        {% for pack_sup in brand_suppliers %}
+                                            {% set supplierset = frappe.get_all("Supplier",{"name":pack_sup["parent"],"supplier_group":"Packaging"},["is_official","supplier_group"]) %}
+                                            {% if supplierset|length>0 %}
+                                                <option value="{{pack_sup.parent}}">{{pack_sup.parent}}
+                                                    {% if supplierset[0]["is_official"]==1 %}
+                                                        &#xf05d;
+                                                    {% endif %}
+                                                </option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
