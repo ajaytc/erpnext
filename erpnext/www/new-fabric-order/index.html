@@ -79,7 +79,7 @@
                 <select class="form-control" id="factory_list" required name="production_factory">
                   <option disabled selected value=''>---+---</option>
                   {% for production_factory  in production_facories %}
-                  <option value="{{production_factory.name}}">{{production_factory.name}}
+                  <option value="{{production_factory.name}}">{{production_factory.factory_name}}
                     {% if production_factory["is_official"]==1 %}
                       &#xf05d;
                     {% endif %}
