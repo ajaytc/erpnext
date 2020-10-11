@@ -219,7 +219,9 @@ def create_trimming(data):
 
 @frappe.whitelist()
 def get_item(vendor):
-    return frappe.get_all('Trimming Item', filters={'trimming_vendor': vendor}, fields=['name', 'trimming_ref'])
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    return frappe.get_all('Trimming Item', filters={'trimming_vendor': vendor,'brand':brand}, fields=['name', 'trimming_ref'])
 
 
 

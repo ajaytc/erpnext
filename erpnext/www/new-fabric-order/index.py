@@ -23,6 +23,7 @@ def get_context(context):
         'Fabric', filters={'brand': brand}, fields=['fabric_ref'])
 
     context.production_facories = get_factories_by_brand(brand)
+    context.brand=brand
     
     context.fab_suppliers= get_sups_by_brand(context.brand,"Fabric")
 

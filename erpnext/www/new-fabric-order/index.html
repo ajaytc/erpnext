@@ -31,7 +31,7 @@
                 <select class="form-control" id="vendor_list" required name="fabric_vendor">
                   <option disabled selected value=''>---+---</option>
                   {% for vendor in fab_suppliers %}
-                  <option>{{vendor.name}}
+                  <option value="{{vendor.name}}">{{vendor.name}}
                     {% if vendor["is_official"]==1 %}
                       &#xf05d;
                     {% endif %}

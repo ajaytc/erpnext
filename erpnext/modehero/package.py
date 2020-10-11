@@ -214,7 +214,9 @@ def create_packaging(data):
 
 @frappe.whitelist()
 def get_item(vendor):
-    return frappe.get_all('Packaging Item', filters={'packaging_vendor': vendor}, fields=['name', 'internal_ref'])
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    return frappe.get_all('Packaging Item', filters={'packaging_vendor': vendor,'brand':brand}, fields=['name', 'internal_ref'])
 
 @frappe.whitelist()
 def get_packaging_material():

@@ -197,8 +197,8 @@ def haveAccessForSupplier(module):
         return False
 
 def haveAccessForFactory(module):
-    factories = frappe.get_all("Production Factory",{"email":frappe.session.user})
-    if len(suppliers)!=1:
+    factories = frappe.get_all("Production Factory",{"email_address":frappe.session.user})
+    if len(factories)!=1:
         return False
     factory=frappe.get_doc("Production Factory",factories[0]["name"])
     factoryDict=factory.__dict__
