@@ -59,6 +59,7 @@ def sendNotificationEmail(order, orderGroup):
         vendor = frappe.get_doc("Supplier", order.packaging_vendor)
 
     recipient = frappe.get_doc('User', order.owner)
+    brand=frappe.get_doc("Company",recipient.brand_name)
 
     templateData = {}
     templateData['recipient_name'] = order.brand
@@ -73,6 +74,8 @@ def sendNotificationEmail(order, orderGroup):
     # templateData['order_name']=order.name
     templateData['recipient'] = recipient.email
     templateData['lang'] = recipient.language
+    templateData['dashboard_link']="/supply-dashboard"
+    templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification'] = notification
     # {{order_type}}-summary?order={{order_name}}&amp;sk=1
 

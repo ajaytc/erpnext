@@ -81,6 +81,8 @@ def sendDocSubmitMail(trimOrder,document_type):
     vendor=frappe.get_doc("Supplier",trimOrder.trimming_vendor)
     recipient=frappe.get_doc('User',trimOrder.owner) 
 
+    brand=frappe.get_doc("Company",trimOrder.brand)  
+
     templateData={}
     templateData['SNF']=vendor.supplier_name
     templateData['internal_ref']=trimOrder.internal_ref
@@ -91,6 +93,8 @@ def sendDocSubmitMail(trimOrder,document_type):
     templateData['document_type']=document_type
     templateData['recipient']=recipient.email
     templateData['lang']=recipient.language
+    templateData['dashboard_link']="/supply-dashboard"
+    templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
     if(recipient.email != None):
@@ -189,6 +193,8 @@ def sendTrimmingOrderNotificationEmail(order):
     templateData['order_type']='trimming'
     templateData['recipient']=vendor.email
     templateData['country']=vendor.country
+    templateData['dashboard_link']="/supply-dashboard"
+    templateData['isSubscribed']=(vendor.is_official==1)
     templateData['notification']=notification
 
     if(vendor.email != None):

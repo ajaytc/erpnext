@@ -305,14 +305,15 @@ def sendCancelNModifyNotificationEmail(order_item,trigger):
     recipient=frappe.get_doc('User',sales_order.owner)
 
     user = frappe.get_doc('User', frappe.session.user)
-    brand = user.brand_name
+    brandName = user.brand_name
+    brand=frappe.get_doc("Company",user.brand_name)
 
 
     notification=frappe.get_doc("Notification","Supply/Purchase Order Cancel/Modify")
 
     templateData={}
     templateData['recipient_name']=customer.customer_name
-    templateData['SNF']=brand
+    templateData['SNF']=brandName
     templateData['trigger']=trigger
     templateData['internal_ref']=sales_order.internal_ref
     # templateData['brand']=sales_order.brand
@@ -322,6 +323,8 @@ def sendCancelNModifyNotificationEmail(order_item,trigger):
     # templateData['order_name']=sales_order.name
     templateData['recipient']=customer.email_address
     templateData['lang']=recipient.language
+    templateData['dashboard_link']="/client-dashboard"
+    templateData['isSubscribed']=1
     templateData['notification']=notification
 
     # new-client-order?order=SAL-ORD-2020-00048

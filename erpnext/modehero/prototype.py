@@ -46,6 +46,8 @@ def sendNotificationEmail(order):
     templateData['order_type']='prototype'
     templateData['recipient']=factory.email_address
     templateData['country']=factory.country
+    templateData['dashboard_link']="/production-dashboard"
+    templateData['isSubscribed']=(factory.is_official==1)
     templateData['notification']=notification
 
     if(factory.email_address != None):
