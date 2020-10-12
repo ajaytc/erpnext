@@ -9,6 +9,8 @@ def create_prototype_order(data):
     data = json.loads(data)
     user = frappe.get_doc('User', frappe.session.user)
     brand = user.brand_name
+    if not(check_destination(data['destination'],brand)):
+        return {"status":"Error"}
     order = frappe.get_doc({
         'doctype': 'Prototype Order',
         'internal_ref': data['internal_ref'],
@@ -159,3 +161,10 @@ def get_old_quantities_unitprice(order):
     trimming_details = get_details_trimming_from_order(order, "prototype")
 
     return {'fabric_details': fabric_details, 'trimming_details': trimming_details}
+
+def check_destination(destination,brand):
+    d = frappe.get_all("Destination",{"brand":brand,"name":destination})
+    p = frappe.get_all("Point Of Sales",{"brand":brand,"name":destination})
+    if len(p)>0 or len(d)>0:
+        return True
+    return False

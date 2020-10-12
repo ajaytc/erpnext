@@ -93,9 +93,8 @@
   },
   {
    "fieldname": "final_destination",
-   "fieldtype": "Link",
-   "label": "Final Destination",
-   "options": "Destination"
+   "fieldtype": "Data",
+   "label": "Final Destination"
   },
   {
    "fieldname": "attachments_section",
@@ -200,7 +199,7 @@
   }
  ],
  "links": [],
- "modified": "2020-04-24 19:13:53.157853",
+ "modified": "2020-10-12 08:07:09.168291",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "Prototype Order",
