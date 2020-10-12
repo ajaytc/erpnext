@@ -15,6 +15,7 @@ def get_context(context):
     supplier_list = frappe.get_all("Supplier",["name","creation","is_official","supplier_group","brand","subscribed_date","subscription_end_date","enabled"])
     factory_list = frappe.get_all("Production Factory",["name","creation","factory_name","is_official","brand","subscribed_date","subscription_end_date","enabled"])
     global_list = supplier_list + factory_list
-    context.global_list = sorted(global_list, key=lambda k: k['creation']) 
-
+    global_list = sorted(global_list, key=lambda k: k['creation'])
+    global_list.reverse()
+    context.global_list = global_list
     return context
