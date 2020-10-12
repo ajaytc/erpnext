@@ -300,6 +300,7 @@ def cancel_sales_item_orders(item_order_list):
     return {'status': 'ok'}
 
 def sendCancelNModifyNotificationEmail(order_item,trigger):
+    #send email to client
     sales_order=frappe.get_doc('Sales Order',order_item.parent)
     customer=frappe.get_doc('Customer',sales_order.customer)
     recipient=frappe.get_doc('User',sales_order.owner)

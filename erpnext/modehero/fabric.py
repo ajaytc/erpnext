@@ -75,7 +75,7 @@ def checkNSendDocSubmitMail(fabricOrder,data):
 
 
 def sendDocSubmitMail(fabricOrder,document_type):
-
+    #send email to brand
     notification=frappe.get_doc("Notification","Document added to an order summary")
     vendor=frappe.get_doc("Supplier",fabricOrder.fabric_vendor)
     recipient=frappe.get_doc('User',fabricOrder.owner)
@@ -92,7 +92,7 @@ def sendDocSubmitMail(fabricOrder,document_type):
     templateData['document_type']=document_type
     templateData['recipient']=recipient.email
     templateData['lang']=recipient.language
-    templateData['dashboard_link']="/supply-dashboard"
+    templateData['dashboard_link']="/supply-dashboard?type=fabric"
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
@@ -185,6 +185,7 @@ def create_fabric_order(data):
 
 
 def sendFabricOrderNotificationEmail(order):
+    #send email to supplier
     notification = frappe.get_doc("Notification", "Order Recieved")
     vendor = frappe.get_doc("Supplier", order.fabric_vendor)
     templateData = {}
