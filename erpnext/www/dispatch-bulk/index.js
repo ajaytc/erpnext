@@ -123,7 +123,7 @@ function open_fresh_shipment_modal(data){
     if (data[4]!=null)  modal_element.attr("data-sales_order_item",data[4]) 
     $("#shipment-order-file").prop("hidden",true)
     if (data[3].hasClass("sent-tick")){
-        modal_element.attr("dispatch_name",data[3].attr("data-dispatch"))
+        modal_element.attr("data-dispatch_name",data[3].attr("data-dispatch"))
     }
     modal_element.modal('show')
 }

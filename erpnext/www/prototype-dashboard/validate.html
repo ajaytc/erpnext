@@ -18,7 +18,7 @@
                 <th><input type="checkbox" class="selected" data-order="{{o.name}}"></th>
                 <th><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></th>
                 <th>{{frappe.db.get_value('Item',o.product,'item_name')}}</th>
-                <th>{{o.product_category}}</th>
+                <th>{{support_dic_product_cats[o.product_category]}}</th>
                 <th>{{s.size}}</th>
                 <th>{{frappe.format(o.creation, {'fieldtype': 'Date'})}}</th>
                 <th>{{o.tracking_number}}</th>

@@ -1,9 +1,4 @@
-.modified-qty{
-    color: rgb(185, 157, 157);
-}
-.sumation-row{
-    border-top:1px solid rgb(219, 210, 210);
-}
+
 .background-ash{
     background-color: rgb(213, 218, 226);
     text-align: center;
@@ -14,16 +9,7 @@ th{
 td{
     text-align: center;
 }
-.client-modal-link{
-    cursor: pointer;
-    font-weight: bold;
-}
-#order-section{
-    margin-bottom: 40px;
-}
-#supply-order-section{
-    border-top:5px solid rgb(219, 210, 210);
-}
+
 .reminder-link{
     cursor: pointer;
     font-weight: bold;
@@ -37,10 +23,12 @@ td{
 
 table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.table-custom-header) tbody tr:nth-child(2n+1) td{
     background-color: white !important;
+    border: none;
 }
 .ship-row{
     border-bottom: 1px solid #000;
 }
+
 .ship-quantity-box{
     width: 90%;
 }
@@ -50,8 +38,28 @@ table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.ta
 .shipment-tag{
     border-radius: 5px;
     background-color: rgb(192, 127, 66);
+    margin: 0 auto;
+    width: 40px;
+    float: left;
+    cursor: pointer;
 }
 .pl-tag{
     border-radius: 5px;
     background-color: rgba(64, 209, 56, 0.891);
+    margin: 0 auto;
+    width: 40px;
+    float: left;
 }
+.ship-quantity-boxs{
+    max-width: 30px;
+}
+.ship-quantity-box{
+    border: none;
+    max-width: 40px !important;
+}
+.status-div{
+    width: 120px;
+}
+/* .assh-row{
+    background-color: #f7f8fa !important;
+} */

@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import frappe
 from frappe import _
 import frappe.www.list
+from erpnext.modehero.product import get_product_cat_names
 from erpnext.modehero.user import haveAccess, haveAccessForFactory
 
 no_cache = 1
@@ -50,5 +51,6 @@ def get_context(context):
         context.prod_finished = frappe.get_all(
             'Production Order', filters={'docstatus': 1, 'production_factory': factory_name[0]['name']}, fields=['name', 'internal_ref', 'product_name', 'product_category', 'creation', 'tracking_number', 'expected_work_date'])
    
-
+    context.support_dic_product_cats = get_product_cat_names(context.preprod_onprocess+context.preprod_finished+context.prod_onprocess+context.prod_finished,brand)
     return context
+
