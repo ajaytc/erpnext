@@ -649,7 +649,8 @@ def generate_dispatch_bulk_invoice(doc_data):
     return invoice
 
 def modify_stocks_dispatch_bulk(pl,inoice,doc_data):
-    stock = frappe.get_all("Stock",{"item_type":"product","product":doc_data["production_order"].product_name},["name","quantity"])[0]
+    stock = frappe.get_all("Stock",{"item_type":"product","product":doc_data["production_order"].product_name},)[0]
+    stock = frappe.get_doc("Stock",stock["name"])
     amount = 0
     quantity_array = []
     for size in doc_data["size_qty"]:
@@ -658,18 +659,17 @@ def modify_stocks_dispatch_bulk(pl,inoice,doc_data):
     is_bulk = 1
     sales_order = None
     shipment = None 
-    order_name = None
+    order_doc = None
     if doc_data["sales_order_item"]!=None: 
         is_bulk=0
         sales_order = doc_data["sales_order_item"].name
+        order_doc = doc_data["sales_order_item"]
     else: 
-        order_name  = doc_data["production_order"]
+        order_doc  = doc_data["production_order"]
     if doc_data["shipment_order"]!=None:
         shipment = doc_data["shipment_order"].name
-    if doc_data["production_order"].free_size_qty!=None:
-        stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",None,order_name,'dispatch-bulk')
-    else:
-        stock_history = stockOut(stock.name, amount, stock.quantity-amount,"dispatch",quantity_array,order_name,'dispatch-bulk')
+    price,size_detail = get_updatestock2_params_for_dispatch(stock,quantity_array)
+    stock_history = updateStock2(stock.name, stock.quantity-amount, stock.quantity, "dispatch", price, "dispatch", size_detail,order_doc,'dispatch-bulk')
     data = {
         "is_bulk":is_bulk,
         "stock_history":stock_history.name,
@@ -818,3 +818,18 @@ def is_number(string):
         return True
     except ValueError:
         return False
+
+def get_updatestock2_params_for_dispatch(stock,quantity_array):
+    p = {stock.parent:{}}
+    size_details = None
+    total_quantity = stock.quantity
+    if len(stock.product_stock_per_size)==0 and quantity_array[0]["size"]==free_size_name:
+        p[stock.parent][""] = int(quantity_array[0]["quantity"])
+        total_quantity = total_quantity + int(quantity_array[0]["quantity"])
+    else:
+        for sizeqty in quantity_array:
+            p[stock.parent][sizeqty["size"]] = int(sizeqty["quantity"])
+            total_quantity = total_quantity + int(sizeqty["quantity"])
+        size_details = {"old":stock.product_stock_per_size,"new_incoming":p[stock.parent]}
+    total_price = calculate_price(p)[stock.parent] + int(stock.total_value)
+    return float(total_price)/total_quantity,size_details
