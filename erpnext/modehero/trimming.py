@@ -97,8 +97,8 @@ def sendDocSubmitMail(trimOrder,document_type):
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
-    if(recipient.email != None):
-        sendCustomEmail(templateData)
+    # if(recipient.email != None):
+    #     sendCustomEmail(templateData)
 
 def createShipmentOrderForTrimming(data):
     
@@ -138,17 +138,52 @@ def createShipmentOrderForTrimming(data):
 def submit_payment_proof(data):
     data = json.loads(data)
     trimOrder = frappe.get_doc('Trimming Order', data['order'])
-    trimOrder.payment_proof = data['payment_proof']
     trimOrder.comment = data['comment']
     trimOrder.confirmation_reminder=data['confirmation_reminder']
     trimOrder.profoma_reminder=data['proforma_reminder']
     trimOrder.payment_reminder=data['payment_reminder']
     trimOrder.shipment_reminder=data['shipment_reminder']
     trimOrder.reception_reminder=data['reception_reminder']
+    checkNSendProofSubmitMail(trimOrder,data)
+    trimOrder.payment_proof = data['payment_proof']
     trimOrder.save()
     frappe.db.commit()
 
     return trimOrder
+
+
+def checkNSendProofSubmitMail(order,data):
+    document_type=''
+    if((order.payment_proof == None and data['payment_proof']!='None') or order.payment_proof!= data['payment_proof'] ):
+        document_type='payment proof'
+        sendProofSubmitMail(order,document_type)
+    
+def sendProofSubmitMail(order,document_type):
+    #send email to supplier
+    notification=frappe.get_doc("Notification","Document added to an order summary")
+    vendor=frappe.get_doc("Supplier",order.trimming_vendor)
+    recipient=frappe.get_doc('User',vendor.email)
+
+    brand=frappe.get_doc("Company",order.brand) 
+
+    templateData={}
+    #SNF and brand has used as switched  SNF->brand   brand->SNF   , because this template used to send 
+    #mails to brands when doc upload,but client ask to not send mails to brands.
+    templateData['SNF']=order.brand
+    templateData['internal_ref']=order.internal_ref
+    templateData['brand']=vendor.supplier_name
+    templateData['order_date']=order.creation.date()
+    templateData['order_type']='trimming'
+    templateData['order_name']=order.name
+    templateData['document_type']=document_type
+    templateData['recipient']=recipient.email
+    templateData['lang']=recipient.language
+    templateData['dashboard_link']="/supply-dashboard"
+    templateData['isSubscribed']=(vendor.is_official==1)
+    templateData['notification']=notification
+
+    if(recipient.email != None):
+        sendCustomEmail(templateData)
 
 
 @frappe.whitelist()
