@@ -76,7 +76,7 @@ def checkNSendDocSubmitMail(trimOrder,data):
     
 
 def sendDocSubmitMail(trimOrder,document_type):
-    
+    #send email to brand
     notification=frappe.get_doc("Notification","Document added to an order summary")
     vendor=frappe.get_doc("Supplier",trimOrder.trimming_vendor)
     recipient=frappe.get_doc('User',trimOrder.owner) 
@@ -93,7 +93,7 @@ def sendDocSubmitMail(trimOrder,document_type):
     templateData['document_type']=document_type
     templateData['recipient']=recipient.email
     templateData['lang']=recipient.language
-    templateData['dashboard_link']="/supply-dashboard"
+    templateData['dashboard_link']="/supply-dashboard?type=trimming"
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
@@ -184,6 +184,7 @@ def create_trimming_order(data):
     return {'status': 'ok', 'order': order}
 
 def sendTrimmingOrderNotificationEmail(order):
+    #send email to supplier
     notification=frappe.get_doc("Notification","Order Recieved")
     vendor=frappe.get_doc("Supplier",order.trimming_vendor)
     templateData={}

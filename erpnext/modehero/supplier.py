@@ -45,6 +45,7 @@ def cancelSupplyOrder(data):
 
 
 def sendNotificationEmail(order, orderGroup):
+    #send email to brand
     notification = frappe.get_doc(
         "Notification", "Supply/Purchase Order Cancel/Modify")
 
@@ -74,7 +75,7 @@ def sendNotificationEmail(order, orderGroup):
     # templateData['order_name']=order.name
     templateData['recipient'] = recipient.email
     templateData['lang'] = recipient.language
-    templateData['dashboard_link']="/supply-dashboard"
+    templateData['dashboard_link']="/supply-dashboard?type="+orderType
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification'] = notification
     # {{order_type}}-summary?order={{order_name}}&amp;sk=1

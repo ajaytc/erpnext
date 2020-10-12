@@ -125,6 +125,7 @@ def create_production_order(data):
     return {'status': 'ok', 'order': order}
 
 def sendNotificationEmail(order):
+    #send email to factory 
     notification=frappe.get_doc("Notification","Order Recieved")
     factory=frappe.get_doc("Production Factory",order.production_factory)
     templateData={}

@@ -73,7 +73,7 @@ def checkNSendDocSubmitMail(packOrder,data):
 
 
 def sendDocSubmitMail(packOrder,document_type):
-
+    #send email to brand
     notification=frappe.get_doc("Notification","Document added to an order summary")
     vendor=frappe.get_doc("Supplier",packOrder.packaging_vendor)
     recipient=frappe.get_doc('User',packOrder.owner)
@@ -90,7 +90,7 @@ def sendDocSubmitMail(packOrder,document_type):
     templateData['document_type']=document_type
     templateData['recipient']=recipient.email
     templateData['lang']=recipient.language
-    templateData['dashboard_link']="/supply-dashboard"
+    templateData['dashboard_link']="/supply-dashboard?type=packaging"
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
@@ -181,6 +181,7 @@ def create_packaging_order(data):
     return {'status': 'ok', 'order': order}
 
 def sendPackagingOrderNotificationEmail(order):
+    #send email to supplier
     notification=frappe.get_doc("Notification","Order Recieved")
     vendor=frappe.get_doc("Supplier",order.packaging_vendor)
     templateData={}
