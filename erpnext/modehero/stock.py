@@ -627,6 +627,7 @@ def updateQuantity(stock_name, quantity, price, size_detail):
 
 def updateStock2(stock_name, quantity, old_quantity, description, price, item_type, size_detail,order,order_type):
     # size_detail is not None only for product stocks
+    history_doc = None
     quantity = int(quantity)
     if(old_quantity == None):
         old_quantity = int(frappe.get_doc('Stock', stock_name).quantity)
@@ -638,26 +639,26 @@ def updateStock2(stock_name, quantity, old_quantity, description, price, item_ty
         if size_detail != None:
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
-            stockIn(stock_name, amount, quantity,
+            history_doc = stockIn(stock_name, amount, quantity,
                     description, stock_history_sizeqty,order,order_type)
             size_detail = get_final_size_quantities(size_detail, "in")
         else:
-            stockIn(stock_name, amount, quantity, description, None,order,order_type)
+            history_doc = stockIn(stock_name, amount, quantity, description, None,order,order_type)
     elif old_quantity > quantity:
         amount = old_quantity-quantity
         if size_detail != None:
             stock_history_sizeqty = get_size_qty_history(
                 size_detail["new_incoming"])
-            stockOut(stock_name, amount, quantity,
+            history_doc = stockOut(stock_name, amount, quantity,
                      description, stock_history_sizeqty,order,order_type)
             size_detail = get_final_size_quantities(size_detail, "out")
         else:
-            stockOut(stock_name, amount, quantity, description, None,order,order_type)
+            history_doc = stockOut(stock_name, amount, quantity, description, None,order,order_type)
     else:
         pass
 
     updateQuantity(stock_name, quantity, price, size_detail)
-
+    return history_doc
 
 def get_size_qty_history(size_detail):
     doc_list = []
