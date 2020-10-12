@@ -15,7 +15,7 @@
             <tr>
                 <td><a href="/prototype-summary?order={{o.name}}">{{o.internal_ref}}</a></td>
                 <td>{{frappe.db.get_value('Item',o.product,'item_name')}}</td>
-                <td>{{o.product_category}}</td>
+                <td>{{support_dic_product_cats[o.product_category]}}</td>
                 <td>{{o.creation.date()}}</td>
                 <td>{{o.expected_work_date}}</td>
                 <td>{{o.tracking_number}}</td>

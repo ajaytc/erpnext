@@ -362,4 +362,16 @@ def get_sizing_scheme(itemcode):
     if len(sizing)==0:
         return "error"
     return sizing[0].sizing
+
+def get_product_cat_names(all_orders,brand):
+    result = {}
+    for order in all_orders:
+        if order["product_category"] in result:
+            continue
+        cat_docs = frappe.get_all("Item Group",{"brand_name":brand,"name":order["product_category"]},["item_group_name"])
+        if len(cat_docs)>0:
+            result[order["product_category"]] = cat_docs[0]["item_group_name"]
+        else:
+            result[order["product_category"]] = ""
+    return result
     
