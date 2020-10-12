@@ -37,8 +37,11 @@
                 {% set url=""%}
                 {%endif%}
                 
-
+                {%if stockHistoryDic[historyName]['order']!=None%}
                 <td><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></td>
+                {%else%}
+                <td><p>{{stockHistoryDic[historyName]['order']}}</p></td>
+                {%endif%}
                 {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
                 <td> {{qty}}</td>
                 {% endfor %}
@@ -120,7 +123,11 @@
                 {%endif%}
                 {{url}}
 
-                <th><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></th>
+                {%if stockHistoryDic[historyName]['order']!=None%}
+                <td><a href={{url}}>{{stockHistoryDic[historyName]['order']}}</a></td>
+                {%else%}
+                <td><p></p></td>
+                {%endif%}
                 <!-- <td> {{stockHistoryDic[historyName]['order']}}</td> -->
                 {% for size,qty in stockHistoryDic[historyName]['sizeNqty'].items() %}
                 <td> {{qty}}</td>
