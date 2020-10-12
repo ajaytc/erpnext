@@ -24,6 +24,7 @@
     <div class="col-sm-12">
         <div class="form-group">
             <select class="form-control {{class}}" id="{{id}}">
+                <option  value="" selected disabled>---:---</option>
                 {% for i in items %}
                 {% if typetwo %}
                 <option value="{{i.name}}">{{i.item_name}}</option>
@@ -80,7 +81,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <select class="form-control" id="category_list">
-                                            <option value=""></option>
+                                            <option  value="" selected disabled>---:---</option>
                                             {{dropdown2(categories,false,true)}}
                                         </select>
                                     </div>
