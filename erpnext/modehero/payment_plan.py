@@ -46,7 +46,15 @@ def calculate_order_amount(data):
     elif(data['plan_period'] == 'Annually'):
         payment = payment_plan.annual_price
 
-    payment = int(payment*100)
+    brandUser=frappe.get_doc('User', frappe.session.user)
+    if(brandUser.country=='France'):
+        vat=20
+    else:
+        vat=0
+    planPrice=payment
+    vatAmount=float(payment)*(vat/100)
+    fullPayment = float(payment)+float(vatAmount)
+    fullPayment=int(fullPayment*100)
 
     # Replace this constant with a calculation of the order's amount
 
@@ -54,20 +62,23 @@ def calculate_order_amount(data):
 
     # people from directly manipulating the amount on the client
 
-    return payment
+    return fullPayment,planPrice
 
 
 @frappe.whitelist()
 def create_payment(data):
     try:
-
+        
         data = json.loads(data)
+        amountPrice,planPrice=calculate_order_amount(data)
         intent = stripe.PaymentIntent.create(
-            amount=calculate_order_amount(data),
+            amount=amountPrice,
             currency='usd'
         )
         return{
-          'clientSecret': intent['client_secret']
+          'clientSecret': intent['client_secret'],
+          'amount':planPrice,
+          'fullpayment':float(amountPrice/100)
         }
 
     except Exception as e:
@@ -76,6 +87,7 @@ def create_payment(data):
 
 @frappe.whitelist()
 def completeSubscription(data):
+    dateformat = '%d/%m/%Y'
     data = json.loads(data)
     brandName = frappe.get_doc('User', frappe.session.user).brand_name
     brand = frappe.get_doc('Company', brandName)
@@ -84,7 +96,9 @@ def completeSubscription(data):
         brand.subscription_end_date = getNewExpireDate(data, brand)
     else:
         newSubscribedPeriod=getSubscriptionPeriod(data['plan_period'])
-        brand.subscription_end_date=datetime.now()+timedelta(days=newSubscribedPeriod)
+        trialPeriod=frappe.get_all("System Data",filters={'type':'brand-trial-period'},fields=['value'])[0]
+        
+        brand.subscription_end_date= datetime.strptime(frappe.format(brand.creation, 'Date'), dateformat) +timedelta(days=int(trialPeriod['value']))+timedelta(days=newSubscribedPeriod)
 
     brand.subscription_period = data['plan_period']
     brand.subscribed_date = datetime.now()
@@ -98,6 +112,8 @@ def completeSubscription(data):
     brand.stock=paymentPlan.stock
     brand.snf=paymentPlan.snf
     brand.no_of_clients=paymentPlan.no_of_clients
+    brand.amount=data['amount']
+    brand.fullpayment=data['fullpayment']
 
     brand.enabled = 1
     brand.save()

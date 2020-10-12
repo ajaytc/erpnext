@@ -113,7 +113,9 @@
   "shipment",
   "snf",
   "stock",
-  "no_of_clients"
+  "no_of_clients",
+  "amount",
+  "fullpayment"
  ],
  "fields": [
   {
@@ -778,13 +780,23 @@
    "fieldname": "no_of_clients",
    "fieldtype": "Int",
    "label": "No of Clients"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Data",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "fullpayment",
+   "fieldtype": "Data",
+   "label": "Full Payment"
   }
  ],
  "icon": "fa fa-building",
  "idx": 1,
  "image_field": "company_logo",
  "links": [],
- "modified": "2020-10-09 15:39:11.247073",
+ "modified": "2020-10-12 13:25:44.247341",
  "modified_by": "Administrator",
  "module": "Setup",
  "name": "Company",

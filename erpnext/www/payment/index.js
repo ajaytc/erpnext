@@ -27,7 +27,7 @@ function makeStripeIntent() {
     },
     callback: function (r) {
       if (!r.exc) {
-        payWithCard(stripe, card, r.message.clientSecret);
+        payWithCard(stripe, card, r.message.clientSecret,r.message.amount,r.message.fullpayment);
 
       } else {
         console.log(r)
@@ -36,13 +36,15 @@ function makeStripeIntent() {
   })
 }
 
-function subscriptionComplete() {
+function subscriptionComplete(amount,fullpayment) {
   frappe.call({
     method: 'erpnext.modehero.payment_plan.completeSubscription',
     args: {
       data: {
         plan_name: '{{plan.name}}',
-        plan_period: '{{plan_period}}'
+        plan_period: '{{plan_period}}',
+        amount:amount,
+        fullpayment:fullpayment
       }
     },
     callback: function (r) {
@@ -126,7 +128,7 @@ $('#submit').click(function (event) {
 
 // prompt the user to enter authentication details without leaving your page.
 
-var payWithCard = function (stripe, card, clientSecret) {
+var payWithCard = function (stripe, card, clientSecret,amount,fullpayment) {
 
   loading(true);
 
@@ -154,7 +156,7 @@ var payWithCard = function (stripe, card, clientSecret) {
 
         // The payment succeeded!
 
-        orderComplete(result.paymentIntent.id);
+        orderComplete(result.paymentIntent.id,amount,fullpayment);
 
       }
 
@@ -168,7 +170,7 @@ var payWithCard = function (stripe, card, clientSecret) {
 
 // Shows a success message when the payment is complete
 
-var orderComplete = function (paymentIntentId) {
+var orderComplete = function (paymentIntentId,amount,fullpayment) {
 
   loading(false);
 
@@ -176,7 +178,7 @@ var orderComplete = function (paymentIntentId) {
   document.querySelector(".result-message").classList.remove("hidden");
 
   document.querySelector("button").disabled = true;
-  subscriptionComplete()
+  subscriptionComplete(amount,fullpayment)
   makeDom()
 
 

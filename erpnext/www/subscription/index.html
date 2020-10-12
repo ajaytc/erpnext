@@ -4,13 +4,27 @@
 <!-- <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script> -->
 <h2 style="padding-top: 6%;">Subscription Plans</h2>
 {%if paymentPlan%}
-<div class="subdiv">
+<div class="subdiv row">
+    <div class="col-6">
+        <div class="card bg-primary text-white subscribedCard" style="width: 100%;">
+            <div class="card-body"> <strong>You have been subscribed!!</strong> </div>
+            
+            <p class="subdiv">{{_("Subscribed Payment Plan")}} - <span>{{paymentPlan.plan_name}}</span> </p>
+            <p class="subdiv">{{_("Subscribed until")}} - <span>{{brand.subscription_end_date}}</span> </p>
     
-    <div class="card bg-primary text-white subscribedCard" style="width: 50%;">
-        <div class="card-body"> <strong>You have been subscribed!!</strong> </div>
-        
-        <p class="subdiv">{{_("Subscribed Payment Plan")}} - <span>{{paymentPlan.plan_name}}</span> </p>
-        <p class="subdiv">{{_("Subscribed until")}} - <span>{{brand.subscription_end_date}}</span> </p>
+        </div>
+    </div>
+    
+    <div class="col-6" id="order_doc">
+
+        <p>{{_("Invoice")}}</p>
+        <!-- to put document -->
+        <a href="#" class="order-summary-download" id="pdf_doc" style="padding-bottom: 0%;">
+            <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
+            <span>{{_('Order Document')}}</span>
+        </a>
+
+
 
     </div>
 
@@ -210,5 +224,11 @@
             </p>
       
           </form>
+    </div>
+</div>
+
+<div id="full">
+    <div id="doc" style="display: none;">
+        {{template}}
     </div>
 </div>

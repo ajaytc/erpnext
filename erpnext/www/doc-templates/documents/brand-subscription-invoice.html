@@ -1,0 +1,106 @@
+<div>
+    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="https://blog.modehero.com/wp-content/uploads/2020/04/logo-mode-hero-moyen.png" alt="Logo" /></div>
+    <div style="text-align: center;"><span style="font-size: 14pt;">INVOICE</span></div>
+    </div>
+    <div style="text-align: right; padding-right: 2%;">
+    <div>
+    <ul style="list-style-type: none;">
+    <ul style="list-style-type: none;">
+    <li><span id="date"> {{subscribedDate}} </span></li>
+    </ul>
+    </ul>
+    <br />
+    <ul style="list-style-type: none;">
+    <li><strong>Invoiced To<br /></strong>
+    <p>{{brandName}}</p>
+    <p style="display: none;">{%if brandAddress%}</p>
+    <p>{{brandAddress}}</p>
+    <p style="display: none;">{%endif%}</p>
+    <p style="display: none;">{%if vatRate!=0%}</p>
+    <p>{{vatRate}}</p>
+    <p style="display: none;">{%endif%}</p>
+    </li>
+    <li>&nbsp;</li>
+    </ul>
+    </div>
+    </div>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Subscription</strong></td>
+    </tr>
+    </tbody>
+    </table>
+    <hr />
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">Subscription Plan</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{subscription_plan_name}}</td>
+    </tr>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">Subscription End Date</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{subscription_end_date}}</td>
+    </tr>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 10px;">Amount</td>
+    <td style="width: 18.9011%; border: none; height: 10px;">{{price}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>{%for module in modules%}</p>
+    <p style="display: none;">{%if module['value']==1%}</p>
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 5px;">{{module['name']}}</td>
+    <td style="width: 18.9011%; border: none; height: 5px;"><input checked="checked" type="checkbox" /></td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%else%}</p>
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    <tbody>
+    <tr style="height: 10px;">
+    <td style="width: 18.9011%; border: none; height: 5px;">{{module['name']}}</td>
+    <td style="width: 18.9011%; border: none; height: 5px;"><input type="checkbox" /></td>
+    </tr>
+    </tbody>
+    </table>
+    <p style="display: none;">{%endif%}</p>
+    <p>{%endfor%}</p>
+    <hr />
+    <table style="border-collapse: collapse; border: none; width: 100%;" border="1">
+    <tbody>
+    <tr style="height: 22px;">
+    <td style="width: 18.9011%; border: none; height: 22px;"><span style="font-size: 10pt;">TOTAL</span></td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">EUR</td>
+    <td style="width: 18.9011%; border: none; height: 22px;">{{price}}</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">VAT Rate%</td>
+    <td style="width: 18.9011%; border: none;">{{vatRate}}</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">VAT Amount</td>
+    <td style="width: 18.9011%; border: none;">{{vatAmount}}</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    </tr>
+    <tr>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">Total to pay EUR</td>
+    <td style="width: 18.9011%; border: none;">&nbsp;</td>
+    <td style="width: 18.9011%; border: none;">{{totalPay}}</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>&nbsp;</p>
