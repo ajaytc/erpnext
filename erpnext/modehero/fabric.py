@@ -96,8 +96,8 @@ def sendDocSubmitMail(fabricOrder,document_type):
     templateData['isSubscribed']=(brand.enabled==1)
     templateData['notification']=notification
 
-    if(recipient.email != None):
-        sendCustomEmail(templateData)
+    # if(recipient.email != None):
+        # sendCustomEmail(templateData)
 
 def createShipmentOrderForFabric(data):
     user = frappe.get_doc('User', frappe.session.user)
@@ -137,18 +137,51 @@ def createShipmentOrderForFabric(data):
 def submit_payment_proof(data):
     data = json.loads(data)
     fabricOrder = frappe.get_doc('Fabric Order', data['order'])
-    fabricOrder.payment_proof = data['payment_proof']
     fabricOrder.comment = data['comment']
     fabricOrder.confirmation_reminder = data['confirmation_reminder']
     fabricOrder.profoma_reminder = data['proforma_reminder']
     fabricOrder.payment_reminder = data['payment_reminder']
     fabricOrder.shipment_reminder = data['shipment_reminder']
     fabricOrder.reception_reminder = data['reception_reminder']
+    checkNSendProofSubmitMail(fabricOrder,data)
+    fabricOrder.payment_proof = data['payment_proof']
     fabricOrder.save()
     frappe.db.commit()
 
     return fabricOrder
 
+def checkNSendProofSubmitMail(fabricOrder,data):
+    document_type=''
+    if((fabricOrder.payment_proof == None and data['payment_proof']!='None') or fabricOrder.payment_proof!= data['payment_proof'] ):
+        document_type='payment proof'
+        sendProofSubmitMail(fabricOrder,document_type)
+    
+def sendProofSubmitMail(fabricOrder,document_type):
+    #send email to supplier
+    notification=frappe.get_doc("Notification","Document added to an order summary")
+    vendor=frappe.get_doc("Supplier",fabricOrder.fabric_vendor)
+    recipient=frappe.get_doc('User',vendor.email)
+
+    brand=frappe.get_doc("Company",fabricOrder.brand) 
+
+    templateData={}
+    #SNF and brand has used as switched  SNF->brand   brand->SNF   , because this template used to send 
+    #mails to brands when doc upload,but client ask to not send mails to brands.
+    templateData['SNF']=fabricOrder.brand
+    templateData['internal_ref']=fabricOrder.internal_ref
+    templateData['brand']=vendor.supplier_name
+    templateData['order_date']=fabricOrder.creation.date()
+    templateData['order_type']='fabric'
+    templateData['order_name']=fabricOrder.name
+    templateData['document_type']=document_type
+    templateData['recipient']=recipient.email
+    templateData['lang']=recipient.language
+    templateData['dashboard_link']="/supply-dashboard"
+    templateData['isSubscribed']=(vendor.is_official==1)
+    templateData['notification']=notification
+
+    if(recipient.email != None):
+        sendCustomEmail(templateData)
 
 @frappe.whitelist()
 def create_fabric_order(data):

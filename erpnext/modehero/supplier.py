@@ -80,8 +80,8 @@ def sendNotificationEmail(order, orderGroup):
     templateData['notification'] = notification
     # {{order_type}}-summary?order={{order_name}}&amp;sk=1
 
-    if(recipient.email != None):
-        sendCustomEmail(templateData)
+    # if(recipient.email != None):
+    #     sendCustomEmail(templateData)
 
 
 @frappe.whitelist()
