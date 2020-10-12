@@ -26,11 +26,11 @@
                 {% for order in presenting_order_data[location]["orders"] %}
                     {% set ns.soi_name = order[soi_name_index]  %}
                     <tr class="assh-row">
-                        <td rowspan="{{order[sent_history_index]|length + 4}}" scope="rowgroup">
+                        <td rowspan="{{order[sent_history_index]|length + 3}}" scope="rowgroup">
                             {% if ns.soi_name!=None %}{{order[soi_creation_time_index].strftime('%Y-%m-%d')}}
                             {% elif order[po_creation_time_index]!=None %}{{order[po_creation_time_index].strftime('%Y-%m-%d')}}{% endif %}
                         </td>
-                        <td rowspan="{{order[sent_history_index]|length + 4}}" scope="rowgroup">
+                        <td rowspan="{{order[sent_history_index]|length + 3}}" scope="rowgroup">
                             {% if ns.soi_name!=None %}{{ order[soi_parent_index] }}{% else %}{{ order[if_index] }}{% endif %} <br>
                              {{ order[item_name_index] }}
                         </td>
@@ -113,6 +113,8 @@
                     </tr>
                     {% endfor %}
                     <tr class="ship-row assh-row">
+                        <td></td>
+                        <td></td>
                         <td>
                             {% if order[is_tickable_index]==1 %}
                                 {% if order[current_active_shipment_index] != None %}
