@@ -148,7 +148,17 @@
           <td class="accessPart">{{_("Days of Trial")}}</td>
 
           <td><label class="custom-checkbox">
-              {{plan.trial_days}}
+              {{trialdays}}
+
+            </label></td>
+
+
+        </tr>
+        <tr>
+          <td class="accessPart">{{_("Vat Rate %")}}</td>
+
+          <td><label class="custom-checkbox">
+              {{vat_rate}}
 
             </label></td>
 
@@ -175,7 +185,7 @@
 
       </tbody>
     </table>
-    <button id="testdisable">disable</button>
+    <!-- <button id="testdisable">disable</button> -->
     <!-- Display a payment form -->
     <div style="align-items: center;padding-left:15px;">
       <h2 style="margin-bottom: 0px;">Payment Section</h2>
@@ -189,7 +199,7 @@
 
           <div class="spinner hidden" id="spinner"></div>
 
-          <span id="button-text">Pay ${{payAmount}}</span>
+          <span id="button-text">Pay ${{fullPayment}}</span>
 
         </button>
 

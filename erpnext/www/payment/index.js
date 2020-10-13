@@ -54,6 +54,7 @@ function subscriptionComplete(amount,fullpayment) {
           indicator: 'green',
           message: __('Payment Completed Successfully')
       });
+      window.location.href="/subscription"
 
       } else {
         console.log(r)
