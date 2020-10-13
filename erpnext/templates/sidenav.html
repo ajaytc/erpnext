@@ -32,6 +32,7 @@
     <a href="/brand-dashboard">
         <i class="custom-icon icon-home"></i> {{_("Home")}}
     </a>
+    {% if 'Administrator' not in roles %}
     {%if 'client' in accessList%}
     <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapse3"
         aria-expanded="false" aria-controls="collapse3">
@@ -105,6 +106,7 @@
         </div>
     </div>
     {%endif%}
+
     {%if 'supply' in accessList%}
     <a href="#" class="list-group-item" type="button" data-toggle="collapse" data-target="#collapseOne"
         aria-expanded="false" aria-controls="collapseOne">
@@ -444,6 +446,7 @@
         </div>
     </div>
     {%endif%}
+    {%endif%}
     {% if 'Administrator' in roles %}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse7"
         aria-expanded="false" aria-controls="collapse7">
@@ -510,6 +513,8 @@
         </div>
     </div>
     {%endif%}
+    {% if 'Administrator' not in roles %}
+    {%if 'stock' in accessList%}
     <a href="#" class="list-group-item " type="button" data-toggle="collapse" data-target="#collapse8"
         aria-expanded="false" aria-controls="collapse8">
         <i class="custom-icon icon-settings"></i> {{_("PL & Invoice")}}
@@ -539,6 +544,8 @@
             
         </div>
     </div>
+    {%endif%}
+    {%endif%}
     {% if 'Administrator' not in roles %}
     <a href="/subscription" class="list-group-item " type="button">
         <i class="custom-icon icon-document"></i> {{_("Subscription")}}

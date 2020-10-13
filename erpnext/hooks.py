@@ -617,7 +617,7 @@ website_user_home_page = '/'
 role_home_page = {
     "Customer": "/client-dashboard",
     "Brand User": "/brand-dashboard",
-    "Administrator": "/desk",
+    "Administrator": "/brand-dashboard",
     "Trimming Vendor": "/supply-dashboard",
     "Fabric Vendor": "/supply-dashboard",
     "Packaging Vendor": "/supply-dashboard",
