@@ -146,11 +146,14 @@ const productUpdateCallback = (e) => {
         },
         callback: function (r) {
             if (!r.exc) {
-                let table = generateSizingTable(r.message.sizes)
-                // console.log(table)
-                $(e.target).parent().parent().parent().parent().parent().parent().parent().find('.table-section').html(table)
-                $('.qty>td>input').change(priceUpdateCallback)
+                if(r.message.sizes.length>0){
+                    let table = generateSizingTable(r.message.sizes)
+                    // console.log(table)
+                    $(e.target).parent().parent().parent().parent().parent().parent().parent().find('.table-section').html(table)
+                    $('.qty>td>input').change(priceUpdateCallback)
+                }
                 getSupplierDetails($('#product').find('option:selected').val())
+                    
             }
         }
     });
@@ -287,7 +290,7 @@ $('#submit').click(() => {
     })
 
     console.log(product, qtys)
-    if (allnull) {
+    if (allnull && $('#product-table').length>0 ) {
         frappe.throw(frappe._("Please fill quantities"))
     }
 

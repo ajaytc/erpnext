@@ -83,8 +83,8 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
                 fabSupplierOb["fabric_consumption"] = supplier.fabric_consumption
                 fabSupplierOb["fabric_status"] = supplier.fabric_status
 
-                fabSupplierOb["color"] = fabric.color
-                fabSupplierOb["width"] = fabric.width
+                fabSupplierOb["color"] = frappe.get_doc("Color",fabric.color).color_name 
+                fabSupplierOb["width"] = frappe.get_doc("Width",fabric.width).width 
                 fabSupplierOb["fabric_way"] = fabric.fabric_way
                 fabSuppliers.append(fabSupplierOb)
         elif (supplier.supplier_group == 'Trimming'):
@@ -104,7 +104,7 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
                 trimOb["trimming_consumption"] = supplier.trimming_consumption
                 trimOb["trimming_status"] = supplier.trimming_status
 
-                trimOb["color"] = trim.color
+                trimOb["color"] = frappe.get_doc("Color",trim.color).color_name  
                 trimOb["size"] = trim.trimming_size
 
                 trimSuppliers.append(trimOb)

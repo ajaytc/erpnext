@@ -32,7 +32,7 @@
                                 <li>
                                     <span>{{_("Product Name")}}</span>
                                     <span id="product_name">
-                                        {{order.product_name}}
+                                        {{frappe.get_doc("Item",order.product_name).item_name}}
                                     </span>
                                 </li>
                                 <li>
@@ -225,6 +225,7 @@
 
                     </div>
 
+                    {%if order.quantity_per_size|length>0 %}
                     <div class="row mt-3 table-section" id="sizeTable">
                         <table class="table table-bordered">
                             <thead>
@@ -246,6 +247,7 @@
                             </tbody>
                         </table>
                     </div>
+                    {%endif%}
 
                     <div class="row">
                         <table class="table table-bordered pricing-table">
