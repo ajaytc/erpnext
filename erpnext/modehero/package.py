@@ -62,6 +62,17 @@ def updateSupplyStock(order):
                  supply_stock[0].quantity, "Packaging", order.price_per_unit,"packaging",None,order,"packaging")
     
 
+
+@frappe.whitelist()
+def get_packaging_price(item):
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        price= frappe.get_all('Packaging Item', filters={'internal_ref': item,'brand':brand}, fields=['name', 'price'])
+        return price[0]
+    except:
+        return None
+
 def checkNSendDocSubmitMail(packOrder,data):
     document_type=''
     if(packOrder.confirmation_doc == None and data['confirmation_doc']!='None'):

@@ -63,7 +63,16 @@ def updateSupplyStock(order):
     updateStock2(supply_stock[0].name, float(supply_stock[0].quantity)+float(order.quantity),
                  supply_stock[0].quantity, "Trimming", order.price_per_unit,"trimming",None,order,"trimming")
 
-    
+
+@frappe.whitelist()
+def get_trimming_price(item):
+    user = frappe.get_doc('User', frappe.session.user)
+    brand = user.brand_name
+    try:
+        price= frappe.get_all('Trimming Item', filters={'internal_ref': item,'brand':brand}, fields=['name', 'price'])
+        return price[0]
+    except:
+        return None
 
 def checkNSendDocSubmitMail(trimOrder,data):
     document_type=''
