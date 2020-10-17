@@ -12,7 +12,7 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                                 <th>Minimum order quantity</th>\
                                 <th>ORDER</th>\
                                 <th>Stock at destination</th>\
-                                <th>Internal referance</th>\
+                                <th>REFERANCE</th>\
                                 <th></th>\
                             </thead>\
                             <tbody class="tbody-supply-order-section">\
@@ -218,7 +218,7 @@ function validate_product_and_supply(){
         return null
     }
     SUPPLY_ORDER_DETAILS = supply_order_details
-    $("#product-supply-confirmation-modal-body").text("You have selected only "+Object.keys(SALES_ORDER_DETAILS).length+" order blocks and supply orders from "+Object.keys(SUPPLY_ORDER_DETAILS).length +" supply. Are you sure want to confirm?")
+    $("#product-supply-confirmation-modal-body").text("Validate all your Supply now, after they won’t be accessible. Product and Supply will be sent to production")
     $("#product-supply-confirmation-modal").modal("show")
 }
 
@@ -227,7 +227,7 @@ function validate_product_only(){
     if (item_amount==0){
         return null
     }
-    $("#product-only-confirmation-modal-body").text("You have selected only "+item_amount+" order blocks and no supply. Are you sure want to confirm?")
+    $("#product-only-confirmation-modal-body").text("You haven't ordered any Supply. After validation Supplies won’t be accessible. Product alone is sent to production")
     $("#product-only-confirmation-modal").modal("show")
 }
 
