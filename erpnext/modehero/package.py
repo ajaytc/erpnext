@@ -1,6 +1,7 @@
 import frappe
 import json
 from frappe.email.doctype.notification.notification import sendCustomEmail
+from erpnext.modehero.stock import updateStock2
 
 @frappe.whitelist(allow_email_guest=True)
 def submit_pack_vendor_summary_info(data):
@@ -44,6 +45,7 @@ def submit_pack_vendor_summary_info(data):
         if(packOrder.carrier!='' or packOrder.tracking_number!='' or packOrder.shipment_date!=''):
             packOrder.docstatus = 3
             createShipmentOrderForPackage(data)
+            updateSupplyStock(packOrder)
         elif hasShipment:
             frappe.db.delete("Shipment Order",{'packaging_order_id': packOrder.name})
     try:
@@ -52,7 +54,12 @@ def submit_pack_vendor_summary_info(data):
     except:
         frappe.throw(frappe._("Canceled Orders can't modify"))
     
+def updateSupplyStock(order):
+    supply_stock = frappe.get_all('Stock', filters={
+        'item_type': 'packaging', 'parent':order.packaging_item},fields=["quantity","name"])
 
+    updateStock2(supply_stock[0].name, float(supply_stock[0].quantity)+float(order.quantity),
+                 supply_stock[0].quantity, "Packaging", order.price_per_unit,"packaging",None,order,"packaging")
     
 
 def checkNSendDocSubmitMail(packOrder,data):

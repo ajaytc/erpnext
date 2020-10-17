@@ -1,7 +1,7 @@
 import frappe
 import json
 from frappe.email.doctype.notification.notification import sendCustomEmail
-
+from erpnext.modehero.stock import updateStock2
 
 @frappe.whitelist(allow_email_guest=True)
 def submit_trim_vendor_summary_info(data):
@@ -45,6 +45,7 @@ def submit_trim_vendor_summary_info(data):
         if(trimOrder.carrier!='' or trimOrder.tracking_number!='' or trimOrder.shipment_date!=''):
             trimOrder.docstatus = 3
             createShipmentOrderForTrimming(data)
+            updateSupplyStock(trimOrder)
         elif hasShipment:
             frappe.db.delete("Shipment Order",{'trimming_order_id': trimOrder.name})
 
@@ -55,7 +56,12 @@ def submit_trim_vendor_summary_info(data):
     except:
         return trimOrder
     
+def updateSupplyStock(order):
+    supply_stock = frappe.get_all('Stock', filters={
+        'item_type': 'trimming', 'parent':order.trimming_item},fields=["quantity","name"])
 
+    updateStock2(supply_stock[0].name, float(supply_stock[0].quantity)+float(order.quantity),
+                 supply_stock[0].quantity, "Trimming", order.price_per_unit,"trimming",None,order,"trimming")
 
     
 

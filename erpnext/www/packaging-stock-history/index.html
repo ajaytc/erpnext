@@ -21,6 +21,12 @@
                 {% set url="/production-summary?order="+o.linked_order%}
                 {% elif o.order_type=="prototype" %}
                 {% set url="/prototype-summary?order="+o.linked_order%}
+                {% elif o.order_type=="fabric" %}
+                {% set url="/fabric-summary?order="+o.linked_order%}
+                {% elif o.order_type=="trimming" %}
+                {% set url="/trimming-summary?order="+o.linked_order%}
+                {% elif o.order_type=="packaging" %}
+                {% set url="/packaging-summary?order="+o.linked_order%}
                 {% else %}
                 {% set url=""%}
                 {%endif%}

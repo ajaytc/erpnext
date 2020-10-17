@@ -1,6 +1,7 @@
 import frappe
 import json
 from frappe.email.doctype.notification.notification import sendCustomEmail
+from erpnext.modehero.stock import updateStock2
 
 
 @frappe.whitelist(allow_email_guest=True)
@@ -45,6 +46,7 @@ def submit_fabric_vendor_summary_info(data):
         if(fabricOrder.carrier!='' or fabricOrder.tracking_number!='' or fabricOrder.shipment_date!=''):
             fabricOrder.docstatus = 3
             createShipmentOrderForFabric(data)
+            updateSupplyStock(fabricOrder)
         elif hasShipment:
             frappe.db.delete("Shipment Order",{'fabric_order_id': fabricOrder.name})
 
@@ -54,6 +56,12 @@ def submit_fabric_vendor_summary_info(data):
     except:
         frappe.throw(frappe._("Canceled Orders can't modify"))
     
+def updateSupplyStock(order):
+    supply_stock = frappe.get_all('Stock', filters={
+        'item_type': 'fabric', 'parent':order.fabric_ref},fields=["quantity","name"])
+
+    updateStock2(supply_stock[0].name, float(supply_stock[0].quantity)+float(order.quantity),
+                 supply_stock[0].quantity, "Fabric", order.price_per_unit,"fabric",None,order,"fabric")
 
     
 
