@@ -25,6 +25,7 @@ table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.ta
     background-color: white !important;
     border: none;
 }
+
 .ship-row{
     border-bottom: 1px solid #000;
 }
@@ -39,17 +40,21 @@ table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.ta
     border-radius: 5px;
     background-color: rgb(192, 127, 66);
     margin: 0 auto;
-    width: 40px;
+    width: 36px;
+    margin-right: 2px;
     float: left;
-    cursor: pointer;
+    font-size: 75%;
 }
 .pl-tag{
     border-radius: 5px;
     background-color: rgba(64, 209, 56, 0.891);
     margin: 0 auto;
-    width: 40px;
+    width: 36px;
     float: left;
+    margin-left: 2px;
+    font-size: 75%;
 }
+
 .ship-quantity-boxs{
     max-width: 30px;
 }
@@ -60,6 +65,3 @@ table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.ta
 .status-div{
     width: 120px;
 }
-/* .assh-row{
-    background-color: #f7f8fa !important;
-} */

@@ -29,9 +29,73 @@ td{
 th{
     text-align: center;
 }
-
+table{
+    width: 100%;
+}
 .client-modal-link{
     cursor: pointer;
     font-weight: bold;
     color:#3B3DBF !important;
+}
+.client_section{
+    border-bottom: 1px solid #000;
+}
+
+.reminder-link{
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: rgb(157, 179, 155);
+}
+
+#supply-button-section{
+    margin-top: 45px;
+}
+
+table:not(.table-custom-header) tbody tr:nth-child(2n+1) td, table.table:not(.table-custom-header) tbody tr:nth-child(2n+1) td{
+    background-color: white !important;
+    border: none;
+}
+.ship-row{
+    border-bottom: 1px solid #000;
+}
+
+.ship-quantity-box{
+    width: 90%;
+}
+.button-set{
+    text-align: right;
+}
+.shipment-tag{
+    border-radius: 5px;
+    background-color: rgb(192, 127, 66);
+    margin: 0 auto;
+    width: 36px;
+    margin-right: 2px;
+    float: left;
+    font-size: 75%;
+}
+.pl-tag{
+    border-radius: 5px;
+    background-color: rgba(64, 209, 56, 0.891);
+    margin: 0 auto;
+    width: 36px;
+    float: left;
+    margin-left: 2px;
+    font-size: 75%;
+}
+.ship-quantity-boxs{
+    max-width: 30px;
+}
+.cancel-tag{
+    border-radius: 5px;
+    background-color: rgba(231, 101, 107, 0.891);
+    margin: 0 auto;
+    width: 36px;
+    float: left;
+    margin-left: 2px;
+    font-size: 75%;
+}
+.status-div{
+    width: 150px;
 }

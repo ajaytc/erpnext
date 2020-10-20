@@ -62,7 +62,7 @@
                             <div id="c-c-h-c-{{loop.index}}" class="collapse" data-parent="#c-c-h-clients">
                                 <div class="list-group">
                                     {% for pos in pos_list %}
-                                        <a href="/purchase-history?destination={{pos.name}}" class="list-group-item" >
+                                        <a href="/purchase-history?pos={{pos.name}}" class="list-group-item" >
                                             {{_(pos.point_of_sale)}}
                                         </a>
                                         <!-- In the current situatioon there is no pos selection for client Orders -->
