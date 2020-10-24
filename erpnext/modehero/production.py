@@ -436,7 +436,7 @@ def cancelDispatch(po,soi):
         })
     else:
         frappe.db.set_value('Production Order', po, {
-            'docstatus': 3,
+            'docstatus': 2,
         })
     frappe.db.commit()
     return {"status":"ok"}
@@ -517,7 +517,7 @@ def collect_doc_data(order,brand_doc):
     shipment_order_doc = None
     if order["shipment_order"] != None:
         shipment_order_doc = check_and_get_doc("Shipment Order",{"name":order["shipment_order"],"brand":brand_doc.brand_name,"docstatus":0}) 
-    production_order_doc = check_and_get_doc("Production Order",{"name":order["po_if"],"brand":brand_doc.brand_name,"docstatus":0})
+    production_order_doc = check_and_get_doc("Production Order",{"name":order["po_if"],"brand":brand_doc.brand_name,"docstatus":1})
     client_name = None
     client_doc = None
     destination_pos_doc = None
@@ -577,8 +577,8 @@ def check_dispatch_order_situation(po,soi,size_qty):
         for history_qps in history:
             for qps in requested_quantity:
                 if qps['size']==history_qps.size:
-                    qps['quantity']  = qps['quantity'] - int(history_qps.quantity)
-                    if qps['quantity']<0:qps['quantity'] = 0
+                    qps['quantity']  = int(qps['quantity']) - int(history_qps.quantity)
+                    if int(qps['quantity'])<0:qps['quantity'] = 0
                     break
     required_quantity = requested_quantity
     is_completed = True
@@ -597,16 +597,16 @@ def check_dispatch_order_situation(po,soi,size_qty):
 
 def get_requested_n_requested_qty(soi,po):
     if po.free_size_qty!=None and soi!=None:
-        filter_param = {"is_bulk":0,"sales_order":soi.name}
+        filter_param = {"is_bulk":"0","sales_order":soi.name}
         requested_quantity = [{"quantity":int(po.free_size_qty),"size":free_size_name}]
     elif po.free_size_qty==None and soi!=None:
-        filter_param = {"is_bulk":0,"sales_order":soi.name}
+        filter_param = {"is_bulk":"0","sales_order":soi.name}
         requested_quantity = convert_obj_to_size_quantity_dic(frappe.get_all("Quantity Per Size",{"order_id":soi.name},["size","quantity"]))
     elif po.free_size_qty==None:
-        filter_param = {"is_bulk":1,"bulk_order":po.name}
+        filter_param = {"is_bulk":"1","bulk_order":po.name}
         requested_quantity = convert_obj_to_size_quantity_dic(po.quantity_per_size)
     else:
-        filter_param = {"is_bulk":1,"bulk_order":po.name}
+        filter_param = {"is_bulk":"1","bulk_order":po.name}
         requested_quantity = [{"quantity":int(po.free_size_qty),"size":free_size_name}]
     history_list = frappe.get_all("Dispatch Bulk Stock History",filter_param,["stock_history"])
     return requested_quantity,history_list
@@ -706,7 +706,7 @@ def complete_order(po,soi):
         })
     else:
         frappe.db.set_value('Production Order', po.name, {
-            'docstatus': 1,
+            'docstatus': 3,
         })
     frappe.db.commit()
 

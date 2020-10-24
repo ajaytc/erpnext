@@ -4,6 +4,7 @@ from frappe import _
 import frappe.www.list
 import datetime
 from erpnext.modehero.user import haveAccess
+from erpnext.modehero.dispatch_bulk import collect_item_destination_data,add_size_quantity_data,add_sent_data,modify_order_list
 
 no_cache = 1
 
@@ -25,6 +26,8 @@ def get_context(context):
     order_items = add_sales_order_details(support_client_dic,orders,params)
     item_orders =  sort_item_doc(get_unique_items_orders(order_items))
     context.unique_items_orders = seperate_item_orders_by_production_orders(item_orders)
+    if context.user_type == "Brand" :
+        context.bulk_orders,context.bulk_index_dic = get_bulk_orders(brand,params)
     return context
 
 def add_sales_order_details(support_client_dic,orders,params):
@@ -62,6 +65,8 @@ def get_orders(roles,brand,session_user,params):
     elif(user_type == "Brand" or user_type == "System") and ("client" in params):
         client = params.client
         orders = frappe.get_all('Sales Order', filters={'company': brand, 'customer':client}, fields=['name', 'customer'])
+    elif(user_type == "Brand" or user_type == "System") and ("pos" in params):
+        orders = []
     else:
         orders = frappe.get_all('Sales Order', filters={'company': brand, 'owner':session_user}, fields=['name', 'customer'])
     return orders,user_type
@@ -131,3 +136,88 @@ def sort_item_doc(item_doc):
                 result_doc[item] = item_doc[item]
                 break
     return result_doc
+
+def get_bulk_orders(brand,params):
+    orders = frappe.db.sql("""select soi.name,po.name,po.destination_type,soi.item_destination,po.final_destination,po.product_name,po.production_factory,po.carrier,po.tracking_number,po.shipment_date,po.creation,soi.creation,po.internal_ref,soi.parent from `tabProduction Order` po left join `tabSales Order Item`soi on po.name=soi.prod_order_ref and soi.docstatus in (%s,%s) where po.brand=%s and po.docstatus in (%s,%s,%s)  order by po.creation desc""", ("2","3",brand,"1","2","3"))
+    index_doc = get_index_doc()
+    orders = list(orders)
+    for i in range(len(orders)):
+        orders[i] = list(orders[i])
+    orders = get_history_orders(orders,params)
+    pos_destination_support_data,item_support_data = collect_item_destination_data(orders)
+    orders_with_quantity_data = add_size_quantity_data(orders,item_support_data)
+    final_order_list = add_sent_data(orders_with_quantity_data,brand)
+    result = modify_order_list(final_order_list,pos_destination_support_data)
+    return result,index_doc
+
+def get_index_doc():
+    index_doc = {}
+    # 0 = sales_order_item_name
+    index_doc["soi_name_index"]= 0
+    # 1 = production_order_name
+    # 2 = production_order_destination_type
+    # 3 = sales_order_item_destination
+    # 4 = production_order_destiantion
+    # 5 = product_name
+    # 6 = production_factory
+    # 7 = carrier_number
+    # 8 = tracking_number
+    # 9 = shipment_date
+    # 10 = po_creation_time
+    index_doc["po_creation_time_index"] = 10
+    # 11 = soi_creation_time
+    index_doc["soi_creation_time_index"] = 11
+    # 12 = po_internal_ref
+    index_doc["if_index"] = 12
+    # 13 = soi_parent_name
+    index_doc["soi_parent_index"] = 13
+    # 14 = item_name
+    index_doc["item_name_index"] = 14
+    # 15 = item_sizes
+    index_doc["sizes_scheme_index"] = 15
+    # 16 = current_stock_sizes_quantities
+    index_doc["stock_qty_index"] = 16
+    # 17 = order_size_details
+    index_doc["order_qty_index"] = 17
+    # 18 = sent_history
+    index_doc["sent_history_index"] = 18
+    # 19 = current_active_shipment 
+    index_doc["current_active_shipment_index"] = 19
+    # 20 = POS_or_DESTINY
+    # 21 = is_tickable
+    index_doc["is_tickable_index"] = 21
+    return index_doc
+
+def get_history_orders(orders,params):
+    result = []
+    for order in orders:
+        if order[0]!=None:
+            if "pos" in params:
+                continue
+            elif "client" in params:
+                if len(frappe.get_all('Sales Order', filters={"name":order[13],'customer':params.client}))==0:
+                    continue
+            else:
+                continue
+            result.append(order)
+        else:
+            porder = frappe.get_doc("Production Order",order[1])
+            if "pos" in params:
+                if not (params.pos==order[4] and order[2]=="1"):
+                    continue
+            elif "client" in params:
+                # if order[2]=="1":
+                #     if len(frappe.get_all('Point Of Sales',{"name":order[4],'parent_company':params.client}))==0:
+                #         continue
+                if order[2]=="0":
+                    if len(frappe.get_all('Destination',{"name":order[4],'client_name':params.client}))==0:
+                        continue
+                else:
+                    continue
+            else:
+                continue
+            if porder.docstatus==2 or porder.docstatus==3:
+                result.append(order)
+    return result
+
+    

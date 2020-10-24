@@ -10,7 +10,7 @@
  "fields": [
   {
    "fieldname": "width",
-   "fieldtype": "Int",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Width",
    "reqd": 1
