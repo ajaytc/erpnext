@@ -44,7 +44,9 @@
                                 <li>
                                     <span>{{_("Destination")}}</span>
                                     <span id="destination">
-                                        {{order.final_destination}}
+                                        {%if destination%}
+                                       {{destination}}
+                                       {%endif%}
                                     </span>
                                 </li>
                             </ul>
