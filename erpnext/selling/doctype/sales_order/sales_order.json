@@ -1216,7 +1216,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-05-12 14:24:40.552429",
+ "modified": "2020-10-25 15:25:11.062219",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",
@@ -1282,6 +1282,18 @@
    "permlevel": 1,
    "read": 1,
    "role": "Sales Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer",
+   "share": 1,
    "write": 1
   }
  ],

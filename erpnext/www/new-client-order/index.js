@@ -11,7 +11,7 @@ var numeric = /^\d+$/;
 
 $('#addtable').click((e) => {
     e.preventDefault();
-    $($('.product-table')[0]).clone().addClass('class', 'product-table').appendTo('#table_container')
+    $($('.product-table')[0]).clone().find("input:text").val("").end().addClass('class', 'product-table').appendTo('#table_container')
     tablecount++
     $('.selected-product').click(productUpdateCallback)
     setClose()
