@@ -240,7 +240,11 @@ def generateInvoice(data):
     packProductDetails = data['packProductDetails']
     packProductDetails,totalCost=getProductPrices(data)
     if(brand[0].tax_id):
-        vat=int(brand[0].tax_id)
+        try:
+            vat=int(brand[0].tax_id)
+        except ValueError as e:
+            vat=0
+        
     else:
         vat=0
 
