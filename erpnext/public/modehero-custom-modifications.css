@@ -1,0 +1,36 @@
+
+div[data-fieldname="minimum_order_qty"] label {
+    min-width:3px !important;
+  }
+  
+  div[data-web-form="fabric-item"] div div div div div.form-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end
+  }
+  
+  
+  div[data-web-form="fabric-item"] div div div div div form {
+    width: 100%;
+  }
+  
+  
+  div[data-web-form="fabric-item"] div div div a.btn.btn-default {
+    width: 40%;
+    min-width: 80px;
+    display: inline-block !important;
+  }
+  
+  
+  input.custom-file-input + label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: calc(100% - 110px);
+  }
+  
+  select.form-control {
+    padding-right: 25px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }

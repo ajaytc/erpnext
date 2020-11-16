@@ -179,14 +179,17 @@
     <table class="table table-striped">
         <h2>{{_("In Stock")}}</h2>
         <thead>
+
             {%if product.sizing%}
             <tr>
-                {%for size,qty in sizingDic.items() %}
+                <th style="color: white">Date</th> 
+                <th style="color: white">Order #</th>               {%for size,qty in sizingDic.items() %}
                 <th scope="col">{{size}}</th>
                 {%endfor%}
             </tr>
             {%else%}
             <tr>
+
                 <th scope="col">{{_("Quantity")}}</th>
 
             </tr>
@@ -195,6 +198,8 @@
         <tbody>
             {%if product.sizing%}
             <tr>
+                <td></td>
+                <td></td>
             {% for stockPerSizeDetail in stock.product_stock_per_size %}
             
                 <td> {{stockPerSizeDetail.quantity}}</td>
