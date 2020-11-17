@@ -54,7 +54,7 @@
                     <th  scope="col"></th>
                     <th  scope="col"></th>
                     {% for temp_size  in sizing_list%}
-                    <th  scope="col" >{{temp_size.size}}</th>
+                    <th  scope="col"  class="{% if loop.index != 1 %}separator{% endif %}">{{temp_size.size}}</th>
                     {% endfor %}
                     <th  scope="col"></th>
                 </thead>
@@ -83,15 +83,16 @@
                         {% endif %}
                         
                         {% for size_col in sizing_list %}
+                        {% set index = loop.index %}
                             {% for item_qnty in quantities if item_qnty.size==size_col.size%}
-                                <td>
+                                <td class="{% if index != 1 %}separator{% endif %}">
                                     {% if ns.is_modified %}
                                     <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
                                     {% endif %}
                                     <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
                                 </td>
                             {% else %}
-                                <td>
+                                <td class="{% if index != 1 %}separator{% endif %}">
                                     {% if ns.is_modified %}
                                     <sub class = "modified-qty">0</sub><br>
                                     {% endif %}
@@ -108,7 +109,7 @@
                         <td></td>
                         <td></td>
                         {% for size_col in sizing_list %}
-                            <td>
+                            <td class="{% if loop.index != 1 %}separator{% endif %}">
                                 <div data-size ='{{size_col.size}}' data-item = '{{item}}'  class ='sum-quantity'></div>
                             </td>
                         {% endfor %}

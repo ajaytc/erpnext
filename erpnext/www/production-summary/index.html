@@ -14,381 +14,384 @@
 </div>
 {% endmacro %}
 
-<div id="container" class="container mt-3" style="max-width: 1040px;">
-    <div class="card" style="">
-        <div class="card-body row">
-            {% if order %}
-            <div id="{{order.product_name}}" class="mt-3 product-table" style="width:90%">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4 mb-5" id="order_info">
 
-                            <p class="label">
-                            <h3>{{_("Order Info")}}</h3>
-                            </p>
+<div class="page-with-sidebar right-sidebar">
+    <div id="container" class="container mt-3">
+        <div class="card" style="margin-right: 375px;">
+            <div class="card-body row">
+                {% if order %}
+                <div id="{{order.product_name}}" class="mt-3 product-table" style="width:90%">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-5" id="order_info">
 
-                            <ul class="order-summary">
+                                <p class="label">
+                                <h3>{{_("Order Info")}}</h3>
+                                </p>
 
-                                <li>
-                                    <span>{{_("Product Name")}}</span>
-                                    <span id="product_name">
-                                        {{frappe.get_doc("Item",order.product_name).item_name}}
-                                    </span>
-                                </li>
-                                <li>
-                                    <span>{{_("Production Factory")}}</span>
-                                    <span id="production_factore">
-                                        {{order.production_factory}}
-                                    </span>
-                                </li>
-                                <li>
-                                    <span>{{_("Destination")}}</span>
-                                    <span id="destination">
-                                        {%if destination%}
-                                       {{destination}}
-                                       {%endif%}
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
+                                <ul class="order-summary">
 
-                        <div class="col-md-4 mb-5">
-
-                            <p class="label">
-                            <h3>{{_("Attachments")}}</h3>
-                            </p>
-                            <a href=""></a>
-                            <ul class="order-summary">
-                                <li>
-                                    <span>{{_("Tech Pack")}}</span>
-                                    <span id="tech_pack">
-                                        {{product.tech_pack}}
-                                    </span>
-                                </li>
-                                <li style="padding-bottom: 18%;">
-                                    <span>{{_("Picture")}}</span>
-                                    <span id="picture">
-                                        {{product.picture}}
-                                    </span>
-                                </li>
-                                <li>
-                                    <span>{{_("Pattern")}}</span>
-                                    <span id="pattern">
-                                        {{product.pattern}}
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 mb-5">
-
-                            <div class="row" id="order_doc" style="margin-top: 7%;">
-
-                                <h3 style="margin-top: 7%;">{{_("Order Document")}}</h3>
-                                <!-- to put document -->
-                                <a href="#" class="order-summary-download" id="pdf_doc"
-                                    style="padding-bottom: 0%;">
-                                    <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
-                                    <span>{{_('Order Document')}}</span>
-                                </a>
-
-
-
+                                    <li>
+                                        <span>{{_("Product Name")}}</span>
+                                        <span id="product_name">
+                                            {{frappe.get_doc("Item",order.product_name).item_name}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Production Factory")}}</span>
+                                        <span id="production_factore">
+                                            {{order.production_factory}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Destination")}}</span>
+                                        <span id="destination">
+                                            {%if destination%}
+                                        {{destination}}
+                                        {%endif%}
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="row">
+                            <div class="col-md-4 mb-5">
 
-                                <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
+                                <p class="label">
+                                <h3>{{_("Attachments")}}</h3>
+                                </p>
+                                <a href=""></a>
+                                <ul class="order-summary">
+                                    <li>
+                                        <span>{{_("Tech Pack")}}</span>
+                                        <span id="tech_pack">
+                                            {{product.tech_pack}}
+                                        </span>
+                                    </li>
+                                    <li style="padding-bottom: 18%;">
+                                        <span>{{_("Picture")}}</span>
+                                        <span id="picture">
+                                            {{product.picture}}
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span>{{_("Pattern")}}</span>
+                                        <span id="pattern">
+                                            {{product.pattern}}
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
 
-                                <div id="payment_doc" style="width: 90%;">
-                                    {% if order.payment_proof %}
+                            <div class="col-md-4 mb-5">
 
-                                    <a href="{{order.payment_proof}}" download class="order-summary-download"
-                                        style="padding-bottom: 0%;width:112%">
-                                        <img src="/assets/erpnext/images/icons/pdf.svg" alt=""
-                                            style="margin-top:0%;" />
-                                        <span>{{order.payment_proof}}</span>
+                                <div class="row" id="order_doc" style="margin-top: 7%;">
+
+                                    <h3 style="margin-top: 7%;">{{_("Order Document")}}</h3>
+                                    <!-- to put document -->
+                                    <a href="#" class="order-summary-download" id="pdf_doc"
+                                        style="padding-bottom: 0%;">
+                                        <img src="/assets/erpnext/images/icons/pdf.svg" alt="" style="margin-top: 0%;" />
+                                        <span>{{_('Order Document')}}</span>
                                     </a>
-                                    {% endif %}
+
+
+
                                 </div>
 
-                                <div class="form-group">
+                                <div class="row">
 
-                                    <div class="custom-file" style="margin-top: 5%;">
-                                        <input type="file" class="custom-file-input" value={{order.payment_proof}}
-                                            name="paymentProof" id="payment_proof">
+                                    <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
 
-                                        <label id="payment_proof-label" class="custom-file-label"
-                                            for="payment_proof"></label>
+                                    <div id="payment_doc" style="width: 90%;">
+                                        {% if order.payment_proof %}
 
+                                        <a href="{{order.payment_proof}}" download class="order-summary-download"
+                                            style="padding-bottom: 0%;width:112%">
+                                            <img src="/assets/erpnext/images/icons/pdf.svg" alt=""
+                                                style="margin-top:0%;" />
+                                            <span>{{order.payment_proof}}</span>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <div class="custom-file" style="margin-top: 5%;">
+                                            <input type="file" class="custom-file-input" value={{order.payment_proof}}
+                                                name="paymentProof" id="payment_proof">
+
+                                            <label id="payment_proof-label" class="custom-file-label"
+                                                for="payment_proof"></label>
+
+                                        </div>
                                     </div>
                                 </div>
+
+
                             </div>
+
+                        </div>
+
+                        <div class="row supps">
+                            <div class="col-md-4 mb-5 ">
+
+                                {% for fabsupplier in fabricSuppliers %}
+                                <div class="row fabsuppliers btn" style="padding-bottom: 3%;"
+                                    data-ref="{{fabsupplier.fabric_ref}}">
+                                    <ul class="order-summary">
+
+                                        <li>
+                                            <span>{{_("Fabric ref")}}</span>
+                                            <span id="fabric_ref">
+                                                {{fabsupplier.fabric_ref}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Fabric Consumption")}}</span>
+                                            <span id="fabric_consumption">
+                                                {{fabsupplier.fabric_consumption}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Fabric Status")}}</span>
+                                            <span id="fabric_status">
+                                                {{fabsupplier.fabric_status}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-4 mb-5 ">
+
+                                {% for trimsupplier in trimmingSuppliers %}
+                                <div class="row trimsuppliers btn" style="padding-bottom: 3%;"
+                                    data-ref="{{trimsupplier.trimming_ref}}">
+                                    <ul class="order-summary">
+
+                                        <li>
+                                            <span>{{_("Trimming ref")}}</span>
+                                            <span id="trimming_ref">
+                                                {{trimsupplier.trimming_ref}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Trimming Consumption")}}</span>
+                                            <span id="trimming_consumption">
+                                                {{trimsupplier.trimming_consumption}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Trimming Status")}}</span>
+                                            <span id="trimming_status">
+                                                {{trimsupplier.trimming_consumption}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-md-4 mb-5 ">
+                                {% for packsupplier in packagingSuppliers %}
+                                <div class="row packsuppliers btn" style="padding-bottom: 3%;"
+                                    data-ref="{{packsupplier.packaging_ref}}">
+                                    <ul class="order-summary">
+
+                                        <li>
+                                            <span>{{_("Packaging ref")}}</span>
+                                            <span id="packaging_ref">
+                                                {{packsupplier.packaging_ref}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Packaging Consumption")}}</span>
+                                            <span id="packaging_consumption">
+                                                {{packsupplier.packaging_consumption}}
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <span>{{_("Packaging Status")}}</span>
+                                            <span id="packaging_status">
+                                                {{packsupplier.packaging_status}}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
+
+                            </div>
+
 
 
                         </div>
 
-                    </div>
-
-                    <div class="row supps">
-                        <div class="col-md-4 mb-5 ">
-
-                            {% for fabsupplier in fabricSuppliers %}
-                            <div class="row fabsuppliers btn" style="padding-bottom: 3%;"
-                                data-ref="{{fabsupplier.fabric_ref}}">
-                                <ul class="order-summary">
-
-                                    <li>
-                                        <span>{{_("Fabric ref")}}</span>
-                                        <span id="fabric_ref">
-                                            {{fabsupplier.fabric_ref}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Fabric Consumption")}}</span>
-                                        <span id="fabric_consumption">
-                                            {{fabsupplier.fabric_consumption}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Fabric Status")}}</span>
-                                        <span id="fabric_status">
-                                            {{fabsupplier.fabric_status}}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% endfor %}
-
+                        {%if order.quantity_per_size|length>0 %}
+                        <div class="row mt-3 table-section" id="sizeTable">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="sizing">
+                                        <th scope="col">{{_("Sizing")}}</th>
+                                        {% for s in order.quantity_per_size %}
+                                        <th scope="col">{{s.size}}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="qty">
+                                        <th scope="row">{{_("Quantity")}}</th>
+                                        {% for s in order.quantity_per_size %}
+                                        <td scope="col" data-size="{{s.size}}">
+                                            {{s.quantity}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                        {%endif%}
 
-                        <div class="col-md-4 mb-5 ">
-
-                            {% for trimsupplier in trimmingSuppliers %}
-                            <div class="row trimsuppliers btn" style="padding-bottom: 3%;"
-                                data-ref="{{trimsupplier.trimming_ref}}">
-                                <ul class="order-summary">
-
-                                    <li>
-                                        <span>{{_("Trimming ref")}}</span>
-                                        <span id="trimming_ref">
-                                            {{trimsupplier.trimming_ref}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Trimming Consumption")}}</span>
-                                        <span id="trimming_consumption">
-                                            {{trimsupplier.trimming_consumption}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Trimming Status")}}</span>
-                                        <span id="trimming_status">
-                                            {{trimsupplier.trimming_consumption}}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% endfor %}
-
+                        <div class="row">
+                            <table class="table table-bordered pricing-table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">{{_("Price/Pcs")}}</th>
+                                        <th scope="col">{{_("Total Price")}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="price-pp"></td>
+                                        <td class="total-price"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-
-                        <div class="col-md-4 mb-5 ">
-                            {% for packsupplier in packagingSuppliers %}
-                            <div class="row packsuppliers btn" style="padding-bottom: 3%;"
-                                data-ref="{{packsupplier.packaging_ref}}">
-                                <ul class="order-summary">
-
-                                    <li>
-                                        <span>{{_("Packaging ref")}}</span>
-                                        <span id="packaging_ref">
-                                            {{packsupplier.packaging_ref}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Packaging Consumption")}}</span>
-                                        <span id="packaging_consumption">
-                                            {{packsupplier.packaging_consumption}}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span>{{_("Packaging Status")}}</span>
-                                        <span id="packaging_status">
-                                            {{packsupplier.packaging_status}}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% endfor %}
-
-                        </div>
-
-
-
-                    </div>
-
-                    {%if order.quantity_per_size|length>0 %}
-                    <div class="row mt-3 table-section" id="sizeTable">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr class="sizing">
-                                    <th scope="col">{{_("Sizing")}}</th>
-                                    {% for s in order.quantity_per_size %}
-                                    <th scope="col">{{s.size}}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="qty">
-                                    <th scope="row">{{_("Quantity")}}</th>
-                                    {% for s in order.quantity_per_size %}
-                                    <td scope="col" data-size="{{s.size}}">
-                                        {{s.quantity}}</td>
-                                    {% endfor %}
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    {%endif%}
-
-                    <div class="row">
-                        <table class="table table-bordered pricing-table">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th scope="col">{{_("Price/Pcs")}}</th>
-                                    <th scope="col">{{_("Total Price")}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="price-pp"></td>
-                                    <td class="total-price"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div>
-
-                        <p class="label">
-                            {{_("Comments")}}
-                        </p>                        
 
                         <div>
-                            <textarea name="" id="comments" style="width: 100%;" cols="30"
-                                rows="10">{{order.comment}}</textarea>
-                        </div>
 
+                            <p class="label">
+                                {{_("Comments")}}
+                            </p>                        
+
+                            <div>
+                                <textarea name="" id="comments" style="width: 100%;" cols="30"
+                                    rows="10">{{order.comment}}</textarea>
+                            </div>
+
+                        </div>
                     </div>
+                </div>
+
+
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    {% if (isProd or isBrand) %}
+    <div class="sidebar right summaryside">
+        <div class="sidebar-inner">
+            <h5 class="mb-4 mt-0">
+                {{_("Production")}}
+            </h5>
+
+            <div class="form-group">
+                {{_("Expected Work Date")}}
+                <span>
+                    <div class="input-group date">
+                        <input id="exWorkDate" class="form-control"
+                            value={% if order.expected_work_date %}{{order.expected_work_date}}{% endif %} name="workDate"
+                            placeholder="Desired date" type="date">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </span>
+            </div>
+
+            <div class="form-group">
+                {{_("Confirmation Doc")}}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{order.confirmation_doc}} name="confirmation_doc"
+                        id="confirmation_doc">
+
+                    <label id="confirmation_doc-label" class="custom-file-label"
+                        for="confirmation_doc">{% if order.confirmation_doc %}{{order.confirmation_doc}}{% endif %}</label>
+
                 </div>
             </div>
 
+            <div class="form-group">
+                {{_("Proforma")}}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{order.profoma}} name="profoma" id="profoma">
 
-            {% endif %}
-        </div>
-    </div>
+                    <label id="profoma-label" class="custom-file-label"
+                        for="profoma">{% if order.profoma %}{{order.profoma}}{% endif %}</label>
 
-</div>
+                </div>
+            </div>
 
-{% if (isProd or isBrand) %}
-<div class="sidebar right summaryside">
-    <div class="sidebar-inner">
-        <h5 class="mb-4 mt-0">
-            {{_("Production")}}
-        </h5>
+            <div class="form-group">
+                {{_("Invoice")}}
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" value={{order.invoice}} name="invoice" id="invoice">
 
-        <div class="form-group">
-            {{_("Expected Work Date")}}
-            <span>
+                    <label id="invoice-label" class="custom-file-label"
+                        for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
+
+                </div>
+            </div>
+
+            <h5 class="my-4">
+                {{_("Shipment")}}
+            </h5>
+
+            <div class="form-group">
+                {{_("Carrier")}}
+                <input id="carrier" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}"
+                    class="form-control mt-2">
+            </div>
+            <div class="form-group">
+                {{_("Tracking Number")}}
+                <input id="tracking_number" type="text"
+                    value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
+            </div>
+
+            <div class="form-group">
+                {{_("Date of Shipment")}}
                 <div class="input-group date">
-                    <input id="exWorkDate" class="form-control"
-                        value={% if order.expected_work_date %}{{order.expected_work_date}}{% endif %} name="workDate"
+                    <input id="shipmentDate" class="form-control" value={{order.shipment_date}} name="desireddate"
                         placeholder="Desired date" type="date">
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
-            </span>
-        </div>
-
-        <div class="form-group">
-            {{_("Confirmation Doc")}}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{order.confirmation_doc}} name="confirmation_doc"
-                    id="confirmation_doc">
-
-                <label id="confirmation_doc-label" class="custom-file-label"
-                    for="confirmation_doc">{% if order.confirmation_doc %}{{order.confirmation_doc}}{% endif %}</label>
-
             </div>
-        </div>
 
-        <div class="form-group">
-            {{_("Proforma")}}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{order.profoma}} name="profoma" id="profoma">
-
-                <label id="profoma-label" class="custom-file-label"
-                    for="profoma">{% if order.profoma %}{{order.profoma}}{% endif %}</label>
-
+            <div class="form-group">
+                {{_("Price")}}
+                <input id="price" type="text" value="{% if order.price %}{{order.price}}{% endif %}"
+                    class="form-control mt-2">
             </div>
-        </div>
 
-        <div class="form-group">
-            {{_("Invoice")}}
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" value={{order.invoice}} name="invoice" id="invoice">
-
-                <label id="invoice-label" class="custom-file-label"
-                    for="invoice">{% if order.invoice %}{{order.invoice}}{% endif %}</label>
-
+            <div class="form-group">
+                {{_("Comments")}}
+                <textarea class="form-control" id="comment"
+                    rows="4">{% if order.production_comment %}{{order.production_comment}}{% endif %}</textarea>
             </div>
-        </div>
 
-        <h5 class="my-4">
-            {{_("Shipment")}}
-        </h5>
-
-        <div class="form-group">
-            {{_("Carrier")}}
-            <input id="carrier" type="text" value="{% if order.carrier %}{{order.carrier}}{% endif %}"
-                class="form-control mt-2">
-        </div>
-        <div class="form-group">
-            {{_("Tracking Number")}}
-            <input id="tracking_number" type="text"
-                value="{% if order.tracking_number %}{{order.tracking_number}}{% endif %}" class="form-control mt-2">
-        </div>
-
-        <div class="form-group">
-            {{_("Date of Shipment")}}
-            <div class="input-group date">
-                <input id="shipmentDate" class="form-control" value={{order.shipment_date}} name="desireddate"
-                    placeholder="Desired date" type="date">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class="form-group">
+                {% if order.docstatus==0 %}
+                <button class="btn btn-primary" id="prodSubmit">{{_("Submit")}}</button>
+                {% endif %}
             </div>
-        </div>
 
-        <div class="form-group">
-            {{_("Price")}}
-            <input id="price" type="text" value="{% if order.price %}{{order.price}}{% endif %}"
-                class="form-control mt-2">
         </div>
-
-        <div class="form-group">
-            {{_("Comments")}}
-            <textarea class="form-control" id="comment"
-                rows="4">{% if order.production_comment %}{{order.production_comment}}{% endif %}</textarea>
-        </div>
-
-        <div class="form-group">
-            {% if order.docstatus==0 %}
-            <button class="btn btn-primary" id="prodSubmit">{{_("Submit")}}</button>
-            {% endif %}
-        </div>
-
     </div>
 </div>
 {% endif %}

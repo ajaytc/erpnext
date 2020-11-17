@@ -4826,3 +4826,61 @@ select.form-control {
   text-overflow: ellipsis !important;
   overflow: hidden !important;
 }
+
+#page-subscription {
+  margin-top: 270px;
+}
+
+.page-with-sidebar.right-sidebar .sidebar.right {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  height: calc(100% - 80px);
+  width: 375px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-left: 1px solid #e6e6e6;
+  background-color:white;
+  padding-left:2%
+}
+
+.page-with-sidebar.right-sidebar .page-body {
+  order: 1;
+  width: calc(100% - 610px) !important;
+}
+
+.table-wrapper .table.table-xs td {
+  padding: 8px 10px;
+}
+
+.table-wrapper .separator {
+  position: relative;
+}
+
+.table-wrapper .separator:before {
+  display: block;
+  content: '';
+  height: 20px;
+  width: 1px;
+  background: black;
+  opacity: 0.2;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.table-wrapper .separator:first-child:before {
+  display: none;
+  visibility: hidden;
+}
+
+.table-wrapper .table.table-xs .thead-blue {
+  background: blue;
+}
+
+.shipment-tag {
+  background: #EFE4B0 !important;
+}
+
+
