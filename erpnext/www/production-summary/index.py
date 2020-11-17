@@ -53,6 +53,11 @@ def get_context(context):
 
     context.destination = getDestination(context)
 
+    if('sk' in params):
+        context.isProd=True
+    else:
+        context.isProd = "Manufacturing User" in context.roles
+
 # context.parents = [
 #     {"name": frappe._("Home"), "route": "/"}
 # ]

@@ -194,7 +194,7 @@ def stockUpdateAfterFinish(order):
                  existing_details['old_stock'], "Production", price*1.0/total_quantity,"product",{"old":existing_details["size_details"],"new_incoming":size_order[order.product_name]},order,"production")
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_email_guest=True)
 def submit_production_summary_info(data):
     data = json.loads(data)
     order = frappe.get_doc('Production Order', data['order'])

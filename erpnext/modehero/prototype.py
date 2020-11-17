@@ -100,7 +100,7 @@ def validate(order, isvalidate):
     return order
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_email_guest=True)
 def submit_production_info(data):
     data = json.loads(data)
     order = frappe.get_doc('Prototype Order', data['order'])

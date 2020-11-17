@@ -100,7 +100,11 @@
 
                                 <div class="row">
 
-                                    <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
+                                    {% if order.payment_proof %}
+                            <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
+                            {% elif isBrand %}
+                            <h3 style="margin-top: 0%;margin-bottom:0%">{{_("Payment Proof")}}</h3>
+                            {% endif %}
 
                                     <div id="payment_doc" style="width: 90%;">
                                         {% if order.payment_proof %}
@@ -113,7 +117,7 @@
                                         </a>
                                         {% endif %}
                                     </div>
-
+                                    {%if isBrand%}
                                     <div class="form-group">
 
                                         <div class="custom-file" style="margin-top: 5%;">
@@ -125,6 +129,7 @@
 
                                         </div>
                                     </div>
+                                    {% endif %}
                                 </div>
 
 

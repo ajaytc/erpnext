@@ -325,6 +325,7 @@ $('#prodSubmit').click(function () {
                         indicator: 'green',
                         message: __('Prototype order ' + "{{order.name}}'s" + ' production summary created successfully')
                     });
+                    location.reload()
 
                 }
             }
