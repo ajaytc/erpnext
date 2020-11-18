@@ -10,7 +10,7 @@ window.onload = function(){
         let item = $(this).attr('data-item');
         let group_no = $(this).attr("data-group_no");
         let total_sum = get_total_sum(item,group_no);
-        $(this).text("Total : "+total_sum.toString());
+        $(this).text(total_sum.toString());
     });
 }
 

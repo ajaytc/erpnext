@@ -104,8 +104,8 @@
                                 <td>-</td>
                             {% endfor %}
                         {% endfor %}
-                        <td class="status-div">
-                            <div >
+                        <td class="status-div" style="text-align: center">
+                            <div style="display: inline-block">
                                 {% if order[sent_history_index][row_index]["shipment_data"]!=None %}
                                     <div class="s-tag-sent-shipment shipment-tag" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[sent_history_index][row_index]['shipment_data']}}">S</div>
                                 {% endif %}
@@ -141,8 +141,8 @@
                         {% for size_col in order[sizes_scheme_index] %}
                             <td class="ship-quantity-boxs"><input class="background-ash ship-quantity-box" data-size="{{size_col.size}}" type="text" /></td>
                         {% endfor %}
-                        <td class="status-div">
-                            <div >
+                        <td class="status-div" style="text-align: center">
+                            <div style="display: inline-block" >
                                 {% if order[current_active_shipment_index] != None %}
                                 <div class="s-tag-current-shipment shipment-tag" data-location="{{location}}" data-poif="{{order[if_index]}}" data-ship_data="{{order[current_active_shipment_index]}}">S</div>
                                 {% endif %}

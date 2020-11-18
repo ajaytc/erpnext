@@ -16,6 +16,11 @@ def get_context(context):
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles
 
+    if frappe.session.user == 'Guest':
+        context.isGuest=True
+    else:
+        context.isGuest=False
+
     if('sk' in params):
         context.isProd=True
     else:

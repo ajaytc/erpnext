@@ -4,6 +4,14 @@ var numeric = /^\d+$/;
 
 $('.close').click(e => console.log($(e.target).parent()))
 
+$( document ).ready(function() {
+    {% if isGuest%}
+    $('.page-content-wrapper').addClass("page-with-sidebar")
+    $('.page-content-wrapper').addClass("right-sidebar")
+    {%endif%}
+
+});
+
 const productUpdateCallback = (e) => {
     // console.log($(e.target).parent().parent().parent().parent().find('.table-section')[0])
     product = $(e.target).find("option:selected").val()

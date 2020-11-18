@@ -37,7 +37,7 @@ window.onload = function(){
     $('.total-sum').each(function(){
         let item = $(this).attr('data-item');
         let total_sum = get_total_sum(item);
-        $(this).text("Total : "+total_sum.toString());
+        $(this).text(total_sum.toString());
     })
     $(".default-hide").hide().find('input').prop('disabled', true)
     sort_select( $(".factory-select"))

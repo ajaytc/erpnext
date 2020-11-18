@@ -50,6 +50,10 @@ def get_context(context):
     context.isCustomer = "Customer" in context.roles
     context.isBrand = "Brand User" in context.roles
     context.isProd = "Manufacturing User" in context.roles
+    if frappe.session.user == 'Guest':
+        context.isGuest=True
+    else:
+        context.isGuest=False
 
     context.destination = getDestination(context)
 

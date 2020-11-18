@@ -10,135 +10,162 @@
 
 {% set ns = namespace(universal_order_item_count=0) %}
 {% if unique_items_orders|length>0 %}
-    <h2  onload="ss()">{{_("Purchase History")}}</h2>
-    <div class="client_section">
-        {% for item in unique_items_orders %}
-            <h3>
-                <a class="font-weight-bold">
-                    {{unique_items_orders[item]["item_name"]}}
-                </a>
-            </h3>
-            {% for group_no in unique_items_orders[item]["orders"] %}
-                {% set ns.is_set_status=false %}
-                <div class="table-wrapper table-responsive mt-2">
-                    <table class="table table-sm table-striped">
-                        {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
-                        {% if sizing|length!=0 %}
-                            {% set sizing = sizing[0].sizing %}
-                            {% if sizing!=None %}
-                            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
-                            {% else %}
-                            {% set sizing_list = [{"size":"Free Size"}] %}
-                            {% endif %}                    <thead>
-                                <th colspan='1' scope='colgroup' >{{_("Order Date")}}</th>
-                                <th colspan='1' scope='colgroup' >{{_("Order Detail")}}</th>
-                                <th colspan='1' scope='colgroup' ></th>
-                                <th colspan='1' scope='colgroup' ></th>
-                                <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center" >{{_("Sizing")}}</th>
-                                <th colspan='1' scope='colgroup'>{{_("Status")}}</th>
-                            </thead>
-                            <thead>
-                                <th  scope="col"></th>
-                                <th  scope="col"></th>
-                                <th  scope="col"></th>
-                                <th  scope="col"></th>
-                                {% for temp_size  in sizing_list%}
-                                <th  scope="col">{{temp_size.size}}</th>
-                                {% endfor %}
-                                <th  scope="col"></th>
-                            </thead>
-                            <tbody>
-                                
-                                {% for order in unique_items_orders[item]["orders"][group_no]["client_orders"] %}
-                                    {% set ns.is_modified=false %}
-                                    {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
-                                    {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
-                                    {% if  temp_order_details|length != 0 %}
-                                        {% set temp_order_details = temp_order_details[0] %}
-                                        {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
-                                        <tr>
-                                            <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
-                                            <td>
-                                                {{temp_order_details.name}}<br>
-                                                <a class="client-modal-link"  data-country ="{{order['customer_details'].country}}" data-city="{{order['customer_details'].city}}" data-phone="{{order['customer_details'].phone}}" data-email="{{order['customer_details'].email_address}}" data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
-                                            </td>
-                                            {% if order.is_modified|string() == "1" %}
-                                                {% set ns.is_modified = true %}
-                                                <td>Modified</td>
-                                            {% else %}
-                                                <td></td>
-                                            {% endif %}
-                                            <td></td>
-                                            {% for size_col in sizing_list %}
-                                                {% for item_qnty in quantities if item_qnty.size==size_col.size%}
-                                                    <td>
-                                                        {% if ns.is_modified %}
-                                                            <sub class = "modified-qty">{{item_qnty.first_quantity}}</sub><br>
-                                                        {% endif %}
-                                                        <div class = '{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class' data-group_no="{{group_no}}" data-item_code = "{{item}}" data-size="{{item_qnty.size}}" data-current_qty = '{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
-                                                    </td>
-                                                {% else %}
-                                                    <td>
-                                                        {% if ns.is_modified %}
-                                                        <sub class = "modified-qty">0</sub><br>
-                                                        {% endif %}
-                                                        <div data-current_qty ='0'>0</div>
-                                                    </td>
-                                                {% endfor %}
-                                            {% endfor %}
-                                            {% if ns.is_set_status==false  %}
-                                                {% if order.docstatus==2 %}
-                                                    {% set ns.is_set_status=true %}
-                                                    <td class="order-status"><sub class="cancel">Canceled</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
-                                                {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==0 %}
-                                                    {% set ns.is_set_status=true %}
-                                                    <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
-                                                    <sub class="pending">Pending</sub> </td>
-                                                {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==1%}
-                                                    {% set ns.is_set_status=true %}
-                                                    <td class="order-status"><sub class="validated">Validated</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
-                                                    <sub class="production">Production</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>     
-                                                {% endif %}
-                                            {% endif %}
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                <tr class="sumation-row">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    {% for size_col in sizing_list %}
-                                    <td>
-                                        <div data-size ='{{size_col.size}}' data-item = '{{item}}' data-group_no="{{group_no}}" class ='sum-quantity'></div>
-                                    </td>
-                                    {% endfor %}
-                                    <td>
-                                        <div data-item = '{{item}}' data-group_no="{{group_no}}" class ='total-sum'></div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        {% endif %}    
-                    </table>
-                </div>
-            {% endfor %}
-        {% endfor %}
+<h2 onload="ss()">{{_("Purchase History")}}</h2>
+<div class="client_section">
+    {% for item in unique_items_orders %}
+    <h3>
+        <a class="font-weight-bold">
+            {{unique_items_orders[item]["item_name"]}}
+        </a>
+    </h3>
+    {% for group_no in unique_items_orders[item]["orders"] %}
+    {% set ns.is_set_status=false %}
+    <div class="table-wrapper table-responsive mt-2">
+        <table class="table table-xs table-striped">
+            {% set sizing = frappe.get_all('Item', filters={'item_code': item}, fields=['sizing']) %}
+            {% if sizing|length!=0 %}
+            {% set sizing = sizing[0].sizing %}
+            {% if sizing!=None %}
+            {% set sizing_list = frappe.get_all('Sizing', filters={'parent': sizing}, fields=['size'],order_by='idx') %}
+            {% else %}
+            {% set sizing_list = [{"size":"Free Size"}] %}
+            {% endif %} <thead class="thead-light">
+                <th colspan='1' scope='colgroup'>{{_("Order Date")}}</th>
+                <th colspan='1' scope='colgroup'>{{_("Order Detail")}}</th>
+                <th colspan='1' scope='colgroup'></th>
+                <th colspan='1' scope='colgroup'></th>
+                <th colspan='{{sizing_list|length}}' scope='colgroup' style="text-align:center">{{_("Sizing")}}</th>
+                <th colspan='1' scope='colgroup'>{{_("Status")}}</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col">
+                    </td>
+                    <td scope="col">
+                    </td>
+                    <td scope="col">
+                    </td>
+                    <td scope="col">
+                    </td>
+                    {% for temp_size  in sizing_list%}
+                    <td scope="col" class="{% if loop.index != 1 %}separator{% endif %}">{{temp_size.size}}</td>
+                    {% endfor %}
+                    <td scope="col">
+                    </td>
+                </tr>
+
+
+                {% for order in unique_items_orders[item]["orders"][group_no]["client_orders"] %}
+                {% set ns.is_modified=false %}
+                {% set temp_order_details = frappe.get_all('Sales Order', filters={'name': order.parent}, fields=['name', 'customer','creation','modified']) %}
+                {% set quantities = frappe.get_all('Quantity Per Size',filters={'order_id':order.name,'product_id':item},fields=['size','quantity','first_quantity']) %}
+                {% if  temp_order_details|length != 0 %}
+                {% set temp_order_details = temp_order_details[0] %}
+                {% set ns.universal_order_item_count = ns.universal_order_item_count+1 %}
+                <tr>
+                    <td>{{order.creation.strftime('%Y-%m-%d')}}</td>
+                    <td>
+                        {{temp_order_details.name}}<br>
+                        <a class="client-modal-link" data-country="{{order['customer_details'].country}}"
+                            data-city="{{order['customer_details'].city}}"
+                            data-phone="{{order['customer_details'].phone}}"
+                            data-email="{{order['customer_details'].email_address}}"
+                            data-cusname="{{order['customer_details'].customer_name}}">{{order['customer_details'].customer_name}}</a>
+                    </td>
+                    {% if order.is_modified|string() == "1" %}
+                    {% set ns.is_modified = true %}
+                    <td>Modified</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td></td>
+                    {% for size_col in sizing_list %}
+                    {% set index = loop.index %}
+                    {% for item_qnty in quantities if item_qnty.size==size_col.size%}
+                    <td class="{% if index != 1 %}separator{% endif %}">
+                        {% if ns.is_modified %}
+                        <sub class="modified-qty">{{item_qnty.first_quantity}}</sub><br>
+                        {% endif %}
+                        <div class='{{ns.universal_order_item_count}}-qnty-content-class qnty-content-class'
+                            data-group_no="{{group_no}}" data-item_code="{{item}}" data-size="{{item_qnty.size}}"
+                            data-current_qty='{{item_qnty.quantity}}'>{{item_qnty.quantity}}</div>
+                    </td>
+                    {% else %}
+                    <td class="{% if index != 1 %}separator{% endif %}">
+                        {% if ns.is_modified %}
+                        <sub class="modified-qty">0</sub><br>
+                        {% endif %}
+                        <div data-current_qty='0'>0</div>
+                    </td>
+                    {% endfor %}
+                    {% endfor %}
+                    {% if ns.is_set_status==false  %}
+                    {% if order.docstatus==2 %}
+                    {% set ns.is_set_status=true %}
+                    <td class="order-status"><sub class="cancel">Canceled</sub> <br>
+                        <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub> </td>
+                    {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==0 %}
+                    {% set ns.is_set_status=true %}
+                    <td class="order-status"><sub class="validated">Validated</sub> <br>
+                        <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
+                        <sub class="pending">Pending</sub> </td>
+                    {% elif order.docstatus==1 and unique_items_orders[item]["orders"][group_no]["prod_order_status"]==1%}
+                    {% set ns.is_set_status=true %}
+                    <td class="order-status"><sub class="validated">Validated</sub> <br>
+                        <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub><br>
+                        <sub class="production">Production</sub> <br> <sub>{{order.modified.strftime('%Y-%m-%d')}}</sub>
+                    </td>
+                    {% endif %}
+                    {% endif %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+                <tr class="sumation-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {% for size_col in sizing_list %}
+                    <td>
+                        <div data-size='{{size_col.size}}' data-item='{{item}}' data-group_no="{{group_no}}"
+                            class='sum-quantity'></div>
+                    </td>
+                    {% endfor %}
+                    <td>
+                        Total:
+                        <br>
+                        <span data-item='{{item}}' data-group_no="{{group_no}}" class='total-sum'></span>
+                    </td>
+                </tr>
+            </tbody>
+            {% endif %}
+        </table>
     </div>
+    {% endfor %}
+    {% endfor %}
+</div>
 {% endif %}
 
-<div class="modal fade" id="client-modal" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="client-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><p id="modal-cusname"></p></h5>
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <p id="modal-cusname"></p>
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>{{_("Country")}} :<p id="modal-country"></p> </h5>
-                <h5>{{_("City")}} : <p id="modal-city"></p></h5>
-                <h5>{{_("Email")}} :<p id="modal-email"></p></h5>
-                <h5>{{_("Phone")}} : <p id="modal-phone"></p></h5>
+                <h5>{{_("Country")}} :<p id="modal-country"></p>
+                </h5>
+                <h5>{{_("City")}} : <p id="modal-city"></p>
+                </h5>
+                <h5>{{_("Email")}} :<p id="modal-email"></p>
+                </h5>
+                <h5>{{_("Phone")}} : <p id="modal-phone"></p>
+                </h5>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{_("Close")}}</button>
@@ -146,138 +173,141 @@
         </div>
     </div>
 </div>
-<div class="bulk_section"> 
-    <h2  onload="ss()">{{_("Dispatch Bulk History")}}</h2>
+<div class="bulk_section">
+    <h2 onload="ss()">{{_("Dispatch Bulk History")}}</h2>
     {% set ns = namespace(row_class="") %}
     {% for location in bulk_orders %}
     <div>
-        <div >
-            <h3 class="col-3" >
-                <a class="font-weight-bold" >
+        <div>
+            <h3 class="col-3">
+                <a class="font-weight-bold">
                     {{bulk_orders[location]["show_name"]}}
                 </a>
             </h3>
         </div>
         <div class="table-wrapper table-responsive mt-2">
-            <table class="table-dispatch">
+            <table class="table-dispatch table table-xs">
                 <thead class="thead-light">
-                    <th colspan='1' scope='colgroup' >{{_("Order Date")}}</th>
-                    <th colspan='1' scope='colgroup' >{{_("Order Detail")}}</th>
-                    <th colspan='1' scope='colgroup' ></th>
-                    <th colspan='1' scope='colgroup' ></th>
-                    <th colspan='{{bulk_orders[location]["max_col_span"]}}' scope='colgroup' >{{_("Sizing")}}</th>
-                    <th colspan='1' scope='colgroup' >{{_("Status")}}</th>
+                    <th colspan='1' scope='colgroup'>{{_("Order Date")}}</th>
+                    <th colspan='1' scope='colgroup'>{{_("Order Detail")}}</th>
+                    <th colspan='1' scope='colgroup'></th>
+                    <th colspan='1' scope='colgroup'></th>
+                    <th colspan='{{bulk_orders[location]["max_col_span"]}}' scope='colgroup'>{{_("Sizing")}}</th>
+                    <th colspan='1' scope='colgroup'>{{_("Status")}}</th>
                 </thead>
                 <tbody class="tbody-dispatch">
                     {% for order in bulk_orders[location]["orders"] %}
-                        {% set ns.soi_name = order[bulk_index_dic["soi_name_index"]]  %}
-                        <tr class="assh-row">
-                            <td rowspan="{{order[bulk_index_dic['sent_history_index']]|length + 2}}" scope="rowgroup">
-                                {% if ns.soi_name!=None %}{{order[bulk_index_dic['soi_creation_time_index']].strftime('%Y-%m-%d')}}
-                                {% elif order[bulk_index_dic['po_creation_time_index']]!=None %}{{order[bulk_index_dic['po_creation_time_index']].strftime('%Y-%m-%d')}}{% endif %}
-                            </td>
-                            <td rowspan="{{order[bulk_index_dic['sent_history_index']]|length + 2}}" scope="rowgroup">
-                                {% if ns.soi_name!=None %}{{ order[bulk_index_dic['soi_parent_index']] }}{% else %}{{ order[bulk_index_dic['if_index']] }}{% endif %} <br>
-                                 {{ order[bulk_index_dic['item_name_index']] }}
-                            </td>
-                            <td></td>
-                            <td></td>
-                            {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
-                                <td></td>
-                            {% endfor %}
-                            {% for size in order[bulk_index_dic['sizes_scheme_index']] %}
-                                <td>{{size["size"]}}</td>
-                            {% endfor %}
-                            <td></td>
-                        </tr>
-                        <tr >
-                            <td>
-                                {% if ns.soi_name!=None %}
-                                    {% set sorder = frappe.get_all("Sales Order Item",{"name":ns.soi_name},["docstatus","modified"]) %}
-                                    {% if sorder|length>0 %}
-                                        {% if sorder[0]["docstatus"]==2 %}
-                                            {{sorder[0]["modified"].strftime('%Y-%m-%d')}}
-                                        {% endif %}
-                                    {% endif %}
-                                {% else %}
-                                    {% set porder = frappe.get_all("Production Order",{"name":order[bulk_index_dic['if_index']]},["docstatus","modified"]) %}
-                                    {% if porder|length>0 %}
-                                        {% if porder[0]["docstatus"]==2 %}
-                                            {{porder[0]["modified"].strftime('%Y-%m-%d')}}
-                                        {% endif %}
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                            <td>Qty</td>
-                            {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
-                                <td></td>
-                            {% endfor %}
-                            {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
-                                {% for order_qty in order[bulk_index_dic['order_qty_index']] if order_qty.size==size_col.size %}
-                                    <td>{{order_qty.quantity}}</td>
-                                {% else %}
-                                    <td>-</td>
-                                {% endfor %}
-                            {% endfor %}
-                            <td>
-                                {% if ns.soi_name!=None %}
-                                    {% set sorder = frappe.get_all("Sales Order Item",{"name":ns.soi_name},["docstatus"]) %}
-                                    {% if sorder|length>0 %}
-                                        {% if sorder[0]["docstatus"]==2 %}
-                                            <div class="s-tag-sent-shipment cancel-tag" >C</div>
-                                        {% endif %}
-                                    {% endif %}
-                                {% else %}
-                                    {% set porder = frappe.get_all("Production Order",{"name":order[bulk_index_dic['if_index']]},["docstatus"]) %}
-                                    {% if porder|length>0 %}
-                                        {% if porder[0]["docstatus"]==2 %}
-                                            <div class="s-tag-sent-shipment cancel-tag" >C</div>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% for row_index in range(order[bulk_index_dic['sent_history_index']]|length) %}
-                        <tr >
-                            <td >
-                                {{order[bulk_index_dic['sent_history_index']][row_index]["date"].strftime('%Y-%m-%d')}}
-                            </td>
-                            <td>{{_("Sent")}}</td>
-                            {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
-                                <td></td>
-                            {% endfor %}
-                            {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
-                                {% for ship_qty in order[bulk_index_dic['sent_history_index']][row_index]["quantity_per_size"] if ship_qty.size==size_col.size %}
-                                    <td>{{ship_qty.quantity}}</td>
-                                {% else %}
-                                    <td>-</td>
-                                {% endfor %}
-                            {% endfor %}
-                            <td class="status-div">
-                                <div >
-                                    {% if order[bulk_index_dic['sent_history_index']][row_index]["shipment_data"]!=None %}
-                                        <div class="s-tag-sent-shipment shipment-tag"  >S</div>
-                                    {% endif %}
-                                    <div class="s-tag-sent-shipment pl-tag">PL+I</div>
-                                </div>
-                            </td>
-                        </tr>
+                    {% set ns.soi_name = order[bulk_index_dic["soi_name_index"]]  %}
+                    <tr class="assh-row">
+                        <td rowspan="{{order[bulk_index_dic['sent_history_index']]|length + 2}}" scope="rowgroup">
+                            {% if ns.soi_name!=None %}{{order[bulk_index_dic['soi_creation_time_index']].strftime('%Y-%m-%d')}}
+                            {% elif order[bulk_index_dic['po_creation_time_index']]!=None %}{{order[bulk_index_dic['po_creation_time_index']].strftime('%Y-%m-%d')}}{% endif %}
+                        </td>
+                        <td rowspan="{{order[bulk_index_dic['sent_history_index']]|length + 2}}" scope="rowgroup">
+                            {% if ns.soi_name!=None %}{{ order[bulk_index_dic['soi_parent_index']] }}{% else %}{{ order[bulk_index_dic['if_index']] }}{% endif %}
+                            <br>
+                            {{ order[bulk_index_dic['item_name_index']] }}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
+                        <td></td>
                         {% endfor %}
-                        <tr class="ship-row assh-row">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td ></td>
-                            {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
-                                <td></td>
-                            {% endfor %}
-                            {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
-                                <td></td>
-                            {% endfor %}
-                            <td class="status-div">
-                            </td>
-                        </tr>
-                    
+                        {% for size in order[bulk_index_dic['sizes_scheme_index']] %}
+                        <td class="{% if loop.index != 1 %}separator{% endif %}">{{size["size"]}}</td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if ns.soi_name!=None %}
+                            {% set sorder = frappe.get_all("Sales Order Item",{"name":ns.soi_name},["docstatus","modified"]) %}
+                            {% if sorder|length>0 %}
+                            {% if sorder[0]["docstatus"]==2 %}
+                            {{sorder[0]["modified"].strftime('%Y-%m-%d')}}
+                            {% endif %}
+                            {% endif %}
+                            {% else %}
+                            {% set porder = frappe.get_all("Production Order",{"name":order[bulk_index_dic['if_index']]},["docstatus","modified"]) %}
+                            {% if porder|length>0 %}
+                            {% if porder[0]["docstatus"]==2 %}
+                            {{porder[0]["modified"].strftime('%Y-%m-%d')}}
+                            {% endif %}
+                            {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>Qty</td>
+                        {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
+                        <td></td>
+                        {% endfor %}
+                        {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
+                        {% for order_qty in order[bulk_index_dic['order_qty_index']] if order_qty.size==size_col.size %}
+                        <td>{{order_qty.quantity}}</td>
+                        {% else %}
+                        <td>-</td>
+                        {% endfor %}
+                        {% endfor %}
+                        <td style="text-align: center">
+                            <div style="display: inline-block">
+                                {% if ns.soi_name!=None %}
+                                {% set sorder = frappe.get_all("Sales Order Item",{"name":ns.soi_name},["docstatus"]) %}
+                                {% if sorder|length>0 %}
+                                {% if sorder[0]["docstatus"]==2 %}
+                                <div class="s-tag-sent-shipment cancel-tag">C</div>
+                                {% endif %}
+                                {% endif %}
+                                {% else %}
+                                {% set porder = frappe.get_all("Production Order",{"name":order[bulk_index_dic['if_index']]},["docstatus"]) %}
+                                {% if porder|length>0 %}
+                                {% if porder[0]["docstatus"]==2 %}
+                                <div class="s-tag-sent-shipment cancel-tag">C</div>
+                                {% endif %}
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% for row_index in range(order[bulk_index_dic['sent_history_index']]|length) %}
+                    <tr>
+                        <td>
+                            {{order[bulk_index_dic['sent_history_index']][row_index]["date"].strftime('%Y-%m-%d')}}
+                        </td>
+                        <td>{{_("Sent")}}</td>
+                        {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
+                        <td></td>
+                        {% endfor %}
+                        {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
+                        {% for ship_qty in order[bulk_index_dic['sent_history_index']][row_index]["quantity_per_size"] if ship_qty.size==size_col.size %}
+                        <td>{{ship_qty.quantity}}</td>
+                        {% else %}
+                        <td>-</td>
+                        {% endfor %}
+                        {% endfor %}
+                        <td class="status-div" style="text-align: center">
+                            <div style="display: inline-block;">
+                                {% if order[bulk_index_dic['sent_history_index']][row_index]["shipment_data"]!=None %}
+                                <div class="s-tag-sent-shipment shipment-tag">S</div>
+                                {% endif %}
+                                <div class="s-tag-sent-shipment pl-tag">PL+I</div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="ship-row assh-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        {% for empty_i in range (bulk_orders[location]["max_col_span"]-order[bulk_index_dic['sizes_scheme_index']]|length) %}
+                        <td></td>
+                        {% endfor %}
+                        {% for size_col in order[bulk_index_dic['sizes_scheme_index']] %}
+                        <td></td>
+                        {% endfor %}
+                        <td class="status-div" style="text-align: center;">
+                        </td>
+                    </tr>
+
                     {% endfor %}
                 </tbody>
             </table>
