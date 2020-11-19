@@ -404,10 +404,7 @@ email_brand_image = "assets/erpnext/images/erpnext-logo.jpg"
 
 default_mail_footer = """
 	<span>
-		Sent via
-		<a class="text-muted" href="https://erpnext.com?source=via_email_footer" target="_blank">
-			ERPNext
-		</a>
+		Sent via """+app_title+"""
 	</span>
 """
 
@@ -617,7 +614,7 @@ website_user_home_page = '/'
 role_home_page = {
     "Customer": "/client-dashboard",
     "Brand User": "/brand-dashboard",
-    "Administrator": "/desk",
+    "Administrator": "/brand-dashboard",
     "Trimming Vendor": "/supply-dashboard",
     "Fabric Vendor": "/supply-dashboard",
     "Packaging Vendor": "/supply-dashboard",

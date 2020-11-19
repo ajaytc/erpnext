@@ -8,8 +8,8 @@ from datetime import date, datetime,timedelta
 
 # This is your real test secret API key.
 
-stripe.api_key =os.environ['PAYMENT_GATEWAY_API_KEY']
-#  "sk_test_51HPL2BGjxNLAb2efZFPiLxejZs31yp8LAVjxg3lzmoxerCjU7SZSr9SKzCBCkQMRjIMv4rQAHbl7wsEbqKr2nDUK00xtPJpeGl"
+stripe.api_key = frappe.get_conf().get("payment_gateway_api_key")
+
 
 
 @frappe.whitelist()
