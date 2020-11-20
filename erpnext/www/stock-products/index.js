@@ -24,11 +24,11 @@ $('#updateStock').on('show.bs.modal', function (event) {
 
 })
 
-$('#stockvalidatebutton').click(() => {
+$('#validatebutton').click(() => {
     var old_quantity = $('.modal-body #in-stock').val()
     quantity = $('.modal-body #real-stock').val()
     frappe.call({
-        method: 'erpnext.modehero.stock.updateStock',
+        method: 'erpnext.modehero.stock.stockUpdate',
         args: {
             stock_name,
             quantity,
