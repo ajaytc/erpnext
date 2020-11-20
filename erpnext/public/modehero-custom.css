@@ -652,6 +652,7 @@ ul.breadcrumbs li a {
 .page-with-sidebar .sidebar {
     display: block;
     width: 300px;
+    height:1115px;
     background: white;
     z-index: 2;
     border-right: 1px solid #e6e6e6

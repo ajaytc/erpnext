@@ -8,7 +8,7 @@ from datetime import date, datetime,timedelta
 
 # This is your real test secret API key.
 
-stripe.api_key = frappe.get_conf().get("payment_gateway_api_key")
+stripe.api_key = os.environ['PAYMENT_GATEWAY_API_KEY']
 
 
 
