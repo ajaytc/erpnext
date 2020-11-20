@@ -21,9 +21,9 @@ $("#download-button").click(function(){
 
 function downloadEXCEL(csvStr) {
     let hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/xlsx;charset=utf-8,' + encodeURI(csvStr);
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvStr);
     hiddenElement.target = '_blank';
-    hiddenElement.download = 'output.xlsx';
+    hiddenElement.download = 'output.csv';
     hiddenElement.click();
 }
 
