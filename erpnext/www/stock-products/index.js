@@ -24,7 +24,7 @@ $('#updateStock').on('show.bs.modal', function (event) {
 
 })
 
-$('#validatebutton').click(() => {
+$('#stockvalidatebutton').click(() => {
     var old_quantity = $('.modal-body #in-stock').val()
     quantity = $('.modal-body #real-stock').val()
     frappe.call({

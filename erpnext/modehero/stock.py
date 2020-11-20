@@ -20,6 +20,10 @@ from frappe.utils.print_format import report_to_pdf
 
 #     updateQuantity(stock_name, quantity, price)
 
+@frappe.whitelist()
+def stockUpdate(stock_name, quantity, old_quantity, description, price):
+    updateStock2(stock_name, quantity, old_quantity,description, price,None,None,None,description)
+
 
 @frappe.whitelist()
 def directShip(stock_name, amount, old_stock, description, price,order_type):
@@ -564,6 +568,13 @@ def createNewPackagingStock(doc, method):
 
 
 def stockIn(stock_name, amount, quantity, description, size_quantites,order,order_type):
+
+    if(order!=None):
+        linkedOrder=order.name
+    else:
+        linkedOrder=""
+
+    
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,
@@ -573,7 +584,7 @@ def stockIn(stock_name, amount, quantity, description, size_quantites,order,orde
         "quantity": amount,
         "stock": quantity,
         "description": description,
-        "linked_order":order.name,
+        "linked_order":linkedOrder,
         "order_type":order_type
 
     }
@@ -589,7 +600,7 @@ def stockOut(stock_name, amount, quantity, description, size_quantites,order,ord
     if(order != None):
         linked_order=order.name
     else:
-        linked_order=None
+        linked_order=""
     doc_dic = {
         "doctype": "Stock History",
         "parent": stock_name,

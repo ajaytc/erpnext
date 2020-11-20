@@ -34,7 +34,7 @@ $('#validatebutton').click(() => {
     console.log("New Stock:"+in_stock)
 
     frappe.call({
-        method: 'erpnext.modehero.stock.updateStock',
+        method: 'erpnext.modehero.stock.stockUpdate',
         args: {
             stock_name,
             quantity : in_stock,
