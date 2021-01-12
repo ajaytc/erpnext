@@ -91,7 +91,8 @@ def auto_deactivate():
 @frappe.whitelist()
 def auto_deactivate_brands():
     print('running brands deactivation cron')
-    brands = frappe.get_all('Company')
+    brand_ = frappe.db.get_value("User",{"name":"Administrator"},"brand_name")
+    brands = frappe.get_all('Company',filters={"name":["!=",brand_]})
     dateformat = '%d/%m/%Y'
     for brand_name in brands:
         brand = frappe.get_doc('Company', brand_name)
