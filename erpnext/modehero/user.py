@@ -18,15 +18,16 @@ def get_random_string(length):
     # print("Random string of length", length, "is:", result_str)
 
 def signup(doc, method):
-
     if (doc.doctype == "Customer"):
         roles = [{"role": "Customer"}]
         user_type='client'
         email = doc.email_address
         first_name = doc.customer_name
+        send_welcome_email = 1
 
     elif (doc.doctype == "Supplier"):
         email = doc.email
+        send_welcome_email = 0
         first_name = doc.supplier_name
         if (doc.supplier_group == "Packaging"):
             roles = [{"role": "Packaging Vendor"}]
@@ -38,6 +39,7 @@ def signup(doc, method):
             roles = [{"role": "Trimming Vendor"}]
             user_type='trimming_supplier'
     elif (doc.doctype == "Production Factory"):
+        send_welcome_email = 1
         roles = [{"role": "Manufacturing User"}]
         user_type='factory'
         email = doc.email_address
@@ -54,11 +56,13 @@ def signup(doc, method):
         "type":user_type,
         "brand_name":brandName,
         "first_name": first_name,
+        "send_welcome_email":send_welcome_email,
         "roles": roles
     })
 
     user.flags.ignore_permissions = True
     user.flags.ignore_password_policy = True
+    user.flags.ignore_welcome_mail_to_user = True
     user.insert()
 
 def getBrandName():
@@ -87,7 +91,8 @@ def auto_deactivate():
 @frappe.whitelist()
 def auto_deactivate_brands():
     print('running brands deactivation cron')
-    brands = frappe.get_all('Company')
+    brand_ = frappe.db.get_value("User",{"name":"Administrator"},"brand_name")
+    brands = frappe.get_all('Company',filters={"name":["!=",brand_]})
     dateformat = '%d/%m/%Y'
     for brand_name in brands:
         brand = frappe.get_doc('Company', brand_name)
