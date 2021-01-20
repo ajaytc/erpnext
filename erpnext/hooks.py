@@ -317,7 +317,8 @@ doc_events = {
     #         ]
     # },
     "Customer":{
-        "after_insert": "erpnext.modehero.user.signup"
+        "after_insert": "erpnext.modehero.user.signup",
+        "before_insert": "erpnext.modehero.user.validate_client"
     },
     "Supplier":{
         "after_insert": [

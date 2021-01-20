@@ -3,6 +3,7 @@ import json
 import random
 import string
 from datetime import date, datetime
+from frappe import _, scrub
 
 
 @frappe.whitelist()
@@ -64,6 +65,24 @@ def signup(doc, method):
     user.flags.ignore_password_policy = True
     user.flags.ignore_welcome_mail_to_user = True
     user.insert()
+
+@frappe.whitelist()
+def validate_client(doc, method=None):
+    brand_name = ""
+    if method == 'validate_client':
+        doc = json.loads(doc)
+        brand_name = doc.get('brand_name')
+    else:
+        brand_name = doc.brand
+
+    subscribed_plan = frappe.db.get_value("Company",{"name":brand_name},"subscribed_plan") if brand_name else ""
+    payment_plan = frappe.db.get_value("Payment Plan",subscribed_plan,"no_of_clients") if subscribed_plan else 0
+    customer = frappe.get_all("Customer",filters={"brand":brand_name})
+    if customer and payment_plan and not method:
+        if len(customer) > payment_plan:
+            frappe.throw(_("You have reached the limit of your plan. Please upgrade it or contact our team"))
+
+    return {"payment_plan":payment_plan,"customer":len(customer)}
 
 def getBrandName():
     roles=frappe.get_roles(frappe.session.user)
