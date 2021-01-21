@@ -33,12 +33,14 @@
                     <th  scope="col">{{_("Start")}}</th>
                     <th  scope="col">{{_("End")}}</th>
                     <th  scope="col">{{_("Plan")}}</th>
+                    <th scope="col">{{_("No. of Clients")}}</th>
                     <th  scope="col">{{_("Billed")}}</th>
                 </thead>
                 <tbody>
                     {% set brands = frappe.get_all("Company",["name","creation","email","subscription_period","subscribed_date","subscription_end_date","subscribed_plan"]) %}
                     {% if brands!=None %}
                         {% for brand in brands %}
+                            {% set plan = frappe.get_all("Payment Plan",{"name":brand.subscribed_plan},["plan_name","no_of_clients"]) %}
                             {% if brand.email!=None %}
                                 {% set user = frappe.get_all("User",{"name":brand.email},["city","zip_code","country"]) %}
                                 {% if user!=None and user|length>0 %}
@@ -56,9 +58,15 @@
                                         </td>
                                         <td>
                                             {% if brand.subscribed_plan!=None %}
-                                                {% set plan = frappe.get_all("Payment Plan",{"name":brand.subscribed_plan},["plan_name"]) %}
                                                 {% if plan!=None and plan|length>0 %}
                                                     {{plan[0].plan_name}}
+                                                {% endif %}
+                                            {% endif %}
+                                            </td>
+                                        <td>
+                                            {% if brand.subscribed_plan!=None %}
+                                                {% if plan!=None and plan|length>0 %}
+                                                    {{plan[0].no_of_clients}}
                                                 {% endif %}
                                             {% endif %}
                                             </td>
