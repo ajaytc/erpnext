@@ -12,7 +12,7 @@ var SUPPLY_TABLE = '<div class="table-wrapper table-responsive mt-2">\
                                 <th>Minimum order quantity</th>\
                                 <th>ORDER</th>\
                                 <th>Stock at destination</th>\
-                                <th>REFERANCE</th>\
+                                <th>REFERENCE</th>\
                                 <th></th>\
                             </thead>\
                             <tbody class="tbody-supply-order-section">\
@@ -286,32 +286,52 @@ async function select(item){
 }
 
 function cancel(item){
-    let orders = []
-    $("tr[data-item_code|='"+item+"']").each(function(){
-        let order_name = $(this).attr('data-order');
-        orders.push(order_name);
-    })
+    const confirm_dialog = new frappe.ui.Dialog({
+            title: __("Confirm"),
+            primary_action_label: __("Yes"),
+            primary_action: () => {
+                cancel_order(item)
+            }
+        });
+        confirm_dialog.set_secondary_action(__("Save"), function() {
+        })
+        confirm_dialog.set_message(__("Are you sure you want to cancel this?"));
+        confirm_dialog.get_close_btn().on('click', () => {
+            confirm_dialog.hide();
+        });
+        confirm_dialog.$wrapper.find(".modal-footer").append(`<button type="button" class="btn btn-sm btn-primary">No</button>`).on('click', () => {
+            confirm_dialog.hide();
+        });
+        confirm_dialog.show();
+}
 
-    $('input:checkbox.sales-order-section').prop('checked', false);
-    frappe.call({
-        method: 'erpnext.modehero.sales_order.cancel_sales_item_orders',
-        args: {
-            item_order_list:orders
-        },
-        callback: function (r) {
-            if (r) {
-                if (r.message['status'] == "ok") {
-                    response_message('Successfull', 'Orders canceled successfully', 'green')
-                    window.location.reload()
-                    return null;
+function cancel_order(item) {
+        let orders = []
+        $("tr[data-item_code|='"+item+"']").each(function(){
+            let order_name = $(this).attr('data-order');
+            orders.push(order_name);
+        })
+
+        $('input:checkbox.sales-order-section').prop('checked', false);
+        frappe.call({
+            method: 'erpnext.modehero.sales_order.cancel_sales_item_orders',
+            args: {
+                item_order_list:orders
+            },
+            callback: function (r) {
+                if (r) {
+                    if (r.message['status'] == "ok") {
+                        response_message('Successfull', 'Orders canceled successfully', 'green')
+                        window.location.reload()
+                        return null;
+                    }
+                    response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
+                    return null
                 }
                 response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
-                return null
             }
-            response_message('Unsuccessfull', 'Orders canceled unsuccessfully', 'red')
-        }
-    });
-}
+        });
+    }
 
 function collect_data_for_select(item){
     let order = {}
