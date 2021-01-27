@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="m-3">
-                                <label for="product">{{_("Carrirer Company")}}</label>
+                                <label for="product">{{_("Carrier Company")}}</label>
                                 <input id="shipment-order-ca-company" type="text" class="form-control mt-2">
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-6">
                             <div class="m-3">
-                                <label for="product">{{_("Expeced Delivery Date")}}</label>
+                                <label for="product">{{_("Expected Delivery Date")}}</label>
                                 <input id="shipment-order-expected-date" type="date" class="form-control mt-2">
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                                 <a  download id="shipment-order-file"><img src="/assets/erpnext/images/icons/pdf.svg" alt=""
                                     style="margin-top:0%;" /></a>
                                 <div id="shipment-order-document-div" class="btn btn-secondary">
-                                    <input id="shipment-order-document"  type="file">
+                                    <input id="shipment-order-document"  type="file" style="margin-top: -7px;">
                                 </div>
                             </div>
                         </div>
@@ -88,6 +88,12 @@
     // 1) modal is for the creation of brand new shipment order if following steps are not happen
     // 2) if modal has "data-shipment_name" , then this script modify the already created shipment order
     // 3) if modal has "data-dispatch_name", then a novel shipment order is created for a dispatched stock history
+
+  if ($('#shipment-order-shipping-date').prop('type') != "date" || $('#shipment-order-expected-date').prop('type') != "date"){ 
+    document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+    document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+    document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
+  }
     var MODAL_ELEMENT = $("#shipment-order-modal")
     $("#shipment-order-document").change(function(){
         $("#shipment-order-file").prop("hidden",true)
@@ -114,31 +120,32 @@
             }
         }
         if ($("#shipment-order-document").prop('files').length!=1){
-            if (MODAL_ELEMENT.attr("data-shipment_name")){
-                frappe_modify_shipment(values,MODAL_ELEMENT.attr("data-shipment_name"))
-                return null
-            }
-            response_message('Unsuccessfull', "Please upload document !", 'red')
+            values["shipping_document"] = ""
+            handling_shipment(values)
+        }else {
+            file_upload_function()
+            .then(url=>{
+                console.log("url===>",url)
+                values["shipping_document"] = url
+                handling_shipment(values)
+            })
+            .catch(error=>{
+                $("#create-shipment-order").trigger("reset")
+                response_message('Unsuccessfull', error, 'red')
+            })
+        }
+    });
+
+    function handling_shipment(values) {
+        if (MODAL_ELEMENT.attr("data-shipment_name")){
+            frappe_modify_shipment(values,MODAL_ELEMENT.attr("data-shipment_name"))
+            return null
+        }else if (MODAL_ELEMENT.attr("data-dispatch_name")){
+            frappe_create_shipment_for_dispatch(values,MODAL_ELEMENT.attr("data-dispatch_name"))
             return null
         }
-        file_upload_function()
-        .then(url=>{
-            console.log("url===>",url)
-            values["shipping_document"] = url
-            if (MODAL_ELEMENT.attr("data-shipment_name")){
-                frappe_modify_shipment(values,MODAL_ELEMENT.attr("data-shipment_name"))
-                return null
-            }else if (MODAL_ELEMENT.attr("data-dispatch_name")){
-                frappe_create_shipment_for_dispatch(values,MODAL_ELEMENT.attr("data-dispatch_name"))
-                return null
-            }
-            frappe_create_shipping_order(values)
-        })
-        .catch(error=>{
-            $("#create-shipment-order").trigger("reset")
-            response_message('Unsuccessfull', error, 'red')
-        })
-    });
+        frappe_create_shipping_order(values)
+    }
 
     function file_upload_function() {
         return new Promise((resolve, reject) => {
@@ -170,7 +177,7 @@
                 })
             }
         })
-    }
+}
     function response_message(title, message, color) {
         frappe.msgprint({
             title: __(title),
