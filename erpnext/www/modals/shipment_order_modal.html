@@ -53,13 +53,13 @@
                         <div class="col-6">
                             <div class="m-3">
                                 <label for="product">{{_("Shipping Date")}}</label>
-                                <input id="shipment-order-shipping-date" type="date" class="form-control mt-2">
+                                <input id="shipment-order-shipping-date" type="text" class="form-control mt-2" placeholder="mm/dd/yyyy">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="m-3">
                                 <label for="product">{{_("Expected Delivery Date")}}</label>
-                                <input id="shipment-order-expected-date" type="date" class="form-control mt-2">
+                                <input id="shipment-order-expected-date" type="text" class="form-control mt-2" placeholder="mm/dd/yyyy">
                             </div>
                         </div>
                     </div>
@@ -89,15 +89,11 @@
     // 2) if modal has "data-shipment_name" , then this script modify the already created shipment order
     // 3) if modal has "data-dispatch_name", then a novel shipment order is created for a dispatched stock history
 
-  if ($('#shipment-order-shipping-date').prop('type') != "date" || $('#shipment-order-expected-date').prop('type') != "date"){ 
-    document.write('<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-    document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
-    document.write('<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
-  }
     var MODAL_ELEMENT = $("#shipment-order-modal")
     $("#shipment-order-document").change(function(){
         $("#shipment-order-file").prop("hidden",true)
     })
+
     $('#shipment-order-save').click(function (e) {
         e.preventDefault();
         let values = {}
