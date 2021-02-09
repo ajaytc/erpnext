@@ -11,7 +11,7 @@ $(".add-shipment-info").click(function(){
     }
     let location = validation_result[1]
     let po_if= validation_result[2]
-
+    add_datepicker()
     if (validation_result[5]){
         open_shipment_modal(validation_result[5],location,po_if,1)
         return null
@@ -253,4 +253,23 @@ function numeric_only_event(element){
     }).on('paste', function(event) {
         event.preventDefault();
     });
+}
+
+function add_datepicker(){
+    $("#shipment-order-shipping-date").datepicker({
+            autoclose: true,
+            todayBtn: true,
+            format: 'mm/dd/yyyy',
+            calendarWeeks: true,
+            keyboardNav: false,
+            todayHighlight: true
+        });
+    $("#shipment-order-expected-date").datepicker({
+            autoclose: true,
+            todayBtn: true,
+            format: 'mm/dd/yyyy',
+            calendarWeeks: true,
+            keyboardNav: false,
+            todayHighlight: true
+        });
 }

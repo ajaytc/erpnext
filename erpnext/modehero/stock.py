@@ -3,6 +3,7 @@ import json
 import datetime
 from frappe.utils.pdf import getBase64Img, getImagePath
 from frappe.utils.print_format import report_to_pdf
+from frappe.utils import date_diff, add_months, today, getdate, add_days, flt, get_last_day
 
 
 # @frappe.whitelist()
@@ -817,3 +818,12 @@ def get_stock(item_type, ref):
         return frappe.get_all('Stock', filters={'item_type': item_type, 'internal_ref': ref}, fields=['quantity'])[0]
     except:
         return {'quantity': 0}
+
+def update_stock(doc,method):
+
+    stock = frappe.db.get_value("Stock",{"product":doc.name},"name")
+    if stock:
+        stock_doc = frappe.get_doc("Stock",stock)
+        stock_doc.total_value = flt(stock_doc.quantity) * flt(doc.avg_price)
+        stock_doc.save()
+        frappe.db.commit()

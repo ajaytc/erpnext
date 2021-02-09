@@ -256,7 +256,8 @@ function calculatePrice(products, totalqty) {
                 $('#total').html(r.message.total)
                 let prices = r.message
                 for (let p in prices) {
-                    $(`#${p}`).find('.total-price').html(prices[p])
+                    var total_price = flt(prices.perpiece[p] * totalqty)
+                    $(`#${p}`).find('.total-price').html(total_price)
                     $(`#${p}`).find('.price-pp').html(prices.perpiece[p])
                     $(`#${p}`).find('.total-order').html(totalqty)
                 }

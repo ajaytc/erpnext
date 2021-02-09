@@ -293,7 +293,8 @@ doc_events = {
         "on_trash": "erpnext.modehero.sales_order.on_remove_sales_order"
     },
     "Item": {
-        "after_insert": "erpnext.modehero.stock.createNewProductStock"
+        "after_insert": "erpnext.modehero.stock.createNewProductStock",
+        "on_update": "erpnext.modehero.stock.update_stock"
     },
     "Fabric": {
         "before_save":"erpnext.modehero.fabric.set_relevent_attributes_for_fabric_save",
