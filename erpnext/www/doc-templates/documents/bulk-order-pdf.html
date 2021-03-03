@@ -1,129 +1,235 @@
+<style type="text/css">
+    .tb_css{
+        width: 12.5%; 
+        height: 20px;
+        text-align: center;
+    }
+    .trimmimg_css{
+        width: 14.28%; 
+        height: 20px;
+        text-align: center;
+    }
+    .pack_css{
+        width: 20%; 
+        height: 20px;
+        text-align: center;
+    }
+    .row_height{height: 34px;}
+</style>
 <div>
     <div style="text-align: center;">
-    <h2>Bulk Production Order</h2>
-    <img style="max-width: 150px;" src="{{brand_logo}}" alt="Logo" /></div>
+        {%if brand_details.user_image%}
+        <img alt="Logo" src="{{brand_details.user_image}}" style="max-width: 150px;">
+        {%else%}
+        <p><b>{{brand_name or ""}}</b></p>
+        {%endif%}
+    </div>
+
     <div style="text-align: center;">
-    <p style="display: none;">{%if address%}</p>
-    <div style="text-align: center;">{{address}}</div>
-    <p style="display: none;">{%endif%}</p>
+        <p style="display: none;">{%if brand_details %}</p>
+        <div style="text-align: center;">{{brand_details.address1 or ""}}<br>{{brand_details.address2 or ""}}<br>{{brand_details.city or ""}} {{brand_details.country or ""}}-{{brand_details.zip_code or ""}}</div>
+        <p style="display: none;">{%endif%}</p>
     </div>
-    <h3>&nbsp;</h3>
-    </div>
-    <div style="text-align: right; padding-right: 2%;">
+    <p style="text-align: center; font-size: 20px;"><b>Order Conformation #</b></p>
+</div>
+
+<div style="text-align: right; padding-right: 2%;">
     <div>
-    <ul style="list-style-type: none;">
-    <ul style="list-style-type: none;">
-    <li><span id="date"> {{order.creation.date()}} </span></li>
-    </ul>
-    </ul>
-    <br />
-    <ul style="list-style-type: none;">
-    <li>&nbsp;</li>
-    <li><strong>Factory</strong>
-    <p id="factory">{{order.production_factory}}</p>
-    </li>
-    <li><strong>Deliver to</strong>
-    <p id="destination">{{order.final_destination}}</p>
-    </li>
-    </ul>
-    <p>&nbsp;</p>
-    <table>
-    <tbody>
-    <tr>
-    <td id="size_table" style="width: 100%; text-align: left;">Size Table</td>
-    </tr>
-    </tbody>
-    </table>
+        <ul style="list-style-type: none;">
+            <ul style="list-style-type: none;">
+                <li><span id="date">{{frappe.utils.formatdate(order.creation.date(),"dd-mm-yyyy") or ""}} </span></li>
+            </ul>
+        </ul>
+        <br>
+        <ul style="list-style-type: none;">
+            <li>&nbsp;</li>
+            <li><strong>Supplier</strong>
+                <p id="factory">{{factory}}</p>
+                {%if factory_add.address_line_1 %}
+                <p>{{factory_add.address_line_1}}<br>{{factory_add.address_line_2}}<br>{{factory_add.city_town}} {{factory_add.country}}-{{factory_add.zip_code}}</p>
+                {%endif%}
+            </li>
+            <li><strong>Deliver to:</strong>
+                <p id="destination">{{order.final_destination}}</p>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
+        <p style="text-align: center; font-size: 20px;">{{product_name}}</p>
+        <p style="text-align: center;"><img alt="Product Image" src="{{image}}" style="max-width: 150px;"></p>
+        <br>
+        <br>
+        <table>
+            <tbody>
+                <tr class="row_height">
+                    <td style="width: 11.4178%; height: 20px;"><b>Size</b></td>
+                    {%for row in qty_per_size%}
+                    <td style="width: 11.4178%; height: 20px;">{{row.size}}</td>
+                    {%endfor%}
+                </tr>
+                <tr class="row_height">
+                    <td style="width: 11.4178%; height: 20px;"><b>Quantity</b></td>
+                    {%for row in qty_per_size%}
+                    <td style="width: 11.4178%; height: 20px;">{{row.quantity}}</td>
+                    {%endfor%}
+                </tr>
+            </tbody>
+        </table>
     </div>
-    </div>
+</div>
+<br>
+<br>
+<br>
+<div>
     <div>
-    <div>
-    <p>&nbsp;</p>
-    <table style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;" border="1">
-    <tbody>
-    <tr style="height: 34px;">
-    <td style="width: 11.4178%; height: 20px;">Fab Picture</td>
-    <td style="width: 11.4166%; height: 20px;">Supplier</td>
-    <td style="width: 11.4178%; height: 20px;">Reference</td>
-    <td style="width: 11.4166%; height: 20px;">Color</td>
-    <td style="width: 11.4178%; height: 20px;">Width</td>
-    <td style="width: 11.4166%; height: 20px;">Fabric Way</td>
-    <td style="width: 11.4178%; height: 20px;">Consumption</td>
-    <td style="width: 11.4166%; height: 20px;">Status</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% for fabsuppliers in fabricSuppliers %}</p>
-    <table style="border-collapse: collapse; width: 100%; height: 22px;" border="1">
-    <tbody>
-    <tr style="height: 22px;">
-    <td style="width: 11.4178%; height: 18px;"><img style="max-width: 150px; max-height: 50px;" src="{{fabsuppliers.fabric_pic}}" /></td>
-    <td style="width: 11.4166%; height: 18px;">{{fabsuppliers.supplier}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{fabsuppliers.fabric_ref}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{fabsuppliers.color}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{fabsuppliers.width}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{fabsuppliers.fabric_way}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{fabsuppliers.fabric_consumption}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{fabsuppliers.fabric_status}}</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% endfor %}</p>
-    <p>&nbsp;</p>
-    <br />
-    <table style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;" border="1">
-    <tbody>
-    <tr style="height: 34px;">
-    <td style="width: 11.4178%; height: 20px;">Trim Picture</td>
-    <td style="width: 11.4166%; height: 20px;">Supplier</td>
-    <td style="width: 11.4178%; height: 20px;">Reference</td>
-    <td style="width: 11.4166%; height: 20px;">Color</td>
-    <td style="width: 11.4178%; height: 20px;">Size</td>
-    <td style="width: 11.4178%; height: 20px;">Consumption</td>
-    <td style="width: 11.4166%; height: 20px;">Status</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% for trimSupplier in trimmingSuppliers %}</p>
-    <table style="border-collapse: collapse; width: 100%; height: 22px;" border="1">
-    <tbody>
-    <tr style="height: 22px;">
-    <td style="width: 11.4178%; height: 18px;"><img style="max-width: 150px;" src="{{trimSupplier.trim_pic}}" alt="Logo" /></td>
-    <td style="width: 11.4166%; height: 18px;">{{trimSupplier.supplier}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{trimSupplier.trimming_ref}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{trimSupplier.color}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{trimSupplier.size}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{trimSupplier.trimming_consumption}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{trimSupplier.trimming_status}}</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% endfor %}</p>
-    <p>&nbsp;</p>
-    <br />
-    <table style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;" border="1">
-    <tbody>
-    <tr style="height: 34px;">
-    <td style="width: 11.4178%; height: 20px;">Packaging Picture</td>
-    <td style="width: 11.4166%; height: 20px;">Supplier</td>
-    <td style="width: 11.4178%; height: 20px;">Reference</td>
-    <td style="width: 11.4178%; height: 20px;">Consumption</td>
-    <td style="width: 11.4166%; height: 20px;">Status</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% for packsuppliers in packagingSuppliers %}</p>
-    <table style="border-collapse: collapse; width: 100%; height: 22px;" border="1">
-    <tbody>
-    <tr style="height: 22px;">
-    <td style="width: 11.4178%; height: 18px;"><img style="max-width: 150px;" src="{{packsuppliers.pack_pic}}" alt="Logo" /> &nbsp;&nbsp;&nbsp;</td>
-    <td style="width: 11.4166%; height: 18px;">{{packsuppliers.supplier}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{packsuppliers.packaging_ref}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{packsuppliers.packaging_consumption}}</td>
-    <td style="width: 11.4166%; height: 18px;">{{packsuppliers.packaging_status}}</td>
-    </tr>
-    </tbody>
-    </table>
-    <p style="display: none;">{% endfor %}</p>
+        <table border="1" style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;">
+            <thead>
+                <tr class="row_height">
+                    <th class="tb_css">Fab Picture</th>
+                    <th class="tb_css">Supplier</th>
+                    <th class="tb_css">Reference</th>
+                    <th class="tb_css">Color</th>
+                    <th class="tb_css">Width</th>
+                    <th class="tb_css">Fabric Way</th>
+                    <th class="tb_css">Consumption</th>
+                    <th class="tb_css">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fabsuppliers in fabricSuppliers %}
+                <tr class="row_height">
+                    <td class="tb_css">
+                        <img src="{{fabsuppliers.fabric_pic}}" style="max-width: 150px; max-height:19px;">
+                    </td>
+                    <td class="tb_css">{{fabsuppliers.supplier or ""}}</td>
+                    <td class="tb_css">{{fabsuppliers.fabric_ref or ""}}</td>
+                    <td class="tb_css">{{fabsuppliers.color or ""}}</td>
+                    <td class="tb_css">{{fabsuppliers.width or ""}}</td>
+                    <td class="tb_css">{{fabsuppliers.fabric_way or ""}}</td>
+                    <td class="tb_css">{{fabsuppliers.fabric_consumption or ""}}
+                    </td>
+                    <td class="tb_css">
+                        {{fabsuppliers.fabric_status or ""}}
+                    </td>
+                </tr>
+                {% if fabricSuppliers|length > 1 and fabricSuppliers|length != loop.index%}
+                <tr class="row_height">
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                </tr>
+                <tr class="row_height">
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                    <td class="tb_css"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table border="1" style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;">
+            <thead>
+                <tr class="row_height">
+                    <th class="trimmimg_css">Trim Picture</th>
+                    <th class="trimmimg_css">Supplier</th>
+                    <th class="trimmimg_css">Reference</th>
+                    <th class="trimmimg_css">Color</th>
+                    <th class="trimmimg_css">Size</th>
+                    <th class="trimmimg_css">Consumption</th>
+                    <th class="trimmimg_css">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trimSupplier in trimmingSuppliers %}
+                <tr class="row_height">
+                    <td class="trimmimg_css">
+                        <img alt="Logo" src="{{trimSupplier.trim_pic}}" style="max-width: 150px; max-height:19px;">
+                    </td>
+                    <td class="trimmimg_css">{{trimSupplier.supplier or ""}}</td>
+                    <td class="trimmimg_css">{{trimSupplier.trimming_ref or ""}}</td>
+                    <td class="trimmimg_css">{{trimSupplier.color or ""}}</td>
+                    <td class="trimmimg_css">{{trimSupplier.size or ""}}</td>
+                    <td class="trimmimg_css">{{trimSupplier.trimming_consumption or ""}}</td>
+                    <td class="trimmimg_css">{{trimSupplier.trimming_status or ""}}
+                    </td>
+                </tr>
+                {% if trimmingSuppliers|length > 1 and trimmingSuppliers|length != loop.index%}
+                <tr class="row_height">
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                </tr>
+                <tr class="row_height">
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                    <td class="trimmimg_css"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table border="1" style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;">
+            <thead>
+                <tr class="row_height">
+                    <th class="pack_css">Packaging Picture</th>
+                    <th class="pack_css">Supplier</th>
+                    <th class="pack_css">Reference</th>
+                    <th class="pack_css">Consumption</th>
+                    <th class="pack_css">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for packsuppliers in packagingSuppliers %}
+                <tr class="row_height">
+                    <td class="pack_css">
+                        <img alt="Logo" src="{{packsuppliers.pack_pic}}" style="max-width: 150px; max-height:19px;">
+                    </td>
+                    <td class="pack_css">{{packsuppliers.supplier or ""}}</td>
+                    <td class="pack_css">{{packsuppliers.packaging_ref or ""}}</td>
+                    <td class="pack_css">{{packsuppliers.packaging_consumption or ""}}</td>
+                    <td class="pack_css">{{packsuppliers.packaging_status or ""}}</td>
+                </tr>
+                {% if packagingSuppliers|length > 1 and packagingSuppliers|length != loop.index%}
+                <tr class="row_height">
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                </tr>
+                <tr class="row_height">
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                    <td class="pack_css"></td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    </div>
+</div>

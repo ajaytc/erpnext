@@ -19,32 +19,34 @@ def get_context(context):
     if('order' in params):
         context.order = frappe.get_doc('Production Order', params.order)
 
-    user = frappe.get_doc('User', frappe.session.user)
+    factory_add = frappe.get_all("Production Factory", filters={"name": context.order.production_factory}, fields=["address_line_1", "address_line_2", "city_town", "country","zip_code"])
 
+    context.factory = context.order.production_factory
+    context.factory_add = factory_add[0]
+
+    user = frappe.get_doc('User', frappe.session.user)
     context.product = frappe.get_doc('Item', context.order.product_name)
+
+    context.product_name = context.product.item_name
+    context.image = context.product.image
+    context.qty_per_size = context.order.quantity_per_size
 
     getSuppliers(context.order, fabSuppliers, trimSuppliers, packSuppliers)
     # brand_name = frappe.get_doc('User', frappe.session.user).brand_name
     brand_name = context.product.brand
-
+    context.brand_name=brand_name
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": brand_name}, fields=[
-        "user_image", "address1", "name"])
+        "user_image", "address1", "name", "address2", "city", "zip_code", "country"])
 
-    context.brand_logo = getBrandLogo(brand[0].user_image)
-
-    context.address = brand[0].address1
-
-    temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order"}, fields=[
-        "content", "type", "name"])
-
+    context.brand_details = brand[0]
     context.order_name = params.order
-
     context.fabricSuppliers = fabSuppliers
     context.trimmingSuppliers = trimSuppliers
     context.packagingSuppliers = packSuppliers
 
-    t = frappe.render_template(temp[0]['content'], context)
-    context.template = t
+    path = 'erpnext/www/doc-templates/documents/bulk-order-pdf.html'
+    html=frappe.render_template(path, context)
+    context.template = html
 
     context.roles = frappe.get_roles(frappe.session.user)
     context.isCustomer = "Customer" in context.roles
@@ -89,11 +91,10 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
             if(supplier.fabric_ref != ''):
 
                 fabric=frappe.get_doc("Fabric", supplier.fabric_ref)
-
+              
                 fabSupplierOb={}
                 if(fabric.fabric_image != None):
-                    fabSupplierOb["fabric_pic"]=getBase64Img(
-                        fabric.fabric_image)
+                    fabSupplierOb["fabric_pic"]=fabric.fabric_image
 
                     # my_string=my_string.split("'")[1]
                 else:
@@ -114,7 +115,7 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
 
                 trimOb={}
                 if(trim.trimming_image != None):
-                    trimOb["trim_pic"]=getBase64Img(trim.trimming_image)
+                    trimOb["trim_pic"]=trim.trimming_image
 
                     # my_string=my_string.split("'")[1]
                 else:
@@ -137,7 +138,7 @@ def getSuppliers(order, fabSuppliers, trimSuppliers, packSuppliers):
 
                 if(pack.packaging_image != None):
 
-                    packOb["pack_pic"]=getBase64Img(pack.packaging_image)
+                    packOb["pack_pic"]=pack.packaging_image
 
                     # my_string=my_string.split("'")[1]
                 else:
