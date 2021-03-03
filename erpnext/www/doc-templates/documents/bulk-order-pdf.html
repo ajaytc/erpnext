@@ -3,16 +3,19 @@
         width: 12.5%; 
         height: 20px;
         text-align: center;
+        font-size: 12px;
     }
     .trimmimg_css{
         width: 14.28%; 
         height: 20px;
         text-align: center;
+        font-size: 12px
     }
     .pack_css{
         width: 20%; 
         height: 20px;
         text-align: center;
+        font-size: 12px
     }
     .row_height{height: 34px;}
 </style>
@@ -21,27 +24,26 @@
         {%if brand_details.user_image%}
         <img alt="Logo" src="{{brand_details.user_image}}" style="max-width: 150px;">
         {%else%}
-        <p><b>{{brand_name or ""}}</b></p>
+        <p style="font-size: 12px"><b>{{brand_name or ""}}</b></p>
         {%endif%}
     </div>
 
-    <div style="text-align: center;">
+    <div style="text-align: center; font-size: 12px">
         <p style="display: none;">{%if brand_details %}</p>
         <div style="text-align: center;">{{brand_details.address1 or ""}}<br>{{brand_details.address2 or ""}}<br>{{brand_details.city or ""}} {{brand_details.country or ""}}-{{brand_details.zip_code or ""}}</div>
         <p style="display: none;">{%endif%}</p>
     </div>
-    <p style="text-align: center; font-size: 20px;"><b>Order Conformation #</b></p>
+    <p style="text-align: center; font-size: 14px;"><b>Order Conformation #</b></p>
 </div>
 
 <div style="text-align: right; padding-right: 2%;">
     <div>
         <ul style="list-style-type: none;">
-            <ul style="list-style-type: none;">
+            <ul style="list-style-type: none; font-size: 12px">
                 <li><span id="date">{{frappe.utils.formatdate(order.creation.date(),"dd-mm-yyyy") or ""}} </span></li>
             </ul>
         </ul>
-        <br>
-        <ul style="list-style-type: none;">
+        <ul style="list-style-type: none; font-size: 12px">
             <li>&nbsp;</li>
             <li><strong>Supplier</strong>
                 <p id="factory">{{factory}}</p>
@@ -54,22 +56,22 @@
             </li>
         </ul>
         <p>&nbsp;</p>
-        <p style="text-align: center; font-size: 20px;">{{product_name}}</p>
-        <p style="text-align: center;"><img alt="Product Image" src="{{image}}" style="max-width: 150px;"></p>
+        <p style="text-align: center; font-size: 14px;">{{product_name}}</p>
+        <p style="text-align: center; font-size: 12px"><img alt="Product Image" src="{{image}}" style="max-width: 150px;"></p>
         <br>
         <br>
         <table>
             <tbody>
                 <tr class="row_height">
-                    <td style="width: 11.4178%; height: 20px;"><b>Size</b></td>
+                    <td style="width: 11.4178%; height: 20px; font-size: 12px"><b>Size</b></td>
                     {%for row in qty_per_size%}
-                    <td style="width: 11.4178%; height: 20px;">{{row.size}}</td>
+                    <td style="width: 11.4178%; height: 20px; font-size: 12px">{{row.size}}</td>
                     {%endfor%}
                 </tr>
                 <tr class="row_height">
-                    <td style="width: 11.4178%; height: 20px;"><b>Quantity</b></td>
+                    <td style="width: 11.4178%; height: 20px; font-size: 12px"><b>Quantity</b></td>
                     {%for row in qty_per_size%}
-                    <td style="width: 11.4178%; height: 20px;">{{row.quantity}}</td>
+                    <td style="width: 11.4178%; height: 20px; font-size: 12px">{{row.quantity}}</td>
                     {%endfor%}
                 </tr>
             </tbody>

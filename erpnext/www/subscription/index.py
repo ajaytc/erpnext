@@ -41,8 +41,8 @@ def getPdfDoc(context):
     context.subscribedDate=context.brand.subscribed_date
     context.brandName=context.brand.company_name
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": context.brandName}, fields=[
-        "user_image", "address1", "name","country"])
-    context.brandAddress=brand[0].address1
+        "user_image", "address1", "name", "address2", "city", "zip_code", "country", "tax_id"])
+    context.brandAddress=brand[0]
     context.subscription_plan_name=context.paymentPlan.plan_name
     context.subscription_end_date=context.brand.subscription_end_date
     context.price=context.brand.amount
@@ -65,8 +65,7 @@ def getPdfDoc(context):
     
     context.vatAmount=round(float(float(context.price)*(context.vatRate/100)),2)
     
-    temp = frappe.get_all("Pdf Document", filters={"type": "Brand Subscription Invoice"}, fields=[
-                          "content", "type", "name"])
-    rendered_doc=frappe.render_template(temp[0]['content'],context)
+    path = 'erpnext/www/doc-templates/documents/brand-subscription-invoice.html'
+    rendered_doc=frappe.render_template(path, context)
     
     return rendered_doc
