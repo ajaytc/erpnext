@@ -24,7 +24,7 @@ def signup(doc, method):
         user_type='client'
         email = doc.email_address
         first_name = doc.customer_name
-        send_welcome_email = 1
+        send_welcome_email = 0
 
     elif (doc.doctype == "Supplier"):
         email = doc.email
