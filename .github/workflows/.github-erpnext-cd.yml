@@ -30,7 +30,7 @@ jobs:
            docker-compose exec -T modehero git -C ./apps/erpnext pull --rebase upstream $(git rev-parse --abbrev-ref HEAD);
            docker-compose exec -T modehero find ./apps/erpnext -name "*.pyc" -delete;
            docker-compose exec -T modehero ./env/bin/pip install -e ./apps/erpnext;
-           docker-compose exec -T modehero cd ./apps/erpnext/ && yarn install;
+           docker-compose exec -T modehero yarn install --modules-folder ./apps/erpnext;
            docker-compose exec -T modehero bench migrate;
            docker-compose exec -T modehero bench build;
            docker-compose exec -T modehero bench clear-cache;
