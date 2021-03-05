@@ -1,63 +1,68 @@
+<style type="text/css">
+    .font_size{
+        font-size: 12px;
+    }
+</style>
 <div>
-    <div style="text-align: center;"><img style="max-width: 150px;" src="{{brand_logo}}" alt="{{brand_name}}" /></div>
-    <p style="display: none;">{%if address%}</p>
-    <div style="text-align: center;">{{address}}</div>
+    <div style="text-align: center;"><img style="max-width: 150px;" src="{{brandAddress.user_image}}" alt="{{brand_name}}" /></div>
+    
+    <p style="display: none;">{%if brandAddress %}</p>
+    <div style="text-align: center;" class="font_size">{{brandAddress.address1 or ""}}<br>{{brandAddress.address2 or ""}}<br>{{brandAddress.city or ""}} {{brandAddress.country or ""}}-{{brandAddress.zip_code or ""}}}</div>
     <p style="display: none;">{%endif%}</p>
-    <div style="text-align: center;">
-    <h3>{{order_number}}</h3>
+    <br>
+    <div style="text-align: center; font-size: 14px">
+        <b>ORDER CONFORMATION #</b>
     </div>
-    </div>
-    <div style="text-align: right; padding-right: 2%;">
+
+</div>
+<div style="text-align: right; padding-right: 2%;">
     <div>
-    <ul style="list-style-type: none;">
-    <ul style="list-style-type: none;">
-    <li><span id="date"> {{creation.date()}} </span></li>
-    </ul>
-    </ul>
-    <br />
-    <ul style="list-style-type: none;">
-    <li><strong>Supplier</strong>
-    <p id="factory">{{supplier_name}}</p>
-    </li>
-    {%if supplier_address%}
-    <li>{{supplier_address}}</li>
-    {%endif%}
-    <li>&nbsp;</li>
-    <li><strong>Deliver to</strong>
-    <p id="destination">{{destination}}</p>
-    </li>
-    </ul>
-    <p>&nbsp;</p>
+        <ul style="list-style-type: none;">
+            <ul style="list-style-type: none;" class="font_size">
+                <li><span id="date">{{frappe.utils.formatdate(creation.date(),"dd-mm-yyyy") or ""}}</span></li>
+            </ul>
+        </ul>
+        <ul style="list-style-type: none;" class="font_size">
+            <li>
+                <p><b>Supplier</b><br>{{supplier_name or ""}}<br>
+                {{supplier_address.adress2 or ""}}<br>{{supplier_address.city or ""}}-{{supplier_address.zip_code or ""}} 
+                </p>
+            </li>
+            <li>
+                <p><b>Deliver to:</b><br>{{destination or ""}}</p>
+            </li>
+        </ul>
+        <p>&nbsp;</p>
     </div>
-    </div>
+</div>
+<div style="text-align: center; font-size: 14px">
+    <b>{{item_ref}}</b><br>
+    <img style="max-width: 150px; max-height: 100px;" src="{{item_pic}}" />
+</div>
+<br>
+<div>
     <div>
-    <div>
-    <p style="text-align: center;"><span style="font-size: 14pt;">{{item_ref}}</span></p>
-    <p style="text-align: center;"><img style="max-width: 150px; max-height: 100px;" src="{{item_pic}}" /></p>
-    <table style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;" border="1">
-    <tbody>
-    <tr style="height: 34px;">
-    <td style="width: 11.4178%; height: 20px;">{{order_type}} Picture</td>
-    <td style="width: 11.4166%; height: 20px;">{{order_type}} Reference</td>
-    <td style="width: 11.4166%; {%if color== none%}display: none; {%endif%} height: 20px;">Color</td>
-    <td style="width: 11.4178%; {%if size== none%}display: none; {%endif%}height: 20px;">Size</td>
-    <td style="width: 11.4166%; height: 20px;">Quantity</td>
-    </tr>
-    </tbody>
-    </table>
-    <table style="border-collapse: collapse; width: 100%; height: 22px;" border="1">
-    <tbody>
-    <tr style="height: 22px;">
-    <td style="width: 11.4178%; height: 18px;"><img style="max-width: 150px; max-height: 50px;" src="{{item_pic}}" /></td>
-    <td style="width: 11.4166%; height: 18px;">{{item_ref}}</td>
-    <td style="width: 11.4178%; {%if color== none%}display: none; {%endif%} height: 18px;">{{color}}</td>
-    <td style="width: 11.4166%; {%if size== none%}display: none; {%endif%} height: 18px;">{{size}}</td>
-    <td style="width: 11.4178%; height: 18px;">{{quantity}}</td>
-    </tr>
-    </tbody>
-    </table>
-    <p>&nbsp;</p>
-    <br />
-    <p>&nbsp;</p>
+        <table border="1" style="border-collapse: collapse; width: 100%; height: 34px; background-color: #f5f6ff;">
+            <thead>
+                <tr style="height: 34px;">
+                    <th class="font_size" style="width: 20%; text-align: center;">{{order_type or ""}} Picture</th>
+                    <th class="font_size" style="width: 20%; text-align: center;">{{order_type or ""}} Reference</th>
+                    <th class="font_size" style="width: 20%; text-align: center;">Color</th>
+                    <th class="font_size" style="width: 20%; text-align: center;">Size</th>
+                    <th class="font_size" style="width: 20%; text-align: center;">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="height: 34px;">
+                    <td class="font_size" style="width: 20%; text-align: center;">
+                        <img style="max-width: 150px; max-height: 30px;" src="{{item_pic}}" />
+                    </td>
+                    <td class="font_size" style="width: 20%; text-align: center;">{{item_ref or ""}}</td>
+                    <td class="font_size" style="width: 20%; text-align: center;">{{color or ""}}</td>
+                    <td class="font_size" style="width: 20%; text-align: center;">{{size or ""}}</td>
+                    <td class="font_size" style="width: 20%; text-align: center;">{{quantity or ""}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    </div>
+</div>

@@ -38,12 +38,13 @@ def get_context(context):
     context.order_number=context.fabricOrder.internal_ref
     context.creation=context.fabricOrder.creation
     context.supplier_name=context.supplier.name
-    context.supplier_address=context.supplier.address1
+    context.supplier_address=context.supplier
     context.destination=getDestination(context)
     if(context.fabric.fabric_image != None):
-        context.item_pic=getBase64Img(context.fabric.fabric_image)
+        context.item_pic=context.fabric.fabric_image
     else:
         context.item_pic=''
+
     context.item_ref=context.fabricOrder.fabric_ref
     context.color=frappe.get_doc("Color",context.fabric.color).color_name
     context.size=None
@@ -67,12 +68,12 @@ def getPdfDoc(context):
 
     context.brand_name=context.fabricOrder.brand
     brand = frappe.get_all("User", filters={"type": "brand", "brand_name": context.brand_name}, fields=[
-        "user_image", "address1", "name"])
-    context.brand_logo=getBase64Img(brand[0].user_image)
-    context.address=brand[0].address1
-    temp = frappe.get_all("Pdf Document", filters={"type": "Supply Order"}, fields=[
-                          "content", "type", "name"])
-    rendered_doc=frappe.render_template(temp[0]['content'],context)
+        "user_image", "address1", "name", "address2", "city", "zip_code", "country"])
+
+    context.brandAddress=brand[0]
+
+    path = 'erpnext/www/doc-templates/documents/supply-order-pdf.html'
+    rendered_doc=frappe.render_template(path, context)
     
     return rendered_doc
     
