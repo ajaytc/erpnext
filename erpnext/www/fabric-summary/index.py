@@ -35,7 +35,7 @@ def get_context(context):
 
     # get data for pdf generation
     
-    context.order_number=context.fabricOrder.internal_ref
+    context.order_number=context.fabricOrder.name
     context.creation=context.fabricOrder.creation
     context.supplier_name=context.supplier.name
     context.supplier_address=context.supplier

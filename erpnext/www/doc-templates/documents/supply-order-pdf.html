@@ -7,11 +7,11 @@
     <div style="text-align: center;"><img style="max-width: 150px;" src="{{brandAddress.user_image}}" alt="{{brand_name}}" /></div>
     
     <p style="display: none;">{%if brandAddress %}</p>
-    <div style="text-align: center;" class="font_size">{{brandAddress.address1 or ""}}<br>{{brandAddress.address2 or ""}}<br>{{brandAddress.city or ""}} {{brandAddress.country or ""}}-{{brandAddress.zip_code or ""}}}</div>
+    <div style="text-align: center;" class="font_size">{{brandAddress.address1 or ""}}<br>{{brandAddress.address2 or ""}}<br>{{brandAddress.city or ""}} {{brandAddress.country or ""}}-{{brandAddress.zip_code or ""}}</div>
     <p style="display: none;">{%endif%}</p>
     <br>
     <div style="text-align: center; font-size: 14px">
-        <b>ORDER CONFORMATION #</b>
+        <b>{{order_number}}</b>
     </div>
 
 </div>
@@ -24,8 +24,16 @@
         </ul>
         <ul style="list-style-type: none;" class="font_size">
             <li>
-                <p><b>Supplier</b><br>{{supplier_name or ""}}<br>
-                {{supplier_address.adress2 or ""}}<br>{{supplier_address.city or ""}}-{{supplier_address.zip_code or ""}} 
+                <p><b>Supplier</b><br>{{supplier_name or ""}}
+                {%if supplier_address.adress1 %}
+                <br>{{supplier_address.address1 or ""}}
+                {%endif%}
+                {%if supplier_address.adress2 %}
+                <br>{{supplier_address.adress2 or ""}}
+                {%endif%}
+                {%if supplier_address.city %}
+                <br>{{supplier_address.city or ""}}-{{supplier_address.zip_code or ""}}
+                {%endif%} 
                 </p>
             </li>
             <li>
