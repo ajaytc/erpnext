@@ -1,52 +1,106 @@
+<style type="text/css">
+    .center{
+        text-align: center;
+    }
+    .header_size{
+        font-size: 14px
+    }
+    .font_size{
+        font-size: 14px
+    } 
+    .text_right{
+        text-align: right;
+    }
+    .td_width{
+        width: 20%
+    }
+    .size_qty{
+        width: 10%;
+        font-size:12px;
+    } 
+</style>
 <div>
-    <div style="text-align: center;"><img id="brand_logo" style="max-width: 150px;" src="brandlogoimage" alt="Logo" /></div>
-    <p style="display: none;">{%if brand_address%}</p>
-    <div style="text-align: center;">{{brand_address}}</div>
-    <p style="display: none;">{%endif%}</p>
-    <div style="text-align: center;"><span style="font-size: 14pt;">PACKING LIST #</span></div>
+    <div class="center header_size">
+        <img id="brand_logo" style="max-width: 150px;" src="{{brand_logo}}" alt="{{brand.name}}" /><br>
     </div>
-    <div style="text-align: right; padding-right: 2%;">
-    <div>
-    <ul style="list-style-type: none;">
-    <ul style="list-style-type: none;">
-    <li><span id="date"> {{creation.date()}} </span></li>
-    </ul>
-    </ul>
-    <br />
-    <ul style="list-style-type: none;">
-    <li><strong>Invoiced To<br /></strong>
-    <p>{{client_name}}</p>
-    <p>{{client_address}}</p>
-    </li>
-    <li><strong>Deliver to</strong>
-    <p id="destination">{{destination}}</p>
-    </li>
-    </ul>
+    {%if brand_address %}
+    <div>{{brand_address.address1 or ""}}
+        {%if brand_address.address2 %}
+        <br>{{brand_address.address2 or ""}}
+        {%endif%}
+        {%if brand_address.city %}
+        <br>{{brand_address.city or ""}} {{brand_address.country or ""}}-{{brand_address.zip_code or ""}}
+        {%endif%}
     </div>
-    </div>
-    <p>&nbsp;</p>
-    <table style="border-collapse: collapse; width: 102.021%;" border="1">
-    <tbody>
-    <tr style="height: 10px;">
-    <td style="width: 20.8843%; border: none; height: 30px;"><strong>Product</strong><br /><strong>Size</strong><br /><strong>Quantities<br /></strong></td>
-    <td style="width: 16.9179%; border: none; height: 30px;"><strong>Order Number</strong></td>
-    <td style="width: 18.9011%; border: none; height: 30px;"><strong>Internal Reference</strong></td>
-    </tr>
-    </tbody>
+    {%endif%}
+</div>
+<br>
+<div class="center header_size">
+    <p><b>PACKING LIST 8e4c62770a</b></p>
+</div>
+<br>
+<div class="text_right font_size">
+    <p>
+        {{frappe.utils.formatdate(creation.date(),"dd-mm-yyyy") or ""}}
+    </p>
+</div>
+<div class="text_right font_size">
+    <p>
+        <b>Invoice To:</b><br>{{client_name}}
+        {% if client_address.address_line_1 %}
+            <br>{{brand_address.address_line_1 or ""}}
+            {% if client_address.address_line_2 %}
+            <br>{{brand_address.address_line_2 or ""}}
+            {%endif%}
+            {% if client_address.address_line_2 %}
+            <br>{{client_address.city or ""}} {{client_address.country or ""}}-{{client_address.zip_code or ""}}
+            {%endif%}
+        {%endif%}
+    </p>
+</div>
+<div class="text_right font_size">
+    <p>
+        <b>Deliver To:</b><br>{{destination}}
+    </p>
+</div>
+<br>
+<div>
+    <table style="width: 100%; font-size: 12px; text-align: left;">
+        <thead>
+            <tr>
+                <th class="td_width">Product</th>
+                <th class="td_width">Order Number</th>
+                <th class="td_width">Internal Reference</th>
+            </tr>
+            <tr>
+                <th class="td_width" style="text-align: left;">Size</th>
+            </tr>
+            <tr>
+                <th class="td_width">Quantity</th>
+            </tr>
+        </thead>
     </table>
-    <p style="display: none;">{% for product in order_details %}</p>
-    <table style="border-collapse: collapse; width: 102.233%; height: 10px;" border="1">
-    <tbody>
-    <tr style="height: 10px;">
-    <td style="width: 21.5961%; border: none; height: 10px;">{{order_details[product]["product_name"]}}</td>
-    <td style="width: 16.2061%; border: none; height: 10px;">{{order_details[product]["order"]}}</td>
-    <td style="width: 18.9011%; border: none; height: 10px;">{{order_details[product]["internal_ref"]}}</td>
-    </tr>
-    </tbody>
+    <hr>
+    {% for product in order_details %}
+    <table style="width: 100%; font-size: 12px; text-align:left;">
+        <tr>
+           <td class="td_width">{{order_details[product]["product_name"]}}</td>
+           <td class="td_width">{{order_details[product]["order"]}}</td>
+           <td class="td_width">{{order_details[product]["internal_ref"]}</td> 
+        </tr>
     </table>
-    <p style="display: none;">{%for size in order_details[product]["size_qty"] %}</p>
-    
-    <div style="float: left; margin-right: 25px; border: none; height: 10px;">| {{size}}<br />| {{order_details[product]["size_qty"][size]}}</div>
-    <p style="display: none;">{%endfor%}</p>
-    <p>&nbsp;</p>
-    <p style="display: none;">{%endfor%}</p>
+    <br>
+    <table style="text-align: left;">
+        {%for size in order_details[product]["size_qty"] %}
+        <tr>
+           <td class="size_qty">{{size}}</td>
+        </tr>
+        {%endfor%}
+        {%for size in order_details[product]["size_qty"] %}
+        <tr>
+           <td class="size_qty">{{order_details[product]["size_qty"][size]}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+    {%endfor%}
+</div>

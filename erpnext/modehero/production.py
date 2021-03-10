@@ -618,10 +618,11 @@ def convert_obj_to_size_quantity_dic(obj_list):
     return result
 def generate_dispatch_bulk_pl(doc_data):
     pl_data = create_pl_data_dispatch_bulk(doc_data)
-    temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order Packing List"}, fields=["content", "type", "name"])
-    if len(temp)==0:
-        return None
-    generatedPl = frappe.render_template(temp[0]['content'], pl_data)
+    # temp = frappe.get_all("Pdf Document", filters={"type": "Bulk Order Packing List"}, fields=["content", "type", "name"])
+    temp = 'erpnext/www/doc-templates/documents/bilk_order_pl.html'
+    # if len(temp)==0:
+    #     return None
+    generatedPl = frappe.render_template(temp, pl_data)
     invoice = frappe.get_doc({
         'doctype': 'Packing List',
         'content': generatedPl,
@@ -718,12 +719,13 @@ def create_pl_data_dispatch_bulk(doc_data):
     client = doc_data["client"]  
     production_order = doc_data["production_order"]
     shipment_order = doc_data["shipment_order"]
-    sales_order_item = doc_data["sales_order_item"]    
+    sales_order_item = doc_data["sales_order_item"]
+    template_data["brand_logo"] = brand.user_image     
     template_data["brand_address"] = ""
-    if brand.address1 != None: template_data["brand_address"] = brand.address1
+    if brand.address1 != None: template_data["brand_address"] = doc_data["brand"]
     template_data["creation"] = datetime.datetime.now()
     template_data["client_name"] = client.customer_name
-    template_data["client_address"] = get_address(client)
+    template_data["client_address"] = doc_data["client"]
     template_data["destination"] = get_address(destination)
     item_doc = check_and_get_doc("Item",{"name":production_order.product_name})
     order_details = {}
@@ -749,7 +751,7 @@ def create_invocie_data_dispatch_bulk(doc_data):
     if brand.address1 != None: template_data["brand_address"] = brand.address1
     template_data["creation"] = datetime.datetime.now()
     template_data["client_name"] = client.customer_name
-    template_data["client_address"] = get_address(client)
+    template_data["client_address"] = doc_data["client"]
     template_data["destination"] = get_address(destination)
     item_doc = check_and_get_doc("Item",{"name":production_order.product_name})
     order_details = {}
