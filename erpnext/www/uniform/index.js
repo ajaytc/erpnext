@@ -77,8 +77,8 @@ $('#package-select').change(function () {
                     html = html + `
                 <div class="col-2 seg-products" style="text-align: center;flex: 0 0 12.667%;padding-left:2%">
                     <label style="margin-top: 4%;">{{_("`+ value['item_name'] + `")}}</label><span style="text-align: right !important;padding-left:20px" id="com">
-                    <a type="button" id="addFromStock" style="">+</a>
-                </span><span><a type="button" class="dha"  style="padding-left:5px">!</a></span>
+                    <a type="button" id="addFromStock" class="addFromStock" style="">+</a>
+                </span><span><a type="button" id="{{_("`+ value['item_code'] + `")}}" class="dha"  style="padding-left:5px">!</a></span>
                 <hr style="margin-top:0px;margin-bottom:0px">
                     <label style="margin-top: 4%;display:none" id="item_code">{{_("`+ value['item_code'] + `")}}</label>
                     <div class="row">
@@ -94,18 +94,16 @@ $('#package-select').change(function () {
                         <div class="col-4">
                             <label>{{_("Size*")}}</label>
                             <input class="form-control product-select" id="size">
-
                         </div>
                     </div>
                     <div style="display: none;" id="commentdiv">
                             <label>{{_("Comment")}}</label>
-                            <input type="text" class="form-control clientname-select" id="commentField">
+                            <input type="text" class="form-control clientname-select" id="commentField"  item_code={{_("`+ value['item_code'] + `")}}>
                         </div>
 
                 </div>
-                
-                `
 
+                `
 
 
                 })
@@ -121,10 +119,25 @@ $(document).ready(function(){
             $(this).parent().parent().find('#commentdiv').show()
         }else{
             $(this).parent().parent().find('#commentdiv').hide()
+        }        
+    });
+});
+
+$(document).ready(function(){
+    $(document).on("change", "#commentField" , function() {
+        var item_code = $(this).attr("item_code")
+        comid = '.'+item_code 
+        comment=$(this).val()
+        if (comment){
+            $("#"+item_code).css("color", "red");
+        }else{
+            $("#"+item_code).css("color", "black");
         }
         
     });
 });
+
+
 // $("a").on("click",".dha",function () {
 //     $(this).find('#commentdiv').show()
 // })
